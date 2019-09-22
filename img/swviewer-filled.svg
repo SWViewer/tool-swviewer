@@ -1,0 +1,16 @@
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="20px" height="20px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<defs>
+</defs>
+<g id="diff_1_">
+	<g>
+		<path d="M7.6,1.6L1.9,0.1C1-0.2,0,0.5,0,1.5v16.9c0,1,1,1.8,1.9,1.5l5.6-1.5c0.7-0.2,1.1-0.8,1.1-1.5V3.1C8.7,2.4,8.3,1.8,7.6,1.6
+			z"/>
+	</g>
+	<g>
+		<path d="M18.9,1.6l-5.6-1.5c-1-0.3-1.9,0.5-1.9,1.5v16.9c0,1,1,1.8,1.9,1.5l5.6-1.5c0.7-0.2,1.1-0.8,1.1-1.5V3.1
+			C20,2.4,19.5,1.8,18.9,1.6z"/>
+	</g>
+</g>
+</svg>

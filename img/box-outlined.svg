@@ -1,0 +1,12 @@
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+<defs>
+</defs>
+<g>
+	<path d="M8,16v6H2v-6H8 M10,14H0v10h10V14L10,14z"/>
+	<path d="M8,2v6H2V2H8 M10,0H0v10h10V0L10,0z"/>
+	<path d="M22,2v6h-6V2H22 M24,0H14v10h10V0L24,0z"/>
+	<path d="M22,16v6h-6v-6H22 M24,14H14v10h10V14L24,14z"/>
+</g>
+</svg>

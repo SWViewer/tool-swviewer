@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+    <link href='https://tools-static.wmflabs.org/fontcdn/css?family=Roboto|Montserrat' rel='stylesheet' type='text/css'>
+    <style type='text/css'>
+        :root {
+
+            /*-------font-size------------*/
+            --fs-sm: .8rem;
+            --fs-md: 1.0rem;
+            --fs-lg: 1.5rem;
+            --fs-xl: 2rem;
+
+            /*-------background-colors----*/
+            --bg-primary: #2b2d2e;
+            --bg-lowPrimary: #2b2d2e;
+            --bg-secondary: #ffffff;
+            --bg-lowSecondary: #ffffff;
+
+            /*-------text-color---------*/
+            --tc-primary: #ffffff;
+            --tc-lowPrimary: #bbbbbb;
+            --tc-secondary: #212121;
+            --tc-lowSecondary: #424242;
+            --link-color: #337ab7;
+        }
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: auto;
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
+            font-family: 'Roboto', sans-serif;
+            color: var(--tc-secondary);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(255,255,255,.2); 
+        }
+        html, body{ -ms-overflow-style: none; }
+        html, body{ overflow: -moz-scrollbars-none; }
+        .error {
+            margin: 0;
+            padding: 85px 8px 16px;
+            width: 100%;
+            color: var(--tc-secondary);
+            font-size: var(--fs-md);
+        }
+    </style>
+</head>
+<body>
+    <div class="error">
