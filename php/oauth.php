@@ -43,7 +43,7 @@ else {
         'action' => 'query',
         'meta' => 'globaluserinfo',
         'guiuser' => $res->query->userinfo->name,
-        'guiprop' => 'groups|merged',
+        'guiprop' => 'groups|merged|editcount',
         'utf8' => '1',
         'formatversion' => '2'
     ), $ch );
@@ -55,7 +55,7 @@ else {
         if ($globalGroup == 'steward' || $globalGroup == 'global-sysop' || $globalGroup == 'global-rollbacker')
             $global = true;
     }
-    if ($global == true || $res->query->userinfo->name == "Ajbura" || $res->query->userinfo->name == "Exoped")
+    if ($global == true || $res->query->userinfo->name == "Ajbura" || $res->query->userinfo->name == "Exoped" )
         $_SESSION['mode'] = 'global';
     else {
         $checkLocal = false;
@@ -69,6 +69,9 @@ else {
         $curatorGroup = ["enwikiversity"];
         $wrongsysop = ['aawiki', 'aawiktionary', 'aawikibooks', 'abwiktionary', 'akwiktionary', 'akwikibooks', 'amwikiquote', 'angwikibooks', 'angwikiquote', 'angwikisource', 'aswiktionary', 'aswikibooks', 'astwikibooks', 'astwikiquote', 'avwiktionary', 'aywikibooks', 'bhwiktionary', 'biwiktionary', 'biwikibooks', 'bmwiktionary', 'bmwikibooks', 'bmwikiquote', 'bowiktionary', 'bowikibooks', 'chwiktionary', 'chwikibooks', 'chowiki', 'cowikibooks', 'cowikiquote', 'crwiktionary', 'crwikiquote', 'dzwiktionary', 'gawikibooks', 'gawikiquote', 'gnwikibooks', 'gotwikibooks', 'guwikibooks', 'howiki', 'htwikisource', 'huwikinews', 'hzwiki', 'iewikibooks', 'iiwiki', 'ikwiktionary', 'kjwiki', 'kkwikiquote', 'knwikibooks', 'krwiki', 'krwikiquote', 'kswikibooks', 'kswikiquote', 'kwwikiquote', 'lbwikibooks', 'lbwikiquote', 'lnwikibooks', 'lvwikibooks', 'mhwiki', 'mhwiktionary', 'miwikibooks', 'mnwikibooks', 'muswiki', 'mywikibooks', 'nawikibooks', 'nawikiquote', 'nahwikibooks', 'ndswikibooks', 'ndswikiquote', 'ngwiki', 'piwiktionary', 'pswikibooks', 'quwikibooks', 'quwikiquote', 'rmwiktionary', 'rmwikibooks', 'rnwiktionary', 'scwiktionary', 'sdwikinews', 'sewikibooks', 'simplewikibooks', 'simplewikiquote', 'snwiktionary', 'suwikibooks', 'swwikibooks', 'thwikinews', 'tkwikibooks', 'tkwikiquote', 'towiktionary', 'ttwikiquote', 'twwiktionary', 'ugwikibooks', 'ugwikiquote', 'uzwikibooks', 'vowikibooks', 'vowikiquote', 'wawikibooks', 'xhwiktionary', 'xhwikibooks', 'yowiktionary', 'yowikibooks', 'zawiktionary', 'zawikibooks', 'zawikiquote', 'zh_min_nanwikibooks', 'zh_min_nanwikiquote', 'zuwikibooks', 'advisorywiki', 'nzwikimedia', 'pa_uswikimedia', 'qualitywiki', 'strategywiki', 'tenwiki', 'usabilitywiki', 'vewikimedia', 'wikimania2005wiki', 'wikimania2006wiki', 'wikimania2007wiki', 'wikimania2008wiki', 'wikimania2009wiki', 'wikimania2010wiki', 'wikimania2011wiki', 'wikimania2012wiki', 'wikimania2013wiki', 'wikimania2014wiki', 'wikimania2015wiki', 'wikimania2016wiki', 'wikimania2017wiki', 'wikimania2018wiki'];
         
+        $totalEdits = 0;
+        $totalBlocks = 0;
+
         forEach($globalInfo['query']['globaluserinfo']['merged'] as $localGroups) {
             if (array_key_exists('groups', $localGroups))
                 forEach($localGroups['groups'] as $localGroup) {
@@ -80,9 +83,21 @@ else {
                         $checkLocal = true;
                     }
                 }
+
+            if (array_key_exists('editcount', $localGroups))
+                $totalEdits += intval($localGroups['editcount']);
+            if (array_key_exists('blocked', $localGroups))
+                if (array_key_exists('expiry', $localGroups["blocked"]))
+                    if ($localGroups['blocked'] === "infinity")
+                        $totalBlocks += 1;
+
         }
-        if ($checkLocal == true)
+        if ($checkLocal == true) {
             $_SESSION['mode'] = 'local';
+
+            if ($totalEdits >= 1000 && $totalBlocks < 2)
+                $_SESSION['accessGlobal'] = 'true';
+        }
         else {
             $_SESSION = Array();
             session_write_close();

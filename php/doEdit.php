@@ -17,7 +17,6 @@ $page = $_POST["page"];
 $project = $_POST["project"];
 $text = $_POST["text"];
 $summary = $_POST["summary"];
-$timestamp = $_POST["basetimestamp"];
 $wiki = $_POST["wiki"];
 
 if (isset($_POST["checkreport"])) {
@@ -282,7 +281,7 @@ else {
 		'title' => $page,
                 'text' => $text,
                 'summary' => $summary,
-                'basetimestamp' => $timestamp,
+                'basetimestamp' => $_POST["basetimestamp"],
                 'nocreate' => '1',
 		'token' => $token
     ), $ch );
