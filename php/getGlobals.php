@@ -40,7 +40,7 @@ function getUsers($groups) {
         if (!isset($json["continue"])  || !isset($json["continue"]["agufrom"]) || !isset($json["continue"]["continue"]))
             $check = false;
         else {
-            $agufrom = "&agufrom=".$json["continue"]["agufrom"];
+            $agufrom = "&agufrom=".urlencode($json["continue"]["agufrom"]);
             $cont = "&continue=".$json["continue"]["continue"];
         }
         foreach($json["query"]["globalallusers"] as $user) {
