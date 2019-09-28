@@ -154,20 +154,30 @@ $userSelf = $_SESSION["userName"];
 echo '
 <body  class="full-screen">
 <script>';
+$isGlobalModeAccess = false;
 if ($_SESSION['mode'] == "global") {
 $isGlobal = true;
     echo '
+        var isGlobalModeAccess = false;
         var isGlobal = true;
         var local_wikis = [];
         var userSelf = "' . str_replace("'", "\'", $_SESSION["userName"]) . '";';
 }
 else {
 $isGlobal = false;
+if (isset($_SESSION['accessGlobal']))
+    if ($_SESSION['accessGlobal'] === "true")
+        $isGlobalModeAccess = true;
     echo "
         var userSelf = '" . str_replace("'", "\'", $_SESSION['userName']) . "';
         var isGlobal = false;
         var prewikis = '" .$_SESSION['projects']."';
         var local_wikis = prewikis.split(',');
+        var isGlobalModeAccess = false;
+    ";
+if ($isGlobalModeAccess === true)
+    echo "
+        var isGlobalModeAccess = true;
     ";
 }
 echo '
@@ -592,7 +602,7 @@ session_write_close();
                         </div>
                         <div class="i-btn-disc-container">Enable new page creations.</div>
                     </div>
-                    <?php if ($isGlobal == true) { echo '
+                    <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
                     <div class="i-btn-base">
                         <div class="i-btn-lb-container">
                             <div class="i-btn-lable-container">Small Wikis</div>
@@ -657,7 +667,7 @@ session_write_close();
                     		<ul id="nsList" class="i-input-disc-list"></ul>
                     	</div>
                     </div>
-                    <?php if ($isGlobal == true) { echo '
+                    <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
                     <div class="i-input-base">
                     	<div class="i-input-li-container">
                     		<div class="i-input2-lable-container">Custom wikis</div>
@@ -914,15 +924,21 @@ if (xhr.responseText == "Invalid request")
 var settingslist  = xhr.responseText;
 settingslist = JSON.parse(settingslist);
 
-<?php if ($isGlobal == true) { echo "
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
 if (settingslist['swmt'] !== null && (typeof settingslist['swmt'] !== 'undefined') && settingslist['swmt'] !== '') {
-    if (settingslist['swmt'] == '1')
+    if (settingslist['swmt'] == '1' && isGlobal === true)
         toggleIBtn('small-wikis-btn', false);
+    if (isGlobalModeAccess === true)
+        if (settingslist['swmt'] == '2')
+            toggleIBtn('small-wikis-btn', false);
 }
 
 if (settingslist['users'] !== null && (typeof settingslist['users'] !== 'undefined') && settingslist['users'] !== '') {
-    if (settingslist['users'] === '1')
+    if (settingslist['users'] === '1' && isGlobal === true)
         toggleIBtn('lt-300-btn', false);
+    if (isGlobalModeAccess === true)
+        if (settingslist['users'] == '2')
+            toggleIBtn('lt-300-btn', false);
 }
 "; } ?>
 
@@ -1002,7 +1018,7 @@ if (settingslist['wlusers'] !== null && (typeof settingslist['wlusers'] !== "und
     });
 }
 
-<?php if ($isGlobal == true) { echo "
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
 if (settingslist['blprojects'] !== null && (typeof settingslist['blprojects'] !== 'undefined') && settingslist['blprojects'] !== '') {
     customlist = settingslist['blprojects'].split(',');
     customlist.forEach(function(val) {
@@ -1284,7 +1300,7 @@ document.getElementById("btn-wl-u-add").onclick = function() {
     }
 };
 
-<?php if ($isGlobal == true) { echo '
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
 document.getElementById("btn-bl-p-add").onclick = function() {
     if (document.getElementById("bl-p").value !== "") {
         if (document.getElementById("bl-p").value.indexOf(",") == -1) {
@@ -1331,7 +1347,7 @@ document.getElementById("btn-wl-u-delete").onclick = function(value, crossClick)
     }
 };
 
-<?php if ($isGlobal == true) { echo '
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
 document.getElementById("btn-bl-p-delete").onclick = function(value, crossClick) {
     if (document.getElementById("bl-p").value !== "" || crossClick == true) {
         if (crossClick == true) var chipVal = value;
@@ -1582,12 +1598,15 @@ document.getElementById('new-pages-btn').onclick = function() {
         }, dataType: 'json'});
 };
 
-<?php if ($isGlobal == true) { echo "
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
 document.getElementById('small-wikis-btn').onclick = function() {
 	toggleIBtn('small-wikis-btn', true);
         var sqlswmt = 0;
-        if (this.style.paddingLeft == '22.5px')
+        if (this.style.paddingLeft == '22.5px') {
             sqlswmt = 1;
+            if (isGlobalModeAccess === true)
+                sqlswmt = 2;
+        }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'swmt',
@@ -1598,8 +1617,11 @@ document.getElementById('small-wikis-btn').onclick = function() {
 document.getElementById('lt-300-btn').onclick = function() {
 	toggleIBtn('lt-300-btn', true);
         var sqlusers = 0;
-        if (this.style.paddingLeft == '22.5px')
+        if (this.style.paddingLeft == '22.5px') {
             sqlusers = 1;
+            if (isGlobalModeAccess === true)
+                sqlusers = 2;
+        }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'users',
@@ -1704,6 +1726,7 @@ function findKey(val, arr) {
     }
     return false;
 }
+
 /*#########################
 --------- talk -------
 #########################*/

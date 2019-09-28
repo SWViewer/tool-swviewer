@@ -55,7 +55,7 @@ else {
         if ($globalGroup == 'steward' || $globalGroup == 'global-sysop' || $globalGroup == 'global-rollbacker')
             $global = true;
     }
-    if ($global == true || $res->query->userinfo->name == "Ajbura" || $res->query->userinfo->name == "Exoped" )
+    if ($global == true || $res->query->userinfo->name == "Ajbura" || $res->query->userinfo->name == "Exoped")
         $_SESSION['mode'] = 'global';
     else {
         $checkLocal = false;
@@ -68,14 +68,14 @@ else {
         $wikidataStaffGroup = ["wikidatawiki", "testwikidatawiki" ];
         $curatorGroup = ["enwikiversity"];
         $wrongsysop = ['aawiki', 'aawiktionary', 'aawikibooks', 'abwiktionary', 'akwiktionary', 'akwikibooks', 'amwikiquote', 'angwikibooks', 'angwikiquote', 'angwikisource', 'aswiktionary', 'aswikibooks', 'astwikibooks', 'astwikiquote', 'avwiktionary', 'aywikibooks', 'bhwiktionary', 'biwiktionary', 'biwikibooks', 'bmwiktionary', 'bmwikibooks', 'bmwikiquote', 'bowiktionary', 'bowikibooks', 'chwiktionary', 'chwikibooks', 'chowiki', 'cowikibooks', 'cowikiquote', 'crwiktionary', 'crwikiquote', 'dzwiktionary', 'gawikibooks', 'gawikiquote', 'gnwikibooks', 'gotwikibooks', 'guwikibooks', 'howiki', 'htwikisource', 'huwikinews', 'hzwiki', 'iewikibooks', 'iiwiki', 'ikwiktionary', 'kjwiki', 'kkwikiquote', 'knwikibooks', 'krwiki', 'krwikiquote', 'kswikibooks', 'kswikiquote', 'kwwikiquote', 'lbwikibooks', 'lbwikiquote', 'lnwikibooks', 'lvwikibooks', 'mhwiki', 'mhwiktionary', 'miwikibooks', 'mnwikibooks', 'muswiki', 'mywikibooks', 'nawikibooks', 'nawikiquote', 'nahwikibooks', 'ndswikibooks', 'ndswikiquote', 'ngwiki', 'piwiktionary', 'pswikibooks', 'quwikibooks', 'quwikiquote', 'rmwiktionary', 'rmwikibooks', 'rnwiktionary', 'scwiktionary', 'sdwikinews', 'sewikibooks', 'simplewikibooks', 'simplewikiquote', 'snwiktionary', 'suwikibooks', 'swwikibooks', 'thwikinews', 'tkwikibooks', 'tkwikiquote', 'towiktionary', 'ttwikiquote', 'twwiktionary', 'ugwikibooks', 'ugwikiquote', 'uzwikibooks', 'vowikibooks', 'vowikiquote', 'wawikibooks', 'xhwiktionary', 'xhwikibooks', 'yowiktionary', 'yowikibooks', 'zawiktionary', 'zawikibooks', 'zawikiquote', 'zh_min_nanwikibooks', 'zh_min_nanwikiquote', 'zuwikibooks', 'advisorywiki', 'nzwikimedia', 'pa_uswikimedia', 'qualitywiki', 'strategywiki', 'tenwiki', 'usabilitywiki', 'vewikimedia', 'wikimania2005wiki', 'wikimania2006wiki', 'wikimania2007wiki', 'wikimania2008wiki', 'wikimania2009wiki', 'wikimania2010wiki', 'wikimania2011wiki', 'wikimania2012wiki', 'wikimania2013wiki', 'wikimania2014wiki', 'wikimania2015wiki', 'wikimania2016wiki', 'wikimania2017wiki', 'wikimania2018wiki'];
-        
+        $testWikis = ['testwiki', 'test2wiki', 'testwikidatawiki', 'testcommonswiki', 'labstestwiki'];
         $totalEdits = 0;
         $totalBlocks = 0;
 
         forEach($globalInfo['query']['globaluserinfo']['merged'] as $localGroups) {
             if (array_key_exists('groups', $localGroups))
                 forEach($localGroups['groups'] as $localGroup) {
-                    if ( ($localGroup == 'rollbacker' || ( $localGroup == 'sysop' && !in_array($localGroups['wiki'], $wrongsysop)) || ($localGroup == 'editor' && in_array($localGroups['wiki'], $editorGroup)) || ($localGroup == 'patroller' && in_array($localGroups['wiki'], $patrollerGroup)) || ($localGroup == 'eliminator' && in_array($localGroups['wiki'], $eliminatorGroup)) || ($localGroup == 'botadmin' && in_array($localGroups['wiki'], $botAdminGroup)) || ($localGroup == 'test-sysop' && in_array($localGroups['wiki'], $testSysopGroup)) || ($localGroup == 'wikidata-staff' && in_array($localGroups['wiki'], $wikidataStaffGroup)) || ($localGroup == 'curator' && in_array($localGroups['wiki'], $curatorGroup)) ) && ($localGroups['wiki'] !== 'testwiki' && $localGroups['wiki'] !== 'test2wiki' && $localGroups['wiki'] !== 'testwikidata' && $localGroups['wiki'] !== 'labtest' && $localGroups['wiki'] !== 'testcommons')) {
+                    if ( ($localGroup == 'rollbacker' || ( $localGroup == 'sysop' && !in_array($localGroups['wiki'], $wrongsysop)) || ($localGroup == 'editor' && in_array($localGroups['wiki'], $editorGroup)) || ($localGroup == 'patroller' && in_array($localGroups['wiki'], $patrollerGroup)) || ($localGroup == 'eliminator' && in_array($localGroups['wiki'], $eliminatorGroup)) || ($localGroup == 'botadmin' && in_array($localGroups['wiki'], $botAdminGroup)) || ($localGroup == 'test-sysop' && in_array($localGroups['wiki'], $testSysopGroup)) || ($localGroup == 'wikidata-staff' && in_array($localGroups['wiki'], $wikidataStaffGroup)) || ($localGroup == 'curator' && in_array($localGroups['wiki'], $curatorGroup)) ) && (!in_array($localGroups['wiki'], $testWikis))) {
                         if (isset($_SESSION['projects']))
                             $_SESSION['projects'] .= $localGroups['wiki'] . ',';
                         else
@@ -84,11 +84,11 @@ else {
                     }
                 }
 
-            if (array_key_exists('editcount', $localGroups))
+            if (array_key_exists('editcount', $localGroups) && !in_array($localGroups['wiki'], $testWikis))
                 $totalEdits += intval($localGroups['editcount']);
             if (array_key_exists('blocked', $localGroups))
                 if (array_key_exists('expiry', $localGroups["blocked"]))
-                    if ($localGroups['blocked'] === "infinity")
+                    if ($localGroups['blocked'] === "infinity" && !in_array($localGroups['wiki'], $testWikis))
                         $totalBlocks += 1;
 
         }

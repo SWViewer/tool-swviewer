@@ -15,7 +15,6 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     var isdelete = false;
     var warnDelete = null;
 
-
     var i = 0;
     checkRollback = false;
     $scope.select = function(edit) {
@@ -1044,7 +1043,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         var swmt = false;
         var setusers = false;
         var n = "none";
-        if (isGlobal == true) {
+        if (isGlobal == true || isGlobalModeAccess === true) {
             if (document.getElementById('small-wikis-btn').style.paddingLeft == '22.5px') swmt = true;
             if (document.getElementById('lt-300-btn').style.paddingLeft == '22.5px') setusers = true;
         }
@@ -1056,7 +1055,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
 
         // ((stuff.namespace !== 2 && stuff.type == n) || stuff.type == "edit") &&
-        if ((stuff.type == n || stuff.type == "edit") && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal == false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && isGlobal == true) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && isGlobal == true))) {
+        if ((stuff.type == n || stuff.type == "edit") && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal == false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && (isGlobal == true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && (isGlobal == true || isGlobalModeAccess === true)))) {
             if (typeof sandboxlist[stuff.wiki] !== "undefined")
                 if (sandboxlist[stuff.wiki] == stuff.title)
                     return;
@@ -1444,6 +1443,20 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             }
     };
 
+    uiEnable = function() {
+        document.getElementById("queue").classList.remove("disabled");
+        document.getElementById("control").classList.remove("disabled");
+        document.getElementById('next-diff').classList.remove('disabled');
+        if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) !== -1)) {
+            document.getElementById("revert").classList.remove("disabled");
+            document.getElementById("customRevertBtn").classList.remove("disabled");
+        }
+        if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) === -1)) {
+            document.getElementById("revert").classList.add("disabled");
+            document.getElementById("customRevertBtn").classList.add("disabled");
+        }
+    };
+
 });
 
 function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW, tTITLE, tUSERIP, tSUMMARY) {
@@ -1538,11 +1551,6 @@ nextDiffStyle = function() {
     document.getElementById("back").style.background = "";
 };
 
-uiEnable = function() {
-    document.getElementById("queue").classList.remove("disabled");
-    document.getElementById("control").classList.remove("disabled");
-    document.getElementById('next-diff').classList.remove('disabled');
-};
 uiDisable = function() {
     document.getElementById("queue").classList.add("disabled");
     document.getElementById("control").classList.add("disabled");
@@ -1557,8 +1565,10 @@ uiDisableNew = function() {
 };
 uiEnableNew = function() {
     document.getElementById("queue").classList.remove("disabled");
-    document.getElementById("revert").classList.remove("disabled");
-    document.getElementById("customRevertBtn").classList.remove("disabled");
+    if (isGlobalModeAccess !== true || local_wikis.indexOf(wiki)) {
+        document.getElementById("revert").classList.remove("disabled");
+        document.getElementById("customRevertBtn").classList.remove("disabled");
+    }
 };
 isNotModal = function () {
     if (document.getElementById('customRevert').style.display !== "block" &&

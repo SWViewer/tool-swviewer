@@ -48,7 +48,7 @@ if ($_POST["action"] == "set") {
 
     if ($_POST["query"] == "swmt") {
         if (isset($_POST['swmt'])) {
-            if ($_POST['swmt'] == "0" || $_POST['swmt'] == "1") {
+            if ($_POST['swmt'] == "0" || $_POST['swmt'] == "1" || $_POST['swmt'] == "2") {
                 $q = $db->prepare('UPDATE user SET swmt=:swmt WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':swmt' => $_POST['swmt']));
             }
@@ -66,7 +66,7 @@ if ($_POST["action"] == "set") {
 
     if ($_POST["query"] == "users") {
         if (isset($_POST['users'])) {
-            if ($_POST['users'] == "0" || $_POST['users'] == "1") {
+            if ($_POST['users'] == "0" || $_POST['users'] == "1" || $_POST['users'] == "2") {
                 $q = $db->prepare('UPDATE user SET users=:users WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':users' => $_POST['users']));
             }
