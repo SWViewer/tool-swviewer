@@ -36,6 +36,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+        <!-- <script type="text/javascript" async src="//cdn.jsdelivr.net/npm/pwacompat@2.0.9/pwacompat.min.js"></script> -->
         <script async src="js/pwacompat.js"></script>
         <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -151,42 +152,40 @@ if (!isset($result[0]) || $result[0] == null || $result[0] == "" || $_SESSION['t
 }
 
 $userSelf = $_SESSION["userName"];
-echo '
-<body  class="full-screen">
-<script>';
 $isGlobalModeAccess = false;
-if ($_SESSION['mode'] == "global") {
-$isGlobal = true;
-    echo '
-        var isGlobalModeAccess = false;
-        var isGlobal = true;
-        var local_wikis = [];
-        var userSelf = "' . str_replace("'", "\'", $_SESSION["userName"]) . '";';
-}
-else {
 $isGlobal = false;
-if (isset($_SESSION['accessGlobal']))
-    if ($_SESSION['accessGlobal'] === "true")
-        $isGlobalModeAccess = true;
-    echo "
-        var userSelf = '" . str_replace("'", "\'", $_SESSION['userName']) . "';
-        var isGlobal = false;
-        var prewikis = '" .$_SESSION['projects']."';
-        var local_wikis = prewikis.split(',');
-        var isGlobalModeAccess = false;
-    ";
-if ($isGlobalModeAccess === true)
-    echo "
-        var isGlobalModeAccess = true;
-    ";
-}
-echo '
-    // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
-    var talktoken = "' . $_SESSION['talkToken'] . '";
-    </script>';
+if ($_SESSION['mode'] == "global")
+    $isGlobal = true;
+else
+    if (isset($_SESSION['accessGlobal']))
+        if ($_SESSION['accessGlobal'] === "true")
+            $isGlobalModeAccess = true;
 session_write_close();
 ?>
 
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open('POST', "php/getSessionVars.php", false);
+xhr.send();
+var sess = JSON.parse(xhr.responseText);
+if (!sess.hasOwnProperty("user") || !sess.hasOwnProperty("isGlobal") || !sess.hasOwnProperty("isGlobalModeAccess") || !sess.hasOwnProperty("local_wikis") || !sess.hasOwnProperty("talktoken") || sess.hasOwnProperty("error")) {
+    alert("Something gone wrong. Please retry.");
+    xhr.open("GET", "php/oauth.php?action=unlogin", false);
+    xhr.send();
+    if (xhr.responseText == "Unlogin is done")
+        window.open("https://tools.wmflabs.org/swviewer/", "_self");
+}
+
+var userSelf = sess["user"];
+var isGlobal = sess["isGlobal"];
+var isGlobalModeAccess = sess["isGlobalModeAccess"];
+var talktoken = sess["talktoken"]; // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
+var local_wikis = [];
+if (sess["local_wikis"] !== "")
+    local_wikis = sess["local_wikis"].split(',');
+</script>
+
+<body  class="full-screen">
 <!-- Loading intro -->
 <div id="loading">
     <div class="loading-icon">
@@ -925,20 +924,17 @@ var settingslist  = xhr.responseText;
 settingslist = JSON.parse(settingslist);
 
 <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
-if (settingslist['swmt'] !== null && (typeof settingslist['swmt'] !== 'undefined') && settingslist['swmt'] !== '') {
-    if (settingslist['swmt'] == '1' && isGlobal === true)
+if (settingslist['swmt'] !== null && (typeof settingslist['swmt'] !== 'undefined') && settingslist['swmt'] !== '')
+    if ((settingslist['swmt'] == '1' || settingslist['swmt'] == '2') && isGlobal == 'true')
         toggleIBtn('small-wikis-btn', false);
-    if (isGlobalModeAccess === true)
-        if (settingslist['swmt'] == '2')
-            toggleIBtn('small-wikis-btn', false);
-}
+    if (settingslist['swmt'] == '2' && isGlobalModeAccess == 'true')
+        toggleIBtn('small-wikis-btn', false);
 
 if (settingslist['users'] !== null && (typeof settingslist['users'] !== 'undefined') && settingslist['users'] !== '') {
-    if (settingslist['users'] === '1' && isGlobal === true)
+    if ((settingslist['users'] === '1' || settingslist['users'] === '2') && isGlobal == 'true')
         toggleIBtn('lt-300-btn', false);
-    if (isGlobalModeAccess === true)
-        if (settingslist['users'] == '2')
-            toggleIBtn('lt-300-btn', false);
+    if (settingslist['users'] == '2' && isGlobalModeAccess == 'true')
+        toggleIBtn('lt-300-btn', false);
 }
 "; } ?>
 
@@ -1604,7 +1600,7 @@ document.getElementById('small-wikis-btn').onclick = function() {
         var sqlswmt = 0;
         if (this.style.paddingLeft == '22.5px') {
             sqlswmt = 1;
-            if (isGlobalModeAccess === true)
+            if (isGlobalModeAccess == 'true')
                 sqlswmt = 2;
         }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
@@ -1619,7 +1615,7 @@ document.getElementById('lt-300-btn').onclick = function() {
         var sqlusers = 0;
         if (this.style.paddingLeft == '22.5px') {
             sqlusers = 1;
-            if (isGlobalModeAccess === true)
+            if (isGlobalModeAccess == 'true')
                 sqlusers = 2;
         }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {

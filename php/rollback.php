@@ -1,12 +1,24 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-
 session_name( 'SWViewer' );
 session_start();
-if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) == false) or (isset($_SESSION['userName']) == false) or (isset($_POST["page"]) == false) or (isset($_POST["wiki"]) == false) or (isset($_POST["project"]) == false) or (isset($_POST["user"]) == false)) {
+if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName']) || !isset($_POST["page"]) || !isset($_POST["wiki"]) || !isset($_POST["project"]) || !isset($_POST["user"]) || !isset($_POST["rbmode"])) {
     echo "Invalid request";
     session_write_close();
     exit(0);
+}
+$basetimestamp = "";
+$id = "";
+if ($_POST["rbmode"] === "undo") {
+    if (isset($_POST["basetimestamp"]) && isset($_POST["id"])) {
+        $basetimestamp = $_POST["basetimestamp"];
+        $id = $_POST["id"];
+    }
+    else {
+        echo "Invalid request (undo mode)";
+        session_write_close();
+        exit(0);
+    }
 }
 $gTokenKey = $_SESSION['tokenKey'];
 $gTokenSecret = $_SESSION['tokenSecret'];
@@ -15,9 +27,8 @@ $page = $_POST["page"];
 $project = $_POST["project"];
 $user = $_POST["user"];
 $wiki = $_POST["wiki"];
+$mode = $_POST["rbmode"];
 session_write_close();
-
-$errorCode = 200;
 $inifile = '/data/project/swviewer/security/oauth-sw.ini';
 $ini = parse_ini_file( $inifile );
 if ( $ini === false ) {
@@ -25,85 +36,114 @@ if ( $ini === false ) {
 	echo 'The ini file could not be read';
 	exit(0);
 }
-if ( !isset( $ini['agent'] ) ||
-	!isset( $ini['consumerKey'] ) ||
-	!isset( $ini['consumerSecret'] )
-) {
-	header( "HTTP/1.1 202 Internal Server Error" );
+if (!isset( $ini['agent'] ) || !isset( $ini['consumerKey'] ) || !isset( $ini['consumerSecret'] )) {
 	echo 'Required configuration directives not found in ini file';
 	exit(0);
 }
 $gUserAgent = $ini['agent'];
 $gConsumerKey = $ini['consumerKey'];
 $gConsumerSecret = $ini['consumerSecret'];
-
-
-
 $ch = null;
-
-$res = doApiQuery( array(
-	'format' => 'json',
-	'action' => 'tokens',
-	'type' => 'rollback',
-    ), $ch );
-        if ( !isset( $res->tokens->rollbacktoken ) ) {
-		header( "HTTP/1.1 203 Internal Server Error" );
-		echo 'Bad API response: <pre>' . htmlspecialchars( var_export( $res, 1 ) ) . '</pre>';
-		exit(0);
-	}
-	$token = $res->tokens->rollbacktoken;
-
-
-
-	// Now perform rollback
-if (isset($_POST["summary"]) == false) {
-$res = doApiQuery( array(
-		'format' => 'json',
-                'utf8' => '1',
-		'action' => 'rollback',
-		'title' => $page,
-                'user' => $user,
-		'token' => $token,
-	), $ch );
-} else {
-$res = doApiQuery( array(
-		'format' => 'json',
-                'utf8' => '1',
-		'action' => 'rollback',
-		'title' => $page,
-                'user' => $user,
-                'summary' => $_POST["summary"],
-		'token' => $token,
-	), $ch );
+$token = "";
+$rev = "";
+$params = ['format' => 'json', 'action' => 'tokens', 'type' => 'rollback'];
+$typetoken = "rollbacktoken";
+if ($mode === "undo") {
+    $params["type"] = "edit";
+    $typetoken = "edittoken";
+}
+$res = doApiQuery( $params, $ch );
+if (!isset($res->tokens->$typetoken)) {
+    header( "HTTP/1.1 203 Internal Server Error" );
+    echo 'Bad API response: <pre>' . htmlspecialchars( var_export( $res, 1 ) ) . '</pre>';
+    exit(0);
+}
+$token = $res->tokens->$typetoken;
+if ($token === "" || ($mode !== "rollback" && $mode !== "undo")) {
+    header( "HTTP/1.1 203 Internal Server Error" );
+    echo 'Bad API response.</pre>';
+    exit();
 }
 
 
-if ( !isset( $res->rollback->title ) ) {
-$res = json_decode(json_encode($res), True);
-    $response = ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
+// Now perform rollback or undo
+if ($mode === "rollback") {
+    $params = ['format' => 'json', 'utf8' => '1', 'action' => 'rollback', 'title' => $page, 'user' => $user, 'token' => $token];
+    if (isset($_POST["summary"]))
+        $params["summary"] = $_POST["summary"];
+    $res = doApiQuery($params, $ch);
+}
+else {
+    $res = doApiQuery( array('format' => 'json', 'utf8' => '1',
+        'action' => 'query',
+        'prop' => 'revisions',
+        'titles' => $page,
+        'rvprop' => 'ids|user',
+        'rvlimit' => 1,
+        'rvexcludeuser' => $user
+    ), $ch );
+    forEach($res->query->pages as $key=>$p) {
+        if ($key !== "-1")
+            $res2 = $p;
+    }
+    if ($res2 !== null)
+        if ($res2->revisions[0]->revid !== "0")
+            $rev = $res2->revisions[0]->revid;
+    if ($rev !== "") {
+        $summary = str_replace("$1", $res2->revisions[0]->user, "Restore to the last revision by [[User:$1|$1]]");;
+        if (isset($_POST["summary"]))
+            if ($_POST["summary"] !== "")
+                $summary = str_replace("$1", $res2->revisions[0]->user, $_POST["summary"]);
+        $res = doApiQuery( array('format' => 'json', 'utf8' => '1',
+            'action' => 'edit',
+            'title' => $page,
+            'undo' => $id,
+            'undoafter' => $rev,
+            'nocreate' => '1',
+            'watchlist' => 'nochange',
+            'minor' => 1,
+            'summary' => $summary,
+            'basetimestamp' => $basetimestamp,
+            'token' => $token
+        ), $ch );
+    }
+}
+
+
+// Cacthing bad responses
+$typeaction = "rollback";
+if ($mode === "undo")
+    $typeaction = "edit";
+if ( !isset($res->$typeaction->title) || isset($res->$typeaction->nochange)) {
+    $res = json_decode(json_encode($res), True);
+    if (isset($res[$typeaction]["nochange"]))
+        $response = ["code" => "alreadyrolled", "result" => "Edits is already undid."];
+    else
+        $response = ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
     echo json_encode($response);
     exit(0);
 }
 
+// Send result to DB
 $ts_pw = posix_getpwuid(posix_getuid());
 $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
 $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
 unset($ts_mycnf, $ts_pw);
 
 $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-$q->execute(array(':user' => $userName, ':type' => 'rollback', ':wiki' => $wiki, ':title' => strval($res->rollback->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->rollback->old_revid) . '&diff=' . strval($res->rollback->revid) . '/'));
+if ($mode === "rollback")
+    $q->execute(array(':user' => $userName, ':type' => 'rollback', ':wiki' => $wiki, ':title' => strval($res->rollback->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->rollback->old_revid) . '&diff=' . strval($res->rollback->revid) . '/'));
+else
+    $q->execute(array(':user' => $userName, ':type' => 'undo', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
 $db = null;
 
-
+// Return result
 $res = json_decode(json_encode($res), True);
-$response = ["result" => "Success", "summary" => $res["rollback"]["summary"], "oldrevid" => $res["rollback"]["old_revid"], "newrevid" => $res["rollback"]["revid"], "user" => $userName];
+if ($mode === "rollback")
+    $response = ["result" => "Success", "summary" => $res["rollback"]["summary"], "oldrevid" => $res["rollback"]["old_revid"], "newrevid" => $res["rollback"]["revid"], "user" => $userName, "type" => "rolback"];
+else
+    $response = ["result" => "Success", "summary" => $summary, "oldrevid" => $res["edit"]["oldrevid"], "newrevid" => $res["edit"]["newrevid"], "user" => $userName, "type" => "undo"];
 echo json_encode($response);
-
-
-exit(0);
-
-
-
 
 
 // Based on https://tools.wmflabs.org/oauth-hello-world/index.php?action=download.
@@ -115,10 +155,8 @@ function sign_request( $method, $url, $params = array() ) {
 	$host = isset( $parts['host'] ) ? $parts['host'] : '';
 	$port = isset( $parts['port'] ) ? $parts['port'] : ( $scheme == 'https' ? '443' : '80' );
 	$path = isset( $parts['path'] ) ? $parts['path'] : '';
-	if ( ( $scheme == 'https' && $port != '443' ) ||
-		( $scheme == 'http' && $port != '80' ) 
-	) {
-		$host = "$host:$port";
+	if ( ( $scheme == 'https' && $port != '443' ) || ( $scheme == 'http' && $port != '80' ) ) {
+	    $host = "$host:$port";
 	}
 	$pairs = array();
 	parse_str( isset( $parts['query'] ) ? $parts['query'] : '', $query );
@@ -141,9 +179,6 @@ function sign_request( $method, $url, $params = array() ) {
 	$key = rawurlencode( $gConsumerSecret ) . '&' . rawurlencode( $gTokenSecret );
 	return base64_encode( hash_hmac( 'sha1', $toSign, $key, true ) );
 }
-
-
-
 
 function doApiQuery( $post, &$ch = null ) {
 	global $gUserAgent, $gConsumerKey, $gTokenKey, $errorCode, $page, $project;

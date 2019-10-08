@@ -681,13 +681,37 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 return;
             }
 
+            var rbmode = "rollback";
+            if (isGlobalModeAccess === true && local_wikis.indexOf(wiki) == -1)
+                rbmode = "undo";
+
+            var undoSummary = 'Undid edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1';
+            if (config["wikis"][0].hasOwnProperty(wiki))
+                if (config["wikis"][0][wiki][0].hasOwnProperty("defaultUndoSummary"))
+                    if (config["wikis"][0][wiki][0]["defaultUndoSummary"] !== null && config["wikis"][0][wiki][0]["defaultUndoSummary"] !== "")
+                        undoSummary = config["wikis"][0][wiki][0]["defaultUndoSummary"];
             if (summarypre == "") {
-                var revertData = {
+                if (rbmode === "undo")
+                    var revertData = {
+                    rbmode: rbmode,
+                    basetimestamp: timestamp,
                     page: title,
+                    id: dnew,
                     user: user,
                     wiki: wiki,
+                    summary: undoSummary.replace(/\$2/gi, user).replace(/\$3/gi, title),
                     project: server_url + script_path + "/api.php"
                 };
+                else
+                    var revertData = {
+                        rbmode: rbmode,
+                        basetimestamp: timestamp,
+                        page: title,
+                        id: dnew,
+                        user: user,
+                        wiki: wiki,
+                        project: server_url + script_path + "/api.php"
+                    };
                 var rawV = {user: user, project: server_url + script_path, wiki: wiki, oldid: old, newid: dnew};
                 vandalsReport.push( rawV );
                 vandals.push(user);
@@ -695,13 +719,25 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 connectTalk.talkSendInside(rawSend);
             }
             else {
+                var undoPrefix = 'Undid edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1: '.replace(/\$2/gi, user).replace(/\$3/gi, title);
+                if (config["wikis"][0].hasOwnProperty(wiki))
+                    if (config["wikis"][0][wiki][0].hasOwnProperty("defaultUndoPrefix"))
+                        if (config["wikis"][0][wiki][0]["defaultUndoPrefix"] !== null && config["wikis"][0][wiki][0]["defaultUndoPrefix"] !== "")
+                            undoPrefix = config["wikis"][0][wiki][0]["defaultUndoPrefix"];
+
                 var rollbackPrefix = 'Reverted edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1: ';
                 if (config["wikis"][0].hasOwnProperty(wiki))
                     if (config["wikis"][0][wiki][0].hasOwnProperty("defaultRollbackPrefix"))
                         if (config["wikis"][0][wiki][0]["defaultRollbackPrefix"] !== null && config["wikis"][0][wiki][0]["defaultRollbackPrefix"] !== "")
                             rollbackPrefix = config["wikis"][0][wiki][0]["defaultRollbackPrefix"].replace(/\$7/gi, title);
+
+                if (rbmode === "undo")
+                    rollbackPrefix = undoPrefix;
                 var revertData = {
+                    rbmode: rbmode,
+                    basetimestamp: timestamp,
                     page: title,
+                    id: dnew,
                     user: user,
                     wiki: wiki,
                     summary: rollbackPrefix + summarypre,
@@ -1043,7 +1079,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         var swmt = false;
         var setusers = false;
         var n = "none";
-        if (isGlobal == true || isGlobalModeAccess === true) {
+        if (isGlobal == 'true' || isGlobalModeAccess == 'true') {
             if (document.getElementById('small-wikis-btn').style.paddingLeft == '22.5px') swmt = true;
             if (document.getElementById('lt-300-btn').style.paddingLeft == '22.5px') setusers = true;
         }
@@ -1055,7 +1091,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
 
         // ((stuff.namespace !== 2 && stuff.type == n) || stuff.type == "edit") &&
-        if ((stuff.type == n || stuff.type == "edit") && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal == false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && (isGlobal == true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && (isGlobal == true || isGlobalModeAccess === true)))) {
+        if (stuff.user !== userSelf && (stuff.type == n || stuff.type == "edit") && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal == 'false') || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && (isGlobal == 'true' || isGlobalModeAccess == 'true')) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && (isGlobal == 'true' || isGlobalModeAccess == 'true')))) {
             if (typeof sandboxlist[stuff.wiki] !== "undefined")
                 if (sandboxlist[stuff.wiki] == stuff.title)
                     return;
@@ -1447,14 +1483,14 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         document.getElementById("queue").classList.remove("disabled");
         document.getElementById("control").classList.remove("disabled");
         document.getElementById('next-diff').classList.remove('disabled');
-        if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) !== -1)) {
-            document.getElementById("revert").classList.remove("disabled");
-            document.getElementById("customRevertBtn").classList.remove("disabled");
-        }
-        if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) === -1)) {
-            document.getElementById("revert").classList.add("disabled");
-            document.getElementById("customRevertBtn").classList.add("disabled");
-        }
+       // if (isGlobal == 'false' && (isGlobalModeAccess == 'true' && local_wikis.indexOf(wiki) !== -1)) {
+       //     document.getElementById("revert").classList.remove("disabled");
+       //     document.getElementById("customRevertBtn").classList.remove("disabled");
+      //  }
+      //  if (isGlobal == 'false' && (isGlobalModeAccess == 'true' && local_wikis.indexOf(wiki) === -1)) {
+       //     document.getElementById("revert").classList.add("disabled");
+       //     document.getElementById("customRevertBtn").classList.add("disabled");
+       // }
     };
 
 });
@@ -1565,10 +1601,10 @@ uiDisableNew = function() {
 };
 uiEnableNew = function() {
     document.getElementById("queue").classList.remove("disabled");
-    if (isGlobalModeAccess !== true || local_wikis.indexOf(wiki)) {
-        document.getElementById("revert").classList.remove("disabled");
-        document.getElementById("customRevertBtn").classList.remove("disabled");
-    }
+   // if (isGlobalModeAccess !== 'true' || local_wikis.indexOf(wiki)) {
+   //     document.getElementById("revert").classList.remove("disabled");
+   //     document.getElementById("customRevertBtn").classList.remove("disabled");
+   // }
 };
 isNotModal = function () {
     if (document.getElementById('customRevert').style.display !== "block" &&
