@@ -177,8 +177,8 @@ if (!sess.hasOwnProperty("user") || !sess.hasOwnProperty("isGlobal") || !sess.ha
 }
 
 var userSelf = sess["user"];
-var isGlobal = sess["isGlobal"];
-var isGlobalModeAccess = sess["isGlobalModeAccess"];
+var isGlobal = Boolean(sess["isGlobal"]);
+var isGlobalModeAccess = Boolean(sess["isGlobalModeAccess"]);
 var talktoken = sess["talktoken"]; // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
 var local_wikis = [];
 if (sess["local_wikis"] !== "")
@@ -925,15 +925,16 @@ settingslist = JSON.parse(settingslist);
 
 <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
 if (settingslist['swmt'] !== null && (typeof settingslist['swmt'] !== 'undefined') && settingslist['swmt'] !== '')
-    if ((settingslist['swmt'] == '1' || settingslist['swmt'] == '2') && isGlobal == 'true')
+    if ((settingslist['swmt'] === '1' || settingslist['swmt'] === '2') && isGlobal === true)
         toggleIBtn('small-wikis-btn', false);
-    if (settingslist['swmt'] == '2' && isGlobalModeAccess == 'true')
+    if (settingslist['swmt'] === '2' && isGlobalModeAccess === true) {
         toggleIBtn('small-wikis-btn', false);
+}
 
 if (settingslist['users'] !== null && (typeof settingslist['users'] !== 'undefined') && settingslist['users'] !== '') {
-    if ((settingslist['users'] === '1' || settingslist['users'] === '2') && isGlobal == 'true')
+    if ((settingslist['users'] === '1' || settingslist['users'] === '2') && isGlobal === true)
         toggleIBtn('lt-300-btn', false);
-    if (settingslist['users'] == '2' && isGlobalModeAccess == 'true')
+    if (settingslist['users'] == '2' && isGlobalModeAccess === true)
         toggleIBtn('lt-300-btn', false);
 }
 "; } ?>
@@ -1594,13 +1595,13 @@ document.getElementById('new-pages-btn').onclick = function() {
         }, dataType: 'json'});
 };
 
-<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
+<?php if ($isGlobal === true || $isGlobalModeAccess === true) { echo "
 document.getElementById('small-wikis-btn').onclick = function() {
 	toggleIBtn('small-wikis-btn', true);
         var sqlswmt = 0;
         if (this.style.paddingLeft == '22.5px') {
             sqlswmt = 1;
-            if (isGlobalModeAccess == 'true')
+            if (isGlobalModeAccess === true)
                 sqlswmt = 2;
         }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
@@ -1615,7 +1616,7 @@ document.getElementById('lt-300-btn').onclick = function() {
         var sqlusers = 0;
         if (this.style.paddingLeft == '22.5px') {
             sqlusers = 1;
-            if (isGlobalModeAccess == 'true')
+            if (isGlobalModeAccess === true)
                 sqlusers = 2;
         }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {

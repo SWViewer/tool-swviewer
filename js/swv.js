@@ -1079,19 +1079,22 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         var swmt = false;
         var setusers = false;
         var n = "none";
-        if (isGlobal == 'true' || isGlobalModeAccess == 'true') {
-            if (document.getElementById('small-wikis-btn').style.paddingLeft == '22.5px') swmt = true;
-            if (document.getElementById('lt-300-btn').style.paddingLeft == '22.5px') setusers = true;
+        if (isGlobal === true || isGlobalModeAccess === true) {
+            if (document.getElementById('small-wikis-btn').style.paddingLeft == '22.5px')
+                swmt = true;
+            if (document.getElementById('lt-300-btn').style.paddingLeft == '22.5px')
+                setusers = true;
         }
         else {
-            swmt = false; setusers = false;
+            swmt = false;
+            setusers = false;
         }
         if (document.getElementById('new-pages-btn').style.paddingLeft == '22.5px') n = "new";
         if (stuff.namespace >= 0 && stuff.namespace <= 15) namespacetemp = ns[stuff.namespace];
         else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
 
         // ((stuff.namespace !== 2 && stuff.type == n) || stuff.type == "edit") &&
-        if (stuff.user !== userSelf && (stuff.type == n || stuff.type == "edit") && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal == 'false') || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && (isGlobal == 'true' || isGlobalModeAccess == 'true')) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && (isGlobal == 'true' || isGlobalModeAccess == 'true')))) {
+        if (stuff.user !== userSelf && (stuff.type == n || stuff.type == "edit") && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && (isGlobal === true || isGlobalModeAccess === true)))) {
             if (typeof sandboxlist[stuff.wiki] !== "undefined")
                 if (sandboxlist[stuff.wiki] == stuff.title)
                     return;
@@ -1483,11 +1486,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         document.getElementById("queue").classList.remove("disabled");
         document.getElementById("control").classList.remove("disabled");
         document.getElementById('next-diff').classList.remove('disabled');
-       // if (isGlobal == 'false' && (isGlobalModeAccess == 'true' && local_wikis.indexOf(wiki) !== -1)) {
-       //     document.getElementById("revert").classList.remove("disabled");
+       // if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) !== -1)) {
+        //    document.getElementById("revert").classList.remove("disabled");
        //     document.getElementById("customRevertBtn").classList.remove("disabled");
       //  }
-      //  if (isGlobal == 'false' && (isGlobalModeAccess == 'true' && local_wikis.indexOf(wiki) === -1)) {
+      //  if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) === -1)) {
        //     document.getElementById("revert").classList.add("disabled");
        //     document.getElementById("customRevertBtn").classList.add("disabled");
        // }
@@ -1601,9 +1604,9 @@ uiDisableNew = function() {
 };
 uiEnableNew = function() {
     document.getElementById("queue").classList.remove("disabled");
-   // if (isGlobalModeAccess !== 'true' || local_wikis.indexOf(wiki)) {
-   //     document.getElementById("revert").classList.remove("disabled");
-   //     document.getElementById("customRevertBtn").classList.remove("disabled");
+   // if (isGlobalModeAccess !== true || local_wikis.indexOf(wiki)) {
+          document.getElementById("revert").classList.remove("disabled");
+          document.getElementById("customRevertBtn").classList.remove("disabled");
    // }
 };
 isNotModal = function () {
