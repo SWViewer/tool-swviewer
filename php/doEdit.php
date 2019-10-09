@@ -294,10 +294,10 @@ if ( !isset( $res->edit->newrevid ) ) {
     fwrite($debugFile, $debugContent);
     fclose($debugFile);
 
-    if (isset($res->edit->info))
+    if (isset($res["edit"]["info"]))
         $response = ["result" => $res["edit"]["info"], "code" => $res["edit"]["code"]];
     else {
-        if (isset($res->error->info))
+        if (isset($res["error"]["info"]))
             $response = ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
         else
             $response = ["result" => "Unknow error", "code" => var_dump($res)];

@@ -925,6 +925,7 @@ for(var sb in sandbox["entities"]["Q3938"]["sitelinks"]) {
         sandboxlist[sandbox["entities"]["Q3938"]["sitelinks"][sb]["site"]] = sandbox["entities"]["Q3938"]["sitelinks"][sb]["title"];
     }
 }
+addSandbox(sandboxlist, "simplewiki", "Wikipedia:Introduction");
 
 xhr.open('GET', "php/settings.php?action=get&query=all", false);
 xhr.send();
@@ -1758,6 +1759,11 @@ function findKey(val, arr) {
     }
     return false;
 }
+
+function addSandbox(sbList, wiki, page) {
+    if (sbList.hasOwnProperty(wiki))
+        sbList[wiki] = sbList[wiki] + ", " + page;
+};
 
 /*#########################
 --------- talk -------
