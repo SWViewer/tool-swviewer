@@ -1078,7 +1078,8 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         var namespacetemp = "";
         var swmt = false;
         var setusers = false;
-        var n = "none";
+        var rcMode1 = "none";
+        var rcMode2 = "edit";
         if (isGlobal === true || isGlobalModeAccess === true) {
             if (document.getElementById('small-wikis-btn').style.paddingLeft == '22.5px')
                 swmt = true;
@@ -1089,12 +1090,13 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             swmt = false;
             setusers = false;
         }
-        if (document.getElementById('new-pages-btn').style.paddingLeft == '22.5px') n = "new";
+        if (document.getElementById('new-pages-btn').style.paddingLeft == '22.5px') rcMode1 = "new";
+        if (document.getElementById('onlynew-pages-btn').style.paddingLeft == '22.5px') rcMode2 = "none";
         if (stuff.namespace >= 0 && stuff.namespace <= 15) namespacetemp = ns[stuff.namespace];
         else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
 
-        // ((stuff.namespace !== 2 && stuff.type == n) || stuff.type == "edit") &&
-        if (stuff.user !== userSelf && (stuff.type == n || stuff.type == "edit") && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && (isGlobal === true || isGlobalModeAccess === true)))) {
+        // ((stuff.namespace !== 2 && stuff.type == rcMode1) || stuff.type == "edit") &&
+        if (stuff.user !== userSelf && (stuff.type == rcMode1 || stuff.type == rcMode2) && stuff.bot == false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length == 0 ) && stuff.patrolled != true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt == true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers == true && (isGlobal === true || isGlobalModeAccess === true)))) {
             if (typeof sandboxlist[stuff.wiki] !== "undefined")
                 if (sandboxlist[stuff.wiki] == stuff.title)
                     return;

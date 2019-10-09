@@ -29,7 +29,7 @@ if (!isset($_POST["action"])) {
         $q->execute(array(':userName' => $userName));
         $result = $q->fetchAll();
 
-        $response = ["blprojects" => $result[0]['blprojects'], "swmt" => $result[0]['swmt'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "direction" => $result[0]['direction'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "theme" => $result[0]['theme']];
+        $response = ["blprojects" => $result[0]['blprojects'], "swmt" => $result[0]['swmt'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "direction" => $result[0]['direction'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "theme" => $result[0]['theme']];
         echo json_encode($response);
         $db = null;
         exit();
@@ -78,6 +78,16 @@ if ($_POST["action"] == "set") {
             if ($_POST['sqlnew'] == "0" || $_POST['sqlnew'] == "1") {
                 $q = $db->prepare('UPDATE user SET  new=:new WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':new' => $_POST['sqlnew']));
+            }
+        }
+    }
+
+
+    if ($_POST["query"] == "onlynew") {
+        if (isset($_POST['onlynew'])) {
+            if ($_POST['onlynew'] == "0" || $_POST['onlynew'] == "1") {
+                $q = $db->prepare('UPDATE user SET  onlynew=:onlynew WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':onlynew' => $_POST['onlynew']));
             }
         }
     }

@@ -601,6 +601,17 @@ if (sess["local_wikis"] !== "")
                         </div>
                         <div class="i-btn-disc-container">Enable new page creations.</div>
                     </div>
+                    <div class="i-btn-base">
+                        <div class="i-btn-lb-container">
+                            <div class="i-btn-lable-container">Only new pages</div>
+                            <div class="i-btn-container">
+                                <div id="onlynew-pages-btn" class="i-btn-oval" style="padding-left: 2.5px;">
+                                    <div class="i-btn-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="i-btn-disc-container">Enable only new page creations.</div>
+                    </div>
                     <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
                     <div class="i-btn-base">
                         <div class="i-btn-lb-container">
@@ -947,6 +958,11 @@ if (settingslist['registered'] !== null && (typeof settingslist['registered'] !=
 if (settingslist['new'] !== null && (typeof settingslist['new'] !== "undefined") && settingslist['new'] !== "") {
     if (settingslist['new'] === "1")
         toggleIBtn("new-pages-btn", false);
+}
+
+if (settingslist['onlynew'] !== null && (typeof settingslist['onlynew'] !== "undefined") && settingslist['onlynew'] !== "") {
+    if (settingslist['onlynew'] === "1")
+        toggleIBtn("onlynew-pages-btn", false);
 }
 
 if (settingslist['direction'] !== null && (typeof settingslist['direction'] !== "undefined") && settingslist['direction'] !== "") {
@@ -1588,10 +1604,29 @@ document.getElementById('new-pages-btn').onclick = function() {
         var sqlnew = 0;
         if (this.style.paddingLeft == '22.5px')
             sqlnew = 1;
+        else {
+            if (document.getElementById('onlynew-pages-btn').style.paddingLeft == '22.5px')
+                document.getElementById('onlynew-pages-btn').click();
+        }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'newbies',
             sqlnew: sqlnew
+        }, dataType: 'json'});
+};
+
+document.getElementById('onlynew-pages-btn').onclick = function() {
+	toggleIBtn('onlynew-pages-btn', true);
+        var onlynew = 0;
+        if (this.style.paddingLeft == '22.5px') {
+            onlynew = 1;
+            if (document.getElementById('new-pages-btn').style.paddingLeft !== '22.5px')
+                document.getElementById('new-pages-btn').click();
+        }
+        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
+            action: 'set',
+            query: 'onlynew',
+            onlynew: onlynew
         }, dataType: 'json'});
 };
 
