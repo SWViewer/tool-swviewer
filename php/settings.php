@@ -29,7 +29,7 @@ if (!isset($_POST["action"])) {
         $q->execute(array(':userName' => $userName));
         $result = $q->fetchAll();
 
-        $response = ["blprojects" => $result[0]['blprojects'], "swmt" => $result[0]['swmt'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "direction" => $result[0]['direction'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "theme" => $result[0]['theme']];
+        $response = ["blprojects" => $result[0]['blprojects'], "swmt" => $result[0]['swmt'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "onlyanons" => $result[0]['anons'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "theme" => $result[0]['theme']];
         echo json_encode($response);
         $db = null;
         exit();
@@ -69,6 +69,33 @@ if ($_POST["action"] == "set") {
             if ($_POST['users'] == "0" || $_POST['users'] == "1" || $_POST['users'] == "2") {
                 $q = $db->prepare('UPDATE user SET users=:users WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':users' => $_POST['users']));
+            }
+        }
+    }
+
+    if ($_POST["query"] == "anons") {
+        if (isset($_POST['anons'])) {
+            if ($_POST['anons'] == "0" || $_POST['anons'] == "1") {
+                $q = $db->prepare('UPDATE user SET anons=:anons WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':anons' => $_POST['anons']));
+            }
+        }
+    }
+
+    if ($_POST["query"] == "rhand") {
+        if (isset($_POST['rhand'])) {
+            if ($_POST['rhand'] == "0" || $_POST['rhand'] == "1") {
+                $q = $db->prepare('UPDATE user SET rhand=:rhand WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':rhand' => $_POST['rhand']));
+            }
+        }
+    }
+
+    if ($_POST["query"] == "mobile") {
+        if (isset($_POST['mobile'])) {
+            if ($_POST['mobile'] == "0" || $_POST['mobile'] == "1" || $_POST['mobile'] == "2" || $_POST['mobile'] == "3") {
+                $q = $db->prepare('UPDATE user SET mobile=:mobile WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':mobile' => $_POST['mobile']));
             }
         }
     }

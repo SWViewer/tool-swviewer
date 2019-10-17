@@ -138,7 +138,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     $scope.SD = function(tmpl, summary) {
         isdelete = true;
         var dtext = document.getElementById('textpage').value;
-        document.getElementById('textpage').value = "<noinclude>" + tmpl + "</noinclude>\n" + dtext;
+        document.getElementById('textpage').value = "<noinclude>" + tmpl.replace(/\$1/gi, userSelf) + "</noinclude>\n" + dtext;
         document.getElementById('summaryedit').value = summary;
         setTimeout($scope.doEdit(), 500);
     };
@@ -239,7 +239,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                 project: server_url + script_path + "/api.php",
                                 wiki: wiki,
                                 page: "User_talk:" + user,
-                                text: warnDelete.replace(/\$1/gi, title).replace(/\$2/gi, user),
+                                text: warnDelete.replace(/\$1/gi, title).replace(/\$2/gi, user).replace(/\$3/gi, userSelf),
                                 sectiontitle: speedySection,
                                 summary: speedyWarnSummary.replace(/\$1/gi, title)
                             },
@@ -1036,6 +1036,16 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                     daysAgoToday = true;
                 }
                 addToTalk(null, msg.nickname, msg.text);
+                if (msg.nickname !== userSelf && document.getElementById('talkForm').style.display !== "block") {
+                    var userSelfTmp1 = "@" + userSelf + " ";
+                    var userSelfTmp2 = "@" + userSelf + ",";
+                    if ((msg.text.toUpperCase().indexOf(userSelfTmp1.toUpperCase()) !== -1 || msg.text.toUpperCase().indexOf(userSelfTmp2.toUpperCase()) !== -1) && privateMessageSound)
+                        playSound(privateMessageSound, true);
+                    else {
+                        if (messageSound)
+                            playSound(messageSound, false);
+                    }
+                }
                 if (document.getElementById('talkForm').style.display == 'none')
                     document.getElementById('badge-talk').style.background = "rgb(36, 164, 100)";
             }
@@ -1398,16 +1408,31 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         }
         else {
             checkWarnDelete = false;
-            $("#warn-box-delete").removeClass( "warn-on").addClass("warn-off");
+            $("#warn-box-delete").removeClass("warn-on").addClass("warn-off");
             $("#check-label-delete").empty().append("Warn OFF");
         }
         $scope.$apply(function(){$scope.speedy;});
     };
 
+    var timeoutkey = setTimeout( function() {checktimeout = true;}, 5000);
+    var checktimeout = true;
     document.onkeydown = function(e) {
         if (!e)
             e = window.event;
         var keyCode = e.which || e.keyCode || e.key;
+        if (keyCode !== 13 && keyCode !== 27 && keyCode !== 32 && keyCode !== 65 && keyCode !== 191 && keyCode !== 85 && keyCode !== 83 && keyCode !== 80 && keyCode !== 84 && keyCode !== 89 && keyCode !== 79 &&  keyCode !== 69 && keyCode !== 82 && keyCode !== 219 && keyCode !== 144 && keyCode !== 145 && keyCode !== 37 && keyCode !== 38 && keyCode !== 39 && keyCode !== 40)
+            if (isNotModal()) {
+                if (timeoutkey) {
+                    clearTimeout(timeoutkey);
+                    timeoutkey = null;
+                    checktimeout = false;
+                }
+            timeoutkey = setTimeout( function() {checktimeout = true;}, 5000);
+            }
+
+        if (checktimeout === false && isNotModal())
+            return;
+
         if (keyCode == "13") {
             if (document.getElementById('customRevert').style.display == "block")
                 document.getElementById('btn-cr-u-apply').click();
@@ -1426,7 +1451,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 document.getElementById('customRevertBtn').click();
                 return false;
             }
-        if (keyCode == 219)
+        if (keyCode == 219 || keyCode == 80)
             if (isNotModal()) {
                 document.getElementById('back').click();
                 return false;
@@ -1436,7 +1461,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 document.getElementById('editBtn').click();
                 return false;
             }
-        if (keyCode == 79)
+        if (keyCode == "79")
             if (isNotModal()) {
                 document.getElementById('browser').click();
                 return false;
@@ -1579,7 +1604,7 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
         });
     }
     document.getElementById('page').scrollTop = 0;
-    frameLoaded();
+    playSound(diffSound, false);
 }
 nextDiffStyle = function() {
     document.getElementById("page-welcome").style.display = "none";

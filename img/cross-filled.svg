@@ -1,10 +1,8 @@
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+	 x="0px" y="0px" width="16.1px" height="16.1px" viewBox="0 0 16.1 16.1" enable-background="new 0 0 16.1 16.1"
+	 xml:space="preserve">
 <defs>
 </defs>
-<path d="M15.8,1.9l-1.7-1.7c-0.2-0.2-0.6-0.2-0.8,0L8.4,5.1c-0.2,0.2-0.6,0.2-0.8,0L2.7,0.2c-0.2-0.2-0.6-0.2-0.8,0L0.2,1.9
-	c-0.2,0.2-0.2,0.6,0,0.8l4.9,4.9c0.2,0.2,0.2,0.6,0,0.8l-4.9,4.9c-0.2,0.2-0.2,0.6,0,0.8l1.7,1.7c0.2,0.2,0.6,0.2,0.8,0l4.9-4.9
-	c0.2-0.2,0.6-0.2,0.8,0l4.9,4.9c0.2,0.2,0.6,0.2,0.8,0l1.7-1.7c0.2-0.2,0.2-0.6,0-0.8l-4.9-4.9c-0.2-0.2-0.2-0.6,0-0.8l4.9-4.9
-	C16.1,2.5,16.1,2.1,15.8,1.9z"/>
+<polygon points="16.1,14.1 10,8.1 16.1,2 14.1,0 8.1,6.1 2,0 0,2 6.1,8.1 0,14.1 2,16.1 8.1,10 14.1,16.1 "/>
 </svg>

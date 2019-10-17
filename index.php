@@ -185,7 +185,7 @@ if (sess["local_wikis"] !== "")
     local_wikis = sess["local_wikis"].split(',');
 </script>
 
-<body  class="full-screen">
+<body  class="full-screen" id="mainapp-body">
 <!-- Loading intro -->
 <div id="loading">
     <div class="loading-icon">
@@ -912,6 +912,20 @@ var regdays = 5;
 var countedits = 100;
 var isSound = false;
 var diffSound = new Audio("sounds/clap.mp3");
+var messageSound;
+var privateMessageSound;
+firstClick = false;
+
+document.getElementById("mainapp-body").onclick = function() {
+    if (firstClick === false) {
+        firstClick = true;
+        messageSound = new Audio("sounds/message.mp3");
+        privateMessageSound = new Audio("sounds/privateMessage.mp3");
+        messageSound.load();
+        privateMessageSound.load();
+    }
+};
+
 var xhr = new XMLHttpRequest();
 
 xhr.open('POST', "php/getSandbox.php", false);
@@ -1663,9 +1677,9 @@ document.getElementById('lt-300-btn').onclick = function() {
 };
 "; } ?>
 
-function frameLoaded () {
-    if (isSound == true) {
-        audiopromise = diffSound.play();
+function playSound (ps, ignoreIsSound) {
+    if (isSound == true || ignoreIsSound === true) {
+        audiopromise = ps.play();
         if (audiopromise !== undefined) {
             audiopromise.then( function() { return null; }).catch( function() { return null; });
         }

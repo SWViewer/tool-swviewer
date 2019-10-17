@@ -86,6 +86,16 @@ else {
         if ($key !== "-1")
             $res2 = $p;
     }
+
+    if (!isset($res2->revisions)) {
+        $debug = json_decode(json_encode($res), True);
+        $debugFile = fopen("debugRB.txt", "a");
+        $debugContent = print_r($debug, true) . "\n";
+        fwrite($debugFile, $debugContent);
+        fclose($debugFile);
+    }
+
+
     if ($res2 !== null)
         if ($res2->revisions[0]->revid !== "0")
             $rev = $res2->revisions[0]->revid;
@@ -118,8 +128,19 @@ if ( !isset($res->$typeaction->title) || isset($res->$typeaction->nochange)) {
     $res = json_decode(json_encode($res), True);
     if (isset($res[$typeaction]["nochange"]))
         $response = ["code" => "alreadyrolled", "result" => "Edits is already undid."];
-    else
+    else {
+        if (!isset($res["error"])) {
+            $debug = json_decode(json_encode($res), True);
+            $debugFile = fopen("debugRB2.txt", "a");
+            $debugContent = print_r($debug, true) . "\n";
+            fwrite($debugFile, $debugContent);
+            fclose($debugFile);
+        }
+
+
+
         $response = ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
+    }
     echo json_encode($response);
     exit(0);
 }

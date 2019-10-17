@@ -1,13 +1,11 @@
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="20px" height="16.8px" viewBox="0 0 20 16.8" enable-background="new 0 0 20 16.8" xml:space="preserve">
+	 x="0px" y="0px" width="20px" height="16px" viewBox="0 0 20 16" enable-background="new 0 0 20 16" xml:space="preserve">
 <defs>
 </defs>
 <g>
-	<path d="M19.4,10.2H0.6C0.3,10.2,0,9.9,0,9.6V7.2c0-0.3,0.3-0.6,0.6-0.6h18.8c0.3,0,0.6,0.3,0.6,0.6v2.4
-		C20,9.9,19.7,10.2,19.4,10.2z"/>
-	<path d="M19.4,16.8H0.6c-0.3,0-0.6-0.3-0.6-0.6v-2.4c0-0.3,0.3-0.6,0.6-0.6h18.8c0.3,0,0.6,0.3,0.6,0.6v2.4
-		C20,16.5,19.7,16.8,19.4,16.8z"/>
-	<path d="M19.4,3.6H0.6C0.3,3.6,0,3.3,0,3V0.6C0,0.3,0.3,0,0.6,0h18.8C19.7,0,20,0.3,20,0.6V3C20,3.3,19.7,3.6,19.4,3.6z"/>
+	<rect x="0" y="0" width="20" height="2.8"/>
+	<rect x="0" y="6.6" width="20" height="2.8"/>
+	<rect x="0" y="13.2" width="20" height="2.8"/>
 </g>
 </svg>
