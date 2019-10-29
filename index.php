@@ -870,7 +870,7 @@ if (sess["local_wikis"] !== "")
             </div>
             <div class="pbl-input-container" style="padding: 0 16px; position: relative;">
                 <select id="actionSelector">
-                    <option value="">All action</option>
+                    <option value="">All actions</option>
                     <option value="rollback">Rollback</option>
                     <option value="delete">Delete</option>
                     <option value="edit">Edit</option>
