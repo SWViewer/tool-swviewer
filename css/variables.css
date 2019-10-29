@@ -1,0 +1,81 @@
+:root {
+    /*-------background-colors--------*/
+    --bc-primary: #191919;
+    --bc-primary-low: #212121;
+    --bc-primary-hover: rgba(255, 255, 255, .05);
+
+    --bc-secondary: #ffffff;
+    --bc-secondary-low: #f4f4f4;
+    --bc-secondary-hover: rgba(0, 0, 0, .1);
+
+    --bc-accent: #0063e4;
+    --bc-accent-hover: #0056c7;
+
+    --bc-positive: rgb(36, 164, 100);
+    --bc-negative: rgb(251, 47, 47);
+
+    --ic-primary: invert(0.85) sepia(1) saturate(0) hue-rotate(200deg);
+    --ic-secondary: invert(0.30) sepia(1) saturate(0) hue-rotate(200deg);
+    --ic-accent: invert(0.85) sepia(1) saturate(0) hue-rotate(200deg);
+
+    /*-------text-color-----------*/
+    --tc-primary: rgba(255, 255, 255, 1);
+    --tc-primary-low: rgba(255, 255, 255, .8);
+
+    --tc-secondary: rgba(0, 0, 0, 1);
+    --tc-secondary-low: rgba(0, 0, 0, .7);
+
+    --tc-accent: rgba(255, 255, 255, 1);
+
+	--link-color: #337ab7;
+    --tc-positive: var(--bc-positive);
+    --tc-negative: var(--bc-negative);
+
+    /*------fonts----------*/
+    --fs-xl: 26px;
+    --fs-lg: 18px;
+    --fs-md: 16px;
+    --fs-sm: 14px;
+    --fs-xs: 11px;
+
+    --lh-xl: 1.125;
+    --lh-lg: 1.25;
+    --lh-md: 1.42;
+    --lh-sm: 1.5;
+    --lh-xs: 1.5;
+
+    /*----others------*/
+    --drawer-width: 200px;
+    --sidebar-width: 56px;
+    --statusbar-height: 0px;
+
+    --action-header-height: 56px;
+    --pw-header-height: var(--action-header-height);
+    --pw-drawer-width: 225px;
+    --floatbar-height: 48px;
+    --floatbar-shadow: 0 0 8px 0 rgba(0, 0, 0, .2);
+    --side-padding: 16px;
+}
+
+/*########################
+---------Tab view---------
+########################*/
+@media screen and (min-width: 750px) and (max-width: 1024px) {
+    :root {
+        --drawer-width: 140px;
+        --pw-drawer-width: 150px;
+    }
+}
+
+/*########################
+--------Mobile view-------
+########################*/
+
+@media screen and (max-width: 750px) {
+    :root {
+        --fs-xl: 22px !important;
+        --action-header-height: 48px;
+        --m-queue-drawer-width: 48px;
+        --pw-drawer-width: 200px;
+    }
+}

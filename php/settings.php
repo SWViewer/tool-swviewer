@@ -130,7 +130,7 @@ if ($_POST["action"] == "set") {
 
     if ($_POST["query"] == "sound") {
         if (isset($_POST['sound'])) {
-            if ($_POST['sound'] == "0" || $_POST['sound'] == "1") {
+            if ($_POST['sound'] == "0" || $_POST['sound'] == "1" || $_POST['sound'] == "2" || $_POST['sound'] == "4" || $_POST['sound'] == "4" || $_POST['sound'] == "5") {
                 $q = $db->prepare('UPDATE user SET sound=:sound WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':sound' => $_POST['sound']));
             }

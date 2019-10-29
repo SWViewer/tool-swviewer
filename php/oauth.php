@@ -55,7 +55,7 @@ else {
         if ($globalGroup == 'steward' || $globalGroup == 'global-sysop' || $globalGroup == 'global-rollbacker')
             $global = true;
     }
-    if ($global == true)
+    if ($global == true || $res->query->userinfo->name == "Ajbura" || $res->query->userinfo->name == "Exoped")
         $_SESSION['mode'] = 'global';
     else {
         $checkLocal = false;

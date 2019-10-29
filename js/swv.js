@@ -15,6 +15,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     var isdelete = false;
     var warnDelete = null;
 
+
     var i = 0;
     checkRollback = false;
     $scope.select = function(edit) {
@@ -106,18 +107,18 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     };
     $scope.descriptionColor = function(description) {
         if (checkWarn == true && description.warn !== null && typeof description.warn !== "undefined" && description.warn !== "")
-            return { color: "var(--tc-lowSecondaryWarn)" };
+            return { color: "var(--tc-positive)" };
         else {
             if (description.global == true) {
-                return {color: "var(--tc-lowSecondaryGlobal)"};
+                return {color: "var(--tc-secondary)"};
             }
             if (typeof description.global == "undefined")
-                return { color: "var(--tc-lowSecondary)" };
+                return { color: "var(--tc-secondary-low)" };
         }
     };
     $scope.speedyColor = function(speedy) {
         if (checkWarnDelete == true && speedy.warn !== null && typeof speedy.warn !== "undefined" && speedy.warn !== "")
-            return { color: "var(--tc-lowSecondaryWarn)" };
+            return { color: "var(--tc-positive)" };
         else
             return { color: "var(--link-color)" };
     };
@@ -144,17 +145,18 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     };
 
     $scope.checkEdit = function() {
+console.log("*");
         if (typeof dnew == "undefined")
             return;
-
-        $("#warn-box-delete").hide();
+console.log("**");
+        document.getElementById('warn-box-delete').parentElement.parentElement.classList.add('disabled');
         $scope.speedys.forEach(function(elS){
             if (typeof elS.warn !== "undefined") {
-                $("#warn-box-delete").fadeIn("slow");
+                document.getElementById('warn-box-delete').parentElement.parentElement.classList.remove('disabled');
                 return;
             }
         });
-
+console.log("***");
         document.getElementById("editFormBody").classList.add("disabled");
         document.getElementById('textpage').value = "";
         // if (old == null)
@@ -167,7 +169,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 return;
             if (cb == false)
                 return;
-
+console.log("****");
             var url = "php/getPage.php";
             $.ajax({
                 url: url,
@@ -181,10 +183,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                     if (datapage == "Error! Loading page is not success")
                         alert('Failed... dev code: 004.1. Failed http-request. Maybe page was delete or server is down.');
                     else {
+console.log("*****");
                         document.getElementById('textpage').value = "";
                         document.getElementById('summaryedit').value = "";
                         document.getElementById('textpage').value = datapage;
-                        document.getElementById('textpage').focus();
+                        // document.getElementById('textpage').focus(); //it create a lag in mobile ui animation
                         document.getElementById('textpage').scrollTop = 0;
                         document.getElementById("editFormBody").classList.remove("disabled");
                     }
@@ -235,21 +238,49 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             beforeSend: function(xhr){xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Warns');},
                             crossDomain: true, dataType: 'text',
                             data: {
-                                warn: "speedy",
+                                getfirstuser: 1,
+                                warn: 1,
                                 project: server_url + script_path + "/api.php",
                                 wiki: wiki,
-                                page: "User_talk:" + user,
-                                text: warnDelete.replace(/\$1/gi, title).replace(/\$2/gi, user).replace(/\$3/gi, userSelf),
-                                sectiontitle: speedySection,
-                                summary: speedyWarnSummary.replace(/\$1/gi, title)
+                                page: title,
+                                text: "1",
+                                user: user,
+                                summary: "1"
                             },
-                            success: function() {
-                                $scope.reqEnd(dataedit);
-                            },
-                            error: function() {
-                                $scope.reqEnd(dataedit);
-                            }
-                        });
+                            success: function(datafirstuser) {
+                                if (datafirstuser !== null && datafirstuser !== "") {
+                                datafirstuser = JSON.parse(datafirstuser);
+                                if ( datafirstuser["result"] == "sucess") {
+                                    $.ajax({ url: 'php/doEdit.php', type: 'POST',
+                                        beforeSend: function(xhr){xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Warns');},
+                                        crossDomain: true, dataType: 'text',
+                                        data: {
+                                            warn: "speedy",
+                                            project: server_url + script_path + "/api.php",
+                                            wiki: wiki,
+                                            page: "User_talk:" + datafirstuser["user"],
+                                            text: warnDelete.replace(/\$1/gi, title).replace(/\$2/gi, user).replace(/\$3/gi, userSelf),
+                                            sectiontitle: speedySection,
+                                            summary: speedyWarnSummary.replace(/\$1/gi, title)
+                                        },
+                                        success: function() {
+                                            $scope.reqEnd(dataedit);
+                                        },
+                                        error: function() {
+                                            $scope.reqEnd(dataedit);
+                                       }
+                                   });
+                               }
+                               else
+                                   $scope.reqEnd(dataedit);
+                               }
+                               else
+                                   $scope.reqEnd(dataedit);
+                           },
+                           error: function() {
+                               $scope.reqEnd(dataedit);
+                           }
+                       });
                     }
                     else
                         $scope.reqEnd(dataedit);
@@ -264,13 +295,13 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                 uiEnable();
                                 return;
                             }
-                            document.getElementById('page').srcdoc = starterror + "Edit error: " + dataedit['result'] + enderror;
+                            document.getElementById('page').srcdoc = starterror + "Edit error: " + escapeXSS(dataedit['result']) + enderror;
                             uiEnable();
                         });
                     }
                     else {
                         // if null-edit
-                        if (dataedit['result'] == null) {
+                        if (dataedit['result'] == null || dataedit['code'] == "alreadydone") {
                             document.getElementById('page').srcdoc = starterror + "Such changes has already been made." + enderror;
                             $scope.isCURRENT(server_url, script_path, title, dnew, old, function(cb3) {
                                 if (cb3 == null) {
@@ -286,13 +317,13 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             });
                         }
                         else {
-                            document.getElementById('page').srcdoc = starterror + "Edit error: " + dataedit['result'] + enderror;
+                            document.getElementById('page').srcdoc = starterror + "Edit error: " + escapeXSS(dataedit['result']) + enderror;
                             uiEnable();
                         }
                     }
                 }
             }, error: function(error, e2, e3) {
-                document.getElementById('page').srcdoc = starterror + "Failed... dev code: 007; error code: " + error.status + e2 + enderror;
+                document.getElementById('page').srcdoc = starterror + "Failed... dev code: 007; error code: " + escapeXSS(error.status) + escapeXSS(e2) + enderror;
                 uiEnable();
             }
         });
@@ -302,14 +333,14 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     $scope.customRevertSummary = function() {
         if ((old !== null) && (isNaN(old) == false)) {
             document.getElementById('credit').value = "";
-            $('#customRevert').modal('show');
+            openPO('customRevert');
 
             if (warn !== null && typeof warn !== "undefined") {
-                $("#warn-box").fadeIn("slow");
+                document.getElementById('warn-box').parentElement.parentElement.classList.remove('disabled');
             } else {
-                $("#warn-box").hide();
+                document.getElementById('warn-box').parentElement.parentElement.classList.add('disabled');
             }
-            document.getElementById('credit').focus();
+            // document.getElementById('credit').focus(); //it create a lag in mobile ui animation
         }
     };
 
@@ -447,8 +478,6 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             document.getElementById("othersDiffsGlobal").classList.remove("disabled");
         }
         // SRM end
-
-        $('#requestsForm').modal('show');
     };
 
 // .........................................................................................................................
@@ -494,11 +523,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             summary: summarySRM
                         },
                         success: function() {
-                            document.getElementById("requestsForm").style.display = "none";
+                            closePO();
                         },
                         error: function() {
                             alert("Unknow network error");
-                            document.getElementById("requestsForm").style.display = "none";
+                            closePO();
                         },
                     });
                 }
@@ -569,11 +598,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             summary: summaryReport
                         },
                         success: function() {
-                            document.getElementById("requestsForm").style.display = "none";
+                            closePO();
                         },
                         error: function() {
                             alert("Unknow network error");
-                            document.getElementById("requestsForm").style.display = "none";
+                            closePO();
                         },
                     });
                 }
@@ -582,7 +611,6 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             }
         });
     };
-
 
 
     $scope.sendRequestProtect = function() {
@@ -644,11 +672,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             summary: summaryProtect
                         },
                         success: function() {
-                            document.getElementById("requestsForm").style.display = "none";
+                            closePO();
                         },
                         error: function() {
                             alert("Unknow network error");
-                            document.getElementById("requestsForm").style.display = "none";
+                            closePO();
                         },
                     });
                 }
@@ -666,11 +694,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         if (summaryPreset !== null && typeof summaryPreset !== "undefined")
             summarypre = summaryPreset.replace(/\$7/gi, title);
         else {
-            if (document.getElementById('credit').value !== "" && document.getElementById('credit').value !== null && document.getElementById('customRevert').style.display == "block")
+            if (document.getElementById('credit').value !== "" && document.getElementById('credit').value !== null && document.getElementById('customRevert').classList.contains('po__active'))
                 summarypre = document.getElementById('credit').value;
         }
         document.getElementById('credit').value = "";
-        $('#customRevert').modal('hide');
+        closePO();
         $scope.isCURRENT(server_url, script_path, title, dnew, old, function(cb) {
             if (cb == null) {
                 uiEnable();
@@ -944,17 +972,17 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                     uiEnable();
                                     return;
                                 }
-                                document.getElementById('page').srcdoc = starterror + "Rollback error: " + datarollback['result'] + enderror;
+                                document.getElementById('page').srcdoc = starterror + "Rollback error: " + escapeXSS(datarollback['result']) + enderror;
                                 uiEnable();
                             });
                         }
                         else {
-                            document.getElementById('page').srcdoc = starterror + "Rollback error: " + datarollback['result'] + enderror;
+                            document.getElementById('page').srcdoc = starterror + "Rollback error: " + escapeXSS(datarollback['result']) + enderror;
                             uiEnable();
                         }
                     }
                 }, error: function(error) {
-                    document.getElementById('page').srcdoc = starterror + "Rollback error. Please open page in the new tab.<br><small>Error code: " + error.status + enderror;
+                    document.getElementById('page').srcdoc = starterror + "Rollback error. Please open page in the new tab.<br><small>Error code: " + escapeXSS(error.status) + enderror;
                     uiEnable();
                 }
             });
@@ -976,12 +1004,16 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             if (countConnectAttemp == 0) {
                 var newDiv = document.createElement('div');
                 newDiv.className = 'phrase-talk';
+                newDiv.style.color = 'var(--tc-negative)'
                 newDiv.textContent = "SYSTEM: connection lost";
                 document.getElementById('form-talk').appendChild(newDiv);
                 scrollToBottom("form-talk");
             }
             countConnectAttemp++;
             document.getElementById('badge-talk').style.background = "rgb(251, 47, 47)";
+            document.getElementById('badge-talk-ex1').style.background = "rgb(251, 47, 47)";
+            document.getElementById('badge-talk').classList.remove('badge-ic__primary');
+            document.getElementById('badge-talk-ex1').classList.remove('badge-ic__primary');
             sc.close();
         };
 
@@ -1001,10 +1033,14 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                     downloadHistoryTalk();
                     var newDiv = document.createElement('div');
                     newDiv.className = 'phrase-talk';
+                    newDiv.style.color = 'var(--tc-positive)'
                     newDiv.textContent = "SYSTEM: connection restored";
                     document.getElementById('form-talk').appendChild(newDiv);
                     scrollToBottom("form-talk");
                     document.getElementById('badge-talk').style.background = "none"
+                    document.getElementById('badge-talk-ex1').style.background = "none";
+                    document.getElementById('badge-talk').classList.add('badge-ic__primary');
+                    document.getElementById('badge-talk-ex1').classList.add('badge-ic__primary');
                 }
                 countConnectAttemp = 0;
                 $scope.$apply(function() { $scope.users = msg.clients.split(','); });
@@ -1036,18 +1072,22 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                     daysAgoToday = true;
                 }
                 addToTalk(null, msg.nickname, msg.text);
-                if (msg.nickname !== userSelf && document.getElementById('talkForm').style.display !== "block") {
+                if (msg.nickname !== userSelf && document.getElementById('talkForm').style.display !== "grid") {
                     var userSelfTmp1 = "@" + userSelf + " ";
                     var userSelfTmp2 = "@" + userSelf + ",";
-                    if ((msg.text.toUpperCase().indexOf(userSelfTmp1.toUpperCase()) !== -1 || msg.text.toUpperCase().indexOf(userSelfTmp2.toUpperCase()) !== -1) && privateMessageSound)
+                    if ((msg.text.toUpperCase().indexOf(userSelfTmp1.toUpperCase()) !== -1 || msg.text.toUpperCase().indexOf(userSelfTmp2.toUpperCase()) !== -1) && (sound === 1 || sound === 2 || sound === 3 || sound === 4) && typeof privateMessageSound !== "undefined")
                         playSound(privateMessageSound, true);
                     else {
-                        if (messageSound)
+                        if (typeof messageSound !== "undefined" && (sound === 1 || sound === 2))
                             playSound(messageSound, false);
                     }
                 }
-                if (document.getElementById('talkForm').style.display == 'none')
+                if (document.getElementById('talkForm').style.display == 'none') {
                     document.getElementById('badge-talk').style.background = "rgb(36, 164, 100)";
+                    document.getElementById('badge-talk-ex1').style.background = "rgb(36, 164, 100)";
+                    document.getElementById('badge-talk').classList.remove('badge-ic__primary');
+                    document.getElementById('badge-talk-ex1').classList.remove('badge-ic__primary');
+                }
             }
 
             if (msg.type === "synch") {
@@ -1071,11 +1111,6 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     }
     connectTalk();
 
-    $scope.selectTalkUsers = function(selectedUser) {
-        document.getElementById("phrase-send-talk").value = "@" + selectedUser + ", " + document.getElementById("phrase-send-talk").value;
-        document.getElementById("phrase-send-talk").focus();
-    };
-
     $scope.edits = [];
     if (typeof(EventSource) == "undefined") {
         alert("Sorry, your browser does not support server-sent events.");
@@ -1090,18 +1125,19 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         var setusers = false;
         var rcMode1 = "none";
         var rcMode2 = "edit";
+        var anonsSSE = false;
+        var registeredSSE = false;
+        var swmt = false;
+        var setusers = false;
         if (isGlobal === true || isGlobalModeAccess === true) {
-            if (document.getElementById('small-wikis-btn').style.paddingLeft == '22.5px')
-                swmt = true;
-            if (document.getElementById('lt-300-btn').style.paddingLeft == '22.5px')
-                setusers = true;
+            if (document.getElementById('small-wikis-btn').classList.contains('t-btn__active')) swmt = true;
+            if (document.getElementById('lt-300-btn').classList.contains('t-btn__active')) setusers = true;
         }
-        else {
-            swmt = false;
-            setusers = false;
-        }
-        if (document.getElementById('new-pages-btn').style.paddingLeft == '22.5px') rcMode1 = "new";
-        if (document.getElementById('onlynew-pages-btn').style.paddingLeft == '22.5px') rcMode2 = "none";
+        if (document.getElementById('new-pages-btn').classList.contains('t-btn__active')) rcMode1 = "new";
+        if (document.getElementById('onlynew-pages-btn').classList.contains('t-btn__active')) rcMode2 = "none";
+        if (document.getElementById('onlyanons-btn').classList.contains('t-btn__active')) anonsSSE = true;
+        if (document.getElementById('registered-btn').classList.contains('t-btn__active')) registeredSSE = true;
+
         if (stuff.namespace >= 0 && stuff.namespace <= 15) namespacetemp = ns[stuff.namespace];
         else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
 
@@ -1115,16 +1151,20 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
 
             // IP user
             if (/^\d*?\.\d*?\.\d*?\.\d*?$/.test(stuff.user) || stuff.user.indexOf(":") !== -1) {
+                if (!anonsSSE)
+                    return;
                 $scope.$apply(function() {
                     if (countqueue !== 0 && $scope.edits.length >= countqueue)
                         $scope.edits.pop();
                     var new_el = {"server_url": stuff.server_url, "server_name": stuff.server_name, "script_path": stuff.server_script_path, "server_uri": stuff.meta.uri, "wiki": stuff.wiki, "namespace": namespacetemp, "user": stuff.user, "title": stuff.title, "comment": stuff.comment, "old": stuff.revision.old, "new": stuff['revision']['new'], "isIp": "ip"};
                     $scope.edits.unshift(new_el);
+                    if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
+                        playSound(newSound, false);
                 });
-                return
+                return;
             }
-            if (document.getElementById('registered-btn').style.paddingLeft !== '22.5px')
-                return
+            if (!registeredSSE)
+                return;
 
             // Registered user
             url = stuff.server_url + stuff.server_script_path + "/api.php?action=query&list=users&ususers=" + encodeURIComponent(stuff.user).replace(/'/g, '%27') + "&usprop=groups|registration|editcount&utf8&format=json";
@@ -1151,6 +1191,8 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                         $scope.edits.pop();
                                     var new_el = {"server_url": stuff.server_url, "server_name": stuff.server_name, "script_path": stuff.server_script_path, "server_uri": stuff.meta.uri, "wiki": stuff.wiki, "namespace": namespacetemp, "user": stuff.user, "title": stuff.title, "comment": stuff.comment, "old": stuff.revision.old, "new": stuff['revision']['new'], "isIp": "registered"};
                                     $scope.edits.unshift(new_el);
+                                    if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
+                                        playSound(newSound, false);
                                 });
                             }});
                     }
@@ -1176,7 +1218,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             dataType: 'jsonp',
             success: function(data) {
                 if (typeof data.error !== "undefined") {
-                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + data.error.info + enderror;
+                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + escapeXSS(data.error.info) + enderror;
                     CALLBACK(null);
                     return;
                 }
@@ -1190,7 +1232,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
 
                 if (typeof data["query"]["pages"][pageId]["revisions"][0]["revid"] == "undefined" || typeof data["query"]["pages"] == "undefined" || data["query"]["pages"] == "-1") {
                     if (typeof data.error !== "undefined")
-                        document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page was deleted.<br><small>Server error info: " + data.error.info + "</small>" + enderror;
+                        document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page was deleted.<br><small>Server error info: " + escapeXSS(data.error.info) + "</small>" + enderror;
                     else
                         document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page was deleted.";
                     CALLBACK(null);
@@ -1226,12 +1268,12 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                     dataType: 'jsonp',
                     success: function(data) {
                         if (typeof data.error !== "undefined") {
-                            document.getElementById('page').srcdoc = starterror + "Opening error; Server error info: " + data.error.info + enderror;
+                            document.getElementById('page').srcdoc = starterror + "Opening error; Server error info: " + escapeXSS(data.error.info) + enderror;
                             CALLBACK(null);
                             return;
                         }
                         if (typeof data.compare['*'] == "undefined") {
-                            document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page has been deleted.<br><small>Server error info: " + data.error.info + "</small>" + enderror;
+                            document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page has been deleted.<br><small>Server error info: " + escapeXSS(data.error.info) + "</small>" + enderror;
                             CALLBACK(null);
                         }
                         else {
@@ -1243,8 +1285,9 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                 crossDomain: true,
                                 dataType: 'jsonp',
                                 success: function(data4) {
+                                    lastOpenedPW = undefined;
                                     if (typeof data4.error !== "undefined") {
-                                        document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + data.error.info + enderror;
+                                        document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + escapeXSS(data.error.info) + enderror;
                                         CALLBACK(null);
                                         return;
                                     }
@@ -1264,10 +1307,14 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                             edits_history[i - 1]["userip"] = "registered";
                                     }
                                     document.getElementById('com').textContent = "Comment: " + summary;
-                                    if (data.compare['*'] == "")
+                                    if (data.compare['*'] == "" || data.compare['*'].indexOf("<tr>") == -1)
                                         document.getElementById('page').srcdoc = starterror + "This edit has been reverted already." + enderror;
-                                    else
-                                        document.getElementById('page').srcdoc = diffstart + data.compare['*'].replace(/\<a class\="mw\-diff\-movedpara\-left".*?\<\/a\>/g, '-').replace(/\<a class\="mw\-diff\-movedpara\-right".*?\<\/a\>/g, '+') + diffend;
+                                    else {
+                                        if (wiki !== "commonswiki" && wiki !== "wikidatawiki")
+                                            document.getElementById('page').srcdoc = diffstart + escapeXSSDiff(data.compare['*']) + diffend;
+                                        else
+                                            document.getElementById('page').srcdoc = diffstart + data.compare['*'].replace(/\<a class\="mw\-diff\-movedpara\-left".*?\<\/a\>/g, '-').replace(/\<a class\="mw\-diff\-movedpara\-right".*?\<\/a\>/g, '+').replace(/\<a name\="movedpara\_.*?\<\/a\>/g, '') + diffend;
+                                    }
                                     document.getElementById('page').scrollTop = 0;
                                     $scope.$apply(function() {
                                         $scope.edits.map(function (e, index) {
@@ -1276,12 +1323,12 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                             }
                                         });
                                     });
-                                    if (data.compare['*'] !== "") {
+                                    if (data.compare['*'] !== "" || data.compare['*'].indexOf("<tr>") !== -1) {
                                         document.getElementById('editForm').style.display = 'none';
                                         alert("Can't perform this action, this is not latest revision. Loaded new revision.");
                                     }
                                     CALLBACK(false);
-                                }, error: function(error) { alert('Failed... dev code: 001; error code: ' + error.status + '.'); }
+                                }, error: function(error) { lastOpenedPW = undefined; alert('Failed... dev code: 001; error code: ' + error.status + '.'); }
                             });
                         }
                     }, error: function(error) { alert('Failed... dev code: 002; error code: ' + error.status + '.'); }
@@ -1312,26 +1359,34 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             dataType: 'jsonp',
             success: function(data) {
                 if (typeof data.error !== "undefined") {
-                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + data.error.info + enderror;
+                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + escapeXSS(data.error.infoescapeXSS) + enderror;
                     uiEnable();
                     return;
                 }
                 document.getElementById("userLinkSpec").style.color = "#3366BB";
                 document.getElementById("userLinkSpec").textContent = user;
                 document.getElementById('com').textContent = "Comment: " + summary;
-                document.getElementById('page').srcdoc = diffstart + data.compare['*'].replace(/\<a class\="mw\-diff\-movedpara\-left".*?\<\/a\>/g, '-').replace(/\<a class\="mw\-diff\-movedpara\-right".*?\<\/a\>/g, '+') + diffend;
+                if (wiki !== "commonswiki" && wiki !== "wikidatawiki")
+                    document.getElementById('page').srcdoc = diffstart + escapeXSSDiff(data.compare['*']) + diffend;
+                else
+                    document.getElementById('page').srcdoc = diffstart + data.compare['*'].replace(/\<a class\="mw\-diff\-movedpara\-left".*?\<\/a\>/g, '-').replace(/\<a class\="mw\-diff\-movedpara\-right".*?\<\/a\>/g, '+').replace(/\<a name\="movedpara\_.*?\<\/a\>/g, '') + diffend;
                 document.getElementById('page').scrollTop = 0;
                 uiEnable();
             }, error: function(error) { alert('Failed... dev code: 009; error code: ' + error.status + '.'); uiEnable(); }
         });
     };
 
+    var noDiffON = false;
     $scope.nextDiff = function() {
         if ($scope.edits.length > 0) {
             $scope.select($scope.edits[0]);
-        } else {
-            document.getElementById('next-diff').classList.add('no-diff');
-            setTimeout(function(){ document.getElementById('next-diff').classList.remove('no-diff'); }, 1000);
+        } else if (!noDiffON) {
+            noDiffON = true;
+            document.getElementById('next-diff-title').style.width = '125px';
+            setTimeout(() => {
+                noDiffON = false;
+                document.getElementById('next-diff-title').style.width = '0px';
+            }, 1000);
         }
     };
 
@@ -1386,30 +1441,26 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
 
     };
 
-    document.getElementById("warn-box").onclick = function() {
-        if (checkWarn == false && confirm("Turning this on will left a warning on the user talk page after clicking common summaries (green only).")) {
+    document.getElementById('warn-box').onclick = function () {
+        if (checkWarn == false) {
+            this.classList.add('t-btn__active');
             checkWarn = true;
-            $("#warn-box").removeClass( "warn-off").addClass("warn-on");
-            $("#check-label").empty().append("Warn ON");
         }
         else {
+            this.classList.remove('t-btn__active');
             checkWarn = false;
-            $("#warn-box").removeClass( "warn-on").addClass("warn-off");
-            $("#check-label").empty().append("Warn OFF");
         }
         $scope.$apply(function(){$scope.descriptions;});
     };
 
     document.getElementById("warn-box-delete").onclick = function() {
-        if (checkWarnDelete == false && confirm("Turning this on will left a notification on the user talk page after clicking templates (green only).")) {
+        if (checkWarnDelete == false) {
             checkWarnDelete = true;
-            $("#warn-box-delete").removeClass( "warn-off").addClass("warn-on");
-            $("#check-label-delete").empty().append("Warn ON");
+            this.classList.add('t-btn__active');
         }
         else {
             checkWarnDelete = false;
-            $("#warn-box-delete").removeClass("warn-on").addClass("warn-off");
-            $("#check-label-delete").empty().append("Warn OFF");
+            this.classList.remove('t-btn__active');
         }
         $scope.$apply(function(){$scope.speedy;});
     };
@@ -1420,7 +1471,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         if (!e)
             e = window.event;
         var keyCode = e.which || e.keyCode || e.key;
-        if (keyCode !== 13 && keyCode !== 27 && keyCode !== 32 && keyCode !== 65 && keyCode !== 191 && keyCode !== 85 && keyCode !== 83 && keyCode !== 80 && keyCode !== 84 && keyCode !== 89 && keyCode !== 79 &&  keyCode !== 69 && keyCode !== 82 && keyCode !== 219 && keyCode !== 144 && keyCode !== 145 && keyCode !== 37 && keyCode !== 38 && keyCode !== 39 && keyCode !== 40)
+        $scope.keyDownFunct(keyCode);
+    };
+
+    $scope.keyDownFunct = function(keyCode) {
+        if (keyCode !== 13 && keyCode !== 27 && keyCode !== 32 && keyCode !== 65 && keyCode !== 191 && keyCode !== 85 && keyCode !== 80 && keyCode !== 83 && keyCode !== 84 && keyCode !== 89 && keyCode !== 79 && keyCode !== 76 &&  keyCode !== 69 && keyCode !== 82 && keyCode !== 219 && keyCode !== 144 && keyCode !== 145 && keyCode !== 37 && keyCode !== 38 && keyCode !== 39 && keyCode !== 40)
             if (isNotModal()) {
                 if (timeoutkey) {
                     clearTimeout(timeoutkey);
@@ -1433,14 +1488,6 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         if (checktimeout === false && isNotModal())
             return;
 
-        if (keyCode == "13") {
-            if (document.getElementById('customRevert').style.display == "block")
-                document.getElementById('btn-cr-u-apply').click();
-            if (document.getElementById('talkForm').style.display == "block")
-                document.getElementById('btn-send-talk').click();
-            if (document.getElementById('logs').style.display == "block")
-                document.getElementById('btn-searchLogs').click();
-        }
         if (keyCode == 82)
             if (isNotModal()) {
                 document.getElementById('revert').click();
@@ -1461,7 +1508,12 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 document.getElementById('editBtn').click();
                 return false;
             }
-        if (keyCode == "79")
+        if (keyCode == 76)
+            if (isNotModal()) {
+                document.getElementById('btn-logs').click();
+                return false;
+            }
+        if (keyCode == 79)
             if (isNotModal()) {
                 document.getElementById('browser').click();
                 return false;
@@ -1502,44 +1554,55 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 }
             }
         }
-        if (keyCode == 27)
-            if (document.getElementById('settings').style.display == "block" || document.getElementById('talkForm').style.display == "block" || document.getElementById('editForm').style.display == "block" || document.getElementById('logs').style.display == "block") {
+        if (keyCode == 27) {
+            if (document.getElementById('POOverlay').classList.contains('po__overlay__active')) {
+                closePO();
+            } else if (document.getElementById('settings').style.display == "grid" || document.getElementById('talkForm').style.display == "grid" || document.getElementById('editForm').style.display == "grid" || document.getElementById('logs').style.display == "grid") {
                 queueClick();
                 return false;
             }
+        }
     };
 
     uiEnable = function() {
         document.getElementById("queue").classList.remove("disabled");
         document.getElementById("control").classList.remove("disabled");
         document.getElementById('next-diff').classList.remove('disabled');
-       // if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) !== -1)) {
-        //    document.getElementById("revert").classList.remove("disabled");
-       //     document.getElementById("customRevertBtn").classList.remove("disabled");
-      //  }
-      //  if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) === -1)) {
-       //     document.getElementById("revert").classList.add("disabled");
-       //     document.getElementById("customRevertBtn").classList.add("disabled");
-       // }
+        // if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) !== -1)) {
+        //     document.getElementById("revert").classList.remove("disabled");
+        //     document.getElementById("customRevertBtn").classList.remove("disabled");
+        // }
+        // if (isGlobal === false && (isGlobalModeAccess === true && local_wikis.indexOf(wiki) === -1)) {
+        //     document.getElementById("revert").classList.add("disabled");
+        //     document.getElementById("customRevertBtn").classList.add("disabled");
+        // }
     };
 
 });
 
 function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW, tTITLE, tUSERIP, tSUMMARY) {
     uiDisableList();
-    document.getElementById("us").style.display = "inline-block";
     if (tUSERIP == "registered")
         document.getElementById("userLinkSpec").style.color = "#3366BB";
     else
         document.getElementById("userLinkSpec").style.color = "green";
+    if (tUSERIP === "ip")
+        document.getElementById('CAUTH').classList.add('disabled');
+    else
+        document.getElementById('CAUTH').classList.remove('disabled');
     document.getElementById("userLinkSpec").textContent = tUSER;
+    document.getElementById('userLinkSpec').setAttribute('title', 'User: ' + tUSER);
     document.getElementById('com').textContent = "Comment: " + tSUMMARY;
+    document.getElementById('com').setAttribute('title', 'Comment: ' + tSUMMARY);
     document.getElementById('tit').textContent = "Title: " + tTITLE;
+    document.getElementById('tit').setAttribute('title', 'Title: ' + tTITLE);
     if ((tWIKI == "testwiki") || (tWIKI == "test2wiki") || (tWIKI == "testwikidata") || (tWIKI == "testwikidatawiki"))
         document.getElementById('wiki').innerHTML = "Wiki: <font color='tomato'>" + tWIKI + "</font>";
     else
         document.getElementById('wiki').innerHTML = "Wiki: " + tWIKI;
+    document.getElementById('wiki').setAttribute('title', 'Wiki: ' + tWIKI);
     document.getElementById('ns').innerHTML = "Namespace: " + tNAMESPACE;
+    document.getElementById('ns').setAttribute('title', 'Namespace: ' + document.getElementById('ns').lastChild.innerText);
     if (tOLD == null) {
         uiDisableNew();
         var urlr = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=query&prop=revisions&revids=" + tDNEW + "&rvprop=content&rvslots=main&format=json&utf8=1";
@@ -1551,7 +1614,7 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
             dataType: 'jsonp',
             success: function(datar) {
                 if (typeof datar.error !== "undefined") {
-                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + data.error.info + enderror;
+                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + escapeXSS(data.error.info) + enderror;
                     uiEnable();
                     return;
                 }
@@ -1562,7 +1625,10 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
                         pageIdr = k;
                     }
                     var newPageDiff = "";
-                    var newPage = datar["query"]["pages"][pageIdr]["revisions"][0]["slots"]["main"]["*"].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').split("\n");
+                    if (tWIKI !== "commonswiki" && tWIKI !== "wikidatawiki")
+                        var newPage = escapeXSS(datar["query"]["pages"][pageIdr]["revisions"][0]["slots"]["main"]["*"]).split("\n");
+                    else
+                        var newPage = datar["query"]["pages"][pageIdr]["revisions"][0]["slots"]["main"]["*"].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').split("\n");
                     for(var j = 0; j<newPage.length; j++) {
                         newPageDiff += startstring + newPage[j] + endstring;
                     }
@@ -1587,15 +1653,21 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
                     if (data.error.code == "nosuchrevid")
                         document.getElementById('page').srcdoc = starterror + "Opening error. This page has been deleted." + enderror;
                     else
-                        document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page has been deleted.<br><small>Server error info: " + data.error.info + "</small>" + enderror;
+                        document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page has been deleted.<br><small>Server error info: " + escapeXSS(data.error.info) + "</small>" + enderror;
                     uiEnable();
                     return;
                 }
 
-                if (data.compare['*'] == "")
+                if (data.compare['*'] == "" || data.compare['*'].indexOf("<tr>") == -1)
                     document.getElementById('page').srcdoc = starterror + "The edit has already was reverted." + enderror;
-                else
-                    document.getElementById('page').srcdoc = diffstart + data.compare['*'].replace(/\<a class\="mw\-diff\-movedpara\-left".*?\<\/a\>/g, '-').replace(/\<a class\="mw\-diff\-movedpara\-right".*?\<\/a\>/g, '+') + diffend;
+                else {
+                    if (tWIKI !== "commonswiki" && tWIKI !== "wikidatawiki") {
+                        document.getElementById('page').srcdoc = diffstart + escapeXSSDiff(data.compare['*']) + diffend;
+                    }
+                    else {
+                        document.getElementById('page').srcdoc = diffstart + data.compare['*'].replace(/\<a class\="mw\-diff\-movedpara\-left".*?\<\/a\>/g, '-').replace(/\<a class\="mw\-diff\-movedpara\-right".*?\<\/a\>/g, '+').replace(/\<a name\="movedpara\_.*?\<\/a\>/g, '') + diffend;
+                    }
+                }
                 uiEnable();
             },
             error: function(error) {
@@ -1604,17 +1676,13 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
         });
     }
     document.getElementById('page').scrollTop = 0;
-    playSound(diffSound, false);
 }
 nextDiffStyle = function() {
     document.getElementById("page-welcome").style.display = "none";
-    document.getElementById("description-container").style.display = "block";
-    document.getElementById("page").style.display = "block";
-    document.getElementById("browser").style.background = "";
-    document.getElementById("editBtn").style.background = "";
-    document.getElementById("customRevertBtn").style.background = "";
-    document.getElementById("revert").style.background = "";
-    document.getElementById("back").style.background = "";
+    document.getElementById("description-container").style.display = "grid";
+    document.getElementById("controlsBase").style.display = "block";
+    document.getElementById("moreOptionBtnMobile").classList.remove('disabled');
+    document.getElementById("page").parentElement.style.display = "block";
 };
 
 uiDisable = function() {
@@ -1631,20 +1699,33 @@ uiDisableNew = function() {
 };
 uiEnableNew = function() {
     document.getElementById("queue").classList.remove("disabled");
-   // if (isGlobalModeAccess !== true || local_wikis.indexOf(wiki)) {
-          document.getElementById("revert").classList.remove("disabled");
-          document.getElementById("customRevertBtn").classList.remove("disabled");
-   // }
+    // if (isGlobalModeAccess !== true || local_wikis.indexOf(wiki)) {
+        document.getElementById("revert").classList.remove("disabled");
+        document.getElementById("customRevertBtn").classList.remove("disabled");
+    // }
 };
 isNotModal = function () {
-    if (document.getElementById('customRevert').style.display !== "block" &&
-        document.getElementById('editForm').style.display !== "block" &&
-        document.getElementById('logs').style.display !== "block" &&
-        document.getElementById('settings').style.display !== "block" &&
-        document.getElementById('talkForm').style.display !== "block")
+    if (!document.getElementById('customRevert').classList.contains("po__active") &&
+        document.getElementById('textpage') !== document.activeElement &&
+        document.getElementById('summaryedit') !== document.activeElement &&
+        document.getElementById('phrase-send-talk') !== document.activeElement &&
+        document.getElementById('logsSearch-input') !== document.activeElement &&
+        document.getElementById('max-queue') !== document.activeElement &&
+        document.getElementById('max-edits') !== document.activeElement &&
+        document.getElementById('max-days') !== document.activeElement &&
+        document.getElementById('ns-input') !== document.activeElement &&
+        document.getElementById('bl-p') !== document.activeElement &&
+        document.getElementById('wladdu') !== document.activeElement &&
+        document.getElementById('wladdp') !== document.activeElement &&
+        document.getElementById('statInput') !== document.activeElement)
         return true;
     else
         return false;
+};
+function selectTalkUsers (selectedUser) {
+    document.getElementById("phrase-send-talk").value = "@" + selectedUser.textContent + ", " + document.getElementById("phrase-send-talk").value;
+    document.getElementById("phrase-send-talk").focus();
+    closePWDrawer('talkPWDrawer', 'talkPWOverlay');
 };
 
 function checkKey(k, wiki, targetArray) {
@@ -1660,10 +1741,52 @@ function checkKey(k, wiki, targetArray) {
         return false;
 };
 
-var isTouchDevice = 'ontouchstart' in document.documentElement;
-function iframeBreakFocus() {
-    if (!isTouchDevice) {
-        window.focus();
-    }
-}
-setInterval(iframeBreakFocus, 500);
+function keyDownFunctOutside(keyCode) {
+    angular.element(document.getElementById('angularapp')).scope().keyDownFunct(keyCode);
+};
+
+function escapeXSS(str) {
+    str = str.replace(/&amp;/g, 'ampersanttempprepswv');
+    str = str.replace(/&lt;/g, 'leftbracetempprepswv');
+    str = str.replace(/&gt;/g, 'rightbracetempprepswv');
+    str = str.replace(/<ins class=\"diffchange diffchange-inline\">/g, 'inspreptempswv').replace(/<\/ins>/g, 'insendpreptempswv');
+    str = str.replace(/<del class=\"diffchange diffchange-inline\">/g, 'delpreptempswv').replace(/<\/del>/g, 'delendpreptempswv');
+
+    str = str.replace(/&/g, '&ampprerep').replace(/;/g, '&#59;').replace(/&ampprerep/g, '&amp;').replace(/</g, '&lt;');
+    str = str.replace(/>/g, '&gt;').replace(/ /g, '&#32;').replace(/\"/g, '&quot;').replace(/\'/g, '&#39;').replace(/\//g, '&#47;');
+    str = str.replace(/\\n/g, '&prerepn').replace(/\\/g, '&#92;').replace(/&prerepn/g, '\n').replace(/\(/g, '&#40;');
+    str = str.replace(/\)/g, '&#41;').replace(/\{/g, '&#123;').replace(/\}/g, '&#125;');
+    str = str.replace(/:/g, '&#58;').replace(/=/g, '&#61;').replace(/\?/g, '&#63;').replace(/\@/g, '&#64;').replace(/\|/g, '&#124;');
+    str = str.replace(/\[/g, '&#91;').replace(/\]/g, '&#93;').replace(/\+/g, '&#43;').replace(/\-/g, '&#45;').replace(/\*/g, '&#42;');
+    str = str.replace(/\,/g, '&#44;');
+
+    str = str.replace(/leftbracetempprepswv/g, '&lt;');
+    str = str.replace(/rightbracetempprepswv/g, '&gt;');
+    str = str.replace(/ampersanttempprepswv/g, '&amp;');
+
+    return str;
+};
+
+function escapeXSSDiff(str) {
+    str = str.replace(/\<a class\="mw\-diff\-movedpara\-left".*?\<\/a\>/g, '-').replace(/\<a class\="mw\-diff\-movedpara\-right".*?\<\/a\>/g, '+').replace(/\<a name\="movedpara\_.*?\<\/a\>/g, '');
+    str = str.replace(/(<td class=\"diff-addedline\"><div>)(.*?)(<\/div><\/td>)/g, function($0, $1, $2, $3) {
+        return $1 + escapeXSS($2) + $3;
+    });
+    str = str.replace(/(<td class=\"diff-deletedline\"><div>)(.*?)(<\/div><\/td>)/g, function($0, $1, $2, $3) {
+        return $1 + escapeXSS($2) + $3;
+    });
+    str = str.replace(/(<td class=\"diff-context\"><div>)(.*?)(<\/div><\/td>)/g, function($0, $1, $2, $3) {
+        return $1 + escapeXSS($2) + $3;
+    });
+    str = str.replace(/(<ins class=\"diffchange diffchange-inline\">)(.*?)(<\/ins>)/g, function($0, $1, $2, $3) {
+        return $1 + escapeXSS($2) + $3;
+    });
+    str = str.replace(/(<del class=\"diffchange diffchange-inline\">)(.*?)(<\/del>)/g, function($0, $1, $2, $3) {
+        return $1 + escapeXSS($2) + $3;
+    });
+
+    str = str.replace(/inspreptempswv/g, '<ins class="diffchange diffchange-inline">').replace(/insendpreptempswv/g, '</ins>');
+    str = str.replace(/delpreptempswv/g, '<del class="diffchange diffchange-inline">').replace(/delendpreptempswv/g, '</del>');
+    
+return str;
+};

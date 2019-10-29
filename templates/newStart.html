@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <link href='https://tools-static.wmflabs.org/fontcdn/css?family=Roboto|Montserrat' rel='stylesheet' type='text/css'>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src https://tools.wmflabs.org/swviewer/js/frame/frameKeys.js; font-src https://tools-static.wmflabs.org/; style-src 'unsafe-inline' https://tools-static.wmflabs.org/; base-uri 'none'; form-action 'none'; " />
+    <meta http-equiv="X-WebKit-CSP" content="default-src 'none'; script-src https://tools.wmflabs.org/swviewer/js/frame/frameKeys.js; font-src https://tools-static.wmflabs.org/; style-src 'unsafe-inline' https://tools-static.wmflabs.org/; base-uri 'none'; form-action 'none'; " />
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'none'; script-src https://tools.wmflabs.org/swviewer/js/frame/frameKeys.js; font-src https://tools-static.wmflabs.org/; style-src 'unsafe-inline' https://tools-static.wmflabs.org/; base-uri 'none'; form-action 'none'; " />
+    <script type="text/javascript" src="https://tools.wmflabs.org/swviewer/js/frame/frameKeys.js"></script>
+    <link href='https://tools-static.wmflabs.org/fontcdn/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
     <style type='text/css'>
         :root {/* DON'T REMOVE THIS */}
         html, body {
             margin: 0;
-            height: 100%;
             overflow: auto;
             overscroll-behavior-y: contain;
             -webkit-overflow-scrolling: touch;
@@ -16,22 +19,8 @@
             overflow: -moz-scrollbars-none;
             color: var(--tc-secondary);
         }
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background-color: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            background-color: rgba(255,255,255,.2); 
-        }
-        b {
-            font-weight: normal;
-        }
-        a {
-            color: var(--link-color);
-        }
+        b { font-weight: normal; }
+        a { color: var(--link-color); }
         
         /* Copied from https://git.wikimedia.org/blob/mediawiki%2Fcore.git/HEAD/resources%2Fmediawiki.action%2Fmediawiki.action.history.diff.css
         * which is released under GNU General Public License v2
@@ -40,8 +29,7 @@
         */
         table.diff {
             margin: 0;
-            padding: 0 8px 100px;
-            padding-top: 70px;
+            padding: 0 8px;
             width: 100%;
             table-layout: fixed;
             border: none;
@@ -82,17 +70,17 @@
         td.diff-deletedline,
         td.diff-context {
             padding: 8px 4px !important;
-            color: var(--tc-lowSecondary);
+            color: var(--tc-secondary-low);
             font-size: 14px;
             vertical-align: top;
             white-space: -moz-pre-wrap;
             white-space: pre-wrap;
             border-style: solid;
             border-width: 1px 1px 1px 4px;
-            border-color: var(--secondary-border);
+            border-color: var(--bc-secondary-hover);
         }
         td.diff-context {
-            background-color: var(--bg-secondary-hover);
+            background-color: var(--bc-secondary-hover);
         }
         td.diff-addedline {
             border-left-color: #d8ecff;
@@ -106,7 +94,7 @@
         }
         .diffchange h4,
         .diffchange table {
-            color: var(--tc-lowSecondary);
+            color: var(--tc-secondary-low);
         }
         td.diff-addedline .diffchange,
         td.diff-deletedline .diffchange {

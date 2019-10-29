@@ -91,7 +91,7 @@ else {
         $debug = json_decode(json_encode($res), True);
         $debugFile = fopen("debugRB.txt", "a");
         $debugContent = print_r($debug, true) . "\n";
-        fwrite($debugFile, $debugContent);
+        fwrite($debugFile, $debugContent . $user . " " . $wiki . " " . $page);
         fclose($debugFile);
     }
 
@@ -133,13 +133,12 @@ if ( !isset($res->$typeaction->title) || isset($res->$typeaction->nochange)) {
             $debug = json_decode(json_encode($res), True);
             $debugFile = fopen("debugRB2.txt", "a");
             $debugContent = print_r($debug, true) . "\n";
-            fwrite($debugFile, $debugContent);
+            fwrite($debugFile, $debugContent . $user . " " . $wiki . " " . $page . "RB2");
             fclose($debugFile);
+            $response = ["result" => "Unknow error", "code" => "Unknow error: RB2"];
         }
-
-
-
-        $response = ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
+        else
+            $response = ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
     }
     echo json_encode($response);
     exit(0);

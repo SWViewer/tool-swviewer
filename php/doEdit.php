@@ -70,6 +70,33 @@ $res = doApiQuery( array(
 	$token = $res->tokens->edittoken;
 
 
+if (isset($_POST["getfirstuser"])) {
+    $res = doApiQuery( array(
+        'format' => 'json',
+        'utf8' => '1',
+        'action' => 'query',
+	'titles' => $page,
+        'prop' => 'revisions',
+        'rvprop' => 'user',
+        'rvslots' => '*',
+        'rvlimit' => 1,
+        'rvdir' => 'newer'
+    ), $ch );
+
+    $res2 = null;
+    forEach($res->query->pages as $key=>$p) {
+        if ($key !== "-1")
+            $res2 = $p;
+    }
+    if ($res2 !== null)
+        if (isset($res2->revisions[0]->user)) {
+            $response = ["result" => "sucess", "user" => $res2->revisions[0]->user];
+            echo json_encode($response);
+        }
+exit();
+}
+
+
 
 if (isset($_POST["warn"])) {
     $sectiontitle = $_POST["sectiontitle"];
@@ -145,6 +172,11 @@ if (isset($_POST["warn"])) {
 	        ), $ch );
         }
         if (isset($res->edit->title)) {
+            if (isset($res->edit->nochange)) {
+                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
+                echo json_encode($response);
+                exit();
+            }
             $ts_pw = posix_getpwuid(posix_getuid());
             $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
             $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -174,6 +206,12 @@ if (isset($_POST["warn"])) {
             $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
         }
         if (isset($res->edit->title)) {
+            if (isset($res->edit->nochange)) {
+                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
+                echo json_encode($response);
+                exit();
+            }
+
             $ts_pw = posix_getpwuid(posix_getuid());
             $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
             $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -195,6 +233,12 @@ if (isset($_POST["warn"])) {
             $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
         
         if (isset($res->edit->title)) {
+            if (isset($res->edit->nochange)) {
+                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
+                echo json_encode($response);
+                exit();
+            }
+
             $ts_pw = posix_getpwuid(posix_getuid());
             $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
             $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -216,6 +260,11 @@ if (isset($_POST["warn"])) {
             $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
         
         if (isset($res->edit->title)) {
+            if (isset($res->edit->nochange)) {
+                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
+                echo json_encode($response);
+                exit();
+            }
             $ts_pw = posix_getpwuid(posix_getuid());
             $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
             $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -237,6 +286,11 @@ if (isset($_POST["warn"])) {
             $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
         
         if (isset($res->edit->title)) {
+            if (isset($res->edit->nochange)) {
+                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
+                echo json_encode($response);
+                exit();
+            }
             $ts_pw = posix_getpwuid(posix_getuid());
             $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
             $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -258,6 +312,11 @@ if (isset($_POST["warn"])) {
             $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
         
         if (isset($res->edit->title)) {
+            if (isset($res->edit->nochange)) {
+                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
+                echo json_encode($response);
+                exit();
+            }
             $ts_pw = posix_getpwuid(posix_getuid());
             $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
             $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -288,11 +347,17 @@ else {
 }
 
 if ( !isset( $res->edit->newrevid ) ) {
-    $res = json_decode(json_encode($res), True);
-    $debugFile = fopen("debug.txt", "a");
-    $debugContent = print_r($res, true) . "\n";
-    fwrite($debugFile, $debugContent);
-    fclose($debugFile);
+    if (isset($res->edit->nochange)) {
+        $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
+        echo json_encode($response);
+        exit();
+    }
+
+   $res = json_decode(json_encode($res), True);
+ //   $debugFile = fopen("debug.txt", "a");
+ //  $debugContent = print_r($res, true) . "\n";
+ //   fwrite($debugFile, $debugContent);
+ //   fclose($debugFile);
 
     if (isset($res["edit"]["info"]))
         $response = ["result" => $res["edit"]["info"], "code" => $res["edit"]["code"]];

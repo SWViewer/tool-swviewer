@@ -15,7 +15,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 ?>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>SWViewer</title>
 
         <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png">
@@ -31,19 +31,20 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <meta name="keywords" content="SWMT">
         <meta name="msapplication-TileColor" content="#808d9f">
         <meta name="theme-color" content="#212121">
-        <!-- AngularJS, jQuery, Bootstrap, Moment, pwacompat -->
+        <!-- AngularJS, jQuery, Moment, pwacompat -->
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
         <!-- <script type="text/javascript" async src="//cdn.jsdelivr.net/npm/pwacompat@2.0.9/pwacompat.min.js"></script> -->
         <script async src="js/pwacompat.js"></script>
-        <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <!-- Fonts, Bootstrap, stylesheet-->
-        <link rel="stylesheet" href="//tools-static.wmflabs.org/fontcdn/css?family=Roboto|Montserrat" type="text/css">
-        <link rel="stylesheet" href="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/swv.css?v=1.0">
+        <!-- Fonts, stylesheet-->
+        <link href='//tools-static.wmflabs.org/fontcdn/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/modules.css">
+        <link rel="stylesheet" href="css/swv-raw.css?v=1.2">
     </head>
 
 <?php
@@ -65,47 +66,76 @@ if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) 
         <noscript>
             <span style='color: red;'>JavaScript is not enabled!</span>
         </noscript>
-        <div style='top: 0; bottom: 0; right: 0;left: 0; margin: auto; height: 200px; position: absolute;'>
-            <div style='text-align: center;'><h3 style='margin-top: unset;'>Welcome!</h3></div>
-            <div class='local' style='text-align:center; margin-top:15px;'>
-                <div>To work in the system, you need to log in.</div>
-                <div style='margin-top: 10px;' align=center>
-                    <a id='abtn' href='https://tools.wmflabs.org/swviewer/php/oauth.php?action=start' class='btn btn-primary btn-lg oauth' style='width:255px;'>Authorization</a>
-                </div>
-                <div style='margin-top: 10px; text-align: left; width: 255px; margin: auto; margin-top: 10px;' align=center>
-	            <span style='font-size: x-small;'>To use this application <a rel='noopener noreferrer' target='_blank' href='https://en.wikipedia.org/wiki/Wikipedia:Rollback'>local</a> or <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/Global_rollback'>global</a> rollback is required.</span></div>
-	        </div>
-           </div>
-        </div>
-        <div style='position: absolute; bottom: 16px; width: 100%; text-align: center;'>
-            <div style='width: 100%; text-align: center;'><a id='about-btn' style='cursor: pointer;'>About</a></div>
-            <div style='width: 100%; text-align: center; font-size: x-small;'>Brought to you by <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/User:Iluvatar'>Iluvatar</a>, <a rel='noopener noreferrer' target='_blank' href='https://ajbura.github.io'>ajbura</a>, <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/User:1997kB'>1997kB</a></div>     
-        </div>
 
-    <div class='modal fade aboutForm' id='aboutForm' tabindex='-1' role='dialog' aria-labelledby='aboutFormLabel'>
-        <div class='modal-dialog modal-lg' role='document'>
-            <div class='modal-content'>
-                <div class='modal-header'>
-                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                    <h4 class='modal-title' style='display: inline-block' id='aboutFormLabel'>About SWViewer</h4>
+        <div class='login-base secondary-cont'>
+            <div class='login-card'>
+                <div>
+                    <span class='fs-xl' style='font-weight: bold;'>Welcome!</span>
+                    <a id='abtn' class='i-btn__accent accent-hover' style='margin: 16px 0; color: var(--tc-accent) !important; padding: 0 24px; text-decoration: none !important;' href='https://tools.wmflabs.org/swviewer/php/oauth.php?action=start'>OAuth Login</a>
+                    <span class='fs-xs'>To use this application <a rel='noopener noreferrer' target='_blank' href='https://en.wikipedia.org/wiki/Wikipedia:Rollback'>local</a> or <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/Global_rollback'>global</a> rollback is required.</span>
                 </div>
-                <div class='modal-body'>
-                    <div class='about-frame' style='overflow: hidden;'>
-                        <iframe class='full-screen' src='templates/about.html' style='border: none'></iframe>
+                <div>
+                    <span class='i-btn__secondary-outlined secondary-hover fs-md' style='height: 35px; margin-bottom: 8px;' onclick='openPO();'>About</span>
+                    <span class='fs-xs'>Brought to you by <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/User:Iluvatar'>Iluvatar</a>, <a rel='noopener noreferrer' target='_blank' href='https://ajbura.github.io'>ajbura</a>, <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/User:1997kB'>1997kB</a></span>
+                </div>    
+            </div>
+        </div>
+        
+        <!-- Global requests | Popup-overlay -->
+        <div id='about' class='po__base'>
+            <div class='po__header action-header'>
+                <span class='action-header__title fs-lg'>About</span>
+                <div class='mobile-only secondary-hover' title='Close [esc]' onclick='closePO()'>
+                    <img class='touch-ic secondary-icon' src='./img/cross-filled.svg' alt='Cross image'>
+                </div>
+                <span class='desktop-only po__esc secondary-hover fs-md' onclick='closePO()'>esc</span>
+            </div>
+            <div class='po__content'>
+                <div class='po__content-body secondary-scroll'>
+                    <div class='fs-md'>
+                        SWViewer: see <a href='https://meta.wikimedia.org/wiki/SWViewer' rel='noopener noreferrer' target='_blank'>documentation page</a>.<br><br>
+
+                        Any questions, please <a href='https://meta.wikimedia.org/wiki/Talk:SWViewer' rel='noopener noreferrer' target='_blank'>ask here</a>.<br><br>
+    
+                        Caution! Big internet traffic. Internet Explorer/Microsoft Edge is not supported.<br><br>
+
+                        Privacy: Application saves only name of your account, your internal app settings, your actions via app (see 'log'), count of logins to app, count of app opens, date of last login to app and contents of the chat.<br><br>
+    
+                        Licensing:<br>
+                        Copyright &#169; mainteiners of SWViewer, 2017-2019<br><br>
+    
+                        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>
+    
+                        The above copyright notice and this permission notice shall be included in all
+                        copies or substantial portions of the Software.<br><br>
+    
+                        THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br><br>
+    
+                        bump.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/Porphyr/sounds/208435/'>license and author of original file</a><br>
+                        message.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/elmasmalo1/sounds/377017/'>license and author of original file</a><br>
+                        privateMessage.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/rhodesmas/sounds/342749/'>license and author of original file</a><br>
+                        Auth and some API-requests are based on a <a rel='noopener noreferrer' target='_blank' href='https://tools.wmflabs.org/oauth-hello-world/index.php?action=download'>that code</a><br>
                     </div>
-                </div>
-                <div class='modal-footer'>
-                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        document.getElementById('abtn').focus();
-        document.getElementById('about-btn').onclick = function() {
-            $('#aboutForm').modal('show');
-        };
-    </script>";
+        <!-- po Overlay-->
+        <div id='POOverlay' class='po__overlay' onclick='closePO()'></div>
+
+        <script>
+            var lastOpenedPO = undefined;
+            function openPO (po = 'about') {
+                document.getElementById(po).classList.add('po__active');
+                document.getElementById('POOverlay').classList.add('po__overlay__active');
+                lastOpenedPO = po;
+            }
+            function closePO () {
+                if (lastOpenedPO !== undefined) {
+                    document.getElementById(lastOpenedPO).classList.remove('po__active');
+                    document.getElementById('POOverlay').classList.remove('po__overlay__active');
+                }
+            }
+        </script>";
     exit(0);
 }
 
@@ -186,711 +216,745 @@ if (sess["local_wikis"] !== "")
 </script>
 
 <body  class="full-screen" id="mainapp-body">
-<!-- Loading intro -->
-<div id="loading">
+
+<!-- Loading UI -->
+<div id="loading" class="secodnary-cont">
     <div class="loading-icon">
-        <svg version="1.1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-            x="0px" y="0px" height="285px" viewBox="0 0 285 285" enable-background="new 0 0 285 285" xml:space="preserve">
-        <path d="M285,142.2C285,63.7,221.3,0,142.8,0h-0.5C63.7,0,0,63.7,0,142.2v0.5C0,221.3,63.7,285,142.2,285h0.5
-            c78.6,0,142.2-63.7,142.2-142.2V142.2z M133,191.4c0,4.9-3.1,9.2-7.8,10.5l-39.6,10.7c-6.9,1.9-13.5-3.3-13.5-10.5V83
-            c0-7.1,6.8-12.3,13.7-10.5l39.5,10.7c4.7,1.3,7.8,5.6,7.8,10.5V191.4z M213,191.4c0,4.9-3.3,9.2-8.1,10.5l-40,10.7
-            c-6.9,1.9-13.9-3.3-13.9-10.5V83c0-7.1,7-12.3,13.9-10.5l39.9,10.7c4.7,1.3,8.2,5.6,8.2,10.5V191.4z"/>
-        </svg>
+        <img src="./img/swviewer-logo-raw.svg">
     </div>
-    <div class="loading-text">SW Viewer</div>
+    <span class="loading-text fs-xl">SWViewer</span>
 </div>
+
+<!-- Application UI -->
 <div id="angularapp" ng-app="swv" ng-controller="Queue">
-<div class="base-container" id="app">
-    <!-- Top panel (title & control buttons) -->
-    <div class="main-header-container">
-        <div class="header-text-container">
-            <p class="app-title">SW Viewer</p>
-        </div>
-
-		<div id="control" class="control-container">
-			<div id="back" ng-click="Back();" class="svg-btn-base back" title="Previous difference [Left square bracket]">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                <path fill="#424242" d="M180.1,248L9.6,134.4c-4.6-3-4.6-9.7,0-12.8L180.1,8c5.1-3.4,11.9,0.3,11.9,6.4l0,49.7l56.3,0
-                    c4.2,0,7.7,3.4,7.7,7.7v112.6c0,4.2-3.4,7.7-7.7,7.7l-56.3,0l0,49.6C192,247.8,185.2,251.4,180.1,248z"/>
-                </svg>
-			</div>
-			<div id="revert" ng-click="Revert();" class="svg-btn-base revert" title="Quick Rollback [r]">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                <path fill="#424242" d="M192,111.4L192,111.4c0,26.2-21.2,47.4-47.4,47.4h-55v-15.8c0-6.3-7.1-9.9-12.2-6.3L8.8,185.7
-                    c-4.3,3.1-4.3,9.4,0,12.5l68.7,49.1c5.1,3.6,12.2,0,12.2-6.3v-18.3h55c61.5,0,111.4-49.9,111.4-111.4v0C256,49.9,206.1,0,144.6,0
-                    l-23.5,0c-17.7,0-32,14.3-32,32v0c0,17.7,14.3,32,32,32h23.5C170.8,64,192,85.2,192,111.4z"/>
-                </svg>
-			</div>
-			<div id="customRevertBtn" ng-click="customRevertSummary();" class="svg-btn-base customRevertBtn" title="Rollback with summary [y]">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                <g>
-                    <path fill="#424242" d="M192,111.4L192,111.4c0,26.2-21.2,47.4-47.4,47.4h-55v-15.8c0-6.3-7.1-9.9-12.2-6.3L8.8,185.7
-                        c-4.3,3.1-4.3,9.4,0,12.5l68.7,49.1c5.1,3.6,12.2,0,12.2-6.3v-18.3h55c61.5,0,111.4-49.9,111.4-111.4v0C256,49.9,206.1,0,144.6,0
-                        l-23.5,0c-17.7,0-32,14.3-32,32v0c0,17.7,14.3,32,32,32h23.5C170.8,64,192,85.2,192,111.4z"/>
-                    <path fill="#424242" d="M37.5,64L37.5,64c-17.7,0-32-14.3-32-32v0c0-17.7,14.3-32,32-32h0c17.7,0,32,14.3,32,32v0
-                        C69.5,49.7,55.2,64,37.5,64z"/>
-                </g>
-                </svg>
-			</div>
-			<div id="editBtn" ng-click="checkEdit();" class="svg-btn-base doedit" title="Edit source [e]">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                <g>
-                    <path fill="#424242" d="M127.8,7.7v48.6c0,4.2-3.4,7.7-7.7,7.7H71.6c-4.2,0-7.7,3.4-7.7,7.7v112.5c0,4.2,3.4,7.7,7.7,7.7h112.5
-                        c4.2,0,7.7-3.4,7.7-7.7v-48.6c0-4.2,3.4-7.7,7.7-7.7H248c4.2,0,7.7,3.4,7.7,7.7V248c0,4.2-3.4,7.7-7.7,7.7H7.6
-                        c-4.2,0-7.7-3.4-7.7-7.7L0,7.7C0,3.4,3.4,0,7.6,0l112.5,0C124.4,0,127.8,3.4,127.8,7.7z"/>
-                    <g>
-                        <polygon fill="#424242" points="207.9,25.3 128,105.2 128,128 150.4,128 230.4,47.9 		"/>
-                        <path fill="#424242" d="M250.2,17.2L238.5,5.4c-3-3-7.9-3-10.9,0l-10.8,10.8l22.6,22.6L250.2,28C253.2,25,253.2,20.2,250.2,17.2z"/>
-                    </g>
-                </g>
-                </svg>
-			</div>
-			<div id="browser" ng-click="browser();" class="svg-btn-base browser" title="Open in browser window [o]">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                <g>
-                    <path fill="#424242" d="M128,7.7v48.6c0,4.2-3.4,7.7-7.7,7.7H71.7c-4.2,0-7.7,3.4-7.7,7.7v112.6c0,4.2,3.4,7.7,7.7,7.7h112.6
-                        c4.2,0,7.7-3.4,7.7-7.7v-48.6c0-4.2,3.4-7.7,7.7-7.7h48.6c4.2,0,7.7,3.4,7.7,7.7v112.6c0,4.2-3.4,7.7-7.7,7.7H7.7
-                        c-4.2,0-7.7-3.4-7.7-7.7L0,7.7C0,3.4,3.4,0,7.7,0l112.6,0C124.6,0,128,3.4,128,7.7z"/>
-                    <path fill="#424242" d="M160,39.7v16.6c0,4.2,3.4,7.7,7.7,7.7h80.6c4.2,0,7.7-3.4,7.7-7.7V39.7c0-4.2-3.4-7.7-7.7-7.7h-80.6
-                        C163.4,32,160,35.4,160,39.7z"/>
-                    <path fill="#424242" d="M199.7,96h16.6c4.2,0,7.7-3.4,7.7-7.7V7.7c0-4.2-3.4-7.7-7.7-7.7l-16.6,0c-4.2,0-7.7,3.4-7.7,7.7v80.6
-                        C192,92.6,195.4,96,199.7,96z"/>
-                </g>
-                </svg>
-			</div>
-		</div>
-
-
-    </div>
-
-    <!-- Left panel (Queue & settings / unlogin buttons) -->
-    <div class="queue-buttons-block">
-        <div class="queue" id="queue">
-            <div id="edits-Queue" ng-repeat="edit in edits track by $index" onclick="queueClick()">
-                <div class="queue-row" ng-style="editColor(edit)" ng-click="select(edit)">{{edit.wiki}}</div>
-            </div>
-        </div>
-        <div class="queue-buttons">
-            <div class="queue-buttons-container">
-                <div id="btn-talk" class="btn-talk" title="Talk [t]">
-                    <span class="badge badge-talk" style="background: none;" id="badge-talk">{{filteredUsersTalk.length}}</span>
-                </div>
-                <div id="btn-logs" class="btn-logs" title="Logs">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-                        x="0px" y="0px" viewBox="0 0 80 100" enable-background="new 0 0 80 100" xml:space="preserve">
-                    <path fill="#FFFFFF" d="M51.5,0H3C1.3,0,0,1.3,0,3v94c0,1.7,1.3,3,3,3h74c1.7,0,3-1.3,3-3V28.5c0-0.8-0.3-1.6-0.9-2.1L53.6,0.9
-                        C53.1,0.3,52.3,0,51.5,0z M61,84H19c-1.7,0-3-1.3-3-3v-3.9c0-1.7,1.3-3,3-3h12.6c1.7,0,3-1.3,3-3V59c0-1.7-1.3-3-3-3H19
-                        c-1.7,0-3-1.3-3-3v-4.6c0-1.7,1.3-3,3-3h12.6c1.7,0,3-1.3,3-3V30.3c0-1.7-1.3-3-3-3H19c-1.7,0-3-1.3-3-3V19c0-1.7,1.3-3,3-3h23.8
-                        c1.7,0,3,1.3,3,3v12.2c0,1.7,1.3,3,3,3H61c1.7,0,3,1.3,3,3V81C64,82.7,62.7,84,61,84z"/>
-                    </svg>
-                </div>
-                <div id="btn-settings" class="btn-settings" title="Settings and quick links [s]">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                    <path fill="#BBBBBB" d="M256,143.4v-30.7c0-4.2-3.4-7.7-7.7-7.7h-21.8c-3.3,0-6.2-2.1-7.3-5.2c-1.7-5.1-4-10.9-6.6-16.2
-                        c-1.5-3-1-6.6,1.4-9l15-14.9c3-3,3-7.9,0-10.9l-21.7-21.6c-3-3-7.9-3-10.9,0l-14.9,15c-2.4,2.4-6.1,2.9-9.2,1.3
-                        c-5-2.7-10.1-4.9-15.9-6.6c-3.3-1-5.5-3.9-5.5-7.4V7.7c0-4.2-3.4-7.7-7.7-7.7h-30.7c-4.2,0-7.7,3.4-7.7,7.7v21.8
-                        c0,3.4-2.3,6.4-5.6,7.4c-5.9,1.7-11.1,4-16.2,6.7c-3,1.6-6.7,1.1-9.1-1.3L59,27.2c-3-3-7.9-3-10.8,0L26.4,49c-3,3-3,7.9,0,10.9
-                        l15,14.8c2.4,2.4,2.9,6,1.4,9c-2.7,5.3-4.9,11-6.6,16.1c-1.1,3.1-4,5.2-7.3,5.2H7.7c-4.2,0-7.7,3.4-7.7,7.7v30.7
-                        c0,4.2,3.4,7.7,7.7,7.7h20.9c3.4,0,6.4,2.3,7.4,5.6c1.7,5.9,4,11.3,6.7,16.4c1.6,3,1.1,6.7-1.3,9.1l-15.1,15.2c-3,3-3,7.8,0,10.8
-                        l21.8,21.8c3,3,7.8,3,10.8,0l15.2-15.1c2.4-2.4,6.1-2.9,9.1-1.3c5.1,2.7,10.3,5,16.2,6.7c3.3,1,5.5,3.9,5.5,7.4v20.6
-                        c0,4.2,3.4,7.7,7.7,7.7h30.7c4.2,0,7.7-3.4,7.7-7.7v-20.6c0-3.4,2.3-6.4,5.5-7.4c5.8-1.7,10.9-4,15.9-6.7c3-1.6,6.7-1.1,9.2,1.3
-                        l14.9,15c3,3,7.9,3,10.9,0l21.7-21.7c3-3,3-7.8,0-10.8L214,182.1c-2.4-2.4-2.9-6.1-1.3-9.1c2.7-5.1,5-10.5,6.7-16.4
-                        c1-3.3,3.9-5.6,7.4-5.6h21.5C252.6,151,256,147.6,256,143.4z M177.7,128.6c0,27.6-22.4,50-50,50s-50-22.4-50-50v0
-                        c0-27.6,22.4-50,50-50S177.7,101,177.7,128.6L177.7,128.6z"/>
-                    </svg>
-                </div>
-                <div id="btn-drawer" class="btn-drawer" onclick="openDrawer()" style="position: relative;">
-                    <span id="edits-count">{{edits.length}}</span>
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                    <g>
-                        <path fill="#BBBBBB" d="M248.3,151H7.7c-4.2,0-7.7-3.4-7.7-7.7v-30.7c0-4.2,3.4-7.7,7.7-7.7h240.6c4.2,0,7.7,3.4,7.7,7.7v30.7
-                            C256,147.6,252.6,151,248.3,151z"/>
-                        <path fill="#BBBBBB" d="M248.3,244H7.7c-4.2,0-7.7-3.4-7.7-7.7v-30.7c0-4.2,3.4-7.7,7.7-7.7h240.6c4.2,0,7.7,3.4,7.7,7.7v30.7
-                            C256,240.6,252.6,244,248.3,244z"/>
-                        <path fill="#BBBBBB" d="M248.3,58.1H7.7c-4.2,0-7.7-3.4-7.7-7.7V19.7C0,15.4,3.4,12,7.7,12h240.6c4.2,0,7.7,3.4,7.7,7.7v30.7
-                            C256,54.6,252.6,58.1,248.3,58.1z"/>
-                    </g>
-                    </svg>
+    <div class="base-container" id="app">
+        <div id="baseGrid" class="base-grid">
+            <!-- sidebar -->
+            <div id="sidebar" class="sidebar-base primary-cont">
+                <div class="sidebar__options">
+                    <div id="btn-home" class="tab__active primary-hover" title="SWViewer [esc]" onclick="closePW()">
+                        <img class="touch-ic primary-icon" src="./img/swviewer-filled.svg" alt="SWViewer image">
+                    </div>
+                    <div id="btn-talk" class="primary-hover" title="Talk [t]" onclick="openPW('talkForm')">
+                        <span class="badge-ic badge-ic__primary" style="background: none; color: var(--bc-primary);" id="badge-talk">{{filteredUsersTalk.length}}</span>
+                    </div>  
+                    <div id="btn-logs" class="primary-hover" title="Logs [l]" onclick="openPW('logs')">
+                        <img class="touch-ic primary-icon" src="./img/doc-filled.svg" alt="Logs image">
+                    </div>
+                    <div id="btn-unlogin" class="primary-hover" title="Sign out [u]">
+                        <img class="touch-ic primary-icon" src="./img/power-filled.svg" alt="Logout image">
+                    </div>
+                    <div id="btn-about" class="primary-hover" title="About" onclick="openPO('about')">
+                        <img class="touch-ic primary-icon" src="./img/about-filled.svg" alt="About image">
+                    </div>
+                    <div id="btn-settings" class="primary-hover" title="Settings and quick links [s]" onclick="openPW('settings')">
+                        <img class="touch-ic primary-icon" src="./img/settings-filled.svg" alt="Settings image">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="next-diff" id="next-diff" ng-click='nextDiff()'>
-            <div class="svg-btn-base">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
-                <path fill="#424242" d="M180.1,248L9.6,134.4c-4.6-3-4.6-9.7,0-12.8L180.1,8c5.1-3.4,11.9,0.3,11.9,6.4l0,49.7l56.3,0
-                    c4.2,0,7.7,3.4,7.7,7.7v112.6c0,4.2-3.4,7.7-7.7,7.7l-56.3,0l0,49.6C192,247.8,185.2,251.4,180.1,248z"/>
-                </svg>
-            </div>
-            <span>Fetching</span>
-        </div>
-    </div>
-    <div class="frame-container">
-	    <div id="description-container" class="description-container" style="display: none;">
-            <div class="description">
-                <div class="description-long" id="wiki"></div>
-                <div class="description-long ns" id="ns"></div>
-            </div>
-            <div class="description">
-                <div class="description-long" id="us" style="display:none;">User: <div id="userLinkSpec" style="display: inline" ng-click="openLink('diff');"></div></div>
-                <div class="description-long description-long-right desc-title" id="tit"></div>
-            </div>
-            <div class="description">
-                <div class="description-long description-long-comment desc-comment" id="com"></div>
-           </div>
-		</div>
-	    <div class="diff-container">
-            <iframe id='page-welcome' style='display: block;' class='full-screen frame-diff' title='Welcome page' src='templates/welcome.html'></iframe>
-	        <iframe id='page' class='full-screen frame-diff' style='display: none;' title='Diff' sandbox='allow-same-origin' scrolling='no'></iframe>
-	    </div>
-	</div>
-</div>
-
-<!-- Popup forms -->
-<div class="modal fade customRevert" id="customRevert" tabindex="-1" role="dialog" aria-labelledby="customRevertLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="display: inline-block" id="customRevertLabel">Custom revert</h4>
-            </div>
-            <div class="modal-body">
-                <div id="summariesContainer" style="display: block">
-                    <label style="display: inline-block;" for="credit">Reason:</label>
-                    <input title="Reason" name="credit" id="credit" placeholder="Provide a reason."/>
+            <!-- Drawer -->
+            <div id="queueDrawer" class="drawer-base primary-cont">
+                <div class="edit-queue-base">
+                    <div class="action-header eq__header">
+                        <span class="action-header__title fs-lg">Queue</span>
+                    </div>
+                    <div class="eq__body">
+                        <div class="queue primary-scroll" id="queue">
+                            <div id="edits-Queue" ng-repeat="edit in edits track by $index" onclick="queueClick()">
+                                <div class="queue-row fs-sm primary-hover" ng-style="editColor(edit)" ng-click="select(edit)">{{edit.wiki}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default" style="margin-top: 8px;">
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSummariesOne">
-                            <label>Common Summaries:
-                                <div id="warn-box" class="warn-box warn-off">
-                                    <label id="check-label">Warn OFF</label>
+            </div>
+            <!-- Status Bar -->
+            <div class="statusbar-base">
+
+            </div>
+            <!-- Main Window -->
+            <div class="window-base secondary-cont">
+                <div class="diff-container">
+                    <!-- Mobile navbar -->
+                    <div class="main-navbar action-header mobile-only">
+                        <div class="primary-hover" onclick="openSidebar();">
+                            <img class="touch-ic primary-icon" src="./img/drawer-filled.svg" alt="Navigation image">
+                        </div>
+                        <!-- <span class="action-header__title fs-xl">Home</span> -->
+                        <div class="primary-hover" title="Talk [t]" onclick="openPW('talkForm')">
+                            <span id="badge-talk-ex1" class="badge-ic badge-ic__primary" style="background: none; color: var(--bc-primary);">{{filteredUsersTalk.length}}</span>
+                        </div>
+                        <div class="primary-hover" title="Logs [l]" onclick="openPW('logs')">
+                            <img class="touch-ic primary-icon" src="./img/doc-filled.svg" alt="Logs image">
+                        </div>
+                        <div class="desktop-only secondary-hover" onclick="togglMoreControl();">
+                            <img class="touch-ic secondary-icon" src="./img/arrow-up-filled.svg" alt="More option img">
+                        </div>
+                        <div id="moreOptionBtnMobile" class="primary-hover disabled" onclick="togglMoreControl();">
+                            <img class="touch-ic primary-icon" src="./img/v-dots-filled.svg" alt="More option img">
+                        </div>
+                        <div id="btn-drawer" class="primary-hover" style="position: relative;">
+                            <span class="drawer-btn__edits-count">{{edits.length}}</span>
+                            <img class="touch-ic primary-icon" src="./img/drawer-filled.svg" alt="Drawer image">
+                        </div>
+                    </div>
+                    <!-- description container -->
+                    <div id="description-container" class="description-container fs-md" style="display: none; margin-top: 0;">
+                        <div class="desc-un">
+                            <div id="us" class="fs-sm">User: <div id="userLinkSpec" ng-click="openLink('diff');"></div></div>
+                            <div id="ns" class="fs-sm"></div>
+                        </div>
+                        <div class="desc-wt">
+                            <div id="wiki" class="fs-sm"></div>
+                            <div id="tit" class="fs-sm"></div>
+                        </div>
+                        <div class="desc-c">
+                            <div id="com" class="fs-sm"></div>
+                        </div>
+                    </div>
+                    <!-- Mobile next diff button -->
+                    <div id="next-diff" class="next-diff accent-hover mobile-only" ng-click='nextDiff()'>
+                        <div>
+                            <img class="touch-ic accent-icon" src="./img/swviewer-filled.svg" alt="Next diffrence image">
+                        </div>
+                        <div id="next-diff-title" class="fs-md">Fetching</div>
+                    </div>
+                    <!-- Controls -->
+                    <div id="moreControlOverlay" class="more-control__overlay"  onclick="togglMoreControl();"></div>
+                    <div id="controlsBase" class="controls-base floatbar"  style="display: none;">
+                        <!-- More control -->
+                        <div id="moreControl" class="more-control more-control__hidden secondary-scroll">
+                            <a class="seconary-hover fs-md" href='{{selected.server_url}}{{selected.script_path}}/index.php?title={{selected.title}}&action=history' rel='noopener noreferrer' target='_blank'>View history</a>
+                            <a class="secondary-hover fs-md" href='https://tools.wmflabs.org/guc/?src=hr&by=date&user={{selected.user}}' rel='noopener noreferrer' target='_blank'>Global contribs</a>
+                            <a class="secondary-hover fs-md" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{selected.user}}' id="CAUTH" rel='noopener noreferrer' target='_blank'>Central auth</a>
+                            <span class="disabled secondary-hover fs-md" ng-click="requestsForm();" onclick="openPO('localRequests')">Local requests</span>
+                            <span class="disabled secondary-hover fs-md" ng-click="requestsForm();" onclick="openPO('globalRequests')"> Global requests</span>
+                        </div>
+                        <!-- Control buttons -->
+                        <div id="control" class="toolbar">
+                            <div class="desktop-only secondary-hover" onclick="togglMoreControl();" title="More options">
+                                <img class="touch-ic secondary-icon" src="./img/v-dots-filled.svg" alt="More option img">
+                            </div>
+                            <div id="browser" class="secondary-hover" ng-click="browser();" title="Open in browser window [o]">
+                                <img class="touch-ic secondary-icon" src="./img/open-newtab-filled.svg" alt="Open in new tab img">
+                            </div>
+                            <div id="editBtn" class="secondary-hover" ng-click="checkEdit();" onclick="openPW('editForm')" title="Edit source [e]">
+                                <img class="touch-ic secondary-icon" src="./img/edit-filled.svg" alt="Edit img">
+                            </div>
+                            <div id="customRevertBtn" class="secondary-hover" ng-click="customRevertSummary();" title="Rollback with summary [y]">
+                                <img class="touch-ic secondary-icon" src="./img/custom-rollback-filled.svg" alt="Custom rollback img">
+                            </div>
+                            <div id="revert" class="secondary-hover" ng-click="Revert();" title="Quick Rollback [r]">
+                                <img class="touch-ic secondary-icon" src="./img/rollback-filled.svg" alt="Rollback img">
+                            </div>
+                            <div id="back" class="secondary-hover" ng-click="Back();" title="Previous difference [Left square bracket or p]">
+                                <img class="touch-ic secondary-icon" src="./img/arrow-left-filled.svg" alt="back image">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Welcome page -->
+                    <div id='page-welcome' class='welcome-base frame-diff secondary-scroll' style='display: block;'>
+                        <label class="fs-xl" style="font-weight: bold;">Welcome back!</label>
+                        <div class="welcome-box">
+                            <form class="stat-search__base" onsubmit="searchStat();">
+                                <input id="statInput" class="i-input__secondary secondary-placeholder fs-md" type="text" autocomplete="off" placeholder="Search user">
+                                <button class="i-btn__accent accent-hover fs-md" type="submit">Search</button>
+                            </form>
+                            <div id="statContainer" class="stat-container">
+                                <div>
+                                    <span id="rollbackSpan" class="fs-xl" style="color: #c8b40e;">0</span>
+                                    <span class="fs-lg">Rollback</span>
                                 </div>
-                            </label>
-                            <div class="panel-body">
-                                <div class="queue" id="queue">
-                                    <div class="panel-cr-reasons" ng-repeat="description in descriptions track by $index" onclick="queueClick()">
-                                        <div ng-style="descriptionColor(description)" ng-click="selectDescription(description)">{{description.name}}</div>
+                                <div>
+                                    <span id="undoSpan" class="fs-xl" style="color: #db24b0;">0</span>
+                                    <span class="fs-lg">Undo</span>
+                                </div>
+                                <div>
+                                    <span id="deleteSpan" class="fs-xl" style="color: #672dd2;">0</span>
+                                    <span class="fs-lg">Delete</span>
+                                </div>
+                                <div>
+                                    <span id="editSpan" class="fs-xl" style="color: #2dd280;">0</span>
+                                    <span class="fs-lg">Edit</span>
+                                </div>
+                                <div>
+                                    <span id="warnSpan" class="fs-xl" style="color: #d92c26;">0</span>
+                                    <span class="fs-lg">Warn</span>
+                                </div>
+                                <div>
+                                    <span id="reportSpan" class="fs-xl" style="color: #e3791c;">0</span>
+                                    <span class="fs-lg">Report</span>
+                                </div>
+                                <div>
+                                    <span id="protectSpan" class="fs-xl" style="color: #1cb3e3">0</span>
+                                    <span class="fs-lg">Protect</span>
+                                </div>
+                            </div>
+                            
+                            <div class="list-container">
+                                <label class="fs-md">Reminder</label>
+                                <ul class="i-ul fs-sm">
+                                    <li class="i-ul__imp">IMPORTANT: If app is not working properly, please re-login and clear cache.</li>
+                                    <li>Responsibility for edits rests with the owner of the account with which they are made.</li>
+                                    <li class="i-ul__imp">Please DO NOT sends warns if you don’t know the language (except in case of pure vandalism).</li>
+                                    <li>If you find a bug, please <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/Talk:SWViewer">report</a> it! Also attach screenshots or/and data from the browser console.</li>
+                                </ul>
+                            </div>
+                            <div class="list-container">
+                                <label class="fs-md">Tips</label>
+                                <ul class="i-ul fs-sm">
+                                    <li>If you are using Android and Chrome browser, then you can switch app to full-screen mode (without the address bar): Browser's settings => Add to Home screen and opens via label on screen.</li>
+                                </ul>
+                            </div>
+                            <div class="list-container">
+                                <label class="fs-md">What's new </label>
+                                <ul class="i-ul fs-sm">
+                                    <label class="i-ul__subheader fs-sm">21 October 2019</label>
+                                    <li class="i-ul__imp">UI & UX improvments.</li>
+                                    <li class="i-ul__imp">Global mode and undo for non-GRs.</li>
+                                    <li class="i-ul__imp">New sounds, RH mode, Anonymous edits and Only new pages features added into settings.</li>
+                                    <li class="i-ul__imp">Advanced menu for difference viewer.</li>
+                                    <li class="i-ul__imp">Total statistics on welcome page.</li>
+                                    <li class="i-ul__imp">Bug fixed!</li>
+                                </ul>
+                                <ul id="moreWN" class="i-ul fs-sm" style="overflow: hidden; height: 0px;">
+                                    <label class="i-ul__subheader fs-sm">14 June 2019</label>
+                                    <li>We now support themes, and a new logo again but this is last.. swear :P</li>
+                                    <li>Also we now have customizable templates and edit summaries for each wikis, add for yours <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/config.json">here</a>.</li>
+                                    <label class="i-ul__subheader fs-sm">24 March 2019</label>
+                                    <li>Fully implimented new design along with new logo :)</li>
+                                    <li>New design for desktop and mobile.</li>
+                                    <li>Single login for all users (GR as well as local rollback).</li>
+                                    <label class="i-ul__subheader fs-sm">Older</label>
+                                    <li>50 new small projects have been added to the <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/wikis">SW list</a>.</li>
+                                    <li>Added option to select an additional list of projects with less than 300 active users. Which includes about 30 projects, including the best of the bests sebwiki. Check app's settings.</li>
+                                    <li>Added <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Hotkeys">hotkeys</a>.</li>
+                                    <li>Synchronization: If you doing rollback, edits of that page will be removed from queue of all users online in app.</li>
+                                </ul>
+                                <button class="i-btn__secondary-outlined secondary-hover fs-md" onclick="toggleMoreWN(this);">Show more</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Difference iframe -->
+                    <div class="iframe-container frame-diff secondary-scroll" style="display: none;" onscroll="hideDesc(this)">
+                        <iframe id='page' style="min-height: 100%;" title='Diff' sandbox='allow-same-origin allow-scripts' scrolling='no'></iframe>
+                    </div>
+
+                    <!-- talkForm | popup-window -->
+                    <div id="talkForm" class="pw__base" style="display: none;">
+                        <!--pw Header-->
+                        <div class="pw__header action-header">
+                            <div class="mobile-only secondary-hover" onclick="openSidebar();">
+                                <img class="touch-ic secondary-icon" src="./img/drawer-filled.svg" alt="Box Image">
+                            </div>
+                            <span class="action-header__title fs-xl">Talk</span>
+                            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePW()">
+                                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+                            </div>
+                            <div class="mobile-only secondary-hover" onclick="openPWDrawer('talkPWDrawer', 'talkPWOverlay')">
+                                <img class="touch-ic touch-ic__w-free secondary-icon" src="./img/people-filled.svg" alt="People image">
+                            </div>
+                            <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
+                        </div>
+                        <!--pw Content-->
+                        <div class="pw__content">
+                            <div id="talk-content" class="pw__content-body secondary-scroll">
+                                <div id="form-talk"></div>
+                            </div>
+
+                            <div class="pw__floatbar">
+                                <form onsubmit="document.getElementById('btn-send-talk').onclick();"><input  id="phrase-send-talk" class="secondary-placeholder fs-md" autocomplete="off" onfocus="scrollToBottom('talk-content')" title="Text to sent" max-length="600" placeholder="What's on your mind?"></form>
+                                <div id="btn-send-talk" class="secondary-hover" title="Send">
+                                    <img class="touch-ic secondary-icon" src="./img/send-filled.svg" alt="Send image">
+                                </div>
+                            </div>
+                        </div>
+                        <!--pw Drawer-->
+                        <div id="talkPWDrawer" class="pw__drawer secondary-scroll">
+                            <div class="action-header__sticky">
+                                <span class="action-header__title fs-lg">People</span>
+                            </div>
+                            <div class="pw__drawer__content">
+                                <div class="user-container fs-md" ng-repeat="talkUser in users|unique: talkUser as filteredUsersTalk">
+                                    <div class="user-talk" onclick="selectTalkUsers(this)">{{talkUser}}</div>
+                                    <a class="user-talk-CA" href="https://meta.wikimedia.org/wiki/Special:CentralAuth/{{talkUser}}" target="_blank">CA</a>
+                                </div>
+                                <div ng-repeat="talkUserOffline in offlineUsers track by $index">
+                                    <div class="user-talk fs-md" style="color: gray;">{{talkUserOffline}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--pw Overlay-->
+                        <div id="talkPWOverlay" class="pw__overlay" onclick="closePWDrawer('talkPWDrawer', 'talkPWOverlay')"></div>
+                    </div>
+
+                    <!-- Logs | popup-window -->
+                    <div id="logs" class="pw__base" style="display: none; grid-template-areas: 'pw__header pw__header' 'pw__content pw__content';">
+                        <!--pw Header-->
+                        <div class="pw__header action-header">
+                            <div class="mobile-only secondary-hover" onclick="openSidebar();">
+                                <img class="touch-ic secondary-icon" src="./img/drawer-filled.svg" alt="Box Image">
+                            </div>
+                            <span class="action-header__title fs-xl">Logs</span>
+                            <div class="secondary-hover" title="Refresh" onclick="refreshLogs()">
+                                <img class="touch-ic secondary-icon" src="./img/reload-filled.svg" alt="Reload image">
+                            </div>
+                            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePW()">
+                                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+                            </div>
+                            <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
+                        </div>
+                        <!--pw Content-->
+                        <div class="pw__content">
+                            <div class="pw__content-body secondary-scroll" style="padding: 0;">
+                                <div id="logsBox"></div>
+                                <div class="logBox-control">
+                                    <button id="prevLogs" class='i-btn__secondary-outlined secondary-hover fs-md' style="display: none;">Previous</button>
+                                    <button id="nextLogs" class='i-btn__secondary-outlined secondary-hover fs-md' style="display: none;">Next</button>
+                                </div>
+                            </div>
+
+                            <div class="pw__floatbar">
+                                <form onsubmit="searchLogs();"><input id="logsSearch-input"  class="secondary-placeholder fs-md" autocomplete="off" title="Search logs" max-length="600"" placeholder="Search for user or wiki."></form>
+                                <div style="width: unset;">
+                                    <select id="actionSelector" class="i-select__secondary fs-md">
+                                        <option value="">All actions</option>
+                                        <option value="rollback">Rollback</option>
+                                        <option value="undo">Undo</option>
+                                        <option value="delete">Delete</option>
+                                        <option value="edit">Edit</option>
+                                        <option value="warn">Warn</option>
+                                        <option value="report">Report</option>
+                                        <option value="protect">Protect</option>
+                                    </select>
+                                </div>
+                                <div id="btn-searchLogs" class="secondary-hover" title="Search" onclick="searchLogs()">
+                                    <img class="touch-ic secondary-icon" src="./img/search-filled.svg" alt="Search image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Source | popup-window -->
+                    <div id="editForm" class="pw__base" style="display: none;">
+                        <!--pw Header-->
+                        <div class="pw__header action-header">
+                            <div class="mobile-only secondary-hover" onclick="openSidebar();">
+                                <img class="touch-ic secondary-icon" src="./img/drawer-filled.svg" alt="Box Image">
+                            </div>
+                            <span class="action-header__title fs-xl">Edit Source</span>
+                            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePW()">
+                                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+                            </div>
+                            <div class="mobile-only secondary-hover" onclick="openPWDrawer('editPWDrawer', 'editPWOverlay')">
+                                <img class="touch-ic secondary-icon" src="./img/tag-filled.svg">
+                            </div>
+                            <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
+                        </div>
+                        <!--pw Content-->
+                        <div id="editFormBody" class="pw__content">
+                            <textarea id="textpage" class="pw__content-body secondary-scroll editForm__textarea fs-md" onchange="resizeTextPage()" title="Source code of page"></textarea>
+
+                            <div class="pw__floatbar">
+                                <form onsubmit="document.getElementById('editForm-save').onclick();"><input id="summaryedit" class="secondary-placeholder fs-md" title="Summary" placeholder="Briefly describe your changes."></form>
+                                <div id="editForm-save" class="secondary-hover" title="Publish changes" ng-click="doEdit()" onclick="closePW()">
+                                    <img class="touch-ic secondary-icon" src="./img/save-filled.svg" alt="Save image">
+                                </div>
+                            </div>
+                        </div>
+                        <!--pw Drawer-->
+                        <div id="editPWDrawer" class="pw__drawer secondary-scroll">
+                            <div class="action-header__sticky">
+                                <span class="action-header__title fs-lg">Tags</span>
+                            </div>
+                            <div id="btn-group-delete" class="pw__drawer__content">
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Warn user</div>
+                                    <div class="i__description fs-xs">Turning this on will left a notification on the user talk page after clicking templates (green only).</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="warn-box-delete" class="t-btn__secondary"></div>
+                                    </div>
+                                </div>
+                                <div ng-repeat="speedy in speedys track by $index" onclick="queueClick()">
+                                    <a class="fs-sm" style="cursor: pointer;" ng-click="selectSpeedy(speedy)" ng-style="speedyColor(speedy)">{{speedy.name}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--pw Overlay-->
+                        <div id="editPWOverlay" class="pw__overlay" onclick="closePWDrawer('editPWDrawer', 'editPWOverlay')"></div>
+                    </div>
+
+                    <!-- Settings | popup-window -->
+                    <div id="settings" class="pw__base" style="display: none;">
+                        <!--pw Header-->
+                        <div class="pw__header action-header">
+                            <div class="mobile-only secondary-hover" onclick="openSidebar();">
+                                <img class="touch-ic secondary-icon" src="./img/drawer-filled.svg" alt="Box Image">
+                            </div>
+                            <span class="action-header__title fs-xl">Settings</span>
+                            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePW()">
+                                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+                            </div>
+                            <div class="mobile-only secondary-hover" onclick="openPWDrawer('settingsPWDrawer', 'settingsPWOverlay')">
+                                <img class="touch-ic secondary-icon" src="./img/v-dots-filled.svg">
+                            </div>
+                            <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
+                        </div>
+                        <!--pw Content-->
+                        <div class="pw__content">
+                            <div class="pw__content-body secondary-scroll">
+                                <div class="action-header">
+                                    <span class="action-header__title fs-lg">Customization</span>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Theme</div>
+                                    <div class="i__description fs-xs">Change theme.</div>
+                                    <div class="i__content fs-sm">
+                                        <select id="themeSelector" class="i-select__secondary fs-md"></select>
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Sound</div>
+                                    <div class="i__description fs-xs">Change sound mode.</div>
+                                    <div class="i__content fs-sm">
+                                    <select id="soundSelector" class="i-select__secondary fs-md">
+                                        <option value="0">None</option>
+                                        <option value="1">All sounds</option>
+                                        <option value="2">Msg & mentions</option>
+                                        <option value="3">Only mentions</option>
+                                        <option value="4">Edits & mentions</option>
+                                        <option value="5">Only Edits</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Bottom-up</div>
+                                    <div class="i__description fs-xs">Show edits from bottom to up direction in queue.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="bottom-up-btn" class="t-btn__secondary" onclick="toggleTButton(this); bottomUp(this);"></div>
+                                    </div>
+                                </div>
+                                <div class="desktop-only i__base">
+                                    <div class="i__title fs-md">RH mode</div>
+                                    <div class="i__description fs-xs">Show queue on the right hand side.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="RH-mode-btn" class="t-btn__secondary" onclick="toggleTButton(this); RHModeBtn(this, false);"></div>
+                                    </div>
+                                </div>
+
+                                <div class="action-header">
+                                    <span class="action-header__title fs-lg">Behaviour</span>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Registered</div>
+                                    <div class="i__description fs-xs">Enable edits from registered users.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="registered-btn" class="t-btn__secondary" onclick="toggleTButton(this); registeredBtn(this);"></div>
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Anonymous</div>
+                                    <div class="i__description fs-xs">Enable edits from anonymous users.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="onlyanons-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyAnonsBtn(this);"></div>
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">New pages</div>
+                                    <div class="i__description fs-xs">Enable new pages creations.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="new-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); newPagesBtn(this);"></div>
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Only new pages</div>
+                                    <div class="i__description fs-xs">Enable only new page creations.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="onlynew-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyNewPagesBtn(this);"></div>
+                                    </div>
+                                </div>
+                                <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Small Wikis</div>
+                                    <div class="i__description fs-xs">Enable edits from small wikis.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="small-wikis-btn" class="t-btn__secondary" onclick="toggleTButton(this); smallWikisBtn(this);"></div>
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Less then 300 users</div>
+                                    <div class="i__description fs-xs">Enable edits from wikis with less then 300 active users.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
+                                    </div>
+                                </div>
+                                ';}?>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Queue limit</div>
+                                    <div class="i__description fs-xs">Max count of edits allowed to load in queue.</div>
+                                    <div class="i__content fs-sm">
+                                        <input id="max-queue" class="i-input__secondary secondary-placeholder fs-sm" name="max-queue" placeholder="No limit">
+                                    </div>
+                                </div>
+
+                                <div class="action-header">
+                                    <span class="action-header__title fs-lg">Filters</span>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Edits limit</div>
+                                    <div class="i__description fs-xs">Number of edits after which edits of user will be whitelisted.</div>
+                                    <div class="i__content fs-sm">
+                                        <input id="max-edits" class="i-input__secondary secondary-placeholder fs-sm" name="max-edits" placeholder="Max edits">
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Days limit</div>
+                                    <div class="i__description fs-xs">Account age in days after which edits of user will be whitelisted.</div>
+                                    <div class="i__content fs-sm">
+                                        <input id="max-days" class="i-input__secondary secondary-placeholder fs-sm" name="max-days" placeholder="Max days">
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Namespace filter</div>
+                                    <div class="i__description fs-xs">Add <a style="display: inline;" href="https://en.wikipedia.org/wiki/Help:MediaWiki_namespace" rel="noopener noreferrer" target="_blank">namespace</a> to filter edits in queue.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="btn-delete-ns" class="i-minus fs-sm">-</div>
+                                        <input id="ns-input" class="i-input__secondary secondary-placeholder fs-sm" name="" placeholder="Enter">
+                                        <div id="btn-add-ns" class="i-plus fs-sm">+</div>
+                                    </div>
+                                    <div class="i__extra">
+                                        <ul id="nsList" class="i-chip-list fs-sm"></ul>
+                                    </div>
+                                </div>
+                                <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Custom wikis</div>
+                                    <div class="i__description fs-xs">Add your home-wiki or wikis which are not in small wikis list.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="btn-bl-p-delete" class="i-minus fs-sm">-</div>
+                                        <input id="bl-p" class="i-input__secondary secondary-placeholder fs-sm" name="bl-p" placeholder="Enter">
+                                        <div id="btn-bl-p-add" class="i-plus fs-sm">+</div>
+                                    </div>
+                                    <div class="i__extra">
+                                        <ul id="blareap" class="i-chip-list fs-sm"></ul>
+                                    </div>
+                                </div>
+                                ';}?>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Users whitelist</div>
+                                    <div class="i__description fs-xs">Add users to skip their edits from queue.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="btn-wl-u-delete" class="i-minus fs-sm">-</div>
+                                        <input id="wladdu" class="i-input__secondary secondary-placeholder fs-sm" name="wladdu" placeholder="Enter">
+                                        <div id="btn-wl-u-add" class="i-plus fs-sm">+</div>
+                                    </div>
+                                    <div class="i__extra">
+                                        <ul id="wlareau" class="i-chip-list fs-sm"></ul>
+                                    </div>
+                                </div>
+                                <div class="i__base">
+                                    <div class="i__title fs-md">Wikis whitelist</div>
+                                    <div class="i__description fs-xs">Add wikis to skip their edits from queue.</div>
+                                    <div class="i__content fs-sm">
+                                        <div id="btn-wl-p-delete" class="i-minus fs-sm">-</div>
+                                        <input id="wladdp" class="i-input__secondary secondary-placeholder fs-sm" name="wladdp" placeholder="Enter">
+                                        <div id="btn-wl-p-add" class="i-plus fs-sm">+</div>
+                                    </div>
+                                    <div class="i__extra">
+                                        <ul id="wlareap" class="i-chip-list fs-sm"></ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!--pw Drawer-->
+                        <div id="settingsPWDrawer" class="pw__drawer secondary-scroll">
+                            <div class="action-header__sticky">
+                                <span class="action-header__title fs-lg">Info</span>
+                            </div>
+                            <div class="pw__drawer__content">
+                                <a class="fs-sm" id="luxo" href='https://tools.wmflabs.org/guc/?by=date&user={{selected.user}}' rel='noopener noreferrer' target='_blank'>Global contribs</a>
+                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{selected.user}}' rel='noopener noreferrer' target='_blank'>Central auth</a>
+                            </div>
+                            <div class="action-header__sticky">
+                                <span class="action-header__title fs-lg">Reports</span>
+                            </div>
+                            <div class="pw__drawer__content">
+                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Meta:Requests_for_help_from_a_sysop_or_bureaucrat' rel='noopener noreferrer' target='_blank'>Meta:RFH</a>
+                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Steward_requests/Miscellaneous' rel='noopener noreferrer' target='_blank'>SRM</a>
+                            </div>
+                            <div class="action-header__sticky">
+                                <span class="action-header__title fs-lg">Scripts, templates</span>
+                            </div>
+                            <div class="pw__drawer__content">
+                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Tagger' rel='noopener noreferrer' target='_blank'>Tagger</a>
+                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/User:Syum90/Warning_templates' rel='noopener noreferrer' target='_blank'>Warnings</a>
+                            </div>
+                            <div class="action-header__sticky">
+                                <span class="action-header__title fs-lg">Translators</span>
+                            </div>
+                            <div class="pw__drawer__content">
+                                <a class="fs-sm" href='https://translate.google.com/#auto/en/' rel='noopener noreferrer' target='_blank'>Google translator</a>
+                                <a class="fs-sm" href='https://translate.yandex.com/' rel='noopener noreferrer' target='_blank'>Yandex translator</a>
+                                <a class="fs-sm" href='http://www.online-translator.com' rel='noopener noreferrer' target='_blank'>Promt translator</a>
+                                <a class="fs-sm" href='https://www.bing.com/translator' rel='noopener noreferrer' target='_blank'>Bing translator</a>
+                                <a class="fs-sm" href='https://www.deepl.com/en/translator' rel='noopener noreferrer' target='_blank'>DeepL translator</a>
+                            </div>
+                            <div class="action-header__sticky">
+                                <span class="action-header__title fs-lg">Contact</span>
+                            </div>
+                            <div class="pw__drawer__content">
+                                <a class="fs-sm" href='http://webchat.freenode.net/?channels=%23countervandalism%2C%23cvn-sw' rel='noopener noreferrer' target='_blank'>IRC</a>
+                                <a class="fs-sm" href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord</a>
+                            </div>
+                            <?php if ($userSelf == "Ajbura" || $userSelf == "Iluvatar" || $userSelf == "1997kB") {
+                                echo '
+                                <div class="action-header__sticky">
+                                    <span class="action-header__title fs-lg">Control SWV</span>
+                                </div>
+                                <div class="pw__drawer__content">
+                                    <a class="fs-sm" href="https://tools.wmflabs.org/swviewer/php/control.php" rel="noopener noreferrer" target="_blank">Control panel</a>
+                                </div>';
+                            }?>
+                            
+                        </div>
+                        <!--pw Overlay-->
+                        <div id="settingsPWOverlay" class="pw__overlay" onclick="closePWDrawer('settingsPWDrawer', 'settingsPWOverlay')"></div>
                     </div>
+
+                    <!-- floating overlay --> 
+                    <div id="floatingOverlay" class="floating-overlay"></div>
                 </div>
-            </div>
-            <div id="summariesFooter" class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btn-cr-u-apply" ng-click="Revert();">Revert</button>
             </div>
         </div>
     </div>
-</div>
 
-<div id="editForm" class="popup-base" style="display: none;">
-	<div class="popup-header">
-		<div class="popup-title">Source code</div>
-		<div class="popup-control">
-			<div id="editForm-close-btn" class="svg-btn-base" title="Close [esc]">
-				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-				<path fill="#BBBBBB" d="M917.5,193.4l-86.9-86.9c-12-12-31.4-12-43.4,0L533.7,360c-12,12-31.4,12-43.4,0L236.8,106.5
-					c-12-12-31.4-12-43.4,0l-86.9,86.9c-12,12-12,31.4,0,43.4L360,490.3c12,12,12,31.4,0,43.4L106.5,787.2c-12,12-12,31.4,0,43.4
-					l86.9,86.9c12,12,31.4,12,43.4,0L490.3,664c12-12,31.4-12,43.4,0l253.5,253.5c12,12,31.4,12,43.4,0l86.9-86.9c12-12,12-31.4,0-43.4
-					L664,533.7c-12-12-12-31.4,0-43.4l253.5-253.5C929.5,224.8,929.5,205.4,917.5,193.4z"/>
-				</svg>
-			</div>
-			<div id="editForm-drawer-btn" class="popup-drawer-btn svg-btn-base">
-				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-				<path fill="#BBBBBB" d="M993.3,0H607.5c-8.1,0-15.9,3.2-21.7,9L21.7,573.1c-12,12-12,31.4,0,43.4l385.8,385.8c12,12,31.4,12,43.4,0
-					L1015,438.2c5.8-5.8,9-13.6,9-21.7V30.7C1024,13.7,1010.3,0,993.3,0z M768,364.8c-60.1,0-108.8-48.7-108.8-108.8
-					c0-60.1,48.7-108.8,108.8-108.8S876.8,195.9,876.8,256C876.8,316.1,828.1,364.8,768,364.8z"/>
-				</svg>
-			</div>
-		</div>
-	</div>
-		<div id="editFormBody" class="popup-body">
-		<div class="popup-body-left">
-			<div class="pbl-container">
-				<div class="pbl-content" style="overflow: hidden;">
-                	<textarea id="textpage" class="form-edit" title="Source code of page"></textarea>
-                </div>
-                <div class="pbl-input-container">
-                    <input id="summaryedit" class="pbl-input" title="Summary" placeholder="Briefly describe your changes.">
-                    <div id="editForm-save" class="pbl-input-send" ng-click="doEdit()" onclick="closeEditForm()" title="Publish changes">
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-                        <path d="M1016.4,246.8L778.6,9c-5.8-5.8-13.6-9-21.8-9H30.8C13.8,0,0,13.8,0,30.8v963.9c0,17,13.8,30.8,30.8,30.8
-                            h963.9c17,0,30.8-13.8,30.8-30.8V268.6C1025.4,260.4,1022.1,252.6,1016.4,246.8z M384.5,769c-70.8,0-128.2-57.4-128.2-128.2
-                            s57.4-128.2,128.2-128.2s128.2,57.4,128.2,128.2S455.3,769,384.5,769z M644.3,353.8c0,17-13.8,30.8-30.8,30.8H162.4
-                            c-17,0-30.8-13.8-30.8-30.8V158.9c0-17,13.8-30.8,30.8-30.8h451.2c17,0,30.8,13.8,30.8,30.8V353.8z"/>
-                        </svg>
+    <!-- customRevert | Popup-overlay -->
+    <div id="customRevert" class="po__base">
+        <div class="po__header action-header">
+            <span class="action-header__title fs-lg">Custom revert</span>
+            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePO()">
+                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+            </div>
+            <span class="desktop-only po__esc secondary-hover fs-md" onclick="closePO()">esc</span>
+        </div>
+        <div class="po__content">
+            <div class="po__content-body secondary-scroll">
+                <form id="summariesContainer" style="display: flex" ng-submit="Revert();">
+                    <input class="i-input__secondary secondary-placeholder fs-md" style="margin-right: 8px;" title="Reason" name="credit" id="credit" placeholder="Provide a reason."/>
+                    <button type="button" class="i-btn__accent accent-hover fs-md" id="btn-cr-u-apply" ng-click="Revert();">Revert</button>
+                </form>
+                <br>
+                <div class="i__base">
+                    <div class="i__title fs-md">Warn user</div>
+                    <div class="i__description fs-xs">Turning this on will left a warning on the user talk page after clicking common summaries (green only).</div>
+                    <div class="i__content fs-sm">
+                        <div id="warn-box" class="t-btn__secondary"></div>
                     </div>
                 </div>
-            </div>
-		</div>
-		<div id="editForm-drawer-shadow" class="popup-body-right-shadow" style="display: none; background-color: rgba(0,0,0,0);"></div>
-		<div id="editForm-drawer" class="popup-body-right" style="right: -50%; box-shadow: -8px 0 48px 0 rgba(0,0,0,0);">
-			<div id="btn-group-delete" class="popup-layer" >
-                            <div style="display: block; margin-bottom: 20px; margin-top: 5px" class="warn-box warn-on disabled" ng-click="requestsForm();">
-                                <label>Requests</label>
-                            </div>
-                            <div class="tag-heading" style="margin-bottom: 5px">Tag for deletion:
-                                <div id="warn-box-delete" class="warn-box warn-off" style="display: block; margin-bottom: 20px; margin-top: 5px">
-                                    <label id="check-label-delete">Warn OFF</label>
-                                </div>
-                            </div>
-          		<div id="delete-reason" ng-repeat="speedy in speedys track by $index" onclick="queueClick()">
-                            <a ng-click="selectSpeedy(speedy)" ng-style="speedyColor(speedy)">{{speedy.name}}</a>
-                        </div>
-                    </div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade requestsForm" id="requestsForm" tabindex="-1" role="dialog" aria-labelledby="requestsFormLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="display: inline-block" id="requestsFormLabel">Requests</h4>
-            </div>
-            <div class="modal-body">
-
-                <div class="panel panel-default" style="margin-top: 8px;">
-                    <div style="width:100%; white-space: nowrap;">
-
-                        <div style="display: inline-block; width: calc(100% / 2);" id="reportDiffsLocal">
-                            <label for="request-block-text-local">Local</label>
-                            <input type="text" id="reportHeaderLocal" /><br>
-                            <textarea id="reportCommentLocal" style="display: block; width: 100%;"></textarea><br>
-                            <button id="request-btn-block-send-l" ng-click="sendReportLocal()"; style="display:block">Send</button>
-                        </div>
-
-                        <div style="display: inline-block; width: calc(100% / 2);" id="reportDiffs">
-                            <label for="request-block-text-global">Global</label>
-                            <input type="text" id="reportHeader" /><br>
-                            <textarea id="reportComment" style="display: block; width: 100%;"></textarea><br>
-                            <button id="request-btn-block-send-g" ng-click="reqBlockG();" style="display:block">Send</button>
-                        </div>
-                       
-                       <hr>
-
-                       <div style="display: inline-block; width: calc(100% / 2);" id="protectDiffsLocal">
-                            <label for="request-block-text-local">Local protect</label>
-                            <input type="text" id="protectHeaderLocal" /><br>
-                            <textarea id="protectCommentLocal" style="display: block; width: 100%;"></textarea><br>
-                            <button id="request-btn-protect-send-l" ng-click="sendRequestProtect();" style="display:block">Send</button>
-                       </div>
-
-                       <div style="display: inline-block; width: calc(100% / 2);" id="othersDiffsGlobal">
-                            <label for="request-block-text-local">Global miscellaneous</label>
-                            <input type="text" id="othersHeaderGlobal" /><br>
-                            <textarea id="othersCommentGlobal" style="display: block; width: 100%;"></textarea><br>
-                            <button id="request-btn-others-send-g" ng-click="reqOthersG();" style="display:block">Send</button>
-                       </div>
-
-                   </div>
-               </div>
-           </div>
-       </div>
-   </div>
-</div>
-
-
-<!-- Main settings form -->
-<div id="settings" class="popup-base" style="display: none;">
-	<div class="popup-header">
-		<p class="popup-title">Settings</p>
-		<div class="popup-control">
-            <div id="btn-unlogin" class="svg-btn-base" title="Sign out [u]">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-                    x="0px" y="0px" viewBox="0 0 90.3 97" enable-background="new 0 0 90.3 97" xml:space="preserve">
-                <g>
-                    <path fill="#FFFFFF" d="M48.1,53.3h-6.3c-1.6,0-2.9-1.3-2.9-2.9V2.9c0-1.6,1.3-2.9,2.9-2.9h6.3C49.7,0,51,1.3,51,2.9v47.5
-                        C51,52,49.7,53.3,48.1,53.3z"/>
-                    <path fill="#FFFFFF" d="M76.9,21.3c-3.3-3.2-7.2-6-11.4-8.1c-1.8-0.9-3.9,0.4-3.9,2.4v12.5c0,0.8,0.4,1.6,1.1,2.1
-                        c1,0.7,1.9,1.5,2.8,2.3c5.2,5.1,8.7,12.2,8.7,20.1C74.1,68.3,61.3,81,45.4,81c-8,0-15.1-3.2-20.3-8.3c-5.2-5.1-8.4-12.2-8.4-20.1
-                        c0-7.8,2.7-14.9,8-20.1c0.8-0.8,1.7-1.6,2.7-2.3c0.7-0.5,1-1.3,1-2.1V15.4c0-2-2.1-3.3-3.9-2.4C10.1,20.4,0,35.4,0,52.6
-                        C0,64.9,5.3,76,13.4,84c8.2,8,19.5,13,32,13s23.7-5,31.9-13c8.2-8,13-19.1,13-31.4S85,29.3,76.9,21.3z"/>
-                </g>
-                </svg>
-            </div>
-			<div id="settings-close-btn" class="svg-btn-base" title="Close [esc]">
-				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-				<path fill="#BBBBBB" d="M917.5,193.4l-86.9-86.9c-12-12-31.4-12-43.4,0L533.7,360c-12,12-31.4,12-43.4,0L236.8,106.5
-					c-12-12-31.4-12-43.4,0l-86.9,86.9c-12,12-12,31.4,0,43.4L360,490.3c12,12,12,31.4,0,43.4L106.5,787.2c-12,12-12,31.4,0,43.4
-					l86.9,86.9c12,12,31.4,12,43.4,0L490.3,664c12-12,31.4-12,43.4,0l253.5,253.5c12,12,31.4,12,43.4,0l86.9-86.9c12-12,12-31.4,0-43.4
-					L664,533.7c-12-12-12-31.4,0-43.4l253.5-253.5C929.5,224.8,929.5,205.4,917.5,193.4z"/>
-				</svg>
-			</div>
-			<div id="settings-drawer-btn" class="popup-drawer-btn svg-btn-base">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-                    x="0px" y="0px" viewBox="0 0 100 84" enable-background="new 0 0 100 84" xml:space="preserve">
-                <g>
-                    <path fill="#FFFFFF" d="M97,51H3c-1.7,0-3-1.3-3-3V36c0-1.7,1.3-3,3-3h94c1.7,0,3,1.3,3,3v12C100,49.7,98.7,51,97,51z"/>
-                    <path fill="#FFFFFF" d="M97,84H3c-1.7,0-3-1.3-3-3V69c0-1.7,1.3-3,3-3h94c1.7,0,3,1.3,3,3v12C100,82.7,98.7,84,97,84z"/>
-                    <path fill="#FFFFFF" d="M97,18H3c-1.7,0-3-1.3-3-3V3c0-1.7,1.3-3,3-3h94c1.7,0,3,1.3,3,3v12C100,16.7,98.7,18,97,18z"/>
-                </g>
-                </svg>
-			</div>
-		</div>
-	</div>
-	<div class="popup-body">
-		<div class="popup-body-left">
-			<div class="popup-layer">
-				<div>
-                    <div class="i-select-base">
-                        <div class="i-select-lb-container">
-                            <div class="i-select-lable-container">Theme</div>
-                            <div class="i-select-container">
-                                <select id="themeSelector">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="i-select-disc-container">Change theme.</div>
-                    </div>
-                    <div class="i-btn-base">
-                        <div class="i-btn-lb-container">
-                            <div class="i-btn-lable-container">Bottom-up</div>
-                            <div class="i-btn-container">
-                                <div id="bottom-up-btn" class="i-btn-oval" style="padding-left: 2.5px;">
-                                    <div class="i-btn-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="i-btn-disc-container">Show edits from bottom to up direction in queue.</div>
-                    </div>
-                    <div class="i-btn-base">
-                        <div class="i-btn-lb-container">
-                            <div class="i-btn-lable-container">Sound</div>
-                            <div class="i-btn-container">
-                                <div id="sound-btn" class="i-btn-oval" style="padding-left: 2.5px;">
-                                    <div class="i-btn-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="i-btn-disc-container">Turn new edit load sound.</div>
-                    </div>
-                    <div class="i-btn-base">
-                        <div class="i-btn-lb-container">
-                            <div class="i-btn-lable-container">Registered</div>
-                            <div class="i-btn-container">
-                                <div id="registered-btn" class="i-btn-oval" style="padding-left: 2.5px;">
-                                    <div class="i-btn-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="i-btn-disc-container">Enable edits from registered users.</div>
-                    </div>
-                    <div class="i-btn-base">
-                        <div class="i-btn-lb-container">
-                            <div class="i-btn-lable-container">New pages</div>
-                            <div class="i-btn-container">
-                                <div id="new-pages-btn" class="i-btn-oval" style="padding-left: 2.5px;">
-                                    <div class="i-btn-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="i-btn-disc-container">Enable new page creations.</div>
-                    </div>
-                    <div class="i-btn-base">
-                        <div class="i-btn-lb-container">
-                            <div class="i-btn-lable-container">Only new pages</div>
-                            <div class="i-btn-container">
-                                <div id="onlynew-pages-btn" class="i-btn-oval" style="padding-left: 2.5px;">
-                                    <div class="i-btn-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="i-btn-disc-container">Enable only new page creations.</div>
-                    </div>
-                    <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
-                    <div class="i-btn-base">
-                        <div class="i-btn-lb-container">
-                            <div class="i-btn-lable-container">Small Wikis</div>
-                            <div class="i-btn-container">
-                                <div id="small-wikis-btn" class="i-btn-oval" style="padding-left: 2.5px;">
-                                    <div class="i-btn-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="i-btn-disc-container">Enable edits from small wikis.</div>
-                    </div>
-                    <div class="i-btn-base">
-                        <div class="i-btn-lb-container">
-                            <div class="i-btn-lable-container">Less then 300 users</div>
-                            <div class="i-btn-container">
-                                <div id="lt-300-btn" class="i-btn-oval" style="padding-left: 2.5px;">
-                                    <div class="i-btn-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="i-btn-disc-container">Enable edits from wikis with less then 300 active users.</div>
-                    </div>
-                    ';}?>
-                    <div class="i-input-base">
-                    	<div class="i-input-li-container">
-                    		<div class="i-input-lable-container">Edits limit</div>
-                    		<div class="i-input-container">
-                    			<input id="max-edits" name="max-edits" placeholder="Max edits">
-                    		</div>
-                    	</div>
-                    	<div class="i-input-disc-container">Number of edits after which edits of user will be whitelisted.</div>
-                    </div>
-                    <div class="i-input-base">
-                    	<div class="i-input-li-container">
-                    		<div class="i-input-lable-container">Days limit</div>
-                    		<div class="i-input-container">
-                    			<input id="max-days" name="max-days" placeholder="Max days">
-                    		</div>
-                    	</div>
-                    	<div class="i-input-disc-container">Account age in days after which edits of user will be whitelisted.</div>
-                    </div>
-                    <div class="i-input-base">
-                    	<div class="i-input-li-container">
-                    		<div class="i-input-lable-container">Queue limit</div>
-                    		<div class="i-input-container">
-                    			<input id="max-queue" name="max-queue" placeholder="No limit">
-                    		</div>
-                    	</div>
-                    	<div class="i-input-disc-container">Max count of edits allowed to load in queue.</div>
-                    </div>
-                    <div class="i-input-base">
-                    	<div class="i-input-li-container">
-                    		<div class="i-input2-lable-container">Namespace filter</div>
-                    		<div class="i-input2-container">
-                    			<div id="btn-delete-ns" class="minus-input">-</div>
-                    			<input id="ns-input" name="" placeholder="Enter">
-                    			<div id="btn-add-ns" class="plus-input">+</div>
-                    		</div>
-                    	</div>
-                    	<div class="i-input-disc-container">
-                    		Add <a style="display: inline;" href="https://en.wikipedia.org/wiki/Help:MediaWiki_namespace" target="_blank">namespace</a> to filter edits in queue.
-                    		<ul id="nsList" class="i-input-disc-list"></ul>
-                    	</div>
-                    </div>
-                    <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
-                    <div class="i-input-base">
-                    	<div class="i-input-li-container">
-                    		<div class="i-input2-lable-container">Custom wikis</div>
-                    		<div class="i-input2-container">
-                    			<div id="btn-bl-p-delete" class="minus-input">-</div>
-                    			<input id="bl-p" name="bl-p" placeholder="Enter">
-                    			<div id="btn-bl-p-add" class="plus-input">+</div>
-                    		</div>
-                    	</div>
-                    	<div class="i-input-disc-container">
-                    		Add your home-wiki or wikis which are not in small wikis list.
-                    		<ul id="blareap" class="i-input-disc-list"></ul>
-                    	</div>
-                    </div>
-                    ';}?>
-                    <div class="i-input-base">
-                    	<div class="i-input-li-container">
-                    		<div class="i-input2-lable-container">Users whitelist</div>
-                    		<div class="i-input2-container">
-                    			<div id="btn-wl-u-delete" class="minus-input">-</div>
-                    			<input id="wladdu" name="wladdu" placeholder="Enter">
-                    			<div id="btn-wl-u-add" class="plus-input">+</div>
-                    		</div>
-                    	</div>
-                    	<div class="i-input-disc-container">
-                    		Add users to skip their edits from queue.
-                    		<ul id="wlareau" class="i-input-disc-list"></ul>
-                    	</div>
-                    </div>
-                    <div class="i-input-base">
-                    	<div class="i-input-li-container">
-                    		<div class="i-input2-lable-container">Wikis whitelist</div>
-                    		<div class="i-input2-container">
-                    			<div id="btn-wl-p-delete" class="minus-input">-</div>
-                    			<input id="wladdp" name="wladdp" placeholder="Enter">
-                    			<div id="btn-wl-p-add" class="plus-input">+</div>
-                    		</div>
-                    	</div>
-                    	<div class="i-input-disc-container">
-                    		Add wikis to skip their edits from queue.
-                    		<ul id="wlareap" class="i-input-disc-list"></ul>
-                    	</div>
-                    </div>
-		        </div>
-		    </div>
-		</div>
-        <div id="settings-drawer-shadow" class="popup-body-right-shadow" style="display: none; background-color: rgba(0,0,0,0);"></div>
-		<div id="settings-drawer" class="popup-body-right" style="right: -50%; box-shadow: -8px 0 48px 0 rgba(0,0,0,0);">
-			<div class="popup-layer">
-	            <label>Info</label>
-	            <a id="luxo" href='https://tools.wmflabs.org/guc/?by=date&user={{selected.user}}' rel='noopener noreferrer'
-	               target='_blank'>Global contribs</a>
-	            <a href='https://tools.wmflabs.org/rangecontrib/?wiki=' rel='noopener noreferrer' target='_blank'>Range
-	                contribs</a>
-	            <a href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{selected.user}}'
-	               rel='noopener noreferrer' target='_blank'>SUL</a><br>
-	            <label>Reports</label>
-	            <a href='https://meta.wikimedia.org/wiki/Meta:Requests_for_help_from_a_sysop_or_bureaucrat'
-	               rel='noopener noreferrer' target='_blank'>Vandalism on Meta</a>
-	            <a href='https://meta.wikimedia.org/wiki/Steward_requests/Miscellaneous' rel='noopener noreferrer'
-	               target='_blank'>Steward request (Miscellaneous)</a><br>
-	            <label>Scripts, templates</label>
-	            <a href='https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Tagger' rel='noopener noreferrer'
-	               target='_blank'>Tagger</a>
-	            <a href='https://meta.wikimedia.org/wiki/User:Syum90/Warning_templates' rel='noopener noreferrer'
-	               target='_blank'>Warning templates</a><br>
-	            <label>Translators</label>
-	            <a href='https://translate.google.com/#auto/en/' rel='noopener noreferrer' target='_blank'>Google
-	                translator</a>
-	            <a href='https://translate.yandex.com/' rel='noopener noreferrer' target='_blank'>Yandex
-	                translator</a>
-	            <a href='http://www.online-translator.com' rel='noopener noreferrer' target='_blank'>Promt
-	                translator</a>
-	            <a href='https://www.bing.com/translator' rel='noopener noreferrer' target='_blank'>Bing
-	                translator</a>
-	            <a href='https://www.deepl.com/en/translator' rel='noopener noreferrer' target='_blank'>DeepL
-	                translator</a><br>
-	            <label>IRC</label>
-	            <a href='http://webchat.freenode.net/?channels=%23countervandalism%2C%23cvn-sw'
-	               rel='noopener noreferrer' target='_blank'>Join to IRC</a><?php if ($userSelf == "Ajbura" || $userSelf == "Iluvatar" || $userSelf == "1997kB") echo "<br>
-	            <label>Control SWV</label>
-	            <a href='https://tools.wmflabs.org/swviewer/php/control.php'
-	               rel='noopener noreferrer' target='_blank'>Control panel</a>";?>
-          	</div>
-		</div>
-	</div>
-</div>
-
-<!-- Talk page form -->
-
-<div id="talkForm" class="popup-base" style="display: none;">
-	<div class="popup-header">
-		<div class="popup-title">Talk</div>
-		<div class="popup-control">
-			<div id="talk-close-btn" class="svg-btn-base" title="Close [esc]">
-				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-				<path fill="#BBBBBB" d="M917.5,193.4l-86.9-86.9c-12-12-31.4-12-43.4,0L533.7,360c-12,12-31.4,12-43.4,0L236.8,106.5
-					c-12-12-31.4-12-43.4,0l-86.9,86.9c-12,12-12,31.4,0,43.4L360,490.3c12,12,12,31.4,0,43.4L106.5,787.2c-12,12-12,31.4,0,43.4
-					l86.9,86.9c12,12,31.4,12,43.4,0L490.3,664c12-12,31.4-12,43.4,0l253.5,253.5c12,12,31.4,12,43.4,0l86.9-86.9c12-12,12-31.4,0-43.4
-					L664,533.7c-12-12-12-31.4,0-43.4l253.5-253.5C929.5,224.8,929.5,205.4,917.5,193.4z"/>
-				</svg>
-			</div>
-			<div id="talk-drawer-btn" class="popup-drawer-btn svg-btn-base">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-                    x="0px" y="0px" viewBox="0 0 101 73.3" enable-background="new 0 0 101 73.3" xml:space="preserve">
-                <g>
-                    <g>
-                        <path fill="#FFFFFF" d="M101.5,77.3v6.8H81v-6.4c0-13.6-7.1-25.6-17.8-32.4h6.3C87.2,45.3,101.5,59.7,101.5,77.3z"/>
-                    </g>
-                    <g>
-                        <path fill="#FFFFFF" d="M81.5,17.5C81.5,27.2,73.7,35,64,35c-3.1,0-6.1-0.8-8.6-2.3c3.5-4.1,5.6-9.4,5.6-15.2S58.9,6.4,55.4,2.3
-                            C57.9,0.8,60.9,0,64,0C73.7,0,81.5,7.8,81.5,17.5z"/>
-                    </g>
-                    <path fill="#FFFFFF" d="M75,77.3v6.8H0v-6.8c0-17.7,14.3-32,32-32h11C60.7,45.3,75,59.7,75,77.3z"/>
-                    <circle fill="#FFFFFF" cx="37.5" cy="17.5" r="17.5"/>
-                </g>
-                </svg>
-			</div>
-		</div>
-	</div>
-	<div class="popup-body">
-		<div class="popup-body-left">
-            <div class="pbl-container" style="padding-left: 0; padding-right: 0;">
-            	<div id="talk-content" class="pbl-content" style="padding-top: 11px; padding-left: 16px; padding-right: 16px;">
-                	<div id="form-talk" class="talk-list"></div>
-                </div>
-                <div class="pbl-input-container" style="padding: 0 16px;">
-                    <input id="phrase-send-talk" class="pbl-input" title="Text to sent" max-length="600" placeholder="What's on your mind?">
-                    <div id="btn-send-talk" class="pbl-input-send" title="Send">
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-                        <path d="M0,49.7v353c0,15.1,10.9,27.9,25.8,30.3l299.8,48.7c34.4,5.6,34.4,55,0,60.6L25.8,591
-                            C10.9,593.4,0,606.3,0,621.3v353c0,22.8,24,37.7,44.4,27.5l924.7-462.3c22.6-11.3,22.6-43.6,0-54.9L44.4,22.2C24,12,0,26.8,0,49.7z"
-                            />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-		</div>
-        <div id="talk-drawer-shadow" class="popup-body-right-shadow" style="display: block; background-color: rgba(0,0,0,.05);"></div>
-		<div id="talk-drawer" class="popup-body-right" style="right: 0px; box-shadow: -8px 0 48px 0 rgba(0,0,0,.2);">
-			<div id="users-talk" class="popup-layer">
-                <div class="user-container" ng-repeat="talkUser in users|unique: talkUser as filteredUsersTalk">
-                    <div class="user-talk" ng-click="selectTalkUsers(talkUser)">{{talkUser}}</div>
-                    <a class="user-talk-CA" href="https://meta.wikimedia.org/wiki/Special:CentralAuth/{{talkUser}}" target="_blank">CA</a>
-                </div>
-                <div ng-repeat="talkUserOffline in offlineUsers track by $index">
-                    <div class="user-talk" style="color: gray">{{talkUserOffline}}</div>
-                </div>
-            </div>
-		</div>
-	</div>
-</div>
-
-
-<!------- Logs popup ------>
-<div id="logs" class="popup-base" style="display: none;">
-	<div class="popup-header">
-		<div class="popup-title">Logs</div>
-		<div class="popup-control">
-            <div id="logs-refresh-btn" class="svg-btn-base" title="Reload">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-                    x="0px" y="0px" viewBox="0 0 84 95.9" enable-background="new 0 0 84 95.9" xml:space="preserve">
-                <path fill="#FFFFFF" d="M42.1,11.9V3c0-2.7-3.2-4-5.1-2.1L20.2,17.6c-1.2,1.2-1.2,3.1,0,4.2L37,38.6c1.9,1.9,5.1,0.6,5.1-2.1v-8.6
-                    c15.3,0.1,27.5,13.4,25.7,29C66.5,68.8,56.9,78.4,45,79.7c-15.7,1.7-29-10.5-29-25.8c0-3.8,0.8-7.5,2.4-10.8
-                    c0.5-1.1,0.3-2.5-0.6-3.4l-7.4-7.4c-1.4-1.4-3.7-1.1-4.7,0.6C1.8,39.4-0.2,47,0,55.1C0.7,77.1,18.5,95,40.4,95.9
-                    C64.3,96.7,84,77.6,84,53.9C84,30.7,65.3,12,42.1,11.9z"/>
-                </svg>
-            </div>
-			<div id="logs-close-btn" class="svg-btn-base" title="Close [esc]">
-				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-				<path fill="#BBBBBB" d="M917.5,193.4l-86.9-86.9c-12-12-31.4-12-43.4,0L533.7,360c-12,12-31.4,12-43.4,0L236.8,106.5
-					c-12-12-31.4-12-43.4,0l-86.9,86.9c-12,12-12,31.4,0,43.4L360,490.3c12,12,12,31.4,0,43.4L106.5,787.2c-12,12-12,31.4,0,43.4
-					l86.9,86.9c12,12,31.4,12,43.4,0L490.3,664c12-12,31.4-12,43.4,0l253.5,253.5c12,12,31.4,12,43.4,0l86.9-86.9c12-12,12-31.4,0-43.4
-					L664,533.7c-12-12-12-31.4,0-43.4l253.5-253.5C929.5,224.8,929.5,205.4,917.5,193.4z"/>
-				</svg>
-            </div>
-		</div>
-	</div>
-	<div class="popup-body">
-        <div class="pbl-container" style="padding-left: 0; padding-right: 0;">
-            <div class="pbl-content" style="padding-left: 16px; padding-right: 16px;">
-                <div id="logsBox"></div>
-                <div class="log-box-btn-container">
-                    <button id="prevLogs" style="display: none;">Previous</button>
-                    <button id="nextLogs" style="display: none;">Next</button>
-                </div>
-            </div>
-            <div class="pbl-input-container" style="padding: 0 16px; position: relative;">
-                <select id="actionSelector">
-                    <option value="">All actions</option>
-                    <option value="rollback">Rollback</option>
-                    <option value="delete">Delete</option>
-                    <option value="edit">Edit</option>
-                    <option value="warn">Warn</option>
-                    <option value="report">Report</option>
-                </select>
-                <input id="search-input" class="pbl-input" style="padding-left: 90px;" title="search logs" max-length="600" placeholder="Search for user or wiki.">
-                <div id="btn-searchLogs" class="pbl-input-send" title="Search">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-                        x="0px" y="0px" viewBox="0 0 98.9 98.5" enable-background="new 0 0 98.9 98.5"xml:space="preserve">
-                    <path d="M71.9,65.8L71.9,65.8l-5-5C72,54.4,75,46.3,75,37.5C75,16.7,57.6-0.4,36.8,0C15.6,0.4-1.3,18.4,0.1,40
-                        c1.2,18.6,16.2,33.6,34.8,34.9c10,0.7,19.3-2.6,26.4-8.4l5,5l0,0c-0.9,0.9-0.9,2.3,0,3.2l23,23c1.2,1.2,3.1,1.2,4.2,0L98,93
-                        c1.2-1.2,1.2-3.1,0-4.2l-23-23C74.2,64.9,72.8,64.9,71.9,65.8z M37.5,57C26.7,57,18,48.3,18,37.5S26.7,18,37.5,18S57,26.7,57,37.5
-                        S48.3,57,37.5,57z"/>
-                    </svg>
+                <label class="fs-md">Common Summaries:</label>
+                <div class="panel-cr-reasons" ng-repeat="description in descriptions track by $index" onclick="queueClick()">
+                    <div class="fs-sm" ng-style="descriptionColor(description)" ng-click="selectDescription(description)">{{description.name}}</div>
                 </div>
             </div>
         </div>
-	</div>
-</div>
+    </div>
+
+    <!-- Local requests | Popup-overlay -->
+    <div id="localRequests" class="po__base">
+        <div class="po__header action-header">
+            <span class="action-header__title fs-lg">Local Requests</span>
+            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePO()">
+                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+            </div>
+            <span class="desktop-only po__esc secondary-hover fs-md" onclick="closePO()">esc</span>
+        </div>
+        <div class="po__content">
+            <div class="po__content-body secondary-scroll" style="padding-top: 0;">
+                <div id="reportDiffsLocal">
+                    <label class="fs-md" style="padding-top: var(--side-padding);">Local blocks</label>
+                    <input id="reportHeaderLocal"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
+                    <textarea id="reportCommentLocal" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
+                    <div id="request-btn-block-send-l" class="i-btn__accent accent-hover fs-md" ng-click="sendReportLocal();">Send</div>
+                </div>
+                <div id="protectDiffsLocal">
+                    <label class="fs-md" style="padding-top: var(--side-padding);">Local protect</label>
+                    <input id="protectHeaderLocal"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
+                    <textarea id="protectCommentLocal" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
+                    <div id="request-btn-protect-send-l" class="i-btn__accent accent-hover fs-md" ng-click="sendRequestProtect();">Send</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Global requests | Popup-overlay -->
+    <div id="globalRequests" class="po__base">
+        <div class="po__header action-header">
+            <span class="action-header__title fs-lg">Global Requests</span>
+            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePO()">
+                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+            </div>
+            <span class="desktop-only po__esc secondary-hover fs-md" onclick="closePO()">esc</span>
+        </div>
+        <div class="po__content">
+            <div class="po__content-body secondary-scroll" style="padding-top: 0;">
+                <div id="reportDiffs">
+                    <label class="fs-md" style="padding-top: var(--side-padding);">Global locks</label>
+                    <input id="reportHeader"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
+                    <textarea id="reportComment" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
+                    <div id="request-btn-block-send-g" class="i-btn__accent accent-hover fs-md" ng-click="reqBlockG();">Send</div>
+                </div>
+                <div id="othersDiffsGlobal">
+                    <label class="fs-md" style="padding-top: var(--side-padding);">Global miscellaneous</label>
+                    <input id="othersHeaderGlobal"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
+                    <textarea id="othersCommentGlobal" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
+                    <div id="request-btn-others-send-g" class="i-btn__accent accent-hover fs-md" ng-click="reqOthersG();">Send</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global requests | Popup-overlay -->
+    <div id="about" class="po__base">
+        <div class="po__header action-header">
+            <span class="action-header__title fs-lg">About</span>
+            <div class="mobile-only secondary-hover" title="Close [esc]" onclick="closePO()">
+                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
+            </div>
+            <span class="desktop-only po__esc secondary-hover fs-md" onclick="closePO()">esc</span>
+        </div>
+        <div class="po__content">
+            <div class="po__content-body secondary-scroll">
+                <div class="fs-md">
+                        SWViewer: see <a href='https://meta.wikimedia.org/wiki/SWViewer' rel='noopener noreferrer' target='_blank'>documentation page</a>.<br><br>
+    
+                        Any questions, please <a href='https://meta.wikimedia.org/wiki/Talk:SWViewer' rel='noopener noreferrer' target='_blank'>ask here</a>.<br><br>
+    
+                        Privacy: Application saves only name of your account, your internal app settings, your actions via app (see 'logs'), count of logins to app, count of app opens, date of last login to app and contents of the chat.<br><br>
+    
+                        Licensing:<br>
+                        Copyright &#169; mainteiners of SWViewer, 2017-2019<br><br>
+    
+                        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>
+    
+                        The above copyright notice and this permission notice shall be included in all
+                        copies or substantial portions of the Software.<br><br>
+    
+                        THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br><br>
+    
+                        bump.mp3:<br>
+                        <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/Porphyr/sounds/208435/'>license and author of original file</a><br>
+                        message.mp3:<br>
+                        <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/elmasmalo1/sounds/377017/'>license and author of original file</a><br>
+                        privateMessage.mp3:<br>
+                        <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/rhodesmas/sounds/342749/'>license and author of original file</a><br>
+                        Auth and some API-requests are based on a <a rel='noopener noreferrer' target='_blank' href='https://tools.wmflabs.org/oauth-hello-world/index.php?action=download'>that code</a><br>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- po Overlay-->
+    <div id="POOverlay" class="po__overlay" onclick="closePO()"></div>
 </div>
 
 
@@ -910,8 +974,8 @@ var nsList2 = [];
 var countqueue = 0;
 var regdays = 5;
 var countedits = 100;
-var isSound = false;
-var diffSound = new Audio("sounds/clap.mp3");
+var sound = 0;
+var newSound;
 var messageSound;
 var privateMessageSound;
 firstClick = false;
@@ -921,8 +985,10 @@ document.getElementById("mainapp-body").onclick = function() {
         firstClick = true;
         messageSound = new Audio("sounds/message.mp3");
         privateMessageSound = new Audio("sounds/privateMessage.mp3");
+        newSound = new Audio("sounds/bump.mp3");
         messageSound.load();
         privateMessageSound.load();
+        newSound.load();
     }
 };
 
@@ -952,46 +1018,61 @@ settingslist = JSON.parse(settingslist);
 <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
 if (settingslist['swmt'] !== null && (typeof settingslist['swmt'] !== 'undefined') && settingslist['swmt'] !== '')
     if ((settingslist['swmt'] === '1' || settingslist['swmt'] === '2') && isGlobal === true)
-        toggleIBtn('small-wikis-btn', false);
+        toggleTButton(document.getElementById('small-wikis-btn'));
     if (settingslist['swmt'] === '2' && isGlobalModeAccess === true) {
-        toggleIBtn('small-wikis-btn', false);
+        toggleTButton(document.getElementById('small-wikis-btn'));
 }
 
 if (settingslist['users'] !== null && (typeof settingslist['users'] !== 'undefined') && settingslist['users'] !== '') {
     if ((settingslist['users'] === '1' || settingslist['users'] === '2') && isGlobal === true)
-        toggleIBtn('lt-300-btn', false);
+        toggleTButton(document.getElementById('lt-300-btn'));
     if (settingslist['users'] == '2' && isGlobalModeAccess === true)
-        toggleIBtn('lt-300-btn', false);
+        toggleTButton(document.getElementById('lt-300-btn'));
 }
 "; } ?>
 
 if (settingslist['registered'] !== null && (typeof settingslist['registered'] !== "undefined") && settingslist['regustered'] !== "") {
     if (settingslist['registered'] === "1")
-        toggleIBtn("registered-btn", false);
+        toggleTButton(document.getElementById('registered-btn'));
 }
 
-if (settingslist['new'] !== null && (typeof settingslist['new'] !== "undefined") && settingslist['new'] !== "") {
+ if (settingslist['new'] !== null && (typeof settingslist['new'] !== "undefined") && settingslist['new'] !== "") {
     if (settingslist['new'] === "1")
-        toggleIBtn("new-pages-btn", false);
-}
+        toggleTButton(document.getElementById('new-pages-btn'));
+ }
 
 if (settingslist['onlynew'] !== null && (typeof settingslist['onlynew'] !== "undefined") && settingslist['onlynew'] !== "") {
     if (settingslist['onlynew'] === "1")
-        toggleIBtn("onlynew-pages-btn", false);
+        toggleTButton(document.getElementById('onlynew-pages-btn'));
+}
+
+if (settingslist['onlyanons'] !== null && (typeof settingslist['onlyanons'] !== "undefined") && settingslist['onlyanons'] !== "") {
+    if (settingslist['onlyanons'] === "1")
+        toggleTButton(document.getElementById('onlyanons-btn'));
 }
 
 if (settingslist['direction'] !== null && (typeof settingslist['direction'] !== "undefined") && settingslist['direction'] !== "") {
     if (settingslist['direction'] === "1") {
         document.getElementById("queue").setAttribute("style", "display:flex; flex-direction:column-reverse");
-        toggleIBtn("bottom-up-btn", false);
+        toggleTButton(document.getElementById('bottom-up-btn'));
     }
 }
 
-if (settingslist['sound'] !== null && (typeof settingslist['sound'] !== "undefined") && settingslist['sound'] !== "") {
-    if (settingslist['sound'] === "1") {
-        isSound = true;
-        toggleIBtn("sound-btn", false);
+if (settingslist['rhand'] !== null && (typeof settingslist['rhand'] !== "undefined") && settingslist['rhand'] !== "") {
+    if (settingslist['rhand'] === "1") {
+        toggleTButton(document.getElementById("RH-mode-btn"));
+        RHModeBtn(document.getElementById('RH-mode-btn'), true);
     }
+}
+
+if (settingslist['mobile'] !== null && (typeof settingslist['mobile'] !== "undefined") && settingslist['mobile'] !== "") {
+    if (settingslist['mobile'] === "1" || settingslist['mobile'] === "2" || settingslist['mobile'] === "3" || settingslist['mobile'] === "0")
+        resizeDrawer(Number(settingslist['mobile']), true);
+}
+
+if (settingslist['sound'] !== null && (typeof settingslist['sound'] !== "undefined") && settingslist['sound'] !== "") {
+    sound = Number(settingslist['sound']);
+    document.getElementById("soundSelector").value = sound;
 }
 
 if (settingslist['editcount'] !== null && (typeof settingslist['editcount'] !== "undefined") && settingslist['editcount'] !== "") {
@@ -1120,100 +1201,81 @@ enderror = xhr.responseText;
 
 const THEME = {
     "Default": {
-        TYPE: 1,
-        FS_SM: '.8rem', FS_MD: '1.0rem', FS_LG: '1.5rem', FS_XL: '2rem',
-        BG_PRIMARY: '#212121', BG_LOW_PRIMARY: '#313131',
-        BG_SECONDARY: '#ffffff', BG_LOW_SECONDARY: '#ffffff',
-        TC_PRIMARY: '#ffffff', TC_LOW_PRIMARY: '#bbbbbb',
-        TC_SECONDARY: '#212121', TC_LOW_SECONDARY: '#424242', TC_LOW_SECONDARY_GLOBAL: '#000000',
-        LINK_COLOR: '#337ab7',
-        BG_PRIMARY_HOVER: 'rgba(255,255,255,.05)', BG_SECONDARY_HOVER: 'rgba(0,0,0,.05)',
-        PRIMARY_BORDER: 'rgba(255,255,255,.1)', SECONDARY_BORDER: 'rgba(0,0,0,.1)',
-        STR_THEME: '{--fs-sm: .8rem; --fs-md: 1.0rem; --fs-lg: 1.5rem; --fs-xl: 2rem; --bg-primary: #212121; --bg-lowPrimary: #313131; --bg-secondary: #ffffff; --bg-lowSecondary: #ffffff; --tc-primary: #ffffff; --tc-lowPrimary: #bbbbbb; --tc-secondary: #212121; --tc-lowSecondary: #424242; --tc-lowSecondaryGlobal: #000000; --link-color: #337ab7; --bg-primary-hover: rgba(255,255,255,.05); --bg-secondary-hover: rgba(0,0,0,.05); --primary-border: rgba(255,255,255,.1); --secondary-border: rgba(0,0,0,.1);}',
+        '--bc-primary': '#191919', '--bc-primary-low': '#212121', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-secondary': '#FFFFFF', '--bc-secondary-low': '#F4F4F4', '--bc-secondary-hover': 'rgba(0, 0, 0, .1)',
+        '--bc-accent': '#0063E4', '--bc-accent-hover': '#0056C7',
+        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
+        '--ic-primary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--ic-secondary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--tc-primary': 'rgba(255, 255, 255, 1)', '--tc-primary-low': 'rgba(255, 255, 255, .8)',
+        '--tc-secondary': 'rgba(0, 0, 0, 1)', '--tc-secondary-low': 'rgba(0, 0, 0, .7)',
+        '--tc-accent': 'rgba(255, 255, 255, 1)',
+        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
+        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
+        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
     },
     "Light": {
-        TYPE: 1,
-        FS_SM: '.8rem', FS_MD: '1.0rem', FS_LG: '1.5rem', FS_XL: '2rem',
-        BG_PRIMARY: '#eeeeee', BG_LOW_PRIMARY: '#eeeeee',
-        BG_SECONDARY: '#ffffff', BG_LOW_SECONDARY: '#ffffff',
-        TC_PRIMARY: '#212121', TC_LOW_PRIMARY: '#424242',
-        TC_SECONDARY: '#212121', TC_LOW_SECONDARY: '#424242', TC_LOW_SECONDARY_GLOBAL: '#000000',
-        LINK_COLOR: '#337ab7',
-        BG_PRIMARY_HOVER: 'rgba(0,0,0,.05)', BG_SECONDARY_HOVER: 'rgba(0,0,0,.05)',
-        PRIMARY_BORDER: 'rgba(0,0,0,.1)', SECONDARY_BORDER: 'rgba(0,0,0,.1)',
-        STR_THEME: '{--fs-sm: .8rem; --fs-md: 1.0rem; --fs-lg: 1.5rem; --fs-xl: 2rem; --bg-primary: #eeeeee; --bg-lowPrimary: #eeeeee; --bg-secondary: #ffffff; --bg-lowSecondary: #ffffff; --tc-primary: #212121; --tc-lowPrimary: #424242; --tc-secondary: #212121; --tc-lowSecondary: #424242; --tc-lowSecondaryGlobal: #000000; --link-color: #337ab7; --bg-primary-hover: rgba(0,0,0,.05); --bg-secondary-hover: rgba(0,0,0,.05); --primary-border: rgba(0,0,0,.1); --secondary-border: rgba(0,0,0,.1);}',
+        '--bc-primary': '#f6f6f6', '--bc-primary-low': '#efefef', '--bc-primary-hover': 'rgba(0, 0, 0, .1)',
+        '--bc-secondary': '#FFFFFF', '--bc-secondary-low': '#F4F4F4', '--bc-secondary-hover': 'rgba(0, 0, 0, .1)',
+        '--bc-accent': '#0063E4', '--bc-accent-hover': '#0056C7',
+        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
+        '--ic-primary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--ic-secondary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--tc-primary': 'rgba(0, 0, 0, 1)', '--tc-primary-low': 'rgba(0, 0, 0, .7)',
+        '--tc-secondary': 'rgba(0, 0, 0, 1)', '--tc-secondary-low': 'rgba(0, 0, 0, .7)',
+        '--tc-accent': 'rgba(255, 255, 255, 1)',
+        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
+        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
+        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
     },
     "Dark": {
-        TYPE: 0,
-        FS_SM: '.8rem', FS_MD: '1.0rem', FS_LG: '1.5rem', FS_XL: '2rem',
-        BG_PRIMARY: '#0b0b12', BG_LOW_PRIMARY: '#0b0b12',
-        BG_SECONDARY: '#0f0f19', BG_LOW_SECONDARY: '#0f0f19',
-        TC_PRIMARY: '#ffffff', TC_LOW_PRIMARY: '#bbbbbb',
-        TC_SECONDARY: '#ffffff', TC_LOW_SECONDARY: '#bbbbbb', TC_LOW_SECONDARY_GLOBAL: '#c3c3c3',
-        LINK_COLOR: '#337ab7',
-        BG_PRIMARY_HOVER: 'rgba(255,255,255,.05)', BG_SECONDARY_HOVER: 'rgba(255,255,255,.05)',
-        PRIMARY_BORDER: 'rgba(255,255,255,.05)', SECONDARY_BORDER: 'rgba(255,255,255,.05)',
-        STR_THEME: '{--fs-sm: .8rem; --fs-md: 1.0rem; --fs-lg: 1.5rem; --fs-xl: 2rem; --bg-primary: #0b0b12; --bg-lowPrimary: #0b0b12; --bg-secondary: #0f0f19; --bg-lowSecondary: #0f0f19; --tc-primary: #ffffff; --tc-lowPrimary: #bbbbbb; --tc-secondary: #ffffff; --tc-lowSecondary: #bbbbbb; --tc-lowSecondaryGlobal: #c3c3c3; --link-color: #337ab7; --bg-primary-hover: rgba(255,255,255,.05); --bg-secondary-hover: rgba(255,255,255,.05); --primary-border: rgba(255,255,255,.05); --secondary-border: rgba(255,255,255,.05);}',
-    },
-    "Pale orange": {
-        TYPE: 1,
-        FS_SM: '.8rem', FS_MD: '1.0rem', FS_LG: '1.5rem', FS_XL: '2rem',
-        BG_PRIMARY: '#ffe49c', BG_LOW_PRIMARY: '#ffe49c',
-        BG_SECONDARY: '#ffffff', BG_LOW_SECONDARY: '#ffffff',
-        TC_PRIMARY: '#212121', TC_LOW_PRIMARY: '#424242',
-        TC_SECONDARY: '#212121', TC_LOW_SECONDARY: '#424242', TC_LOW_SECONDARY_GLOBAL: '#000000',
-        LINK_COLOR: '#337ab7',
-        BG_PRIMARY_HOVER: 'rgba(0,0,0,.05)', BG_SECONDARY_HOVER: 'rgba(0,0,0,.05)',
-        PRIMARY_BORDER: 'rgba(0,0,0,.1)', SECONDARY_BORDER: 'rgba(0,0,0,.1)',
-        STR_THEME: '{--fs-sm: .8rem; --fs-md: 1.0rem; --fs-lg: 1.5rem; --fs-xl: 2rem; --bg-primary: #ffe49c; --bg-lowPrimary: #ffe49c; --bg-secondary: #ffffff; --bg-lowSecondary: #ffffff; --tc-primary: #212121; --tc-lowPrimary: #424242; --tc-secondary: #212121; --tc-lowSecondary: #424242; --tc-lowSecondaryGlobal: #000000; --link-color: #337ab7; --bg-primary-hover: rgba(0,0,0,.05); --bg-secondary-hover: rgba(0,0,0,.05); --primary-border: rgba(0,0,0,.1); --secondary-border: rgba(0,0,0,.1);}',
-    },
-    "Pale blue": {
-        TYPE: 1,
-        FS_SM: '.8rem', FS_MD: '1.0rem', FS_LG: '1.5rem', FS_XL: '2rem',
-        BG_PRIMARY: '#d8ecff', BG_LOW_PRIMARY: '#d8ecff',
-        BG_SECONDARY: '#ffffff', BG_LOW_SECONDARY: '#ffffff',
-        TC_PRIMARY: '#212121', TC_LOW_PRIMARY: '#424242',
-        TC_SECONDARY: '#212121', TC_LOW_SECONDARY: '#424242', TC_LOW_SECONDARY_GLOBAL: '#000000',
-        LINK_COLOR: '#337ab7',
-        BG_PRIMARY_HOVER: 'rgba(0,0,0,.05)', BG_SECONDARY_HOVER: 'rgba(0,0,0,.05)',
-        PRIMARY_BORDER: 'rgba(0,0,0,.1)', SECONDARY_BORDER: 'rgba(0,0,0,.1)',
-        STR_THEME: '{--fs-sm: .8rem; --fs-md: 1.0rem; --fs-lg: 1.5rem; --fs-xl: 2rem; --bg-primary: #d8ecff; --bg-lowPrimary: #d8ecff; --bg-secondary: #ffffff; --bg-lowSecondary: #ffffff; --tc-primary: #212121; --tc-lowPrimary: #424242; --tc-secondary: #212121; --tc-lowSecondary: #424242; --tc-lowSecondaryGlobal: #000000; --link-color: #337ab7; --bg-primary-hover: rgba(0,0,0,.05); --bg-secondary-hover: rgba(0,0,0,.05); --primary-border: rgba(0,0,0,.1); --secondary-border: rgba(0,0,0,.1);}',
-    },
-    "Onyx": {
-        TYPE: 0,
-        FS_SM: '.8rem', FS_MD: '1.0rem', FS_LG: '1.5rem', FS_XL: '2rem',
-        BG_PRIMARY: '#0f0f0f', BG_LOW_PRIMARY: '#131313',
-        BG_SECONDARY: '#0f0f0f', BG_LOW_SECONDARY: '#0f0f0f',
-        TC_PRIMARY: '#ffffff', TC_LOW_PRIMARY: '#bbbbbb',
-        TC_SECONDARY: '#ffffff', TC_LOW_SECONDARY: '#bbbbbb', TC_LOW_SECONDARY_GLOBAL: '#d5d5d5',
-        LINK_COLOR: '#337ab7',
-        BG_PRIMARY_HOVER: 'rgba(255,255,255,.05)', BG_SECONDARY_HOVER: 'rgba(255,255,255,.05)',
-        PRIMARY_BORDER: 'rgba(255,255,255,.05)', SECONDARY_BORDER: 'rgba(255,255,255,.05)',
-        STR_THEME: '{--fs-sm: .8rem; --fs-md: 1.0rem; --fs-lg: 1.5rem; --fs-xl: 2rem; --bg-primary: #0f0f0f; --bg-lowPrimary: #0f0f0f; --bg-secondary: #0f0f0f; --bg-lowSecondary: #0f0f0f; --tc-primary: #ffffff; --tc-lowPrimary: #bbbbbb; --tc-secondary: #ffffff; --tc-lowSecondary: #bbbbbb; --tc-lowSecondaryGlobal: #d5d5d5; --link-color: #337ab7; --bg-primary-hover: rgba(255,255,255,.05); --bg-secondary-hover: rgba(255,255,255,.05); --primary-border: rgba(255,255,255,.05); --secondary-border: rgba(255,255,255,.05);}',
+        '--bc-primary': '#0f1115', '--bc-primary-low': '#15171d', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-secondary': '#1c1e26', '--bc-secondary-low': '#21242c', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-accent': '#0050b8', '--bc-accent-hover': '#003c8a',
+        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
+        '--ic-primary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--ic-secondary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--tc-primary': 'rgba(255, 255, 255, 1)', '--tc-primary-low': 'rgba(255, 255, 255, .8)',
+        '--tc-secondary': 'rgba(255, 255, 255, 1)', '--tc-secondary-low': 'rgba(255, 255, 255, .8)',
+        '--tc-accent': 'rgba(255, 255, 255, 1)',
+        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
+        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
+        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
     },
     "AMOLED": {
-        TYPE: 0,
-        FS_SM: '.8rem', FS_MD: '1.0rem', FS_LG: '1.5rem', FS_XL: '2rem',
-        BG_PRIMARY: '#000000', BG_LOW_PRIMARY: '#050505',
-        BG_SECONDARY: '#000000', BG_LOW_SECONDARY: '#000000',
-        TC_PRIMARY: '#eeeeee', TC_LOW_PRIMARY: '#aaaaaa',
-        TC_SECONDARY: '#eeeeee', TC_LOW_SECONDARY: '#aaaaaa', TC_LOW_SECONDARY_GLOBAL: '#d5d5d5',
-        LINK_COLOR: '#337ab7',
-        BG_PRIMARY_HOVER: 'rgba(255,255,255,.05)', BG_SECONDARY_HOVER: 'rgba(255,255,255,.05)',
-        PRIMARY_BORDER: 'rgba(255,255,255,.05)', SECONDARY_BORDER: 'rgba(255,255,255,.05)',
-        STR_THEME: '{--fs-sm: .8rem; --fs-md: 1.0rem; --fs-lg: 1.5rem; --fs-xl: 2rem; --bg-primary: #000000; --bg-lowPrimary: #050505; --bg-secondary: #000000; --bg-lowSecondary: #000000; --tc-primary: #eeeeee; --tc-lowPrimary: #aaaaaa; --tc-secondary: #eeeeee; --tc-lowSecondary: #aaaaaa; --tc-lowSecondaryGlobal: #d5d5d5; --link-color: #337ab7; --bg-primary-hover: rgba(255,255,255,.05); --bg-secondary-hover: rgba(255,255,255,.05); --primary-border: rgba(255,255,255,.05); --secondary-border: rgba(255,255,255,.05);}',
-    },
-};
-var currentTheme = THEME["Default"];
+        '--bc-primary': '#000000', '--bc-primary-low': '#050505', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-secondary': '#000000', '--bc-secondary-low': '#111111', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-accent': '#0050b8', '--bc-accent-hover': '#003c8a',
+        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
+        '--ic-primary': 'invert(0.85) sepia(1) saturate(68) hue-rotate(175deg)',
+        '--ic-secondary': 'invert(0.85) sepia(1) saturate(68) hue-rotate(175deg)',
+        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
+        '--tc-primary': 'rgba(198, 225, 255, 1)', '--tc-primary-low': 'rgba(198, 225, 255, .8)',
+        '--tc-secondary': 'rgba(198, 225, 255, 1)', '--tc-secondary-low': 'rgba(198, 225, 255, .8)',
+        '--tc-accent': 'rgba(255, 255, 255, 1)',
+        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
+        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
+        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
+    }
+}
 
 function loadThemeList() {
     for(name in Object.keys(THEME)) {
         var option = document.createElement('option');
-        option.classList.add('theme-select-options');
         option.innerHTML = Object.keys(THEME)[name];
         document.getElementById('themeSelector').appendChild(option);
     }
 };
+function getStrTheme(THEME) {
+    let strTheme = '{';
+    Object.keys(THEME).forEach((item) => {
+        strTheme = strTheme + item + ':' + THEME[item] + ';';
+    });
+    return strTheme + '}';
+}
 function setStrTheme(str, THEME) {
     var newFront = str.substring( 0, str.indexOf(":root") + ":root".length);
     var remain = str.substring(str.indexOf(":root") + ":root".length, str.length);
@@ -1222,77 +1284,227 @@ function setStrTheme(str, THEME) {
     return newFront + THEME + newEnd;
 };
 function setTheme(THEME) {
-    currentTheme = THEME;
     let root = document.documentElement;
-    root.style.setProperty('--fs-sm', THEME.FS_SM);
-    root.style.setProperty('--fs-md', THEME.FS_MD);
-    root.style.setProperty('--fs-lg', THEME.FS_LG);
-    root.style.setProperty('--fs-xl', THEME.FS_XL);
-    root.style.setProperty('--bg-primary', THEME.BG_PRIMARY);
-    root.style.setProperty('--bg-lowPrimary', THEME.BG_LOW_PRIMARY);
-    root.style.setProperty('--bg-secondary', THEME.BG_SECONDARY);
-    root.style.setProperty('--bg-lowSecondary', THEME.BG_LOW_SECONDARY);
-    root.style.setProperty('--tc-primary', THEME.TC_PRIMARY);
-    root.style.setProperty('--tc-lowPrimary', THEME.TC_LOW_PRIMARY);
-    root.style.setProperty('--tc-secondary', THEME.TC_SECONDARY);
-    root.style.setProperty('--tc-lowSecondary', THEME.TC_LOW_SECONDARY);
-    root.style.setProperty('--tc-lowSecondaryGlobal', THEME.TC_LOW_SECONDARY_GLOBAL);
-    root.style.setProperty('--link-color', THEME.LINK_COLOR);
-    root.style.setProperty('--bg-primary-hover', THEME.BG_PRIMARY_HOVER);
-    root.style.setProperty('--bg-secondary-hover', THEME.BG_SECONDARY_HOVER);
-    root.style.setProperty('--primary-border', THEME.PRIMARY_BORDER);
-    root.style.setProperty('--secondary-border', THEME.SECONDARY_BORDER);
+
+    Object.keys(THEME).forEach((item) => {
+        root.style.setProperty(item, THEME[item]);
+    });
     
     /*-----chrome address bar color-------*/
-    $('meta[name=theme-color]').attr('content', THEME.BG_PRIMARY);
+    $('meta[name=theme-color]').attr('content', THEME['--bc-primary']);
 
     /*-----Send theme to iframes-------*/
-    var welcomeIF = document.getElementById("page-welcome").contentWindow;
-    welcomeIF.postMessage(THEME, "*");
-    diffstart = setStrTheme(diffstart, THEME.STR_THEME);
-    newstart = setStrTheme(newstart, THEME.STR_THEME);
-    starterror = setStrTheme(starterror, THEME.STR_THEME);
+    let strTheme = getStrTheme(THEME);
+
+    // var welcomeIF = document.getElementById("page-welcome").contentWindow;
+    // welcomeIF.postMessage(THEME, "*");
+
+    diffstart = setStrTheme(diffstart, strTheme);
+    newstart = setStrTheme(newstart, strTheme);
+    starterror = setStrTheme(starterror, strTheme);
     if(document.getElementById("page").srcdoc != "") {
-        document.getElementById("page").srcdoc = setStrTheme(document.getElementById("page").srcdoc, THEME.STR_THEME);
+        document.getElementById("page").srcdoc = setStrTheme(document.getElementById("page").srcdoc, strTheme);
     }
 };
-function changeTheme(select) {
-    setTheme(THEME[Object.keys(THEME)[select]]);
+function changeTheme(select) { setTheme(THEME[Object.keys(THEME)[select]]); };
+
+/*------Document variables------*/
+const $descriptionContainer = document.getElementById('description-container');
+const $queueDrawer = document.getElementById('queueDrawer');
+const $floatingOverlay = document.getElementById('floatingOverlay');
+const $sidebar = document.getElementById('sidebar');
+
+const $btnDrawer = document.getElementById('btn-drawer');
+
+/*------Sidebar-----*/
+function openSidebar () {
+    $sidebar.classList.add('sidebar-base__floating');
+    $floatingOverlay.classList.add('floating-overlay__active');
+}
+function closeSidebar () {
+    $sidebar.classList.remove('sidebar-base__floating');
+    $floatingOverlay.classList.remove('floating-overlay__active');
+}
+
+$floatingOverlay.addEventListener('click', () => closeSidebar());
+
+/*------drawer-btn-------*/
+var mDrawer;
+$btnDrawer.addEventListener('click', () => {
+    resizeDrawer(mDrawer, false);
+})
+
+function resizeDrawer(state, start) {
+    mDrawer = state;
+    if (start === true) {
+        switch(mDrawer) {
+            case 0:
+                mDrawer = 2;
+                break;
+            case 1:
+                mDrawer = 0;
+                break;
+            case 2:
+                mDrawer = 1;
+                break;
+        }
+    }
+    resizeIFrame(document.getElementById('page'));
+    switch (mDrawer) {
+        case 0:
+            document.getElementById('next-diff').style.transform = "scale(0)";
+            document.documentElement.style.setProperty('--m-queue-drawer-width', '48px');
+            mDrawer = 1;
+            break;
+        case 1:
+            document.documentElement.style.setProperty('--m-queue-drawer-width', '90px');
+            mDrawer = 2;
+            break;
+        case 2:
+            document.documentElement.style.setProperty('--m-queue-drawer-width', '0px');
+            mDrawer = 0;
+            document.getElementById('next-diff').style.transform = "scale(1)";
+            break;
+    }
+    if (start !== true)
+        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'mobile', mobile: mDrawer }, dataType: 'json'});
 };
 
-var drawerWidth = 1;
-function openDrawer() {
-    document.getElementById('edits-count').style.display = 'none';
-	switch(drawerWidth) {
-		case 0:
-	        document.documentElement.style.setProperty('--m-left-panel-width', '48px');
-	        drawerWidth = 1;
-	        document.getElementById('next-diff').style.display = 'none';
-			break;
-		case 1:
-	        document.documentElement.style.setProperty('--m-left-panel-width', '90px');
-	        drawerWidth = 2;
-	        document.getElementById('next-diff').style.display = 'none';
-			break;
-		case 2:
-	        document.documentElement.style.setProperty('--m-left-panel-width', '0px');
-	        drawerWidth = 0;
-	        document.getElementById('next-diff').style.display = 'flex';
-            document.getElementById('edits-count').style.display = 'block';
-			break;
-	}
+function togglMoreControl () {
+    var mc = document.getElementById('moreControl');
+    var mcOverlay = document.getElementById('moreControlOverlay');
+    if (mc.classList.contains('more-control__hidden')) {
+        mc.classList.remove('more-control__hidden');
+        mcOverlay.classList.add('more-control__overlay__active');
+    } else {
+        mc.classList.add('more-control__hidden');
+        mcOverlay.classList.remove('more-control__overlay__active');
+    }
+}
+
+/*------ Diff viewer -----*/
+
+function resizeIFrame (iFrame) {
+    setTimeout(() => {
+        iFrame.style.height = 'calc(' + iFrame.contentWindow.document.body.scrollHeight + 'px + 3 * var(--side-padding) + var(--floatbar-height) + 56px)';
+        iFrame.parentElement.style.paddingTop = $descriptionContainer.offsetHeight + 'px';
+        $descriptionContainer.style.marginTop = '0px';
+    }, 0);
+}
+
+document.getElementById('page').onload = function () {
+    resizeIFrame(this);
+    this.parentElement.scrollTop = 0;
+}
+
+var prevScroll = 0;
+function hideDesc (el) {
+    if (el.scrollTop > prevScroll && el.scrollTop > $descriptionContainer.offsetHeight) {
+        $descriptionContainer.style.marginTop = (-1 * ($descriptionContainer.offsetHeight + 1)) + 'px';
+    } else {
+        $descriptionContainer.style.marginTop = '0px';
+    }
+    prevScroll = el.scrollTop;
+}
+
+/*###################
+------PW and PO Module------
+#####################*/
+var lastOpenedPW = undefined;
+function toggleTab (oldTab, newTab) {
+    const close = (tab) => {
+        if (tab === undefined) document.getElementById('btn-home').classList.remove('tab__active');
+        else if (tab === 'talkForm') document.getElementById('btn-talk').classList.remove('tab__active');
+        else if (tab === 'logs') document.getElementById('btn-logs').classList.remove('tab__active');
+        else if (tab === 'settings') document.getElementById('btn-settings').classList.remove('tab__active');
+    }
+    const open = (tab) => {
+        if (tab === undefined) document.getElementById('btn-home').classList.add('tab__active');
+        else if (tab === 'talkForm') document.getElementById('btn-talk').classList.add('tab__active');
+        else if (tab === 'logs') document.getElementById('btn-logs').classList.add('tab__active');
+        else if (tab === 'settings') document.getElementById('btn-settings').classList.add('tab__active');
+    }
+    close(oldTab);
+    open(newTab);
+}
+function openPW (pw) {
+    if (pw !== lastOpenedPW) {
+        if (lastOpenedPW !== undefined) closePW(true);
+        toggleTab(lastOpenedPW, pw);
+        lastOpenedPW = pw;
+        document.getElementById(pw).style.display = 'grid';
+        closeSidebar();
+
+        if (pw === 'talkForm') onTalkOpen();
+    }
+}
+function closePW (dontToggle) {
+    if (lastOpenedPW !== undefined) {
+        document.getElementById(lastOpenedPW).style.display = 'none';
+        if (!dontToggle) {
+            toggleTab(lastOpenedPW, undefined);
+            lastOpenedPW = undefined;
+            closeSidebar();
+        }
+
+        if (lastOpenedPW == 'settings') onSettingsClose();
+    }
+}
+function openPWDrawer (drawer, overlay) {
+    document.getElementById(drawer).classList.add('pw__drawer__active');
+    document.getElementById(overlay).classList.add('pw__overlay__active');
+}
+function closePWDrawer (drawer, overlay) {
+    document.getElementById(drawer).classList.remove('pw__drawer__active');
+    document.getElementById(overlay).classList.remove('pw__overlay__active');
+}
+
+var lastOpenedPO = undefined;
+function openPO (po) {
+    document.getElementById(po).classList.add('po__active');
+    document.getElementById('POOverlay').classList.add('po__overlay__active');
+    lastOpenedPO = po;
+}
+function closePO () {
+    if (lastOpenedPO !== undefined) {
+        document.getElementById(lastOpenedPO).classList.remove('po__active');
+        document.getElementById('POOverlay').classList.remove('po__overlay__active');
+    }
+}
+
+/*###################
+------- Common -------
+#####################*/
+
+function scrollToBottom(id){
+   var element = document.getElementById(id);
+   element.scrollTop = element.scrollHeight;
+};
+
+function queueClick() {
+    if (document.getElementById('settings').style.display == "block")
+        closeSettingsSend();
+
+    closePW();
+}
+
+function toggleTButton (button) {
+    if (button.classList.contains('t-btn__active')) {
+        return button.classList.remove('t-btn__active');
+    }
+    button.classList.add('t-btn__active');
+}
+
+window.onresize = function() {
+    resizeIFrame(document.getElementById('page'));
 }
 
 
-/*#########################
--------- Left panel -----
-#########################*/
+/*######################
+------- Settings -------
+######################*/
 
-document.getElementById('btn-logs').onclick = function() {
-    togglePopup('logs');
-}
-
-document.getElementById('btn-settings').onclick = function() {
+const onSettingsClose = () => {
     closeSettingsSend();
     document.getElementById('max-days').value = regdays;
     document.getElementById('max-edits').value = countedits;
@@ -1300,9 +1512,7 @@ document.getElementById('btn-settings').onclick = function() {
         document.getElementById('max-queue').value = "";
     else
         document.getElementById('max-queue').value = countqueue;
-    togglePopup('settings');
-    document.getElementById('btn-settings').blur();
-};
+}
 
 function createChipCross(minus) {
     var chipCross = document.createElement('span');
@@ -1403,99 +1613,6 @@ document.getElementById("btn-wl-p-delete").onclick = function(value, crossClick)
     }
 };
 
-document.getElementById("btn-talk").onclick = function() {
-	togglePopup('talkForm');
-    scrollToBottom("talk-content");
-    if (document.getElementById('badge-talk').style.background !== "rgb(251, 47, 47)")
-        document.getElementById('badge-talk').style.background = "none";
-    document.getElementById('btn-talk').blur();
-};
-
-function scrollToBottom(id){
-   var element = document.getElementById(id);
-   element.scrollTop = element.scrollHeight - element.clientHeight;
-};
-
-/*#########################
--------- popup-module -----
-#########################*/
-
-function queueClick() {
-    if (document.getElementById('settings').style.display == "block")
-        closeSettingsSend();
-    closeAllPopups();
-}
-
-function closeAllPopups() {
-    var popups = document.getElementsByClassName('popup-base');
-    for(let i = 0; i < popups.length; i++) popups[i].style.display = 'none';
-}
-
-function togglePopup(popup) {
-    if(document.getElementById(popup).style.display == 'none') {
-        closeAllPopups();
-        document.getElementById(popup).style.display = 'block';
-    } else {
-        document.getElementById(popup).style.display = 'none';
-    }
-};
-
-function togglePopupDrawer(drawer, width, notClose) {
-    if(document.getElementById(drawer).style.right == width && notClose) {
-        document.getElementById(drawer).style.right = '0px';
-        document.getElementById(drawer).style.boxShadow = '-8px 0 48px 0 rgba(0,0,0,.2)';
-        document.getElementById(drawer + '-shadow').style.display = 'block';
-        document.getElementById(drawer + '-shadow').style.backgroundColor = 'rgba(0,0,0,.05)';
-    } else {
-        document.getElementById(drawer).style.right = width;
-        document.getElementById(drawer).style.boxShadow = '-8px 0 48px 0 rgba(0,0,0,0)';
-        document.getElementById(drawer + '-shadow').style.display = 'none';
-        document.getElementById(drawer + '-shadow').style.backgroundColor = 'rgba(0,0,0,0)';
-    }
-};
-
-/*#########################
--------- i-btn-module -----
-#########################*/
-
-function toggleIBtn(btn, notOn) {
-	if(document.getElementById(btn).style.paddingLeft == '22.5px' && notOn) {
-		document.getElementById(btn).style.paddingLeft = '2.5px';
-		document.getElementById(btn).style.backgroundColor = 'var(--bg-secondary-hover)';
-	} else {
-		document.getElementById(btn).style.paddingLeft = '22.5px';
-		document.getElementById(btn).style.backgroundColor = '#24a464';
-	}
-}
-
-/*#########################
---------- source code-----
-#########################*/
-
-document.getElementById('editBtn').onclick = function() {
-	togglePopup('editForm');
-}
-
-document.getElementById('editForm-close-btn').onclick = function() {
-	togglePopup('editForm');
-}
-
-function closeEditForm() {
-	togglePopup('editForm');
-}
-
-document.getElementById('editForm-drawer-btn').onclick = function() {
-    togglePopupDrawer('editForm-drawer', '-50%', true);
-}
-
-document.getElementById('editForm-drawer-shadow').onclick = function() {
-    togglePopupDrawer('editForm-drawer', '-50%', false);
-}
-
-/*#########################
---------- settings -------
-#########################*/
-
 document.getElementById("btn-unlogin").onclick = function() {
     document.getElementById('btn-unlogin').blur();
     if (confirm("Do you confirm Logout?")) {
@@ -1505,11 +1622,6 @@ document.getElementById("btn-unlogin").onclick = function() {
         if ( xhr.responseText == "Unlogin is done")
             window.open("https://tools.wmflabs.org/swviewer/", "_self");
     }
-};
-
-document.getElementById('settings-close-btn').onclick = function() {
-    closeSettingsSend();
-    togglePopup('settings');
 };
 
 function closeSettingsSend() {
@@ -1544,14 +1656,6 @@ function closeSettingsSend() {
     }
 };
 
-document.getElementById('settings-drawer-btn').onclick = function() {
-    togglePopupDrawer('settings-drawer', '-50%', true);
-};
-
-document.getElementById('settings-drawer-shadow').onclick = function() {
-    togglePopupDrawer('settings-drawer', '-50%', false);
-}
-
 document.getElementById('themeSelector').onchange = function() {
     changeTheme(document.getElementById('themeSelector').selectedIndex);
 
@@ -1561,15 +1665,11 @@ document.getElementById('themeSelector').onchange = function() {
         limit: Object.keys(THEME),
         theme: document.getElementById("themeSelector").selectedIndex
     }, dataType: 'json'});
-    
-    userColor.clear();
-    downloadHistoryTalk();
 };
 
-document.getElementById('bottom-up-btn').onclick = function() {
-	toggleIBtn('bottom-up-btn', true);
+function bottomUp (button) {
         var sendDirection;
-        if (this.style.paddingLeft == '22.5px') {
+        if (button.classList.contains('t-btn__active')) {
             document.getElementById("queue").setAttribute("style", "display:flex; flex-direction:column-reverse");
             sendDirection = 1;
         }
@@ -1584,29 +1684,40 @@ document.getElementById('bottom-up-btn').onclick = function() {
         }, dataType: 'json'});
 };
 
-document.getElementById('sound-btn').onclick = function() {
-	toggleIBtn('sound-btn', true);
-        var sendSound;
-        if (this.style.paddingLeft == '22.5px') {
-            isSound = true;
-            sendSound = 1;
-        }
-        else {
-            isSound = false;
-            sendSound = 0;
-        }
+$("#soundSelector").on("change", function() {
+    sound = Number($(this).val());
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'sound',
-            sound: sendSound
+            sound: sound
         }, dataType: 'json'});
-};
+});
 
-document.getElementById('registered-btn').onclick = function() {
-	toggleIBtn('registered-btn', true);
+function RHModeBtn (button, start) {
+    var rhmode;
+    if (button.classList.contains('t-btn__active')) {
+        document.getElementById('baseGrid').classList.add('base-grid__RH-mode');
+        rhmode = 1;
+    } else {
+        document.getElementById('baseGrid').classList.remove('base-grid__RH-mode');
+        rhmode = 0
+    }
+    if (start === false)
+        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
+            action: 'set',
+            query: 'rhand',
+            rhand: rhmode
+        }, dataType: 'json'});
+}
+
+function registeredBtn (button) {
         var sqlreg = 0;
-        if (this.style.paddingLeft == '22.5px')
+        if (button.classList.contains('t-btn__active'))
             sqlreg = 1;
+        else {
+            if (!document.getElementById('onlyanons-btn').classList.contains('t-btn__active'))
+                document.getElementById('onlyanons-btn').click();
+        }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'registered',
@@ -1614,13 +1725,12 @@ document.getElementById('registered-btn').onclick = function() {
         }, dataType: 'json'});
 };
 
-document.getElementById('new-pages-btn').onclick = function() {
-	toggleIBtn('new-pages-btn', true);
+function newPagesBtn (button) {
         var sqlnew = 0;
-        if (this.style.paddingLeft == '22.5px')
+        if (button.classList.contains('t-btn__active'))
             sqlnew = 1;
         else {
-            if (document.getElementById('onlynew-pages-btn').style.paddingLeft == '22.5px')
+            if (document.getElementById('onlynew-pages-btn').classList.contains('t-btn__active'))
                 document.getElementById('onlynew-pages-btn').click();
         }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
@@ -1630,12 +1740,11 @@ document.getElementById('new-pages-btn').onclick = function() {
         }, dataType: 'json'});
 };
 
-document.getElementById('onlynew-pages-btn').onclick = function() {
-	toggleIBtn('onlynew-pages-btn', true);
+function onlyNewPagesBtn(button) {
         var onlynew = 0;
-        if (this.style.paddingLeft == '22.5px') {
+        if (button.classList.contains('t-btn__active')) {
             onlynew = 1;
-            if (document.getElementById('new-pages-btn').style.paddingLeft !== '22.5px')
+            if (!document.getElementById('new-pages-btn').classList.contains('t-btn__active'))
                 document.getElementById('new-pages-btn').click();
         }
         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
@@ -1643,13 +1752,29 @@ document.getElementById('onlynew-pages-btn').onclick = function() {
             query: 'onlynew',
             onlynew: onlynew
         }, dataType: 'json'});
+
 };
 
-<?php if ($isGlobal === true || $isGlobalModeAccess === true) { echo "
-document.getElementById('small-wikis-btn').onclick = function() {
-	toggleIBtn('small-wikis-btn', true);
+function onlyAnonsBtn(button) {
+        var onlyanons = 0;
+        if (button.classList.contains('t-btn__active'))
+            onlyanons = 1;
+        else {
+            if (!document.getElementById('registered-btn').classList.contains('t-btn__active'))
+                document.getElementById('registered-btn').click();
+        }
+        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
+            action: 'set',
+            query: 'anons',
+            anons: onlyanons
+        }, dataType: 'json'});
+
+};
+
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
+function smallWikisBtn (button) {
         var sqlswmt = 0;
-        if (this.style.paddingLeft == '22.5px') {
+        if (button.classList.contains('t-btn__active')) {
             sqlswmt = 1;
             if (isGlobalModeAccess === true)
                 sqlswmt = 2;
@@ -1661,10 +1786,9 @@ document.getElementById('small-wikis-btn').onclick = function() {
         }, dataType: 'json'});
 };
 
-document.getElementById('lt-300-btn').onclick = function() {
-	toggleIBtn('lt-300-btn', true);
+function lt300Btn (button) {
         var sqlusers = 0;
-        if (this.style.paddingLeft == '22.5px') {
+        if (button.classList.contains('t-btn__active')) {
             sqlusers = 1;
             if (isGlobalModeAccess === true)
                 sqlusers = 2;
@@ -1678,12 +1802,9 @@ document.getElementById('lt-300-btn').onclick = function() {
 "; } ?>
 
 function playSound (ps, ignoreIsSound) {
-    if (isSound == true || ignoreIsSound === true) {
-        audiopromise = ps.play();
-        if (audiopromise !== undefined) {
-            audiopromise.then( function() { return null; }).catch( function() { return null; });
-        }
-    }
+    audiopromise = ps.play();
+    if (audiopromise !== undefined)
+        audiopromise.then( function() { return null; }).catch( function() { return null; });
 };
 
 document.getElementById("btn-add-ns").onclick = function () {
@@ -1783,28 +1904,19 @@ function addSandbox(sbList, wiki, page) {
 --------- talk -------
 #########################*/
 
-document.getElementById('talk-close-btn').onclick = function() {
-    togglePopup('talkForm');
-};
-
-document.getElementById('talk-drawer-btn').onclick = function() {
-    togglePopupDrawer('talk-drawer', '-50%', true);
-};
-
-document.getElementById('talk-drawer-shadow').onclick = function() {
-    togglePopupDrawer('talk-drawer', '-50%', false);
+function onTalkOpen () {
+    scrollToBottom("talk-content");
+    if (document.getElementById('badge-talk').style.background !== "rgb(251, 47, 47)") {
+        document.getElementById('badge-talk').style.background = "none";
+        document.getElementById('badge-talk-ex1').style.background = "none";
+        document.getElementById('badge-talk').classList.add('badge-ic__primary');
+        document.getElementById('badge-talk-ex1').classList.add('badge-ic__primary');
+    }
 }
 
 var userColor = new Map();
-function genRandColor() {
-    if (currentTheme.TYPE) {
-        return `hsl(${Math.floor(Math.random() * 361)}, ${(Math.floor(Math.random() * 35) + 30)}%, ${Math.floor(Math.random() * 25) + 25}%`;
-    } else {
-        return `hsl(${Math.floor(Math.random() * 361)}, ${(Math.floor(Math.random() * 60) + 40)}%, ${Math.floor(Math.random() * 25) + 50}%`;
-    }
-}
 function getUserColor(user) {
-    if(!userColor.has(user)) userColor.set(user, genRandColor(user));
+    if(!userColor.has(user)) userColor.set(user, `hsl(${Math.floor(Math.random() * 361)}, ${(Math.floor(Math.random() * 50) + 40)}%, 50%`);
     return userColor.get(user);
 }
 
@@ -1816,7 +1928,7 @@ function parseDate(date) {
 
   return Date.parse(date.replace(/-/g, '/').replace(/[a-z]+/gi, ' '));
 }
-
+var lastMsg = { user: undefined, time: {hours: undefined, minuts: undefined} };
 addToTalk = function (timestamp, nickname, text) {
     var hours, minuts, seconds, now;
     if (timestamp == null) {
@@ -1838,17 +1950,21 @@ addToTalk = function (timestamp, nickname, text) {
         if (minuts.length == "1") minuts = "0" + minuts;
         if (seconds.length == "1") seconds = "0" + seconds;
 
-        var textTime ='[' + hours + ':' + minuts + ':' + seconds + ']';
-        var textUser = '<' + nickname + '>';
+        var textTime =hours + ':' + minuts;
+        var textUser = nickname;
         var textMessage = text;
 
+        var blockCap = document.createElement('div');
+        blockCap.className = 'phrase-cap ng-non-bindable';
         var blockTime = document.createElement('div');
-        blockTime.className = 'phrase-line1';
+        blockTime.className = 'phrase-line1 fs-xs ng-non-bindable';
         var blockUser = document.createElement('div');
-        blockUser.className = 'phrase-line2';
+        blockUser.className = 'phrase-line2 fs-md ng-non-bindable';
+        blockUser.setAttribute('onclick', 'selectTalkUsers(this)');
         var blockMessage = document.createElement('div');
-        blockMessage.className = 'phrase-line3';
+        blockMessage.className = 'phrase-line3 fs-sm ng-non-bindable';
 
+        blockCap.textContent = textUser.substring(0, 2);
         blockTime.textContent = textTime;
         blockUser.textContent = textUser;
 
@@ -1859,13 +1975,12 @@ addToTalk = function (timestamp, nickname, text) {
             subMessStart= 0;
             subMessEnd = textMessage.indexOf(links[0]);
             for(let index in links) {
-                var subMessage = document.createElement('span');
-                subMessage.textContent = textMessage.substring(subMessStart, subMessEnd);
-                blockMessage.appendChild(subMessage);
+                blockMessage.appendChild(document.createTextNode(textMessage.substring(subMessStart, subMessEnd)));
                 
                 var link = document.createElement('a');
                 link.href = links[index];
                 link.target = "_blank";
+                link.rel = "noopener noreferrer"
                 link.style.wordBreak = "break-all";
                 link.textContent = links[index];
                 blockMessage.appendChild(link);
@@ -1873,43 +1988,44 @@ addToTalk = function (timestamp, nickname, text) {
                 subMessStart = (subMessEnd + links[index].length);
                 subMessEnd = subMessStart + (textMessage.substring(subMessStart, textMessage.length)).search(linkPattern);
             }
-            var subMessage = document.createElement('span');
-            subMessage.textContent = textMessage.substring(subMessStart, textMessage.length);
-            blockMessage.appendChild(subMessage);
+            blockMessage.appendChild(document.createTextNode(textMessage.substring(subMessStart, textMessage.length)));
         } else {
             blockMessage.textContent = textMessage;
         }
 
         var blockPhrase = document.createElement('div');
         blockPhrase.className = 'phrase-talk';
-        blockPhrase.appendChild(blockTime);
-        blockPhrase.appendChild(blockUser);
-        blockPhrase.appendChild(blockMessage);
 
-        blockPhrase.style.color = getUserColor(nickname);
+        if (lastMsg.user === nickname && lastMsg.time.hours ===  hours && lastMsg.time.minuts === minuts && !document.getElementById('form-talk').lastChild.classList.contains('days-ago-talk')) {
+            blockCap.style.height = '0px';
+            blockPhrase.appendChild(blockCap);
+            blockPhrase.appendChild(blockMessage);
+            document.getElementById('form-talk').lastChild.style.paddingBottom = "0";
+            blockPhrase.style.padding = "0 0 8px";
+        } else {
+            const userColor = getUserColor(nickname);
 
+            blockCap.style.background = userColor;
+            blockUser.style.color = userColor;
+            
+            blockPhrase.appendChild(blockCap);
+            blockPhrase.appendChild(blockTime);
+            blockPhrase.appendChild(blockUser);
+            blockPhrase.appendChild(blockMessage);
+            lastMsg.user = nickname;
+            lastMsg.time.hours = hours;
+            lastMsg.time.minuts = minuts;
+        }
         document.getElementById('form-talk').appendChild(blockPhrase);
         scrollToBottom("talk-content");
 }
 
 addToTalkSection = function(datatext) {
     var blockMessage = document.createElement('div');
-    blockMessage.className ="days-ago-talk";
+    blockMessage.className ="days-ago-talk fs-md";
     blockMessage.textContent = datatext;
 
-    var blockMessageLL = document.createElement('div');
-    blockMessageLL.className = "days-ago-talk-LL"
-    var blockMessageRL = document.createElement('div');
-    blockMessageRL.className = "days-ago-talk-RL"
-
-    var blockPhrase = document.createElement('div');
-    blockPhrase.className = 'phrase-talk days-ago-talk-flex';
-
-    blockPhrase.appendChild(blockMessageLL);
-    blockPhrase.appendChild(blockMessage);
-    blockPhrase.appendChild(blockMessageRL);
-
-    document.getElementById('form-talk').appendChild(blockPhrase);
+    document.getElementById('form-talk').appendChild(blockMessage);
     scrollToBottom("talk-content");
 }
 
@@ -1956,12 +2072,16 @@ function downloadHistoryTalk() {
 
 
 var talkWidth = $('#talk-content').outerWidth();
+var talkHeight = $('#talk-content').outerHeight();
 $(window).resize(function() {
-  if (talkWidth != $('#talk-content').outerWidth()) {
+  if (talkWidth != $('#talk-content').outerWidth() || talkHeight != $('#talk-content').outerHeight()) {
     talkWidth = $('#talk-content').outerWidth();
+    talkHeight = $('#talk-content').outerHeight();
     scrollToBottom("talk-content");
   }
 });
+
+downloadHistoryTalk();
 
 /*#########################
 --------- Logs -------
@@ -1969,15 +2089,14 @@ $(window).resize(function() {
 
 var searchPhrase = "", action = "", logsLimit = 40, logsOffset = 0;
 
-document.getElementById('logs-refresh-btn').onclick = function() {
+function refreshLogs() {
+    document.getElementById('logsSearch-input').value = '';
     document.getElementById('actionSelector').selectedIndex = 0;
     action = "";
     logsOffset = 0;
     getLogs();
 }
-document.getElementById('logs-close-btn').onclick = function() {
-    togglePopup('logs');
-};
+
 document.getElementById('nextLogs').onclick = function() {
     logsOffset += logsLimit;
     getLogs(searchPhrase);
@@ -2003,37 +2122,138 @@ function handleLogsUI() {
         var noMore = document.createElement('div');
         noMore.style.padding = "8px 0";
         noMore.style.textAlign = "center";
-        noMore.style.color = "darkgray";
+        noMore.style.color = "var(--tc-secondary-low)";
         noMore.textContent = "No more Logs";
+        noMore.id = 'noMoreLogs';
         document.getElementById('logsBox').append(noMore);
     } else {
         document.getElementById('nextLogs').style.display = "unset";
     }
 }
-function getLogs(sp) {
-    if(arguments.length == 0) searchPhrase = "";
-    else searchPhrase = sp;
-    var logsReq = new XMLHttpRequest();
-    logsReq.open("GET", "php/logs.php?sp=" + searchPhrase + "&st=" + action + "&li=" + logsLimit + "&of=" + logsOffset, true);
-    logsReq.onreadystatechange = function () {
-        if (logsReq.readyState === 4 && logsReq.status === 200) {
-            document.getElementById('logsBox').innerHTML = logsReq.responseText;
-            document.getElementById('logsBox').parentElement.scrollTop = 0;
+const actionColors = {
+    'rollback': '#c8b40e',
+    'undo': '#db24b0',
+    'delete': '#672dd2',
+    'edit': '#2dd280',
+    'warn': '#d92c26',
+    'report': '#e3791c',
+    'protect': '#1cb3e3'
+}
+function displayLogs (logs) {
+    const logsCols = ['lt__sno', 'lt__user', 'lt__action', 'lt__wiki', 'lt__title', 'lt__date'];
+    const logsColsName = ['SNo', 'User', 'Action', 'Wiki', 'Title', 'Date'];
+    var sno = logsOffset;
 
-            handleLogsUI();
-        }
+    var logsTable = document.createElement('div');
+    logsTable.id = 'logsTable';
+    logsTable.className = 'logs-table';
+    
+    var headerRow = document.createElement('div');
+    headerRow.className = 'lt-row fs-md';
+    for (let i = 0; i < logsCols.length; i++) {
+        var headerColumn = document.createElement('div');
+        headerColumn.className = logsCols[i];
+        headerColumn.textContent = logsColsName[i];
+        headerRow.append(headerColumn);
     }
+    logsTable.append(headerRow);
 
-    logsReq.send();
+    logs.forEach((log) => {
+        sno++;
+        var columns = {};
+        var row = document.createElement('div');
+        row.className = 'lt-row fs-sm';
+        logsCols.forEach((col) => {
+            var column = document.createElement('div');
+            column.className = col;
+            columns[col] = column;
+        })
+        columns['lt__sno'].textContent = sno;
+        var link = document.createElement('a');
+        link.href = log['diff'].substring(0, (log['diff'].indexOf('.org/')) + 5) + "wiki/user:" + log['user'];
+        link.textContent = log['user']; link.target = '_blank'; link.rel = "noopener noreferrer";
+        columns['lt__user'].append(link);
+        columns['lt__action'].textContent = log['type'];
+        columns['lt__action'].style.color = actionColors[log['type']];
+        columns['lt__wiki'].textContent = log['wiki'];
+        var link = document.createElement('a');
+        link.href = log['diff']; link.textContent = log['title']; link.target = '_blank'; link.rel = "noopener noreferrer";
+        columns['lt__title'].append(link);
+        columns['lt__date'].textContent = log['date'];
+
+        for (column in columns) row.append(columns[column]);
+        
+        logsTable.append(row);
+    });
+
+    var logsBox = document.getElementById('logsBox');
+    if (document.getElementById('noMoreLogs')) document.getElementById('noMoreLogs').remove();
+    if (document.getElementById('logsTable')) document.getElementById('logsTable').remove();
+    logsBox.append(logsTable);
+    logsBox.parentElement.scrollTop = 0;
+    handleLogsUI();
+    logsBox.parentElement.classList.remove('disabled');
+}
+function getLogs(searchPhrase = "") {
+    document.getElementById('logsBox').parentElement.classList.add('disabled');
+
+    fetch('./php/logs.php', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            sp: searchPhrase,
+            st: action,
+            li: logsLimit,
+            of: logsOffset
+        })
+    }).then((response) => response.json())
+    .then((logs) => displayLogs(logs))
+    .catch((error) => console.error(error));
 }
 
-document.getElementById('btn-searchLogs').onclick = function() {
-    var searchInput = document.getElementById('search-input');
+function searchLogs() {
+    var searchInput = document.getElementById('logsSearch-input');
     logsOffset = 0;
     getLogs(searchInput.value);
 }
 getLogs();
 
+/*#########################
+--------- stat -------
+#########################*/
+
+function searchStat () {
+    document.getElementById('statContainer').classList.add('disabled');
+    var stats = ['rollback', 'delete', 'undo', 'edit', 'report', 'warn', 'protect'];
+    stats.forEach((action) => document.getElementById(action + 'Span').textContent = '0');
+    var searchPhrase = document.getElementById('statInput').value;
+    fetch('./php/welcome-stats.php', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user: searchPhrase })
+    }).then((response) => response.json())
+    .then((stats) => {
+        stats.forEach((action) => document.getElementById(action['type'] + 'Span').textContent = action['total']);
+        document.getElementById('statContainer').classList.remove('disabled');
+    }).catch((error) => console.error(error));
+}
+searchStat();
+
+function toggleMoreWN (button) {
+    if (document.getElementById('moreWN').style.height == '0px') {
+        document.getElementById('moreWN').style.height = 'unset';
+        button.textContent = 'Show less';
+    } else {
+        document.getElementById('moreWN').style.height = '0px';
+        button.textContent = 'Show more';
+    }
+}
 
 /*#########################
 --------- onLoad -------
@@ -2045,7 +2265,6 @@ window.onload = function() {
         document.getElementById('themeSelector').selectedIndex = settingslist['theme'];
         changeTheme(parseInt(settingslist['theme']));
     } else changeTheme(0);
-    downloadHistoryTalk();
     document.getElementById('loading').style.display = "none";
     document.getElementById('app').style.display = "block";
 };
