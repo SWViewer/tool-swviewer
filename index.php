@@ -102,7 +102,7 @@ if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) 
                         Privacy: Application saves only name of your account, your internal app settings, your actions via app (see 'log'), count of logins to app, count of app opens, date of last login to app and contents of the chat.<br><br>
     
                         Licensing:<br>
-                        Copyright &#169; mainteiners of SWViewer, 2017-2019<br><br>
+                        Copyright &#169; maintainers of SWViewer, 2017-2019<br><br>
     
                         Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>
     
@@ -932,7 +932,7 @@ if (sess["local_wikis"] !== "")
                         Privacy: Application saves only name of your account, your internal app settings, your actions via app (see 'logs'), count of logins to app, count of app opens, date of last login to app and contents of the chat.<br><br>
     
                         Licensing:<br>
-                        Copyright &#169; mainteiners of SWViewer, 2017-2019<br><br>
+                        Copyright &#169; maintainers of SWViewer, 2017-2019<br><br>
     
                         Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>
     
