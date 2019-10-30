@@ -77,10 +77,10 @@ if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) 
                 <div>
                     <span class='i-btn__secondary-outlined secondary-hover fs-md' style='height: 35px; margin-bottom: 8px;' onclick='openPO();'>About</span>
                     <span class='fs-xs'>Brought to you by <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/User:Iluvatar'>Iluvatar</a>, <a rel='noopener noreferrer' target='_blank' href='https://ajbura.github.io'>ajbura</a>, <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/User:1997kB'>1997kB</a></span>
-                </div>    
+                </div>
             </div>
         </div>
-        
+
         <!-- Global requests | Popup-overlay -->
         <div id='about' class='po__base'>
             <div class='po__header action-header'>
@@ -96,21 +96,21 @@ if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) 
                         SWViewer: see <a href='https://meta.wikimedia.org/wiki/SWViewer' rel='noopener noreferrer' target='_blank'>documentation page</a>.<br><br>
 
                         Any questions, please <a href='https://meta.wikimedia.org/wiki/Talk:SWViewer' rel='noopener noreferrer' target='_blank'>ask here</a>.<br><br>
-    
+
                         Caution! Big internet traffic. Internet Explorer/Microsoft Edge is not supported.<br><br>
 
                         Privacy: Application saves only name of your account, your internal app settings, your actions via app (see 'log'), count of logins to app, count of app opens, date of last login to app and contents of the chat.<br><br>
-    
+
                         Licensing:<br>
                         Copyright &#169; maintainers of SWViewer, 2017-2019<br><br>
-    
+
                         Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>
-    
+
                         The above copyright notice and this permission notice shall be included in all
                         copies or substantial portions of the Software.<br><br>
-    
+
                         THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br><br>
-    
+
                         bump.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/Porphyr/sounds/208435/'>license and author of original file</a><br>
                         message.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/elmasmalo1/sounds/377017/'>license and author of original file</a><br>
                         privateMessage.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/rhodesmas/sounds/342749/'>license and author of original file</a><br>
@@ -237,7 +237,7 @@ if (sess["local_wikis"] !== "")
                     </div>
                     <div id="btn-talk" class="primary-hover" title="Talk [t]" onclick="openPW('talkForm')">
                         <span class="badge-ic badge-ic__primary" style="background: none; color: var(--bc-primary);" id="badge-talk">{{filteredUsersTalk.length}}</span>
-                    </div>  
+                    </div>
                     <div id="btn-logs" class="primary-hover" title="Logs [l]" onclick="openPW('logs')">
                         <img class="touch-ic primary-icon" src="./img/doc-filled.svg" alt="Logs image">
                     </div>
@@ -351,7 +351,7 @@ if (sess["local_wikis"] !== "")
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Welcome page -->
                     <div id='page-welcome' class='welcome-base frame-diff secondary-scroll' style='display: block;'>
                         <label class="fs-xl" style="font-weight: bold;">Welcome back!</label>
@@ -390,7 +390,7 @@ if (sess["local_wikis"] !== "")
                                     <span class="fs-lg">Protect</span>
                                 </div>
                             </div>
-                            
+
                             <div class="list-container">
                                 <label class="fs-md">Reminder</label>
                                 <ul class="i-ul fs-sm">
@@ -816,7 +816,7 @@ if (sess["local_wikis"] !== "")
                                     <a class="fs-sm" href="https://tools.wmflabs.org/swviewer/php/control.php" rel="noopener noreferrer" target="_blank">Control panel</a>
                                 </div>';
                             }?>
-                            
+
                         </div>
                         <!--pw Overlay-->
                         <div id="settingsPWOverlay" class="pw__overlay" onclick="closePWDrawer('settingsPWDrawer', 'settingsPWOverlay')"></div>
@@ -886,7 +886,7 @@ if (sess["local_wikis"] !== "")
             </div>
         </div>
     </div>
-    
+
     <!-- Global requests | Popup-overlay -->
     <div id="globalRequests" class="po__base">
         <div class="po__header action-header">
@@ -927,21 +927,21 @@ if (sess["local_wikis"] !== "")
             <div class="po__content-body secondary-scroll">
                 <div class="fs-md">
                         SWViewer: see <a href='https://meta.wikimedia.org/wiki/SWViewer' rel='noopener noreferrer' target='_blank'>documentation page</a>.<br><br>
-    
+
                         Any questions, please <a href='https://meta.wikimedia.org/wiki/Talk:SWViewer' rel='noopener noreferrer' target='_blank'>ask here</a>.<br><br>
-    
+
                         Privacy: Application saves only name of your account, your internal app settings, your actions via app (see 'logs'), count of logins to app, count of app opens, date of last login to app and contents of the chat.<br><br>
-    
+
                         Licensing:<br>
                         Copyright &#169; maintainers of SWViewer, 2017-2019<br><br>
-    
+
                         Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>
-    
+
                         The above copyright notice and this permission notice shall be included in all
                         copies or substantial portions of the Software.<br><br>
-    
+
                         THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br><br>
-    
+
                         bump.mp3:<br>
                         <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/Porphyr/sounds/208435/'>license and author of original file</a><br>
                         message.mp3:<br>
@@ -1290,7 +1290,7 @@ function setTheme(THEME) {
     Object.keys(THEME).forEach((item) => {
         root.style.setProperty(item, THEME[item]);
     });
-    
+
     /*-----chrome address bar color-------*/
     $('meta[name=theme-color]').attr('content', THEME['--bc-primary']);
 
@@ -1869,7 +1869,7 @@ function nsChange(val, action) {
                     checkChange = "Other (" + val + ")";
             }
     }
-    
+
     if (checkChange !== false) {
         if (action == "add") {
             var ul = document.getElementById("nsList");
@@ -1881,7 +1881,7 @@ function nsChange(val, action) {
         else {
             $('ul#nsList li:contains('+ checkChange +')').first().remove();
         }
-            
+
         $.ajax({ url: 'php/settings.php', type: 'POST', crossDomain: true, data:{action: 'set', query: "namespaces", ns: nsList2.join(',')}, dataType: 'json'});
     }
 
@@ -1977,7 +1977,7 @@ addToTalk = function (timestamp, nickname, text) {
             subMessEnd = textMessage.indexOf(links[0]);
             for(let index in links) {
                 blockMessage.appendChild(document.createTextNode(textMessage.substring(subMessStart, subMessEnd)));
-                
+
                 var link = document.createElement('a');
                 link.href = links[index];
                 link.target = "_blank";
@@ -1985,7 +1985,7 @@ addToTalk = function (timestamp, nickname, text) {
                 link.style.wordBreak = "break-all";
                 link.textContent = links[index];
                 blockMessage.appendChild(link);
-                
+
                 subMessStart = (subMessEnd + links[index].length);
                 subMessEnd = subMessStart + (textMessage.substring(subMessStart, textMessage.length)).search(linkPattern);
             }
@@ -2008,7 +2008,7 @@ addToTalk = function (timestamp, nickname, text) {
 
             blockCap.style.background = userColor;
             blockUser.style.color = userColor;
-            
+
             blockPhrase.appendChild(blockCap);
             blockPhrase.appendChild(blockTime);
             blockPhrase.appendChild(blockUser);
@@ -2148,7 +2148,7 @@ function displayLogs (logs) {
     var logsTable = document.createElement('div');
     logsTable.id = 'logsTable';
     logsTable.className = 'logs-table';
-    
+
     var headerRow = document.createElement('div');
     headerRow.className = 'lt-row fs-md';
     for (let i = 0; i < logsCols.length; i++) {
@@ -2183,7 +2183,7 @@ function displayLogs (logs) {
         columns['lt__date'].textContent = log['date'];
 
         for (column in columns) row.append(columns[column]);
-        
+
         logsTable.append(row);
     });
 
