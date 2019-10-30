@@ -781,6 +781,7 @@ if (sess["local_wikis"] !== "")
                             <div class="pw__drawer__content">
                                 <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Meta:Requests_for_help_from_a_sysop_or_bureaucrat' rel='noopener noreferrer' target='_blank'>Meta:RFH</a>
                                 <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Steward_requests/Miscellaneous' rel='noopener noreferrer' target='_blank'>SRM</a>
+				<a class="fs-sm" href='https://meta.wikimedia.org/wiki/Steward_requests/Global' rel='noopener noreferrer' target='_blank'>SRG</a>
                             </div>
                             <div class="action-header__sticky">
                                 <span class="action-header__title fs-lg">Scripts, templates</span>
