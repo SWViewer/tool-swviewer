@@ -1,19 +1,19 @@
 <?php
 header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
 header('Content-Type: application/json; charset=utf-8');
-session_name( 'SWViewer' );
+session_name('SWViewer');
 session_start();
-if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) == false) or (isset($_SESSION['userName']) == false)) {
-    echo "Invalid request";
+if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) {
+    echo json_encode(["result" => "error", "info" => "Invalid request"]);
     session_write_close();
-    exit(0);
+    exit();
 }
 $userName = $_SESSION['userName'];
 session_write_close();
 
 if (!isset($_POST["action"]) || !isset($_POST["query"])) {
     if (!isset($_GET["action"]) || !isset($_GET["query"]) || $_GET["action"] !== "get" || $_GET["query"] !== "all") {
-        echo "Invalid request; dev. code 2";
+        echo json_encode(["result" => "error", "info" => "Invalid request; dev. code 2"]);
         exit();
     }
 }
@@ -29,7 +29,7 @@ if (!isset($_POST["action"])) {
         $q->execute(array(':userName' => $userName));
         $result = $q->fetchAll();
 
-        $response = ["blprojects" => $result[0]['blprojects'], "swmt" => $result[0]['swmt'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "onlyanons" => $result[0]['anons'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "theme" => $result[0]['theme']];
+        $response = ["blprojects" => $result[0]['blprojects'], "swmt" => $result[0]['swmt'], "checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "onlyanons" => $result[0]['anons'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "theme" => $result[0]['theme']];
         echo json_encode($response);
         $db = null;
         exit();
@@ -54,12 +54,21 @@ if ($_POST["action"] == "set") {
             }
         }
     }
-        
+
     if ($_POST["query"] == "registered") {
         if (isset($_POST['registered'])) {
             if ($_POST['registered'] == "0" || $_POST['registered'] == "1") {
                 $q = $db->prepare('UPDATE user SET registered=:registered WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':registered' => $_POST['registered']));
+            }
+        }
+    }
+
+    if ($_POST["query"] == "checkmode") {
+        if (isset($_POST['checkmode'])) {
+            if ($_POST['checkmode'] == "0" || $_POST['checkmode'] == "1" || $_POST['checkmode'] == "2") {
+                $q = $db->prepare('UPDATE user SET checkmode=:checkmode WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':checkmode' => $_POST['checkmode']));
             }
         }
     }
@@ -91,11 +100,30 @@ if ($_POST["action"] == "set") {
         }
     }
 
+    if ($_POST["query"] == "terminateStream") {
+        if (isset($_POST['terminateStream'])) {
+            if ($_POST['terminateStream'] == "0" || $_POST['terminateStream'] == "1") {
+                $q = $db->prepare('UPDATE user SET terminateStream=:terminateStream WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':terminateStream' => $_POST['terminateStream']));
+            }
+        }
+    }
+
     if ($_POST["query"] == "mobile") {
         if (isset($_POST['mobile'])) {
             if ($_POST['mobile'] == "0" || $_POST['mobile'] == "1" || $_POST['mobile'] == "2" || $_POST['mobile'] == "3") {
                 $q = $db->prepare('UPDATE user SET mobile=:mobile WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':mobile' => $_POST['mobile']));
+            }
+        }
+    }
+
+    if ($_POST["query"] == "preset") {
+        if (isset($_POST['preset'])) {
+            if ($_POST['preset'] == null || preg_match('/(\s|\w|\d)*?$/', $_POST['preset'])) {
+                $q = $db->prepare('UPDATE user SET preset=:preset WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':preset' => $_POST['preset']));
+                echo json_encode(["result" => "Success"]);
             }
         }
     }
@@ -109,6 +137,19 @@ if ($_POST["action"] == "set") {
         }
     }
 
+    if (isset($_POST['defaultdelete'])) {
+        if ($_POST['defaultdelete'] == null || preg_match('/^[a-zA-Z_\-,]+$/', $_POST['defaultdelete'])) {
+            $q = $db->prepare('UPDATE user SET defaultdelete=:defaultdelete WHERE name =:userName');
+            $q->execute(array(':userName' => $userName, ':defaultdelete' => $_POST['defaultdelete']));
+        }
+    }
+
+    if (isset($_POST['defaultwarn'])) {
+        if ($_POST['defaultwarn'] == null || preg_match('/^[a-zA-Z_\-,]+$/', $_POST['defaultwarn'])) {
+            $q = $db->prepare('UPDATE user SET defaultwarn=:defaultwarn WHERE name =:userName');
+            $q->execute(array(':userName' => $userName, ':defaultwarn' => $_POST['defaultwarn']));
+        }
+    }
 
     if ($_POST["query"] == "onlynew") {
         if (isset($_POST['onlynew'])) {
@@ -179,7 +220,7 @@ if ($_POST["action"] == "set") {
             }
         }
     }
-    
+
     if ($_POST["query"] == "blacklist") {
         if (isset($_POST['blprojects'])) {
             if ($_POST['blprojects'] == null || preg_match('/^[a-zA-Z_\-,]+$/', $_POST['blprojects'])) {
@@ -191,5 +232,4 @@ if ($_POST["action"] == "set") {
 
 }
 $db = null;
-exit();
 ?>

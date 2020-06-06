@@ -1,12 +1,12 @@
 <?php
 header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
 header('Content-Type: application/json; charset=utf-8');
-session_name( 'SWViewer' );
+session_name('SWViewer');
 session_start();
-if (!isset($_POST['action']) || ( (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) && !isset($_POST['serverToken']) )) {
-    echo "Invalid request";
+if (!isset($_POST['action']) || ((!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) && !isset($_POST['serverToken']))) {
+    echo json_encode(["result" => "error", "info" => "Invalid request"]);
     session_write_close();
-    exit(0);
+    exit();
 }
 
 $serverToken = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["serverTokenTalk"];
@@ -26,19 +26,18 @@ unset($serverToken);
 if ($_POST['action'] == "get" && isset($_SESSION['tokenKey']) && isset($_SESSION['tokenSecret']) && isset($_SESSION['userName'])) {
     $q = $db->prepare('SELECT * FROM talk WHERE msgtime > NOW() - INTERVAL 5 DAY ORDER BY msgtime ASC');
     $q->execute();
-    
     $res[] = null;
     $rows = $q->fetchAll(PDO::FETCH_ASSOC);
-    foreach($rows as $row ){
-        if ( date('Ymd') == date('Ymd', strtotime($row['msgtime'])) )
+    foreach ($rows as $row) {
+        if (date('Ymd') == date('Ymd', strtotime($row['msgtime'])))
             $res[0][] = $row;
-        else if (date('Ymd', strtotime('-1 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])) )
+        else if (date('Ymd', strtotime('-1 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])))
             $res[1][] = $row;
-        else if (date('Ymd', strtotime('-2 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])) )
+        else if (date('Ymd', strtotime('-2 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])))
             $res[2][] = $row;
-        else if (date('Ymd', strtotime('-3 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])) )
+        else if (date('Ymd', strtotime('-3 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])))
             $res[3][] = $row;
-        else if (date('Ymd', strtotime('-4 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])) )
+        else if (date('Ymd', strtotime('-4 day', strtotime('now'))) == date('Ymd', strtotime($row['msgtime'])))
             $res[4][] = $row;
     }
     echo json_encode($res);
@@ -46,4 +45,4 @@ if ($_POST['action'] == "get" && isset($_SESSION['tokenKey']) && isset($_SESSION
 
 $db = null;
 session_write_close();
-exit();
+?>

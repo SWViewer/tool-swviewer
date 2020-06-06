@@ -1,18 +1,14 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-session_name( 'SWViewer' );
+session_name('SWViewer');
 session_start();
-if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) == false) or (isset($_SESSION['userName']) == false) or (isset($_POST["oldid"]) == false) or (isset($_POST["server"]) == false)) {
+if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName']) || !isset($_POST["oldid"]) || !isset($_POST["server"])) {
     echo "Invalid request";
     session_write_close();
-    exit(0);
+    exit();
 }
 session_write_close();
 $url = $_POST["server"] . "/index.php?action=raw&oldid=" . $_POST["oldid"];
 $content = @file_get_contents($url);
-
-if ($content === FALSE)
-    echo "Error! Loading page is not success";
-else
-    echo $content;
+echo ($content === false) ? "Error! Loading page is not success" : $content;
 ?>

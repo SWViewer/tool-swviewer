@@ -1,15 +1,13 @@
 <?php
 header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
 header('Content-Type: application/json; charset=utf-8');
-if ( !isset($_POST['serverToken']) || !isset($_POST['userToken']) || !isset($_POST['username']) ) {
-    $response = ["auth" => "Error. Dev. code: 1"];
-    echo json_encode($response);
+if (!isset($_POST['serverToken']) || !isset($_POST['userToken']) || !isset($_POST['username'])) {
+    echo json_encode(["auth" => "Error. Dev. code: 1"]);
     exit();
 }
 $serverToken = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["serverTokenTalk"];
 if ($_POST['serverToken'] !== $serverToken) {
-    $response = ["auth" => "Error. Dev. code: 2"];
-    echo json_encode($response);
+    echo json_encode(["auth" => "Error. Dev. code: 2"]);
     exit();
 }
 
@@ -20,14 +18,6 @@ unset($ts_mycnf, $ts_pw, $serverToken);
 
 $q = $db->prepare('SELECT name FROM user WHERE token = :token AND name = :userName');
 $q->execute(array(':token' => $_POST['userToken'], ':userName' => $_POST['username']));
-if ($q->rowCount() > 0) {
-    $response = ["auth" => "true"] ;
-    echo json_encode($response);
-}
-else {
-    $response = ["auth" => "false"] ;
-    echo json_encode($response);
-}
+echo ($q->rowCount() > 0) ? json_encode(["auth" => "true"]) : json_encode(["auth" => "false"]);
 $db = null;
-exit();
 ?>

@@ -71,6 +71,7 @@ button, select {
 .touch-ic {
     width: 20px;
     height: 20px;
+    pointer-events: none;
 }
 .touch-ic__w-free {
     width: unset;
@@ -90,6 +91,11 @@ button, select {
     line-height: 20px;
     position: relative;
     z-index: 1;
+    pointer-events: none;
+    -webkit-user-select: none;
+       -moz-user-select: -moz-none;
+        -ms-user-select: none;
+            user-select: none;
 }
 .badge-ic__primary {
     color: var(--bc-primary);

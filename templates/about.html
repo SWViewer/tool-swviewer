@@ -1,41 +1,34 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-        <link href='https://tools-static.wmflabs.org/fontcdn/css?family=Roboto|Montserrat' rel='stylesheet' type='text/css'>
-        <style>
-        	body {
-        		margin: 0;
-        		padding: 0;
-        		font-family: 'Roboto', sans-serif;
-        	}
-    	</style>
-	</head>
-	<body>
-		<div>
-			<a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/SWViewer'>Desktop version</a><br>
-			<a rel='noopener noreferrer' target='_blank' href='https://github.com/SiarheiGribov/SWViewer'>Source code</a><br>
-			<a href='https://tools.wmflabs.org/swviewer/php/stats.php' rel='noopener noreferrer' target='_blank'>Statistics</a><br><br>
+<span style='font-weight: bold'>SWViewer</span> is an app to monitor the recent changes of a wiki in real-time. See <a href='https://meta.wikimedia.org/wiki/SWViewer' rel='noopener noreferrer' target='_blank'>documentation</a>. Any questions, please ask at <a href='https://meta.wikimedia.org/wiki/Talk:SWViewer' rel='noopener noreferrer' target='_blank'>SWViewer talk page</a> on metawiki. Be careful, big internet traffic!<br>
 
-			Caution! Big internet traffic. Internet Explorer/Microsoft Edge is not supported yet.<br>
-			Any questions, please <a href='https://meta.wikimedia.org/wiki/Talk:SWViewer' rel='noopener noreferrer' target='_blank'>ask here</a>.<br><br>
+<p style='margin-bottom: 10px; font-weight: bold'>Privacy</p>
+<span style='font-weight: bold; font-style: italic; margin-left: 7px'>Standart disclaimer</span><br>
+By using this project, you agree that any private information you give to this project may be made publicly available and not be treated as confidential. By using this project, you agree that the volunteer administrators of this project will have access to any data you submit and any information that you send. The volunteer administrators of this project are bound by the Wikimedia Cloud Services <a href='https://wikitech.wikimedia.org/wiki/Wikitech:Cloud_Services_Terms_of_use' rel='noopener noreferrer' target='_blank'>Terms of Use</a>, and are not allowed to share this information or use it in any non-approved way.<br>
+Since access to this information is fundamental to the operation of Wikimedia Cloud Services, these terms regarding use of your data expressly override the Wikimedia Foundation's <a href='https://meta.wikimedia.org/wiki/Privacy_policy' rel='noopener noreferrer' target='_blank'>Privacy Policy</a> as it relates to the use and access of your personal information.<br><br>
+<span style='font-weight: bold; font-style: italic;  margin-left: 7px'>Data collection</span><br>
+Appication collects and stores the following data:
+<ul>
+    <li>Username<sup style='font-size:x-small'>1</sup></li>
+    <li>The Talk messages<sup style='font-size:x-small'>2</sup>&nbsp;<sup style='font-size:x-small'>3</sup></li>
+    <li>Date of last access<sup style='font-size:x-small'>1</sup>&nbsp;<sup style='font-size:x-small'>3</sup></li>
+    <li>User settings of tool and name of their presets<sup style='font-size:x-small'>1</sup></li>
+    <li>Stats of user actions via tool (i.e. reverts, undo, edit, warn, RFD, etc)<sup style='font-size:x-small'>2</sup></li>
+    <li>Logs of on-wiki actions which are performed via tool (i.e. diff, date)<sup style='font-size:x-small'>2</sup></li>
+</ul>
+<sup style='font-size:x-small'>1</sup> This data may be available to the Wikimedia Foundation, its volunteers and Wikimedia Cloud Services users.<br>
+<sup style='font-size:x-small'>2</sup> This data available to the public.<br>
+<sup style='font-size:x-small'>3</sup> This data deletes in two weeks after last access of tool.
 
-			Privacy: Application saves only name of your account, <a rel='noopener noreferrer' target='_blank' href='https://imgur.com/a/lUkI1v7'>settings</a>, count of logins, date of last login and contents of the chat.<br><br>
+<p style='margin-bottom: 10px; font-weight: bold'>Cookies</p>
+This app uses <a href='https://en.wikipedia.org/wiki/HTTP_cookie' rel='noopener noreferrer' target='_blank'>cookies</a> — small data files that are placed on your device, which contain some unique tokens. Life of cookies is 31 days.
 
-			Licensing:<br>
-			Copyright &#169; 2017-2019<br><br>
+<p style='margin-bottom: 10px; font-weight: bold'>Licensing</p>
+Copyright &#169; Maintainers of SWViewer, 2016-2019; MIT License<br>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 
-			Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 
-			The above copyright notice and this permission notice shall be included in all
-			copies or substantial portions of the Software.<br><br>
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 
-			THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br><br>
-
-			bump.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/Porphyr/sounds/208435/'>license and author of original file</a><br>
-                        message.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/elmasmalo1/sounds/377017/'>license and author of original file</a><br>
-                        privateMessage.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/rhodesmas/sounds/342749/'>license and author of original file</a><br>
-			Authorization and some API-requests are based on a <a rel='noopener noreferrer' target='_blank' href='https://tools.wmflabs.org/oauth-hello-world/index.php?action=download'>that code</a><br>
-		</div>
-	</body>
-</html>
+bump.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/Porphyr/sounds/208435/'>license / author of original file</a><br>
+message.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/elmasmalo1/sounds/377017/'>license / author of original file</a><br>
+privateMessage.mp3: <a rel='noopener noreferrer' target='_blank' href='https://freesound.org/people/rhodesmas/sounds/342749/'>license / author of original file</a><br>

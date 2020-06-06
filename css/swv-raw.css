@@ -127,10 +127,8 @@ html, body, .full-screen, #loading {
     bottom: var(--side-padding);
 
     background-color: var(--bc-secondary);
-    box-shadow: var(--floatbar-shadow);
-    border: 1px solid var(--bc-secondary-hover);
+    box-shadow: var(--floatbar-shadow), inset 0 0 0 1px var(--bc-secondary-hover);
     border-radius: 8px;
-    overflow: hidden;
 
     display: flex;
     align-items: center;
@@ -142,19 +140,13 @@ html, body, .full-screen, #loading {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    border-radius: 8px;
 
     position: relative;
 }
-.pw__content > .pw__floatbar > div::before {
-    content: "";
-    display: block;
+.pw__content > .pw__floatbar > span[vr-line] {
     width: 1.2px;
     height: calc(var(--floatbar-height) / 1.8);
-    position: absolute;
-    top: 50%;
-    left: 0;
-    z-index: 1;
-    transform: translate(0, -50%);
     background-color: var(--bc-secondary-hover);
 }
 .pw__content > .pw__floatbar > input,
@@ -268,8 +260,8 @@ html, body, .full-screen, #loading {
 }
 .base-grid > .drawer-base {
     grid-area: drawer;
-    background-color: var(--bc-primary);
-    border: 1px solid var(--bc-primary-hover);
+    background-color: var(--bc-primary-low);
+    /* border: 1px solid var(--bc-primary-hover); */
     border-top: none; border-bottom: none;
 }
 .base-grid > .statusbar-base {
@@ -293,6 +285,8 @@ html, body, .full-screen, #loading {
     height: inherit;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 999;
 }
 .sidebar__options {
     flex: 1;
@@ -316,9 +310,13 @@ html, body, .full-screen, #loading {
     margin-top: auto;
 }
 .sidebar__options > .tab__active {
-    /* background-color: var(--bc-primary-low); */
+    background-image: 
+    linear-gradient(to bottom, var(--bc-primary) 8px, transparent 8px ),
+    linear-gradient(to top, var(--bc-primary) 8px, transparent 8px ),
+    linear-gradient(to right, var(--tc-primary-low) 4px, transparent 4px ),
+    linear-gradient(to bottom, var(--bc-primary) 8px, var(--bc-primary) 8px );
 }
-.sidebar__options > .tab__active::before {
+/* .sidebar__options > .tab__active::before {
     content: "";
     display: block;
     width: 4px;
@@ -327,7 +325,7 @@ html, body, .full-screen, #loading {
     position: absolute;
     left: 0px;
     border-radius: 0 2px 2px 0;
-}
+} */
 
 /*#####################
 ------drawer-base------
@@ -421,7 +419,7 @@ html, body, .full-screen, #loading {
 .main-navbar {
     background-color: var(--bc-primary);
     box-shadow: var(--floatbar-shadow);
-    z-index: 2;
+    z-index: 99;
 }
 .main-navbar > div { flex: 1; }
 .main-navbar span.action-header__title { color: var(--tc-primary); }
@@ -444,6 +442,11 @@ html, body, .full-screen, #loading {
     font-size: var(--fs-xs);
     text-align: center;
     overflow: hidden;
+    pointer-events: none;
+    -webkit-user-select: none;
+       -moz-user-select: -moz-none;
+        -ms-user-select: none;
+            user-select: none;
 }
 .drawer-btn__edits-count::before {
     content: "";
@@ -482,6 +485,8 @@ html, body, .full-screen, #loading {
     text-overflow: ellipsis;
     line-height: 1.2;
 }
+.description-container > div > div[i-tooltip]::after,
+#us > div[i-tooltip]::after { white-space: normal; word-break: break-all; }
 #us {
     display: flex;
     white-space: pre;
@@ -508,7 +513,6 @@ html, body, .full-screen, #loading {
     border-radius: calc(56px / 2);
     box-shadow: var(--floatbar-shadow);
     background-color: var(--bc-accent);
-    overflow: hidden;
     cursor: pointer;
     transition: transform 200ms ease-in-out;
     transform: scale(0);
@@ -528,6 +532,7 @@ html, body, .full-screen, #loading {
     width: 0;
     color: var(--tc-accent);
     transition: width 200ms ease-in-out;
+    overflow: hidden;
 }
 
 /*-------Controls-----*/
@@ -537,7 +542,7 @@ html, body, .full-screen, #loading {
 
     max-width: 350px;
     height: unset;
-    border: 1px solid var(--bc-secondary-hover);
+    box-shadow: var(--floatbar-shadow), inset 0 0 0 1px var(--bc-secondary-hover);
     background-color: var(--bc-secondary);
 }
 /*-------more control------*/
@@ -570,6 +575,7 @@ html, body, .full-screen, #loading {
     width: var(--floatbar-height);
     height: var(--floatbar-height);
     cursor: pointer;
+    border-radius: 8px;
 }
 .toolbar > div > img {
     transform: scale(1.2);
@@ -578,6 +584,18 @@ html, body, .full-screen, #loading {
 /*####################
 -------- talk -------
 #####################*/
+
+.talk-svg {
+    margin-top: 200px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: .3;
+}
+.talk-svg:only-child {
+    display: flex !important;
+}
 
 .phrase-talk {
     padding: 8px 0;
@@ -880,8 +898,8 @@ html, body, .full-screen, #loading {
         max-width: unset;
         bottom: 0;
         width: 100%;
-        border: none;
         border-radius: 0;
+        box-shadow: var(--floatbar-shadow);
     }
     .description-container {
         padding: 8px;

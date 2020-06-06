@@ -1,214 +1,132 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
-
-session_name( 'SWViewer' );
-session_start();
-if ((isset($_SESSION['tokenKey']) == false) or (isset($_SESSION['tokenSecret']) == false) or (isset($_SESSION['userName']) == false) or (isset($_POST["page"]) == false) or (isset($_POST["wiki"]) == false) or (isset($_POST["project"]) == false) or (isset($_POST["text"]) == false) or (isset($_POST["summary"]) == false) or (!isset($_POST["warn"]) && !isset($_POST["basetimestamp"])) ) {
-    echo "Invalid request";
+require_once 'includes/headerOAuth.php';
+if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName']) || !isset($_POST["page"]) || !isset($_POST["wiki"]) || !isset($_POST["project"]) || !isset($_POST["text"]) || !isset($_POST["summary"]) || (!isset($_POST["warn"]) && !isset($_POST["basetimestamp"]))) {
+    echo json_encode(["result" => "error", "info" => "Invalid request"]);
     session_write_close();
-    exit(0);
+    exit();
 }
-$gTokenKey = $_SESSION['tokenKey'];
-$gTokenSecret = $_SESSION['tokenSecret'];
 $userName = $_SESSION['userName'];
 session_write_close();
 
 $page = $_POST["page"];
-$project = $_POST["project"];
+$apiUrl = $_POST["project"];
 $text = $_POST["text"];
 $summary = $_POST["summary"];
 $wiki = $_POST["wiki"];
 
 if (isset($_POST["checkreport"])) {
     if (isset($_POST["regexreport"]) && isset($_POST["user"])) {
-        $project = str_replace("/api.php", "/index.php", $project);
-        $res_content = @file_get_contents($project . "?action=raw&title=".urlencode($page));
-        $project = str_replace("/index.php", "/api.php", $project);
+        $apiUrl = str_replace("/api.php", "/index.php", $apiUrl);
+        $res_content = @file_get_contents($apiUrl . "?action=raw&title=" . urlencode($page));
+        $apiUrl = str_replace("/index.php", "/api.php", $apiUrl);
 
         $regex = str_replace("$1", preg_quote($_POST["user"]), $_POST["regexreport"]);
-
-        if (preg_match("/".$regex."/", $res_content)) 
-            $response = ["result" => true];
-        else
-            $response = ["result" => false];
-        echo json_encode($response);
+        $regex2 = $regex;
+        if (isset($_POST["regexreport2"]))
+            if ($_POST["regexreport2"] !== "" && $_POST["regexreport2"] !== null)
+                $regex2 = str_replace("$1", preg_quote($_POST["user"]), $_POST["regexreport2"]);
+        echo (preg_match("/" . $regex . "/", $res_content) || preg_match("/" . $regex2 . "/", $res_content)) ? json_encode(["result" => true]) : json_encode(["result" => false]);
     }
     exit();
 }
-
-$errorCode = 200;
-$inifile = '/data/project/swviewer/security/oauth-sw.ini';
-$ini = parse_ini_file( $inifile );
-if ( $ini === false ) {
-	header( "HTTP/1.1 $errorCode Internal Server Error" );
-	echo 'The ini file could not be read';
-	exit(0);
-}
-if ( !isset( $ini['agent'] ) ||
-	!isset( $ini['consumerKey'] ) ||
-	!isset( $ini['consumerSecret'] )
-) {
-	header( "HTTP/1.1 $errorCode Internal Server Error" );
-	echo 'Required configuration directives not found in ini file';
-	exit(0);
-}
-$gUserAgent = $ini['agent'];
-$gConsumerKey = $ini['consumerKey'];
-$gConsumerSecret = $ini['consumerSecret'];
-$ch = null;
-
-$res = doApiQuery( array(
-	'format' => 'json',
-	'action' => 'tokens',
-	'type' => 'edit',
-    ), $ch );
-        if ( !isset( $res->tokens->edittoken ) ) {
-		header( "HTTP/1.1 $errorCode Internal Server Error" );
-		echo 'Bad API response: <pre>' . htmlspecialchars( var_export( $res, 1 ) ) . '</pre>';
-		exit(0);
-	}
-	$token = $res->tokens->edittoken;
-
+$params = ['action' => 'query', 'meta' => 'tokens', 'type' => 'csrf', 'format' => 'json'];
+$token = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params))->query->tokens->csrftoken;
 
 if (isset($_POST["getfirstuser"])) {
-    $res = doApiQuery( array(
-        'format' => 'json',
-        'utf8' => '1',
-        'action' => 'query',
-	'titles' => $page,
-        'prop' => 'revisions',
-        'rvprop' => 'user',
-        'rvslots' => '*',
-        'rvlimit' => 1,
-        'rvdir' => 'newer'
-    ), $ch );
-
+    $params = ['format' => 'json', 'utf8' => '1', 'action' => 'query', 'titles' => $page, 'prop' => 'revisions', 'rvprop' => 'user', 'rvslots' => '*', 'rvlimit' => 1, 'rvdir' => 'newer'];
+    $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
     $res2 = null;
-    forEach($res->query->pages as $key=>$p) {
+    forEach ($res->query->pages as $key => $p) {
         if ($key !== "-1")
             $res2 = $p;
     }
     if ($res2 !== null)
-        if (isset($res2->revisions[0]->user)) {
-            $response = ["result" => "sucess", "user" => $res2->revisions[0]->user];
-            echo json_encode($response);
-        }
-exit();
+        if (isset($res2->revisions[0]->user))
+            echo json_encode(["result" => "sucess", "user" => $res2->revisions[0]->user]);
+    exit();
 }
-
-
 
 if (isset($_POST["warn"])) {
     $sectiontitle = $_POST["sectiontitle"];
     if ($_POST["warn"] == "rollback") {
         if ($_POST["withoutsection"] == "true") {
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'query', 'prop' => 'revisions', 'rvprop' => 'size', 'titles' => $page), $ch );
+            $params = ['format' => 'json', 'utf8' => '1', 'action' => 'query', 'prop' => 'revisions', 'rvprop' => 'size', 'titles' => $page];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
             $res2 = null;
-            forEach($res->query->pages as $key=>$p) {
-                if ($key !== "-1")
-                    $res2 = $p;
-            }
-            if ($res2 !== null)
-                if ($res2->revisions[0]->size !== "0")
-                    $text = "\n\n"  .$text;
-            $res = doApiQuery( array(
-               'format' => 'json', 'utf8' => '1',
-               'action' => 'edit',
-               'title' => $page,
-               'appendtext' => $text,
-               'recreate' => '1',
-               'watchlist' => 'nochange',
-               'summary' => $summary,
-               'token' => $token
-            ), $ch );
-        }
-        else {
-            $res = doApiQuery( array(
-		'format' => 'json',
-                'utf8' => '1',
-		'action' => 'parse',
-		'page' => $page,
-                'prop' => 'sections'
-	    ), $ch );
-            $sectionNumber = "new";
-            if (isset($res->parse))
-                if (isset($res->parse->sections))
-                    forEach($res->parse->sections as $section) {
-                        if (isset($section->line))
-                            if (isset($section->index))
-                                if ($section->line == $sectiontitle)
-                                    $sectionNumber = $section->index;
-                    }
-            if ($sectionNumber !== "new") {
-                $project = str_replace("/api.php", "/index.php", $project);
-                $res_content = @file_get_contents($project . "?action=raw&title=".urlencode($page)."&section=".$sectionNumber);
-                $project = str_replace("/index.php", "/api.php", $project);
-                $res = doApiQuery( array(
-		    'format' => 'json',
-                    'utf8' => '1',
-		    'action' => 'edit',
-		    'title' => $page,
-                    'text' => $res_content . "\n\n" . $text,
-                    'section' => $sectionNumber,
-                    'recreate' => '1',
-                    'watchlist' => 'nochange',
-                    'summary' => $summary,
-		    'token' => $token
-	        ), $ch );
-            }
-            else
-                $res = doApiQuery( array(
-		    'format' => 'json',
-                    'utf8' => '1',
-		    'action' => 'edit',
-		    'title' => $page,
-                    'text' => $text,
-                    'section' => 'new',
-                    'sectiontitle' => $sectiontitle,
-                    'recreate' => '1',
-                    'watchlist' => 'nochange',
-                    'summary' => $summary,
-		    'token' => $token
-	        ), $ch );
-        }
-        if (isset($res->edit->title)) {
-            if (isset($res->edit->nochange)) {
-                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
-                echo json_encode($response);
-                exit();
-            }
-            $ts_pw = posix_getpwuid(posix_getuid());
-            $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
-            $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
-            unset($ts_mycnf, $ts_pw);
-
-            $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-            $q->execute(array(':user' => $userName, ':type' => 'warn', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
-            $db = null;
-
-            $response = ["result" => "sucess"];
-            echo json_encode($response);
-        }
-    }
-    if ($_POST["warn"] == "speedy") {
-        if (isset($sectiontitle) && $sectiontitle !== "" && $sectiontitle !== null)
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        else {
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'query', 'prop' => 'revisions', 'rvprop' => 'size', 'titles' => $page), $ch );
-            $res2 = null;
-            forEach($res->query->pages as $key=>$p) {
+            forEach ($res->query->pages as $key => $p) {
                 if ($key !== "-1")
                     $res2 = $p;
             }
             if ($res2 !== null)
                 if ($res2->revisions[0]->size !== "0")
                     $text = "\n\n" . $text;
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
+            $params = ['action' => 'edit', 'title' => $page, 'appendtext' => $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        } else {
+            $params = ['action' => 'parse', 'page' => $page, 'prop' => 'sections', 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            $sectionNumber = "new";
+            if (isset($res->parse))
+                if (isset($res->parse->sections))
+                    forEach ($res->parse->sections as $section) {
+                        if (isset($section->line))
+                            if (isset($section->index))
+                                if ($section->line == $sectiontitle)
+                                    $sectionNumber = $section->index;
+                    }
+            if ($sectionNumber !== "new") {
+                $apiUrl = str_replace("/api.php", "/index.php", $apiUrl);
+                $res_content = @file_get_contents($apiUrl . "?action=raw&title=" . urlencode($page) . "&section=" . $sectionNumber);
+                $apiUrl = str_replace("/index.php", "/api.php", $apiUrl);
+                $text = $res_content . "\n\n" . $text;
+                $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => $sectionNumber, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+                $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            } else {
+                $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+                $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            }
         }
         if (isset($res->edit->title)) {
             if (isset($res->edit->nochange)) {
-                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
-                echo json_encode($response);
+                echo json_encode(["code" => "alreadydone", "result" => "This edit has already made by someone."]);
+                exit();
+            }
+            $ts_pw = posix_getpwuid(posix_getuid());
+            $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
+            $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
+            unset($ts_mycnf, $ts_pw);
+
+            $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
+            $q->execute(array(':user' => $userName, ':type' => 'warn', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $apiUrl) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q = $db->prepare('UPDATE stats SET warn=warn + 1 WHERE user=:username');
+            $q->execute(array(':username' => $userName));
+            $db = null;
+
+            echo json_encode(["result" => "sucess"]);
+        }
+    }
+
+    if ($_POST["warn"] == "speedy") {
+        if (isset($sectiontitle) && $sectiontitle !== "" && $sectiontitle !== null) {
+            $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        } else {
+            $params = ['action' => 'query', 'prop' => 'revisions', 'rvprop' => 'size', 'titles' => $page, 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            $res2 = null;
+            forEach ($res->query->pages as $key => $p) {
+                if ($key !== "-1")
+                    $res2 = $p;
+            }
+            if ($res2 !== null)
+                if ($res2->revisions[0]->size !== "0")
+                    $text = "\n\n" . $text;
+            $params = ['action' => 'edit', 'title' => $page, 'appendtext' => $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        }
+        if (isset($res->edit->title)) {
+            if (isset($res->edit->nochange)) {
+                echo json_encode(["code" => "alreadydone", "result" => "This edit has already made by someone."]);
                 exit();
             }
 
@@ -218,24 +136,35 @@ if (isset($_POST["warn"])) {
             unset($ts_mycnf, $ts_pw);
 
             $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-            $q->execute(array(':user' => $userName, ':type' => 'warn', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q->execute(array(':user' => $userName, ':type' => 'warn', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $apiUrl) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
             $db = null;
-
-            $response = ["result" => "sucess"];
-            echo json_encode($response);
+            echo json_encode(["result" => "sucess"]);
         }
     }
 
     if ($_POST["warn"] == "report") {
-        if ($_POST["withoutsection"] !== "true")
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        else
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        
+        if ($_POST["withoutsection"] !== "true") {
+            if (isset($_POST["top"]) && $_POST["top"] == "true") {
+                $preamb = (isset($_POST["preamb"]) && $_POST["preamb"] == "true") ? "\n\n" : "";
+                $params = ['action' => 'edit', 'title' => $page, 'appendtext' => $preamb . "== " . $sectiontitle . " ==" . "\n" . $text, 'section' => 0, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+                $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            } else {
+                $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
+                $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            }
+        } else {
+            if (isset($_POST["top"]) && $_POST["top"] == "true") {
+                $preamb = (isset($_POST["preamb"]) && $_POST["preamb"] == "true") ? "\n\n" : "";
+                $params = ['action' => 'edit', 'title' => $page, 'appendtext' => $preamb . $text, 'section' => 0, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
+                $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            } else {
+                $params = ['action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
+                $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+            }
+        }
         if (isset($res->edit->title)) {
             if (isset($res->edit->nochange)) {
-                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
-                echo json_encode($response);
+                echo json_encode(["code" => "alreadydone", "result" => "This edit has already made by someone."]);
                 exit();
             }
 
@@ -245,7 +174,9 @@ if (isset($_POST["warn"])) {
             unset($ts_mycnf, $ts_pw);
 
             $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-            $q->execute(array(':user' => $userName, ':type' => 'report', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q->execute(array(':user' => $userName, ':type' => 'report', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $apiUrl) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q = $db->prepare('UPDATE stats SET report=report + 1 WHERE user=:username');
+            $q->execute(array(':username' => $userName));
             $db = null;
 
             $response = ["result" => "sucess"];
@@ -254,15 +185,17 @@ if (isset($_POST["warn"])) {
     }
 
     if ($_POST["warn"] == "protect") {
-        if ($_POST["withoutsection"] !== "true")
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        else
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        
+        if ($_POST["withoutsection"] !== "true") {
+            $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        } else {
+            $params = ['action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        }
+
         if (isset($res->edit->title)) {
             if (isset($res->edit->nochange)) {
-                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
-                echo json_encode($response);
+                echo json_encode(["code" => "alreadydone", "result" => "This edit has already made by someone."]);
                 exit();
             }
             $ts_pw = posix_getpwuid(posix_getuid());
@@ -271,24 +204,27 @@ if (isset($_POST["warn"])) {
             unset($ts_mycnf, $ts_pw);
 
             $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-            $q->execute(array(':user' => $userName, ':type' => 'protect', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q->execute(array(':user' => $userName, ':type' => 'protect', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $apiUrl) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q = $db->prepare('UPDATE stats SET protect=protect + 1 WHERE user=:username');
+            $q->execute(array(':username' => $userName));
             $db = null;
 
-            $response = ["result" => "sucess"];
-            echo json_encode($response);
+            echo json_encode(["result" => "sucess"]);
         }
     }
 
     if ($_POST["warn"] == "SRG") {
-        if ($_POST["withoutsection"] !== "true")
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        else
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        
+        if ($_POST["withoutsection"] !== "true") {
+            $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        } else {
+            $params = ['action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        }
+
         if (isset($res->edit->title)) {
             if (isset($res->edit->nochange)) {
-                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
-                echo json_encode($response);
+                echo json_encode(["code" => "alreadydone", "result" => "This edit has already made by someone."]);
                 exit();
             }
             $ts_pw = posix_getpwuid(posix_getuid());
@@ -297,24 +233,25 @@ if (isset($_POST["warn"])) {
             unset($ts_mycnf, $ts_pw);
 
             $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-            $q->execute(array(':user' => $userName, ':type' => 'SRG', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q->execute(array(':user' => $userName, ':type' => 'SRG', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $apiUrl) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
             $db = null;
 
-            $response = ["result" => "sucess"];
-            echo json_encode($response);
+            echo json_encode(["result" => "sucess"]);
         }
     }
 
     if ($_POST["warn"] == "SRM") {
-        if ($_POST["withoutsection"] !== "true")
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        else
-            $res = doApiQuery( array('format' => 'json', 'utf8' => '1', 'action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token), $ch );
-        
+        if ($_POST["withoutsection"] !== "true") {
+            $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        } else {
+            $params = ['action' => 'edit', 'title' => $page, 'appendtext' => "\n\n" . $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+            $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+        }
+
         if (isset($res->edit->title)) {
             if (isset($res->edit->nochange)) {
-                $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
-                echo json_encode($response);
+                echo json_encode(["code" => "alreadydone", "result" => "This edit has already made by someone."]);
                 exit();
             }
             $ts_pw = posix_getpwuid(posix_getuid());
@@ -323,55 +260,31 @@ if (isset($_POST["warn"])) {
             unset($ts_mycnf, $ts_pw);
 
             $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-            $q->execute(array(':user' => $userName, ':type' => 'SRM', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+            $q->execute(array(':user' => $userName, ':type' => 'SRM', ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $apiUrl) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
             $db = null;
 
-            $response = ["result" => "sucess"];
-            echo json_encode($response);
+            echo json_encode(["result" => "sucess"]);
         }
     }
 
-}
-else {
-    $res = doApiQuery( array(
-		'format' => 'json',
-                'utf8' => '1',
-		'action' => 'edit',
-		'title' => $page,
-                'text' => $text,
-                'summary' => $summary,
-                'basetimestamp' => $_POST["basetimestamp"],
-                'nocreate' => '1',
-		'token' => $token
-    ), $ch );
+} else {
+    $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'summary' => $summary, 'basetimestamp' => $_POST["basetimestamp"], 'nocreate' => '1', 'token' => $token, 'utf8' => '1', 'format' => 'json'];
+    $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
 }
 
-if ( !isset( $res->edit->newrevid ) ) {
+if (!isset($res->edit->newrevid)) {
     if (isset($res->edit->nochange)) {
-        $response = ["code" => "alreadydone", "result" => "This edit has already made by someone."];
-        echo json_encode($response);
+        echo json_encode(["code" => "alreadydone", "result" => "This edit has already made by someone."]);
         exit();
     }
 
-   $res = json_decode(json_encode($res), True);
- //   $debugFile = fopen("debug.txt", "a");
- //  $debugContent = print_r($res, true) . "\n";
- //   fwrite($debugFile, $debugContent);
- //   fclose($debugFile);
-
+    $res = json_decode(json_encode($res), True);
     if (isset($res["edit"]["info"]))
-        $response = ["result" => $res["edit"]["info"], "code" => $res["edit"]["code"]];
-    else {
-        if (isset($res["error"]["info"]))
-            $response = ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
-        else
-            $response = ["result" => "Unknow error", "code" => var_dump($res)];
-    }
-    echo json_encode($response);
-    exit(0);
+        echo json_encode(["result" => $res["edit"]["info"], "code" => $res["edit"]["code"]]);
+    else
+        echo (isset($res["error"]["info"])) ? json_encode(["result" => $res["error"]["info"], "code" => $res["error"]["code"]]) : json_encode(["result" => "Unknow error", "code" => "null"]);
+    exit();
 }
-
-
 
 if (isset($res->edit->title) && !isset($_POST["warn"])) {
     $ts_pw = posix_getpwuid(posix_getuid());
@@ -379,107 +292,20 @@ if (isset($res->edit->title) && !isset($_POST["warn"])) {
     $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
     unset($ts_mycnf, $ts_pw);
 
-    $actiontype = "edit";
+    $actiontype = "edit"; $actiontype2 = "edits";
     if (isset($_POST["isdelete"]))
-        if ($_POST["isdelete"] == "true")
+        if ($_POST["isdelete"] == "true") {
             $actiontype = "delete";
+            $actiontype2 = "del"; 
+        }
     $q = $db->prepare('INSERT INTO logs (user, type, wiki, title, diff) VALUES (:user, :type, :wiki, :title, :diff)');
-    $q->execute(array(':user' => $userName, ':type' => $actiontype, ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $project) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+    $q->execute(array(':user' => $userName, ':type' => $actiontype, ':wiki' => $wiki, ':title' => strval($res->edit->title), ':diff' => str_replace("/api.php", "/index.php?", $apiUrl) . 'oldid=' . strval($res->edit->oldrevid) . '&diff=' . strval($res->edit->newrevid) . '/'));
+    $q = $db->prepare('UPDATE stats SET '.$actiontype2.'='.$actiontype2.'+ 1 WHERE user=:username');
+    $q->execute(array(':username' => $userName));
     $db = null;
 
     $res = json_decode(json_encode($res), True);
-    $response = ["result" => "Success", "summary" => $summary, "oldrevid" => $res["edit"]["oldrevid"], "newrevid" => $res["edit"]["newrevid"], "user" => $userName];
-    echo json_encode($response);
+    echo json_encode(["result" => "Success", "summary" => $summary, "oldrevid" => $res["edit"]["oldrevid"], "newrevid" => $res["edit"]["newrevid"], "user" => $userName]);
 }
 
-exit(0);
-
-
-
-
-
-# Based on https://tools.wmflabs.org/oauth-hello-world/index.php?action=download.
-function sign_request( $method, $url, $params = array() ) {
-	global $gConsumerSecret, $gTokenSecret;
-
-	$parts = parse_url( $url );
-	$scheme = isset( $parts['scheme'] ) ? $parts['scheme'] : 'http';
-	$host = isset( $parts['host'] ) ? $parts['host'] : '';
-	$port = isset( $parts['port'] ) ? $parts['port'] : ( $scheme == 'https' ? '443' : '80' );
-	$path = isset( $parts['path'] ) ? $parts['path'] : '';
-	if ( ( $scheme == 'https' && $port != '443' ) ||
-		( $scheme == 'http' && $port != '80' ) 
-	) {
-		$host = "$host:$port";
-	}
-	$pairs = array();
-	parse_str( isset( $parts['query'] ) ? $parts['query'] : '', $query );
-	$query += $params;
-	unset( $query['oauth_signature'] );
-	if ( $query ) {
-		$query = array_combine(
-			array_map( 'rawurlencode', array_keys( $query ) ),
-			array_map( 'rawurlencode', array_values( $query ) )
-		);
-		ksort( $query, SORT_STRING );
-		foreach ( $query as $k => $v ) {
-			$pairs[] = "$k=$v";
-		}
-	}
-
-	$toSign = rawurlencode( strtoupper( $method ) ) . '&' .
-		rawurlencode( "$scheme://$host$path" ) . '&' .
-		rawurlencode( join( '&', $pairs ) );
-	$key = rawurlencode( $gConsumerSecret ) . '&' . rawurlencode( $gTokenSecret );
-	return base64_encode( hash_hmac( 'sha1', $toSign, $key, true ) );
-}
-
-
-
-
-function doApiQuery( $post, &$ch = null ) {
-	global $gUserAgent, $gConsumerKey, $gTokenKey, $errorCode, $project;
-
-	$headerArr = array(
-		'oauth_consumer_key' => $gConsumerKey,
-		'oauth_token' => $gTokenKey,
-		'oauth_version' => '1.0',
-		'oauth_nonce' => md5( microtime() . mt_rand() ),
-		'oauth_timestamp' => time(),
-		'oauth_signature_method' => 'HMAC-SHA1',
-	);
-	$signature = sign_request( 'POST', $project, $post + $headerArr );
-	$headerArr['oauth_signature'] = $signature;
-
-	$header = array();
-	foreach ( $headerArr as $k => $v ) {
-		$header[] = rawurlencode( $k ) . '="' . rawurlencode( $v ) . '"';
-	}
-	$header = 'Authorization: OAuth ' . join( ', ', $header );
-
-	if ( !$ch ) {
-		$ch = curl_init();
-	}
-	curl_setopt( $ch, CURLOPT_POST, true );
-	curl_setopt( $ch, CURLOPT_URL, $project );
-	curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $post ) );
-	curl_setopt( $ch, CURLOPT_HTTPHEADER, array( $header ) );
-	//curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-	curl_setopt( $ch, CURLOPT_USERAGENT, $gUserAgent );
-	curl_setopt( $ch, CURLOPT_HEADER, 0 );
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	$data = curl_exec( $ch );
-	if ( !$data ) {
-		header( "HTTP/1.1 $errorCode Internal Server Error" );
-		echo 'Curl error: ' . htmlspecialchars( curl_error( $ch ) );
-		exit(0);
-	}
-	$ret = json_decode( $data );
-	if ( $ret === null ) {
-		header( "HTTP/1.1 $errorCode Internal Server Error" );
-		echo 'Unparsable API response: <pre>' . htmlspecialchars( $data ) . '</pre>';
-		exit(0);
-	}
-	return $ret;
-}
 ?>
