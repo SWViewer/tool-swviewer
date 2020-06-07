@@ -1,0 +1,116 @@
+<div>
+    <span class="fs-sm">Title</span>
+    <input id="presetTitleInput" class="i-input__secondary secondary-placeholder fs-md" type="text" autocomplete="off" placeholder="">
+</div><br/>
+<div class="i__base">
+    <div class="i__title fs-md">Registered</div>
+    <div class="i__description fs-xs">Enable edits from registered users.</div>
+    <div class="i__content fs-sm">
+        <div id="registered-btn" class="t-btn__secondary" onclick="toggleTButton(this); registeredBtn(this);"></div>
+    </div>
+</div>
+<div class="i__base">
+    <div class="i__title fs-md">Anonymous</div>
+    <div class="i__description fs-xs">Enable edits from anonymous users.</div>
+    <div class="i__content fs-sm">
+        <div id="onlyanons-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyAnonsBtn(this);"></div>
+    </div>
+</div>
+<div class="i__base">
+    <div class="i__title fs-md">New pages</div>
+    <div class="i__description fs-xs">Enable new pages creations.</div>
+    <div class="i__content fs-sm">
+        <div id="new-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); newPagesBtn(this);"></div>
+    </div>
+</div>
+<div class="i__base">
+    <div class="i__title fs-md">Only new pages</div>
+    <div class="i__description fs-xs">Enable only new page creations.</div>
+    <div class="i__content fs-sm">
+        <div id="onlynew-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyNewPagesBtn(this);"></div>
+    </div>
+</div>
+
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
+<div class="i__base">
+    <div class="i__title fs-md">Small Wikis</div>
+    <div class="i__description fs-xs">Enable edits from small wikis.</div>
+    <div class="i__content fs-sm">
+        <div id="small-wikis-btn" class="t-btn__secondary" onclick="toggleTButton(this); smallWikisBtn(this);"></div>
+    </div>
+</div>
+<div class="i__base">
+    <div class="i__title fs-md">Less then 300 users</div>
+    <div class="i__description fs-xs">Enable edits from wikis with less then 300 active users.</div>
+    <div class="i__content fs-sm">
+        <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
+    </div>
+</div>
+';}?>
+
+<div class="i__base">
+    <div class="i__title fs-md">Edits limit</div>
+    <div class="i__description fs-xs">Number of edits after which edits of user will be whitelisted.</div>
+    <div class="i__content fs-sm">
+        <input id="max-edits" class="i-input__secondary secondary-placeholder fs-sm" name="max-edits" placeholder="Max edits">
+    </div>
+</div>
+<div class="i__base">
+    <div class="i__title fs-md">Days limit</div>
+    <div class="i__description fs-xs">Account age in days after which edits of user will be whitelisted.</div>
+    <div class="i__content fs-sm">
+        <input id="max-days" class="i-input__secondary secondary-placeholder fs-sm" name="max-days" placeholder="Max days">
+    </div>
+</div>
+<div class="i__base">
+    <div class="i__title fs-md">Namespace filter</div>
+    <div class="i__description fs-xs">Add <a style="display: inline;" href="https://en.wikipedia.org/wiki/Help:MediaWiki_namespace" rel="noopener noreferrer" target="_blank">namespace</a> to filter edits in queue.</div>
+    <div class="i__content fs-sm">
+        <div id="btn-delete-ns" class="i-minus fs-sm" onclick="nsDeleteFunct()">-</div>
+        <input id="ns-input" class="i-input__secondary secondary-placeholder fs-sm" name="" placeholder="Enter">
+        <div id="btn-add-ns" class="i-plus fs-sm" onclick="nsAddFunct()">+</div>
+    </div>
+    <div class="i__extra">
+        <ul id="nsList" class="i-chip-list fs-sm"></ul>
+    </div>
+</div>
+
+<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
+<div class="i__base">
+    <div class="i__title fs-md">Custom wikis</div>
+    <div class="i__description fs-xs">Add your home-wiki or wikis which are not in small wikis list.</div>
+    <div class="i__content fs-sm">
+        <div id="btn-bl-p-delete" class="i-minus fs-sm" onclick="blpDeleteFunct()">-</div>
+        <input id="bl-p" class="i-input__secondary secondary-placeholder fs-sm" name="bl-p" placeholder="Enter">
+        <div id="btn-bl-p-add" class="i-plus fs-sm" onclick="blpAddFunct()">+</div>
+    </div>
+    <div class="i__extra">
+        <ul id="blareap" class="i-chip-list fs-sm"></ul>
+    </div>
+</div>
+';}?>
+
+<div class="i__base">
+    <div class="i__title fs-md">Users whitelist</div>
+    <div class="i__description fs-xs">Add users to skip their edits from queue.</div>
+    <div class="i__content fs-sm">
+        <div id="btn-wl-u-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
+        <input id="wladdu" class="i-input__secondary secondary-placeholder fs-sm" name="wladdu" placeholder="Enter">
+        <div id="btn-wl-u-add" class="i-plus fs-sm" onclick="wluAddFunct()">+</div>
+    </div>
+    <div class="i__extra">
+        <ul id="wlareau" class="i-chip-list fs-sm"></ul>
+    </div>
+</div>
+<div class="i__base">
+    <div class="i__title fs-md">Wikis whitelist</div>
+    <div class="i__description fs-xs">Add wikis to skip their edits from queue.</div>
+    <div class="i__content fs-sm">
+        <div id="btn-wl-p-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
+        <input id="wladdp" class="i-input__secondary secondary-placeholder fs-sm" name="wladdp" placeholder="Enter">
+        <div id="btn-wl-p-add" class="i-plus fs-sm" onclick="wlpAddFunct()">+</div>
+    </div>
+    <div class="i__extra">
+        <ul id="wlareap" class="i-chip-list fs-sm"></ul>
+    </div>
+</div>

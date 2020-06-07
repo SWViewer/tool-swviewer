@@ -53,7 +53,7 @@
     --pw-header-height: var(--action-header-height);
     --pw-drawer-width: 225px;
     --floatbar-height: 48px;
-    --floatbar-shadow: 0 0 8px 0 rgba(0, 0, 0, .2);
+    --floatbar-shadow: 0 0 2px 0 rgba(125, 125, 125, .5);
     --side-padding: 16px;
 }
 
@@ -75,7 +75,7 @@
     :root {
         --fs-xl: 22px !important;
         --action-header-height: 48px;
-        --m-queue-drawer-width: 48px;
+        --m-queue-drawer-width: 250px;
         --pw-drawer-width: 200px;
     }
 }

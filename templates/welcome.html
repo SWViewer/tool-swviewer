@@ -1,180 +1,185 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href='https://tools-static.wmflabs.org/fontcdn/css?family=Roboto|Montserrat' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="./../css/base/fonts.css">
+		<link rel="stylesheet" href="./../css/base/variables.css">
+        <link rel="stylesheet" href="./../css/base/base.css">
+        <link rel="stylesheet" href="./../css/components/comp.css">
 		<style type="text/css">
 
-			*, *::before, *::after {
-				box-sizing: border-box;
-			}
-			html {
-				overflow: hidden;
-				overflow-y: auto;
-				font-size: 16px;
-			}
 			body {
 				margin: 0;
-				padding: 0;
+				padding: var(--side-padding);
 				width: 100%;
-				height: 100%;
-				font-family: 'Roboto', sans-serif;
-				overflow: hidden;
-				overflow-y: auto;
-				letter-spacing: 0.5px;
-				font-size: var(--fs-sm);
-				font-size: 14px;
 			}
-		    ::-webkit-scrollbar {
-		        width: 4px;
-		    }
-		    ::-webkit-scrollbar-track {
-		        background-color: transparent;
-		    }
-		    ::-webkit-scrollbar-thumb {
-		        border-radius: 4px;
-    			background-color: rgba(255,255,255,.2);
-		    }
-			a {
-				color: var(--link-color);
-				text-decoration: none;
+		    .welcome-box { max-width: 788px; }
+			.stat-search__base {margin: var(--side-padding) 0; display: flex; }
+			.stat-search__base > input { flex: 1; margin-right: var(--side-padding); }
+
+			.stat-container {
+				margin-bottom: var(--side-padding);
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
 			}
-			label {
-				display: block;
-				font-weight: normal;
-				margin-bottom: 4px;
-				color: var(--tc-secondary);
-				font-size: var(--fs-md);
+			.stat-container > div {
+				flex: 1 1;
+				padding: 8px 16px;
+				padding-left: 0;
+				display: flex;
+				flex-direction: column;
 			}
-			.date {
-				margin: 16px 0 8px -1rem;
-				color: var(--tc-lowSecondary);
-			}
-			h1, h2, h3, h4, h5, h6 {
-				color: var(--tc-secondary);
-				font-weight: normal;
-				font-size: var(--fs-md);
-			}
-			ul {
-			  	list-style: none;
-			}
-			ul li::before {
-			    content: "\2022";
-			    color: var(--tc-lowSecondary);
-			    font-weight: bold;
-			    display: inline-block;
-			    width: 1em;
-	   	 		margin-left: -1em;
-			}
-			ul .imp::before {
-			    content: "\2022";
-			    color: #d9534f;
-			    font-weight: bold;
-			    display: inline-block;
-			    width: 1em;
-	   	 		margin-left: -1em;
-			}
-			.welcome-info-container {
-				padding: 16px;
-				max-width: 750px;
-			}
-			.welcome {
-				margin: 0;
-				font-size: var(--fs-lg);
-				color: var(--tc-secondary);
-			}
-			#info-base {
-				display: block;
-				transition: display 200ms ease-in-out;
-			}
-			.info-container {
-				padding: 16px 0;
-			}
-			.info-container:last-child {
-				margin-bottom: 16px;
-			}
-			.info-container h4 {
-				margin: 0;
-			}
-			.info-container li {
-				color: var(--tc-lowSecondary);
-				font-size: var(--fs-md);
+			.stat-container > div span:first-child {
+				font-weight: bold;
+				padding-bottom: 8px;
 			}
 
 		</style>
-		<script>
+	</head>
+	<body class="secondary-cont secondary-scroll">
+		<label id="welcomeLabel" class="fs-xl" style="font-weight: bold;">Welcome </label>
+		<div class="welcome-box">
+			<form id="statForm" class="stat-search__base">
+				<input id="statInput" class="i-input__secondary secondary-placeholder fs-md" type="text" autocomplete="off" placeholder="Search user">
+				<button class="i-btn__accent accent-hover fs-md" type="submit">Search</button>
+			</form>
+			<div id="statContainer" class="stat-container">
+				<div>
+					<span id="rollbackSpan" class="fs-xl" style="color: #c8b40e;">0</span>
+					<span class="fs-lg">Rollback</span>
+				</div>
+				<div>
+					<span id="undosSpan" class="fs-xl" style="color: #db24b0;">0</span>
+					<span class="fs-lg">Undo</span>
+				</div>
+				<div>
+					<span id="delSpan" class="fs-xl" style="color: #672dd2;">0</span>
+					<span class="fs-lg">Delete</span>
+				</div>
+				<div>
+					<span id="editsSpan" class="fs-xl" style="color: #2dd280;">0</span>
+					<span class="fs-lg">Edit</span>
+				</div>
+				<div>
+					<span id="warnSpan" class="fs-xl" style="color: #d92c26;">0</span>
+					<span class="fs-lg">Warn</span>
+				</div>
+				<div>
+					<span id="reportSpan" class="fs-xl" style="color: #e3791c;">0</span>
+					<span class="fs-lg">Report</span>
+				</div>
+				<div>
+					<span id="protectSpan" class="fs-xl" style="color: #1cb3e3">0</span>
+					<span class="fs-lg">Protect</span>
+				</div>
+			</div>
+			
+			<div class="list-container">
+				<label class="fs-md">Reminder</label>
+				<ul class="i-ul fs-sm">
+					<li class="i-ul__imp">IMPORTANT: If app is not working properly, please re-login and clear cache.</li>
+					<li>Responsibility for edits rests with the owner of the account with which they are made.</li>
+					<li class="i-ul__imp">Please DO NOT sends warns if you don’t know the language (except in case of pure vandalism).</li>
+					<li>If you find a bug, please <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/Talk:SWViewer">report</a> it! Also attach screenshots or/and data from the browser console.</li>
+				</ul>
+			</div>
+			<div class="list-container">
+				<label class="fs-md">Tips</label>
+				<ul class="i-ul fs-sm">
+					<li>If you use Chrome browser, you can install SWViewer as an WebApp on desktop as well as mobile, see <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Install_PWA">instructions</a>.</li>
+				</ul>
+			</div>
+			<div class="list-container">
+				<label class="fs-md">What's new </label>
+				<ul class="i-ul fs-sm">
+					<label class="i-ul__subheader fs-sm">4 June 2020</label>
+					<li class="i-ul__imp">Loading time improved.</li>
+					<li class="i-ul__imp">Queue: Added ORES edit prediction system, New page indicator, Username/IP in edit.</li>
+					<li class="i-ul__imp">Presets: Now you can create separate settings for different wikis.</li>
+					<li class="i-ul__imp">Terminate stream (optional On/off) when edit in queue reaches queue limit.</li>
+					<li class="i-ul__imp">Links of report pages are moved in more options and links to CA, GUC and history can be copied.</li>
+					<li class="i-ul__imp">Layout improvement for mobile.</li>
+					<li class="i-ul__imp">Bugs fixed!</li>
+				</ul>
+				<ul id="moreWN" class="i-ul fs-sm" style="overflow: hidden; height: 0px;">
+					<label class="i-ul__subheader fs-sm">21 October 2019</label>
+					<li>UI & UX improvments.</li>
+					<li>Global mode and undo for non-GRs.</li>
+					<li>New sounds, RH mode, Anonymous edits and Only new pages features added into settings.</li>
+					<li>Advanced menu for difference viewer.</li>
+					<li>Total statistics on welcome page.</li>
+					<li>Bug fixed!</li>
+					<label class="i-ul__subheader fs-sm">14 June 2019</label>
+					<li>We now support themes, and a new logo again but this is last.. swear :P</li>
+					<li>Also we now have customizable templates and edit summaries for each wikis, add for yours <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/config.json">here</a>.</li>
+					<label class="i-ul__subheader fs-sm">24 March 2019</label>
+					<li>Fully implimented new design along with new logo :)</li>
+					<li>New design for desktop and mobile.</li>
+					<li>Single login for all users (GR as well as local rollback).</li>
+					<label class="i-ul__subheader fs-sm">Older</label>
+					<li>50 new small projects have been added to the <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/wikis">SW list</a>.</li>
+					<li>Added option to select an additional list of projects with less than 300 active users. Which includes about 30 projects, including the best of the bests sebwiki. Check app's settings.</li>
+					<li>Added <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Hotkeys">hotkeys</a>.</li>
+					<li>Synchronization: If you doing rollback, edits of that page will be removed from queue of all users online in app.</li>
+				</ul>
+				<button class="i-btn__secondary-outlined secondary-hover fs-md" onclick="toggleMoreWN(this);">Show more</button>
+			</div>
+		</div>
+		<script async>
 			function setTheme(THEME) {
 				let root = document.documentElement;
-				root.style.setProperty('--fs-sm', THEME.FS_SM);
-				root.style.setProperty('--fs-md', THEME.FS_MD);
-				root.style.setProperty('--fs-lg', THEME.FS_LG);
-				root.style.setProperty('--fs-xl', THEME.FS_XL);
-				root.style.setProperty('--bg-primary', THEME.BG_PRIMARY);
-				root.style.setProperty('--bg-lowPrimary', THEME.BG_LOW_PRIMARY);
-				root.style.setProperty('--bg-secondary', THEME.BG_SECONDARY);
-				root.style.setProperty('--bg-lowSecondary', THEME.BG_LOW_SECONDARY);
-				root.style.setProperty('--tc-primary', THEME.TC_PRIMARY);
-				root.style.setProperty('--tc-lowPrimary', THEME.TC_LOW_PRIMARY);
-				root.style.setProperty('--tc-secondary', THEME.TC_SECONDARY);
-				root.style.setProperty('--tc-lowSecondary', THEME.TC_LOW_SECONDARY);
-    			root.style.setProperty('--link-color', THEME.LINK_COLOR);
-				root.style.setProperty('--bg-primary-hover', THEME.BG_PRIMARY_HOVER);
-				root.style.setProperty('--bg-secondary-hover', THEME.BG_SECONDARY_HOVER);
-				root.style.setProperty('--primary-border', THEME.PRIMARY_BORDER);
-				root.style.setProperty('--secondary-border', THEME.SECONDARY_BORDER);
+				Object.keys(THEME).forEach((item) => root.style.setProperty(item, THEME[item]));
 			};
 
 			function getMessage(event) {
-				setTheme(event.data);
-				return;
+				if (event.origin !== 'https://tools.wmflabs.org') return;
+				setTheme(event.data.THEME);
+				if (!(document.getElementById('welcomeLabel').childNodes.length < 2)) return;
+				let userTag = document.createElement('span');
+				userTag.textContent = event.data.user;
+				userTag.style.cursor = 'pointer';
+				userTag.addEventListener('click', () =>{
+					document.getElementById('statInput').value = event.data.user;
+					searchStat();
+				});
+				document.getElementById('welcomeLabel').append(userTag);
 			};
 			window.addEventListener("message", getMessage, false);
 
 		</script>
-	</head>
-	<body id="boo">
-		<div class="welcome-info-container">
-			<div class="logo-title-container">
-				<h1 class="welcome">Welcome to SW Viewer</h1>
-			</div>
-			<div id="info-base">
-				<div class="info-container">
-					<h4>Reminder</h4>
-					<ul>
-	                    <li class="imp">IMPORTANT: If app is not working properly, please re-login and clear cache.</li>
-						<li>Responsibility for edits rests with the owner of the account with which they are made.</li>
-						<li class="imp">Please DO NOT sends warns if you don’t know the language (except in case of pure vandalism).</li>
-						<li>If you find a bug, please <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/Talk:SWViewer">report</a> it! Also attach screenshots or/and data from the browser console.</li>
-						<li>IRC channel: <a rel='noopener noreferrer' target="_blank" href="https://tools.wmflabs.org/ircredirect/?server=irc.freenode.net&channel=swviewer&consent=yes">#swviewer</a> on freenode.net</li>
-					</ul>
-				</div>	
-				<br>
-			
-				<div class="info-container">
-					<h4>What's new</h4>
-					<ul>
-						<label class="date">14 June 2019</label>
-						<li class="imp">We now support themes, and a new logo again but this is last.. swear :P</li>
-						<li class="imp">Also we now have customizable templates and edit summaries for each wikis, add for yours <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/config.json">here</a>.</li>
-						<label class="date">24 March 2019</label>
-						<li>Fully implimented new design along with new logo :)</li>
-						<li>New design for desktop and mobile.</li>
-						<li>Single login for all users (GR as well as local rollback).</li>
-						<label class="date">Older</label>
-						<li>50 new small projects have been added to the <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/wikis">SW list</a>.</li>
-						<li>Added option to select an additional list of projects with less than 300 active users. Which includes about 30 projects, including the best of the bests sebwiki. Check app's settings.</li>
-						<li>Added <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Hotkeys">hotkeys</a>.</li>
-						<li>Synchronization: If you doing rollback, edits of that page will be removed from queue of all users online in app.</li>
-					</ul>
-				</div>
-				<br>
+		<script async>
+			document.getElementById('statForm').addEventListener('submit', (e) => searchStat(e), false);
+			function searchStat (e) {
+				if (e !== undefined) e.preventDefault();
+				document.getElementById('statContainer').classList.add('disabled');
+				var stats = ['rollback', 'del', 'undos', 'edits', 'report', 'warn', 'protect'];
+				stats.forEach((action) => document.getElementById(action + 'Span').textContent = '0');
+				var stateSearchPhrase = document.getElementById('statInput').value;
+				fetch('./../php/welcome-stats.php', {
+					method: 'post',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ user: stateSearchPhrase })
+				}).then((response) => response.json())
+				.then((statsObj) => {
+					stats.forEach((action) => document.getElementById(action + 'Span').textContent = statsObj[action]);
+					document.getElementById('statContainer').classList.remove('disabled');
+				}).catch((error) => console.error(error));
+			}
+			searchStat();
 
-				<div class="info-container">
-					<h4>Tips</h4>
-					<ul>
-						<li>If you are using Android and Chrome browser, then you can switch app to full-screen mode (without the address bar): Browser's settings => Add to Home screen and opens via label on screen.</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+			function toggleMoreWN (button) {
+				if (document.getElementById('moreWN').style.height == '0px') {
+					document.getElementById('moreWN').style.height = 'unset';
+					button.textContent = 'Show less';
+				} else {
+					document.getElementById('moreWN').style.height = '0px';
+					button.textContent = 'Show more';
+				}
+			}
+		</script>
 	</body>
+
 </html>

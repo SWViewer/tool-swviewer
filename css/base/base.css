@@ -173,6 +173,10 @@ button, select {
 
 /*----scrollbar-----*/
 
+.hidden-scroll::-webkit-scrollbar { width: 0 !important; }
+.hidden-scroll { overflow: -moz-scrollbars-none; }
+.hidden-scroll { -ms-overflow-style: none; }
+
 .primary-scroll::-webkit-scrollbar,
 .secondary-scroll::-webkit-scrollbar {
     width: 8px;

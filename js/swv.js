@@ -1,13 +1,15 @@
 var old;
 var times = 1;
-angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", function ($scope, $timeout) {
+var i = 0;
+var edits_history = [];
+angular.module("swv", ["ui.directives", "ui.filters"])
+.controller("Queue", function ($scope, $compile, $timeout) {
     var server_url, server_name, script_path, server_uri, namespace, user, dnew, title, wikidatat, userip, wiki,
         timestamp, summary, withoutSection, speedySummary, othersArray, protectArray, reportArray, speedySection,
         speedyWarnSummary, warn;
     const ns = ["<font color='green'>Main</font>", "<font color='tomato'>Talk</font>", "<font color='tomato'>User</font>", "<font color='tomato'>User talk</font>", "<font color='orange'>Project</font>", "<font color='tomato'>Project talk</font>", "<font color='orange'>File</font>", "<font color='tomato'>File talk</font>", "<font color='tomato'>MediaWiki</font>", "<font color='tomato'>MediaWiki talk</font>", "<font color='orange'>Template</font>", "<font color='tomato'>Template talk</font>", "<font color='orange'>Help</font>", "<font color='tomato'>Help talk</font>", "<font color='orange'>Category</font>", "<font color='tomato'>Category talk</font>"];
     const wikis = ["afwiki", "alswiki", "amwiki", "anwiki", "angwiki", "arwikisource", "arwikiversity", "aswikisource", "astwiki", "avwiki", "azwiki", "wikisource", "wikisourcewiki", "sourceswiki", "bat_smgwiki", "bgwikibooks", "brwiki", "bswiki", "bswikiquote", "cawikiquote", "cswiktionary", "csbwiki", "csbwiktionary", "cywiki", "dawikisource", "dewikisource", "dinwiki", "diqwiki", "elwikiquote", "elwikisource", "enwikiversity", "eowikinews", "eowiki", "eowikisource", "eswiktionary", "etwikibooks", "fawikiquote", "fawikivoyage", "fiwikisource", "frwikinews", "frpwiki", "gawiki", "glwikibooks", "hewikibooks", "hewikiquote", "hrwikisource", "hrwiktionary", "htwiki", "huwikibooks", "huwikiquote", "huwiktionary", "hywiktionary", "iawiktionary", "idwikiquote", "iewiktionary", "iowiki", "iswiktionary", "jvwiki", "kawiki", "kkwiki", "kowikibooks", "kowikisource", "kuwiki", "kywiki", "lawiki", "lawikisource", "lawiktionary", "ladwiki", "lbwiki", "liwiki", "lmowiki", "ltgwiki", "lvwiki", "maiwiki", "map_bmswiki", "metawiki", "mgwiki", "mkwikibooks", "mlwiki", "mlwiktionary", "mrwikisource", "mrjwiki", "mswiktionary", "ndswiktionary", "nds_nlwiki", "newwiki", "nlwikisource", "nowikisource", "orwikisource", "pamwiki", "pdcwiki", "plwikinews", "plwikiquote", "pnbwiktionary", "pswiki", "rmywiki", "rowikinews", "ruewiki", "sawiki", "sawiktionary", "sdwiktionary", "siwiki", "skwiktionary", "sqwiki", "srwikisource", "stwiktionary", "stqwiki", "svwikibooks", "svwikinews", "svwikiversity", "tawikinews", "tawiki", "tewiki", "ttwiki", "tyvwiki", "ugwiki", "urwiki", "vepwiki", "vlswiki", "yiwiktionary", "zhwikiquote", "zh_classicalwiki", "zh_yuewiki", "abwiki", "adywiki", "afwiktionary", "angwiktionary", "arcwiki", "aywiki", "aywiktionary", "barwiki", "be_x_oldwiki", "be_taraskwiki", "biwiki", "bnwikisource", "bswikisource", "cawikibooks", "crwiki", "crhwiki", "cuwiki", "cvwiki", "dewikibooks", "dewiktionary", "dvwiki", "dvwiktionary", "eewiki", "eowikibooks", "eswikibooks", "eswikinews", "eswikiquote", "eswikisource", "eswikiversity", "euwikiquote", "fawiktionary", "fjwiki", "fowiktionary", "fywiki", "glwiktionary", "guwiki", "hewikisource", "hewiktionary", "hiwiktionary", "hsbwiki", "hsbwiktionary", "huwikisource", "hywikibooks", "iawiki", "idwikibooks", "iewiki", "jbowiki", "kawiktionary", "klwiki", "kmwikibooks", "kmwiktionary", "knwiki", "kuwikiquote", "kvwiki", "kywikibooks", "ltwikisource", "ltwiktionary", "lvwiktionary", "mediawikiwiki", "mznwiki", "nawiktionary", "nahwiktionary", "ndswiki", "newiki", "newiktionary", "nlwiktionary", "nnwikiquote", "nnwiktionary", "ocwiki", "outreachwiki", "pagwiki", "papwiki", "piwiki", "plwikibooks", "ptwikibooks", "ptwikinews", "ptwikiquote", "ptwikisource", "ptwikivoyage", "ptwiktionary", "quwiki", "rmwiki", "ruwikiquote", "ruwikisource", "rwwiki", "sawikisource", "sahwikisource", "scowiki", "skwikibooks", "skwiki", "skwikiquote", "slwikibooks", "slwiki", "snwiki", "sowiki", "sqwikibooks", "sqwikiquote", "stwiki", "suwiktionary", "swwiktionary", "tawikiquote", "tawikisource", "tgwiki", "tgwiktionary", "thwikibooks", "thwikiquote", "thwikisource", "thwiktionary", "tkwiki", "tnwiki", "towiki", "tpiwiki", "twwiki", "tywiki", "udmwiki", "ukwikiquote", "uzwiki", "viwikibooks", "viwikisource", "vowiki", "vowiktionary", "wowiki", "xhwiki", "yiwikisource", "yowiki", "zh_min_nanwiki", "amwiktionary", "arwikinews", "arwiktionary", "astwiktionary", "bewikisource", "betawikiversity", "bmwiki", "bnwiki", "brwiktionary", "bswikibooks", "bswiktionary", "bxrwiki", "cawiktionary", "cswikinews", "cswikiquote", "cswikiversity", "dawikibooks", "dewikinews", "dewikiquote", "dtywiki", "enwikibooks", "enwikiquote", "etwiki", "etwikiquote", "euwikibooks", "extwiki", "fawikibooks", "ffwiki", "fiwikinews", "fiwiktionary", "fjwiktionary", "frwikibooks", "frwikiversity", "ganwiki", "gdwiki", "glwikiquote", "gnwiktionary", "gotwiki", "guwikisource", "gvwiki", "hewikinews", "hiwikibooks", "hiwiki", "hifwiki", "hrwiki", "iawikibooks", "idwikisource", "ikwiki", "incubatorwiki", "jamwiki", "kaawiki", "kabwiki", "kbdwiki", "kgwiki", "kiwiki", "knwikiquote", "kswiki", "kuwikibooks", "kuwiktionary", "kwwiki", "kywikiquote", "liwikisource", "ltwikibooks", "ltwikiquote", "mdfwiki", "mgwikibooks", "miwiki", "mlwikiquote", "mrwikibooks", "mrwikiquote", "mrwiktionary", "mtwiki", "myvwiki", "nlwikibooks", "nowikibooks", "nowiktionary", "novwiki", "nvwiki", "olowiki", "omwiki", "oswiki", "plwikisource", "plwikivoyage", "ptwikiversity", "quwiktionary", "rowikiquote", "rowikisource", "ruwikibooks", "ruwikimedia", "ruwikinews", "ruwiktionary", "sahwiki", "sewiki", "sgwiki", "slwiktionary", "sqwikinews", "srwikibooks", "srwikinews", "srnwiki", "sswiki", "suwiki", "svwikiquote", "svwikisource", "swwiki", "szlwiki", "szywiki", "shywiktionary", "tcywiki", "tewikisource", "tewiktionary", "thwiki", "tiwiki", "tlwiki", "ttwiktionary", "ukwikinews", "ukwiktionary", "urwikiquote", "wuuwiki", "xalwiki", "zhwikibooks", "acewiki", "afwikiquote", "anwiktionary", "arwikibooks", "azwikiquote", "azwiktionary", "bewiki", "bewiktionary", "bgwiki", "bgwikiquote", "bgwiktionary", "bjnwiki", "bpywiki", "brwikisource", "bswikinews", "bugwiki", "cdowiki", "chrwiki", "chywiki", "ckbwiki", "cswikibooks", "cswikisource", "dawiktionary", "dsbwiki", "elwikinews", "elwikiversity", "elwiktionary", "eowiktionary", "etwikisource", "etwiktionary", "fawikinews", "fiwikibooks", "fiwikiversity", "fiwikivoyage", "fiu_vrowiki", "fowiki", "fowikisource", "fywikibooks", "gagwiki", "glkwiki", "guwikiquote", "guwiktionary", "hawiki", "hywiki", "hywikiquote", "idwiktionary", "ilowiki", "iowiktionary", "iswiki", "jvwiktionary", "kawikibooks", "kkwikibooks", "kkwiktionary", "kmwiki", "kowikiversity", "koiwiki", "krcwiki", "kwwiktionary", "lezwiki", "lgwiki", "liwikibooks", "liwiktionary", "lnwiktionary", "mhrwiki", "mnwiki", "mnwwiki", "mnwiktionary", "mswikibooks", "mwlwiki", "newikibooks", "nlwikiquote", "nowikiquote", "nsowiki", "nycwikimedia", "orwiktionary", "pawikibooks", "pawikisource", "pflwiki", "pihwiki", "plwiktionary", "pnbwiki", "pntwiki", "pswiktionary", "rowiktionary", "ruwikiversity", "rwwiktionary", "sawikibooks", "sawikiquote", "sdwiki", "siwikibooks", "siwiktionary", "slwikiquote", "slwikiversity", "specieswiki", "srwiktionary", "suwikiquote", "svwiktionary", "tawikibooks", "tewikiquote", "tgwikibooks", "trwikibooks", "trwikimedia", "trwikinews", "trwikiquote", "trwikisource", "trwiktionary", "tswiki", "ukwikibooks", "uzwikiquote", "vewiki", "vecwiktionary", "viwikiquote", "viwiktionary", "wawiki", "xmfwiki", "yiwiki", "zeawiki", "zhwikinews", "zhwikisource", "zh_min_nanwiktionary", "afwikibooks", "akwiki", "arwikiquote", "arzwiki", "aswiki", "azwikibooks", "azwikisource", "bawiki", "bclwiki", "bewikibooks", "bewikiquote", "bgwikisource", "bhwiki", "bnwikibooks", "bnwiktionary", "bowiki", "brwikiquote", "cawikinews", "cawikisource", "cbk_zamwiki", "cewiki", "chwiki", "chrwiktionary", "cowiki", "cvwikibooks", "cywikibooks", "cywikiquote", "cywikisource", "cywiktionary", "dawikiquote", "dewikiversity", "dkwikimedia", "dzwiki", "elwikibooks", "eowikiquote", "euwiki", "euwiktionary", "fawikisource", "fiwikiquote", "frwikiquote", "frrwiki", "fywiktionary", "gawiktionary", "gdwiktionary", "glwiki", "glwikisource", "gnwiki", "gvwiktionary", "hawiktionary", "hakwiki", "hawwiki", "hiwikiquote", "hiwikisource", "hrwikibooks", "hrwikiquote", "hywikisource", "igwiki", "iswikibooks", "iswikiquote", "iswikisource", "iuwiki", "iuwiktionary", "jbowiktionary", "kawikiquote", "klwiktionary", "knwikisource", "knwiktionary", "kowikinews", "kowikiquote", "kowiktionary", "kswiktionary", "kshwiki", "kywiktionary", "lawikibooks", "lawikiquote", "lbwiktionary", "lbewiki", "liwikiquote", "lnwiki", "lowiki", "lowiktionary", "ltwiki", "miwiktionary", "minwiki", "mkwikisource", "mkwiktionary", "mlwikibooks", "mlwikisource", "mswiki", "mtwiktionary", "mywiki", "mywiktionary", "nawiki", "nahwiki", "nlwikimedia", "nowikinews", "nrmwiki", "nywiki", "ocwikibooks", "ocwiktionary", "omwiktionary", "orwiki", "pawiki", "pawiktionary", "pcdwiki", "plwikimedia", "rnwiki", "rowikibooks", "roa_rupwiki", "roa_rupwiktionary", "sgwiktionary", "shwiktionary", "skwikisource", "slwikisource", "smwiki", "gcrwiki", "smwiktionary", "sowiktionary", "sqwiktionary", "srwikiquote", "sswiktionary", "tawiktionary", "tewikibooks", "tetwiki", "tiwiktionary", "tkwiktionary", "tlwikibooks", "tlwiktionary", "tnwiktionary", "tpiwiktionary", "tswiktionary", "ttwikibooks", "tumwiki", "uawikimedia", "nqowiki", "ugwiktionary", "ukwikisource", "urwikibooks", "urwiktionary", "uzwiktionary", "wawiktionary", "wowikiquote", "wowiktionary", "zawiki", "zh_min_nanwikisource", "zuwiki", "zuwiktionary", "arwikimedia", "bdwikimedia", "bewikimedia", "brwikimedia", "cawikimedia", "cowikimedia", "eewikimedia", "fiwikimedia", "mkwikimedia", "mxwikimedia", "nowikimedia", "sewikimedia", "ptwikimedia", "bawikibooks", "itwikibooks", "itwikinews", "jawikinews", "nlwikinews", "liwikinews", "furwiki", "lijwiki", "roa_tarawiki", "scwiki", "lrcwiki", "gomwiki", "atjwiki", "banwiki", "kbpwiki", "gorwiki", "inhwiki", "lfnwiki", "satwiki", "shnwiki", "jawikiquote", "sahwikiquote", "jawikisource", "vecwikisource", "euwikisource", "pmswikisource", "itwikiversity", "jawikiversity", "hiwikiversity", "zhwikiversity", "frwikivoyage", "itwikivoyage", "nlwikivoyage", "ruwikivoyage", "svwikivoyage", "eswikivoyage", "rowikivoyage", "elwikivoyage", "hewikivoyage", "ukwikivoyage", "viwikivoyage", "zhwikivoyage", "hiwikivoyage", "bnwikivoyage", "pswikivoyage", "cowiktionary", "hifwiktionary", "yuewiktionary", "wikimaniawiki"];
     const active_users = ["alswikibooks", "jawikibooks", "enwikinews", "cebwiki", "emlwiki", "mkwiki", "napwiki", "nnwiki", "pmswiki", "scnwiki", "shwiki", "vecwiki", "warwiki", "azbwiki", "alswikiquote", "itwikiquote", "frwikisource", "itwikisource", "dewikivoyage", "alswiktionary", "itwiktionary", "jawiktionary", "mgwiktionary", "mowiktionary", "scnwiktionary", "simplewiktionary", "zhwiktionary"];
-    var edits_history = [];
     var vandalsReport = [];
     $scope.descriptions = config["wikis"][0]["others"][0]["rollback"];
     $scope.speedys = config["wikis"][0]["others"][0]["speedy"];
@@ -23,12 +25,13 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
     var warnDelete = null;
 
 
-    var i = 0;
     $scope.select = function (edit) {
+        if (!$scope.recentChange.isConnected) $scope.recentChange.connect();
         uiEnableNew();
         firstClickEdit = true;
         document.getElementById("queue").classList.add("disabled"); // disable queue during change diff
         homeBtn(false);
+        if (document.getElementById('eqBody').classList.contains('eq__body__active')) toggleMDrawer();
         if ((typeof user !== "undefined") && (i === 0)) {
             if (edits_history.length === 6)
                 edits_history.splice(5, 1);
@@ -234,6 +237,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             summaryEdit = document.getElementById('summaryedit').value;
         document.getElementById('textpage').value = "";
         document.getElementById('summaryedit').value = "";
+        closePW();
         $.ajax({
             url: 'php/doEdit.php',
             type: 'POST',
@@ -753,7 +757,12 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         checkLast(server_url, server_name, script_path, server_uri, wiki, namespace, user, old, dnew, times,function(cb0) {
             if (cb0 === false) {
                 SHOW_DIFF(server_url, server_name, script_path, server_uri, wiki, namespace, user, old, dnew, title, userip, summary, wikidatat, "second");
-                alert("This user made multiple edits on this article. Please check article history first.");
+                createDialog({
+                    parentId: 'angularapp', id: 'multipleEditDialog',
+                    title: 'Multiple edits',
+                    alert: { message: 'This user made multiple edits on this article. Please check article history first.' },
+                    buttons: [{ type: 'accent', title: 'Alright', remove: true }]
+                })
                 return;
             }
 
@@ -1042,36 +1051,52 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                                                                                                                                                 if (config["wikis"][0][wiki][0]["report"][0].hasOwnProperty("reportPreamb"))
                                                                                                                                                                     if (config["wikis"][0][wiki][0]["report"][0]["reportPreamb"] !== null && config["wikis"][0][wiki][0]["report"][0]["reportPreamb"] !== "" && config["wikis"][0][wiki][0]["report"][0]["reportPreamb"] === true)
                                                                                                                                                                         preamb = true;
-                                                                                                                                                        if (confirm("This user has been warned multiple times. Do you want to report them to administators?"))
-                                                                                                                                                            $.ajax({
-                                                                                                                                                                url: 'php/doEdit.php',
-                                                                                                                                                                type: 'POST',
-                                                                                                                                                                beforeSend: function (xhr) {
-                                                                                                                                                                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Report');
+                                                                                                                                                        createDialog({
+                                                                                                                                                            parentId: "angularapp",
+                                                                                                                                                            id: "autoReportDialog",
+                                                                                                                                                            title: "Auto report",
+                                                                                                                                                            alert: { emoji: "😡", message: "This user has been warned multiple times. Do you want to report them to administators?" },
+                                                                                                                                                            buttons: [{
+                                                                                                                                                                type: "negative",
+                                                                                                                                                                title: "Report",
+                                                                                                                                                                onClick: () => {
+                                                                                                                                                                    $.ajax({
+                                                                                                                                                                        url: 'php/doEdit.php',
+                                                                                                                                                                        type: 'POST',
+                                                                                                                                                                        beforeSend: function (xhr) {
+                                                                                                                                                                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Report');
+                                                                                                                                                                        },
+                                                                                                                                                                        crossDomain: true,
+                                                                                                                                                                        dataType: 'json',
+                                                                                                                                                                        data: {
+                                                                                                                                                                            warn: "report",
+                                                                                                                                                                            withoutsection: withoutSectionReport,
+                                                                                                                                                                            project: server_url + script_path + "/api.php",
+                                                                                                                                                                            wiki: wiki,
+                                                                                                                                                                            top: isTop,
+                                                                                                                                                                            preamb: preamb,
+                                                                                                                                                                            page: pageReport,
+                                                                                                                                                                            text: textReport,
+                                                                                                                                                                            sectiontitle: sectionReport,
+                                                                                                                                                                            summary: summaryReport
+                                                                                                                                                                        },
+                                                                                                                                                                        success: function () {
+                                                                                                                                                                            $scope.reqEnd(datarollback);
+                                                                                                                                                                        },
+                                                                                                                                                                        error: function () {
+                                                                                                                                                                            $scope.reqEnd(datarollback);
+                                                                                                                                                                        }
+                                                                                                                                                                    });
                                                                                                                                                                 },
-                                                                                                                                                                crossDomain: true,
-                                                                                                                                                                dataType: 'json',
-                                                                                                                                                                data: {
-                                                                                                                                                                    warn: "report",
-                                                                                                                                                                    withoutsection: withoutSectionReport,
-                                                                                                                                                                    project: server_url + script_path + "/api.php",
-                                                                                                                                                                    wiki: wiki,
-                                                                                                                                                                    top: isTop,
-                                                                                                                                                                    preamb: preamb,
-                                                                                                                                                                    page: pageReport,
-                                                                                                                                                                    text: textReport,
-                                                                                                                                                                    sectiontitle: sectionReport,
-                                                                                                                                                                    summary: summaryReport
-                                                                                                                                                                },
-                                                                                                                                                                success: function () {
+                                                                                                                                                                remove: true
+                                                                                                                                                            }, {
+                                                                                                                                                                title: "Cancel",
+                                                                                                                                                                onClick: () => {
                                                                                                                                                                     $scope.reqEnd(datarollback);
                                                                                                                                                                 },
-                                                                                                                                                                error: function () {
-                                                                                                                                                                    $scope.reqEnd(datarollback);
-                                                                                                                                                                }
-                                                                                                                                                            });
-                                                                                                                                                        else
-                                                                                                                                                            $scope.reqEnd(datarollback);
+                                                                                                                                                                remove: true
+                                                                                                                                                            }]
+                                                                                                                                                        })
                                                                                                                                                     } else
                                                                                                                                                         $scope.reqEnd(datarollback);
                                                                                                                                                 },
@@ -1157,22 +1182,22 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 $scope.users = [];
             });
             if (countConnectAttemp === 0) {
-                var newDiv = document.createElement('div');
-                newDiv.className = 'phrase-talk';
-                newDiv.style.color = 'var(--tc-negative)';
-                newDiv.textContent = "SYSTEM: connection lost";
-                document.getElementById('form-talk').appendChild(newDiv);
-                scrollToBottom("form-talk");
+                if (document.getElementById('talkForm') !== null) {
+                    var newDiv = document.createElement('div');
+                    newDiv.className = 'phrase-talk';
+                    newDiv.style.color = 'var(--tc-negative)';
+                    newDiv.textContent = "SYSTEM: connection lost";
+                    document.getElementById('form-talk').appendChild(newDiv);
+                    scrollToBottom("form-talk");
+                }
             }
             countConnectAttemp++;
             document.getElementById('badge-talk').style.background = "rgb(251, 47, 47)";
-            document.getElementById('badge-talk-ex1').style.background = "rgb(251, 47, 47)";
             document.getElementById('badge-talk').classList.remove('badge-ic__primary');
-            document.getElementById('badge-talk-ex1').classList.remove('badge-ic__primary');
             sc.close();
         };
 
-        document.getElementById('btn-send-talk').onclick = function () {
+        function sendTalk () {
             var phraseTalk = document.getElementById('phrase-send-talk').value;
             if (typeof phraseTalk !== "undefined" && phraseTalk !== null && phraseTalk !== "" && sc.readyState === 1) {
                 document.getElementById('phrase-send-talk').value = '';
@@ -1186,21 +1211,25 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             if (msg.type === 'hello') {
                 if (countConnectAttemp >= 1) {
                     $scope.user = [];
-                    downloadHistoryTalk();
-                    var newDiv = document.createElement('div');
-                    newDiv.className = 'phrase-talk';
-                    newDiv.style.color = 'var(--tc-positive)';
-                    newDiv.textContent = "SYSTEM: connection restored";
-                    document.getElementById('form-talk').appendChild(newDiv);
-                    scrollToBottom("form-talk");
+                    if (document.getElementById('talkForm') !== null) {
+                        (async function () {
+                            const talkModule = await import('./modules/talk.js');
+                            talkModule.downloadHistoryTalk();
+                            var newDiv = document.createElement('div');
+                            newDiv.className = 'phrase-talk';
+                            newDiv.style.color = 'var(--tc-positive)';
+                            newDiv.textContent = "SYSTEM: connection restored";
+                            document.getElementById('form-talk').appendChild(newDiv);
+                            scrollToBottom("form-talk");
+                        })();
+                    }
                     document.getElementById('badge-talk').style.background = "none";
-                    document.getElementById('badge-talk-ex1').style.background = "none";
                     document.getElementById('badge-talk').classList.add('badge-ic__primary');
-                    document.getElementById('badge-talk-ex1').classList.add('badge-ic__primary');
                 }
                 countConnectAttemp = 0;
                 $scope.$apply(function () {
-                    $scope.users = msg.clients.split(',');
+                    let data = msg.clients.split(',');
+                    $scope.users = data.filter((value, index) => data.indexOf(value) === index);
                 });
                 while (indextmp <= $scope.users.length - 1) {
                     if ($scope.offlineUsers.indexOf($scope.users[indextmp]) !== -1)
@@ -1214,7 +1243,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
 
             if (msg.type === 'connected') {
                 $scope.$apply(function () {
-                    $scope.users.push(msg.nickname);
+                    if ($scope.users.find(user => user === msg.nickname) === undefined) $scope.users.push(msg.nickname);
                 });
                 indextmp = 0;
                 if ($scope.offlineUsers.indexOf(msg.nickname) !== -1)
@@ -1224,7 +1253,8 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             }
             if (msg.type === 'disconnected') {
                 $scope.$apply(function () {
-                    $scope.users = msg.clients.split(',');
+                    let data = msg.clients.split(',');
+                    $scope.users = data.filter((value, index) => data.indexOf(value) === index);
                 });
                 if ($scope.offlineUsers.indexOf(msg.client) === -1 && $scope.users.indexOf(msg.client) === -1)
                     $scope.$apply(function () {
@@ -1232,12 +1262,17 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                     });
             }
             if (msg.type === 'message') {
-                if (daysAgoToday === false && historyCount !== 0) {
-                    addToTalkSection("Today", false);
-                    daysAgoToday = true;
+                if (document.getElementById('talkForm') !== null) {
+                    (async function () {
+                        const talkModule = await import('./modules/talk.js');
+                        if (talkModule.daysAgoToday === false && talkModule.historyCount !== 0) {
+                            talkModule.addToTalkSection("Today", false);
+                            talkModule.daysAgoToday = true;
+                        }
+                        talkModule.addToTalk(null, msg.nickname, msg.text);
+                    })();
                 }
-                addToTalk(null, msg.nickname, msg.text);
-                if (msg.nickname !== userSelf && document.getElementById('talkForm').style.display !== "grid") {
+                if (msg.nickname !== userSelf && !document.getElementById('btn-talk').classList.contains('tab__active')) {
                     var userSelfTmp1 = "@" + userSelf + " ";
                     var userSelfTmp2 = "@" + userSelf + ",";
                     if ((msg.text.toUpperCase().indexOf(userSelfTmp1.toUpperCase()) !== -1 || msg.text.toUpperCase().indexOf(userSelfTmp2.toUpperCase()) !== -1) && (sound === 1 || sound === 2 || sound === 3 || sound === 4) && typeof privateMessageSound !== "undefined")
@@ -1247,11 +1282,9 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             playSound(messageSound, false);
                     }
                 }
-                if (document.getElementById('talkForm').style.display === 'none') {
+                if (!document.getElementById('btn-talk').classList.contains('tab__active')) {
                     document.getElementById('badge-talk').style.background = "rgb(36, 164, 100)";
-                    document.getElementById('badge-talk-ex1').style.background = "rgb(36, 164, 100)";
                     document.getElementById('badge-talk').classList.remove('badge-ic__primary');
-                    document.getElementById('badge-talk-ex1').classList.remove('badge-ic__primary');
                 }
             }
 
@@ -1279,158 +1312,219 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
         }
 
         connectTalk.talkSendInside = talkSendInside;
-
+        connectTalk.sendTalk = sendTalk;
     }
 
     connectTalk();
+    $scope.sendTalkMsg = connectTalk.sendTalk;
+    $scope.displayTalkPeople = () => {
+        const peopleTemplate = `<div style="display: flex; flex-direction: column-reverse"> <div class="user-container fs-md" ng-repeat="talkUser in users|unique: talkUser as filteredUsersTalk"> <div class="user-talk" onclick="selectTalkUsers(this)">{{talkUser}}</div> <a class="user-talk-CA" rel="noopener noreferrer" href="https://meta.wikimedia.org/wiki/Special:CentralAuth/{{talkUser}}" target="_blank">CA</a> </div> </div> <div style="display: flex; flex-direction: column-reverse"> <div ng-repeat="talkUserOffline in offlineUsers track by $index"> <div class="user-talk fs-md" style="color: gray;">{{talkUserOffline}}</div> </div> </div>`;
+        var peopleCompiled = $compile(peopleTemplate)($scope)
+        angular.element(document.getElementById('talkPeopleContent')).append(peopleCompiled);
+        $scope.$apply();
+    }
 
+    $scope.oresWikiList = {};
+    $.ajax({
+        type: 'GET',
+        url: 'https://ores.wikimedia.org/v3/scores',
+        dataType: 'text json',
+        success: result => oresWikiList = result
+    });
+    $scope.genORES = (wiki, revId, refObj) => {
+        if (Object.keys(oresWikiList).length === 0) return;
+        if (Object.keys(oresWikiList).find(oresWiki => oresWiki === wiki) === undefined) return;
+        var oresModel;
+        if (oresWikiList[wiki]['models']['damaging'] !== undefined) oresModel = 'damaging';
+        else if (oresWikiList[wiki]['models']['reverted'] !== undefined) oresModel = 'reverted';
+        else return;
+        $.ajax({
+            type: 'GET',
+            url: `https://ores.wikimedia.org/v3/scores/${wiki}/${revId}/${oresModel}`,
+            dataType: 'text',
+            success: res => {
+                let oresData = JSON.parse(res);
+                if (oresData[wiki]['scores'][revId][oresModel]['score'] === undefined) return;
+                const damage = oresData[wiki]['scores'][revId][oresModel]['score']['probability']['true'];
+                const damagePer = parseInt(damage * 100);
+                refObj.ores = { score: damagePer, color: `hsl(0, ${damagePer}%, 56%)` };
+                $scope.$apply();
+            },
+            error: e => { console.error(e); return; }
+        });
+    }
     $scope.edits = [];
     if (typeof (EventSource) == "undefined") {
         alert("Sorry, your browser does not support server-sent events.");
         return;
     }
 
-    var source = new EventSource("https://stream.wikimedia.org/v2/stream/recentchange");
-    source.onmessage = function (event) {
-        var stuff = JSON.parse(event.data);
-        var namespacetemp = "";
-        var swmt = false;
-        var setusers = false;
-        var rcMode1 = "none";
-        var rcMode2 = "edit";
-        var anonsSSE = false;
-        var registeredSSE = false;
-        if (isGlobal === true || isGlobalModeAccess === true) {
-            if (document.getElementById('small-wikis-btn').classList.contains('t-btn__active')) swmt = true;
-            if (document.getElementById('lt-300-btn').classList.contains('t-btn__active')) setusers = true;
-        }
-        if (document.getElementById('new-pages-btn').classList.contains('t-btn__active')) rcMode1 = "new";
-        if (document.getElementById('onlynew-pages-btn').classList.contains('t-btn__active')) rcMode2 = "none";
-        if (document.getElementById('onlyanons-btn').classList.contains('t-btn__active')) anonsSSE = true;
-        if (document.getElementById('registered-btn').classList.contains('t-btn__active')) registeredSSE = true;
-
-        if (stuff.namespace >= 0 && stuff.namespace <= 15) namespacetemp = ns[stuff.namespace];
-        else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
-
-        if (stuff.user !== userSelf && (stuff.type === rcMode1 || stuff.type === rcMode2) && stuff.bot === false && (nsList2.indexOf(stuff.namespace.toString()) >= 0 || nsList2.length === 0) && stuff.patrolled !== true && ((customlist.indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt === true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers === true && (isGlobal === true || isGlobalModeAccess === true)))) {
-            if (typeof sandboxlist[stuff.wiki] !== "undefined")
-                if (sandboxlist[stuff.wiki] === stuff.title)
-                    return;
-            if (global.indexOf(stuff.user) !== -1 || wlistu.indexOf(stuff.user) !== -1 || wlistp.indexOf(stuff.wiki) !== -1)
-                return;
-
-            // IP user
-            if (/^\d*?\.\d*?\.\d*?\.\d*?$/.test(stuff.user) || stuff.user.indexOf(":") !== -1) {
-                if (!anonsSSE)
-                    return;
-
-                // if it's element of WD. Get label
-                if (stuff.wiki === "wikidatawiki" && (stuff.namespace === 120 || stuff.namespace === 0)) {
-                    $scope.wikidata_title(stuff, namespacetemp, "ip");
-                    return;
+    $scope.recentChange = {
+        connect: function () {
+            if (this.isConnected) return;
+            this.source = new EventSource("https://stream.wikimedia.org/v2/stream/recentchange");
+            this.isConnected = true;
+            this.source.onmessage = function (event) {
+                var stuff = JSON.parse(event.data);
+                var namespacetemp = "";
+                var swmt = false; var setusers = false;
+        
+                if (isGlobal === true || isGlobalModeAccess === true) {
+                    swmt = (presets[selectedPreset]["swmt"] === "1" || presets[selectedPreset]["swmt"] === "2") ? true : false;
+                    setusers = (presets[selectedPreset]["users"] === "1" || presets[selectedPreset]["users"] === "2") ? true : false;
                 }
-                // remove old edits by same user in same wiki on same page
-                $scope.edits.map(function (e, index) {
-                    if (e.wiki === stuff.wiki && e.title === stuff.title && e.user === stuff.user && checkMode === 2)
-                        $scope.$apply(function () {
-                            $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
-                        });
-                });
-                $scope.$apply(function () {
-                    if (countqueue !== 0 && $scope.edits.length >= countqueue)
-                        $scope.edits.pop();
-                    var new_el = {
-                        "server_url": stuff.server_url,
-                        "server_name": stuff.server_name,
-                        "script_path": stuff.server_script_path,
-                        "server_uri": stuff.meta.uri,
-                        "wiki": stuff.wiki,
-                        "namespace": namespacetemp,
-                        "user": stuff.user,
-                        "title": stuff.title,
-                        "comment": stuff.comment,
-                        "old": stuff.revision.old,
-                        "new": stuff['revision']['new'],
-                        "isIp": "ip",
-                        "wikidata_title": null
-                    };
-                    $scope.edits.unshift(new_el);
-                    if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
-                        playSound(newSound, false);
-                });
-                return;
-            }
-            if (!registeredSSE)
-                return;
-
-            // Registered user
-            var url = stuff.server_url + stuff.server_script_path + "/api.php?action=query&list=users&ususers=" + encodeURIComponent(stuff.user).replace(/'/g, '%27') + "&usprop=groups|registration|editcount&utf8&format=json";
-            $.ajax({
-                url: url, type: 'GET',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
-                },
-                crossDomain: true, dataType: 'jsonp', success: function (datainfo) {
-                    var groups = datainfo["query"]["users"][0]["groups"];
-                    if (groups.includes("sysop") === false && groups.includes("editor") === false && groups.includes("autoreviewer") === false && groups.includes("confirmed") === false && groups.includes("extendedconfirmed") === false && groups.includes("filemover") === false && groups.includes("patroller") === false && groups.includes("templateeditor") === false && groups.includes("autopatrolled") === false && groups.includes("autoeditor") === false && groups.includes("closer") === false && groups.includes("rollbacker") === false && groups.includes("translator") === false && groups.includes("translationadmin") === false && groups.includes("engineer") === false && groups.includes("global-renamer") === false && groups.includes("oversight") === false && groups.includes("reviewer") === false && groups.includes("bureaucrat") === false) {
-                        var d = new Date();
-                        if (datainfo["query"]["users"][0]["registration"] == null)
-                            return; // WMF have lost registration date of some very old accounts
-                        var dateDiff = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()) - Date.parse(datainfo["query"]["users"][0]["registration"])) / 1000 / 60 / 60 / 24;
-                        if (parseInt(datainfo["query"]["users"][0]["editcount"]) >= countedits && dateDiff >= regdays)
+        
+                var registeredSSE = (presets[selectedPreset]["registered"] === "1") ? true : false;
+                var rcMode1 = (presets[selectedPreset]["new"] === "1") ? "new" : "none";
+                var rcMode2 = (presets[selectedPreset]["onlynew"] === "1") ? "none" : "edit";
+                var anonsSSE = (presets[selectedPreset]["anons"] === "1") ? true : false;
+        
+                if (stuff.namespace >= 0 && stuff.namespace <= 15) namespacetemp = ns[stuff.namespace];
+                else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
+        
+                if (stuff.user !== userSelf && (stuff.type === rcMode1 || stuff.type === rcMode2) && stuff.bot === false && (presets[selectedPreset]["namespaces"].indexOf(stuff.namespace.toString()) >= 0 || presets[selectedPreset]["namespaces"].length === 0) && stuff.patrolled !== true && ((presets[selectedPreset]["blprojects"].indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt === true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers === true && (isGlobal === true || isGlobalModeAccess === true)))) {
+                    if (typeof sandboxlist[stuff.wiki] !== "undefined")
+                        if (sandboxlist[stuff.wiki] === stuff.title)
                             return;
-                        var url = "https://cvn.wmflabs.org/api.php?users=" + encodeURIComponent(stuff.user).replace(/'/g, '%27');
-                        $.ajax({
-                            url: url, type: 'GET',
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
-                            },
-                            crossDomain: true, dataType: 'jsonp', success: function (data) {
-                                if (typeof data["users"][stuff.user] !== "undefined")
-                                    if (data["users"][stuff.user]["type"] === "whitelist")
-                                        return;
-
-                                // if it's element of WD. Get label
-                                if (stuff.wiki === "wikidatawiki" && (stuff.namespace === 120 || stuff.namespace === 0)) {
-                                    $scope.wikidata_title(stuff, namespacetemp, "registered");
+                    if (global.indexOf(stuff.user) !== -1 || presets[selectedPreset]["wlusers"].indexOf(stuff.user) !== -1 || presets[selectedPreset]["wlprojects"].indexOf(stuff.wiki) !== -1)
+                        return;
+        
+                    // IP user
+                    if (/^\d*?\.\d*?\.\d*?\.\d*?$/.test(stuff.user) || stuff.user.indexOf(":") !== -1) {
+                        if (!anonsSSE)
+                            return;
+        
+                        // if it's element of WD. Get label
+                        if (stuff.wiki === "wikidatawiki" && (stuff.namespace === 120 || stuff.namespace === 0)) {
+                            $scope.wikidata_title(stuff, namespacetemp, "ip");
+                            return;
+                        }
+                        // remove old edits by same user in same wiki on same page
+                        $scope.edits.map(function (e, index) {
+                            if (e.wiki === stuff.wiki && e.title === stuff.title && e.user === stuff.user && checkMode === 2)
+                                $scope.$apply(function () {
+                                    $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
+                                });
+                        });
+                        $scope.$apply(function () {
+                            if (countqueue !== 0 && $scope.edits.length >= countqueue) {
+                                if (terminateStream === 1) {
+                                    $scope.recentChange.disconnect();
                                     return;
                                 }
-                                // remove old edits by same user in same wiki on same page
-                                $scope.edits.map(function (e, index) {
-                                    if (e.wiki === stuff.wiki && e.title === stuff.title && e.user === stuff.user && checkMode === 2)
-                                        $scope.$apply(function () {
-                                            $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
+                                $scope.edits.pop();
+                            }
+                            var new_el = {
+                                "server_url": stuff.server_url,
+                                "server_name": stuff.server_name,
+                                "script_path": stuff.server_script_path,
+                                "server_uri": stuff.meta.uri,
+                                "wiki": stuff.wiki,
+                                "namespace": namespacetemp,
+                                "user": stuff.user,
+                                "title": stuff.title,
+                                "comment": stuff.comment,
+                                "old": stuff.revision.old,
+                                "new": stuff['revision']['new'],
+                                "isIp": "ip",
+                                "wikidata_title": null,
+                                "ores": undefined,
+                                "isNew": (stuff.type === "new") ? "N" : ""
+                            };
+                            $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
+                            $scope.edits.unshift(new_el);
+                            if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
+                                playSound(newSound, false);
+                        });
+                        return;
+                    }
+                    if (!registeredSSE)
+                        return;
+        
+                    // Registered user
+                    var url = stuff.server_url + stuff.server_script_path + "/api.php?action=query&list=users&ususers=" + encodeURIComponent(stuff.user).replace(/'/g, '%27') + "&usprop=groups|registration|editcount&utf8&format=json";
+                    $.ajax({
+                        url: url, type: 'GET',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+                        },
+                        crossDomain: true, dataType: 'jsonp', success: function (datainfo) {
+                            var groups = datainfo["query"]["users"][0]["groups"];
+                            if (groups.includes("sysop") === false && groups.includes("editor") === false && groups.includes("autoreviewer") === false && groups.includes("confirmed") === false && groups.includes("extendedconfirmed") === false && groups.includes("filemover") === false && groups.includes("patroller") === false && groups.includes("templateeditor") === false && groups.includes("autopatrolled") === false && groups.includes("autoeditor") === false && groups.includes("closer") === false && groups.includes("rollbacker") === false && groups.includes("translator") === false && groups.includes("translationadmin") === false && groups.includes("engineer") === false && groups.includes("global-renamer") === false && groups.includes("oversight") === false && groups.includes("reviewer") === false && groups.includes("bureaucrat") === false) {
+                                var d = new Date();
+                                if (datainfo["query"]["users"][0]["registration"] == null)
+                                    return; // WMF have lost registration date of some very old accounts
+                                var dateDiff = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()) - Date.parse(datainfo["query"]["users"][0]["registration"])) / 1000 / 60 / 60 / 24;
+                                if (parseInt(datainfo["query"]["users"][0]["editcount"]) >= parseInt(presets[selectedPreset]["editscount"]) && dateDiff >= parseInt(presets[selectedPreset]["regdays"]))
+                                    return;
+                                var url = "https://cvn.wmflabs.org/api.php?users=" + encodeURIComponent(stuff.user).replace(/'/g, '%27');
+                                $.ajax({
+                                    url: url, type: 'GET',
+                                    beforeSend: function (xhr) {
+                                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+                                    },
+                                    crossDomain: true, dataType: 'jsonp', success: function (data) {
+                                        if (typeof data["users"][stuff.user] !== "undefined")
+                                            if (data["users"][stuff.user]["type"] === "whitelist")
+                                                return;
+        
+                                        // if it's element of WD. Get label
+                                        if (stuff.wiki === "wikidatawiki" && (stuff.namespace === 120 || stuff.namespace === 0)) {
+                                            $scope.wikidata_title(stuff, namespacetemp, "registered");
+                                            return;
+                                        }
+                                        // remove old edits by same user in same wiki on same page
+                                        $scope.edits.map(function (e, index) {
+                                            if (e.wiki === stuff.wiki && e.title === stuff.title && e.user === stuff.user && checkMode === 2)
+                                                $scope.$apply(function () {
+                                                    $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
+                                                });
                                         });
-                                });
-                                $scope.$apply(function () {
-                                    if (countqueue !== 0 && $scope.edits.length >= countqueue)
-                                        $scope.edits.pop();
-                                    var new_el = {
-                                        "server_url": stuff.server_url,
-                                        "server_name": stuff.server_name,
-                                        "script_path": stuff.server_script_path,
-                                        "server_uri": stuff.meta.uri,
-                                        "wiki": stuff.wiki,
-                                        "namespace": namespacetemp,
-                                        "user": stuff.user,
-                                        "title": stuff.title,
-                                        "comment": stuff.comment,
-                                        "old": stuff.revision.old,
-                                        "new": stuff['revision']['new'],
-                                        "isIp": "registered",
-                                        "wikidata_title": null
-                                    };
-                                    $scope.edits.unshift(new_el);
-                                    if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
-                                        playSound(newSound, false);
+                                        $scope.$apply(function () {
+                                            if (countqueue !== 0 && $scope.edits.length >= countqueue) {
+                                                if (terminateStream === 1) {
+                                                    $scope.recentChange.disconnect();
+                                                    return;
+                                                }
+                                                $scope.edits.pop();
+                                            }
+                                            var new_el = {
+                                                "server_url": stuff.server_url,
+                                                "server_name": stuff.server_name,
+                                                "script_path": stuff.server_script_path,
+                                                "server_uri": stuff.meta.uri,
+                                                "wiki": stuff.wiki,
+                                                "namespace": namespacetemp,
+                                                "user": stuff.user,
+                                                "title": stuff.title,
+                                                "comment": stuff.comment,
+                                                "old": stuff.revision.old,
+                                                "new": stuff['revision']['new'],
+                                                "isIp": "registered",
+                                                "wikidata_title": null,
+                                                "ores": undefined,
+                                                "isNew": (stuff.type === "new") ? "N" : ""
+                                            };
+                                            $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
+                                            $scope.edits.unshift(new_el);
+                                            if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
+                                                playSound(newSound, false);
+                                        });
+                                    }
                                 });
                             }
-                        });
-                    }
+                        }
+                    });
                 }
-            });
+            };
+        },
+        disconnect: function () {
+            if (!this.isConnected) return;
+            this.source.close();
+            this.isConnected = false;
         }
-    };
+    }
+    $scope.recentChange.connect();
 
     $scope.wikidata_title = function (stuff, nstmp, reg) {
         var namespacetemp = nstmp;
@@ -1451,8 +1545,13 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                                         if (wikidatatitle["entities"][stuff.title]["labels"]["en"]["value"] !== null || wikidatatitle["entities"][stuff.title]["labels"]["en"]["value"] !== "")
                                             wikidata_title = wikidatatitle["entities"][stuff.title]["labels"]["en"]["value"];
                     $scope.$apply(function () {
-                        if (countqueue !== 0 && $scope.edits.length >= countqueue)
+                        if (countqueue !== 0 && $scope.edits.length >= countqueue) {
+                            if (terminateStream === 1) {
+                                $scope.recentChange.disconnect();
+                                return;
+                            }
                             $scope.edits.pop();
+                        }
                         var new_el = {
                             "server_url": stuff.server_url,
                             "server_name": stuff.server_name,
@@ -1466,16 +1565,24 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             "old": stuff.revision.old,
                             "new": stuff['revision']['new'],
                             "isIp": reg,
-                            "wikidata_title": wikidata_title
+                            "wikidata_title": wikidata_title,
+                            "ores": undefined,
+                            "isNew": (stuff.type === "new") ? "N" : ""
                         };
+                        $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
                         $scope.edits.unshift(new_el);
                         if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
                             playSound(newSound, false);
                     });
                 }, error: function () {
                     $scope.$apply(function () {
-                        if (countqueue !== 0 && $scope.edits.length >= countqueue)
+                        if (countqueue !== 0 && $scope.edits.length >= countqueue) {
+                            if (terminateStream === 1) {
+                                $scope.recentChange.disconnect();
+                                return;
+                            }
                             $scope.edits.pop();
+                        }
                         var new_el = {
                             "server_url": stuff.server_url,
                             "server_name": stuff.server_name,
@@ -1489,8 +1596,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                             "old": stuff.revision.old,
                             "new": stuff['revision']['new'],
                             "isIp": reg,
-                            "wikidata_title": wikidata_title
+                            "wikidata_title": wikidata_title,
+                            "ores": undefined,
+                            "isNew": (stuff.type === "new") ? "N" : ""
                         };
+                        $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
                         $scope.edits.unshift(new_el);
                         if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
                             playSound(newSound, false);
@@ -1499,8 +1609,13 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             });
         } else {
             $scope.$apply(function () {
-                if (countqueue !== 0 && $scope.edits.length >= countqueue)
+                if (countqueue !== 0 && $scope.edits.length >= countqueue) {
+                    if (terminateStream === 1) {
+                        $scope.recentChange.disconnect();
+                        return;
+                    }
                     $scope.edits.pop();
+                }
                 var new_el = {
                     "server_url": stuff.server_url,
                     "server_name": stuff.server_name,
@@ -1514,8 +1629,11 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                     "old": stuff.revision.old,
                     "new": stuff['revision']['new'],
                     "isIp": reg,
-                    "wikidata_title": wikidata_title
+                    "wikidata_title": wikidata_title,
+                    "ores": undefined,
+                    "isNew": (stuff.type === "new") ? "N" : ""
                 };
+                $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
                 $scope.edits.unshift(new_el);
                 if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
                     playSound(newSound, false);
@@ -1529,6 +1647,7 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
                 if ($scope.edits.length >= countqueue)
                     while ($scope.edits.length > countqueue)
                         $scope.edits.pop();
+                else $scope.recentChange.connect();
             });
         }, 0);
     };
@@ -1725,10 +1844,10 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             $scope.select($scope.edits[0]);
         } else if (!noDiffON) {
             noDiffON = true;
-            document.getElementById('next-diff-title').style.width = '125px';
+            document.getElementById('next-diff-title').style.width = '70px';
             setTimeout(() => {
                 noDiffON = false;
-                document.getElementById('next-diff-title').style.width = '0px';
+                document.getElementById('next-diff-title').style.width = '1px';
             }, 1000);
         }
     };
@@ -1748,7 +1867,9 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             diffWindow.focus();
         }
     };
-
+    $scope.copyViewHistory = () => copyToClipboard(encodeURI(`${$scope.project_url}/index.php?title=${$scope.title}&action=history`));
+    $scope.copyGlobalContribs = () => copyToClipboard(encodeURI(`https://tools.wmflabs.org/guc/?src=hr&by=date&user=${$scope.user}`));
+    $scope.copyCentralAuth = () => copyToClipboard(encodeURI(`https://meta.wikimedia.org/wiki/Special:CentralAuth?target=${$scope.user}`));
 
     function changeRollbacksDescription(wiki) {
         $scope.descriptions = config["wikis"][0]["others"][0]["rollback"];
@@ -1962,9 +2083,14 @@ angular.module("swv", ["ui.directives", "ui.filters"]).controller("Queue", funct
             }
         }
         if (keyCode === 27) {
-            if (document.getElementById('POOverlay').classList.contains('po__overlay__active')) {
+            if (Object.keys(dialogStack).length !== 0) {
+                removeDialog();
+                return false;
+            }
+            else if (document.getElementById('POOverlay').classList.contains('po__overlay__active')) {
                 closePO();
-            } else if (document.getElementById('settings').style.display === "grid" || document.getElementById('talkForm').style.display === "grid" || document.getElementById('editForm').style.display === "grid" || document.getElementById('logs').style.display === "grid") {
+                return false;
+            } else if (!document.getElementById('btn-home').classList.contains('tab__active')) {
                 closePW();
                 return false;
             }
@@ -1977,6 +2103,7 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
     uiDisableList();
     closePW();
     closeMoreControl();
+    document.getElementById('description-container').style.marginTop = '0px';
     if (tUSERIP === "registered")
         document.getElementById("userLinkSpec").style.color = "#3366BB";
     else
@@ -1998,12 +2125,12 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
             if (tTITLE.search(/^P\d*?$/gm) !== -1)
                 diffTempNs = "Property";
         if (tWDT !== null) {
-            document.getElementById("pageLinkSpec").setAttribute("aria-label", tWDT);
-            document.getElementById("pageLinkSpec").setAttribute("i-tooltip", "bottom-left");
-            document.getElementById("pageLinkSpec").style.borderBottom = "1px dotter";
+            document.getElementById("tit").setAttribute("aria-label", tWDT);
+            document.getElementById("tit").setAttribute("i-tooltip", "bottom-left");
+            document.getElementById("pageLinkSpec").style.borderBottom = "1px dotted var(--link-color)";
         } else {
-            document.getElementById("pageLinkSpec").removeAttribute("aria-label");
-            document.getElementById("pageLinkSpec").removeAttribute("i-tooltip");
+            document.getElementById("tit").removeAttribute("aria-label");
+            document.getElementById("tit").removeAttribute("i-tooltip");
             document.getElementById("pageLinkSpec").style.borderBottom = "unset";
         }
     } else {
@@ -2011,8 +2138,8 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
             diffTempNs = "Draft";
         if (tWIKI === "enwiki" && tNAMESPACE === "<font color='brown'>Non-canon (119)</font>")
             diffTempNs = "Draft talk";
-        document.getElementById("pageLinkSpec").removeAttribute("aria-label");
-        document.getElementById("pageLinkSpec").removeAttribute("i-tooltip");
+        document.getElementById("tit").removeAttribute("aria-label");
+        document.getElementById("tit").removeAttribute("i-tooltip");
         document.getElementById("pageLinkSpec").style.borderBottom = "unset";
     }
 
@@ -2032,8 +2159,6 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
             }, crossDomain: true, dataType: 'jsonp', success: function (fdata) {
                 if (typeof fdata["query"] !== "undefined" && typeof fdata["query"]["pages"] !== "undefined") {
                     var pageFData = null;
-console.log(url);
-console.log(fdata);
                     for (var k in fdata["query"]["pages"]) {
                         if (fdata["query"]["pages"].hasOwnProperty(k))
                             if (Number(k) !== -1)
@@ -2041,7 +2166,6 @@ console.log(fdata);
                     }
                     if (pageFData !== null && typeof pageFData["revisions"] !== "undefined" && typeof pageFData["revisions"][0] !== "undefined" && typeof pageFData["revisions"][0]["revid"] !== "undefined" && pageFData["revisions"][0]["revid"] !== 0) {
                         tOLD = pageFData["revisions"][0]["revid"];
-          console.log(tDNEW + " " + tOLD);
                         old = tOLD;
                         if (i > 0)
                             edits_history[i - 1]["old"] = old;
@@ -2142,7 +2266,7 @@ function nextDiffStyle() {
     document.getElementById("description-container").style.display = "grid";
     document.getElementById("controlsBase").style.display = "block";
     document.getElementById("moreOptionBtnMobile").classList.remove('disabled');
-    document.getElementById("page").parentElement.style.display = "block";
+    document.getElementById("page").style.display = "block";
 }
 
 function uiDisable() {
@@ -2186,6 +2310,7 @@ function isNotModal() {
         document.getElementById('wladdu') !== document.activeElement &&
         document.getElementById('wladdp') !== document.activeElement &&
         document.getElementById('statInput') !== document.activeElement &&
+        Object.keys(dialogStack).length === 0 &&
         document.getElementById('page-welcome').style.display !== "block";
 }
 

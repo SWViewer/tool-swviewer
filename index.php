@@ -32,13 +32,12 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <link rel="mask-icon" href="img/favicons/safari-pinned-tab.svg" color="#5bbad5">
         <!-- Add iOS meta tags and icons -->
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="#212121">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#191919">
         <meta name="apple-mobile-web-app-title" content="SWViewer">
         <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png">
         <!-- PWA -->
-        <meta name="theme-color" content="#212121">
+        <meta name="theme-color" content="#191919">
         <link rel='manifest' href='manifest.webmanifest'>
-        <!-- <link rel="pwa-setup" href="site.webmanifest"> -->
         <script>
             if (window.navigator.userAgent.indexOf('MSIE ') > 0 || window.navigator.userAgent.indexOf('Trident/') > 0 || window.navigator.userAgent.indexOf('Edge/') > 0) {
                 alert("Sorry, but Internet Explorer and Microsoft Edge browsers is not supported.");
@@ -62,27 +61,28 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                     });
                 });
             }
-
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'templates/about.html', false);
-        xhr.send();
-        var aboutText = xhr.responseText;
-
         </script>
 
         <!-- AngularJS, jQuery, Moment, pwacompat -->
-        <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
         <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
         
+        
+        <script type="text/javascript" src="./js/modules/bakeEl.min.js" defer></script>
         <!-- Fonts, stylesheet-->
-        <link href='//tools-static.wmflabs.org/fontcdn/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/base.css">
-        <link rel="stylesheet" href="css/modules.css">
-        <link rel="stylesheet" href="css/swv-raw.css?v=1.2">
+        <link rel="stylesheet" href="css/base/fonts.css">
+        <link rel="stylesheet" href="css/base/variables.css">
+        <link rel="stylesheet" href="css/base/base.css">
+        <link rel="stylesheet" href="css/components/comp.css">
+        <link rel="stylesheet" href="css/components/header.css">
+        <link rel="stylesheet" href="css/components/dialog.css">
+        <link rel="stylesheet" href="css/index.css?v=1.2">
+
+        <link rel="stylesheet" href="css/components/pw-po.css">
+        <link rel="stylesheet" href="css/layouts/logs.css">
+        <link rel="stylesheet" href="css/layouts/talk.css">
     </head>
 
 <?php
@@ -132,7 +132,7 @@ if ($checkLoginSWV == false) {
                     <span class='fs-xl' style='font-weight: bold;'>Welcome!</span>
                     <a id='abtn' class='i-btn__accent accent-hover' style='margin: 16px 0; color: var(--tc-accent) !important; padding: 0 24px; text-decoration: none !important;' href='https://tools.wmflabs.org/swviewer/php/oauth.php?action=auth'>OAuth Login</a>
                     <span class='fs-xs'>To use this application <a rel='noopener noreferrer' target='_blank' href='https://en.wikipedia.org/wiki/Wikipedia:Rollback'>local</a> or <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/Global_rollback'>global</a> rollback is required.</span>
-                    <span class='fs-xs' style='margin-top: 3px; width: 304.14px'>By clicking on the \"OAuth Login\" button, you agree to our <div style='display:inline; color: var(--link-color); text-decoration: none;' onclick='openPO();'>Cookie and Privacy policy</div>.</span>
+                    <span class='fs-xs' style='margin-top: 3px; width: 304.14px'>By clicking on the \"OAuth Login\" button, you agree to our <div style='display:inline; color: var(--link-color); text-decoration: none; cursor: pointer;' onclick='openPO();'>Cookie and Privacy policy</div>.</span>
                 </div>
                 <div>
                     <span class='i-btn__secondary-outlined secondary-hover fs-md' style='height: 35px; margin-bottom: 8px;' onclick='openPO();'>About</span>
@@ -140,37 +140,38 @@ if ($checkLoginSWV == false) {
                 </div>    
             </div>
         </div>
-        
-        <!-- Global requests | Popup-overlay -->
-        <div id='about' class='po__base'>
-            <div class='po__header action-header'>
-                <span class='action-header__title fs-lg'>About</span>
-                <div class='mobile-only secondary-hover' title='Close [esc]' onclick='closePO()'>
-                    <img class='touch-ic secondary-icon' src='./img/cross-filled.svg' alt='Cross image'>
-                </div>
-                <span class='desktop-only po__esc secondary-hover fs-md' onclick='closePO()'>esc</span>
-            </div>
-            <div class='po__content'>
-                <div class='po__content-body secondary-scroll'>
-                    <div id='abox' class='fs-md'></div>
-                </div>
-            </div>
-        </div>
+
         <!-- po Overlay-->
         <div id='POOverlay' class='po__overlay' onclick='closePO()'></div>
 
         <script>
-            $('#abox').html(aboutText);
             var lastOpenedPO = undefined;
-            function openPO (po = 'about') {
-                document.getElementById(po).classList.add('po__active');
-                document.getElementById('POOverlay').classList.add('po__overlay__active');
-                lastOpenedPO = po;
+            async function openPO (po = 'about') {
+                function openPOLocal () {
+                    document.getElementById(po).style.display = 'grid';
+                    setTimeout(() => {
+                        document.getElementById(po).classList.add('po__active');
+                        document.getElementById('POOverlay').classList.add('po__overlay__active');
+                    }, 0);
+                    lastOpenedPO = po;
+                }
+
+                if (document.getElementById(po) === null) {
+                    if (po === 'about') 
+                        await import('./js/modules/about.js')
+                        .then((r) => r.createAboutPO(document.getElementById('POOverlay').parentElement))
+                        .catch((e) => console.error(e));
+                        
+                    if (document.getElementById(po) !== null) openPOLocal();
+                } else openPOLocal();
             }
             function closePO () {
                 if (lastOpenedPO !== undefined) {
                     document.getElementById(lastOpenedPO).classList.remove('po__active');
                     document.getElementById('POOverlay').classList.remove('po__overlay__active');
+                    setTimeout(() => {
+                        document.getElementById(lastOpenedPO).style.display = 'none';
+                    }, 200);
                 }
             }
         </script>";
@@ -216,7 +217,7 @@ session_write_close();
 var xhr = new XMLHttpRequest();
 xhr.open('POST', "php/getSessionVars.php", false);
 xhr.send();
-var sess = JSON.parse(xhr.responseText);
+const sess = JSON.parse(xhr.responseText);
 if (!sess.hasOwnProperty("user") || !sess.hasOwnProperty("isGlobal") || !sess.hasOwnProperty("isGlobalModeAccess") || !sess.hasOwnProperty("local_wikis") || !sess.hasOwnProperty("talktoken") || sess.hasOwnProperty("error")) {
     alert("Something gone wrong. Please retry.");
     xhr.open("GET", "php/oauth.php?action=unlogin", false);
@@ -224,10 +225,10 @@ if (!sess.hasOwnProperty("user") || !sess.hasOwnProperty("isGlobal") || !sess.ha
     if (xhr.responseText == "Unlogin is done")
         window.open("https://tools.wmflabs.org/swviewer/", "_self");
 }
-var userSelf = sess["user"];
-var isGlobal = Boolean(sess["isGlobal"]);
-var isGlobalModeAccess = Boolean(sess["isGlobalModeAccess"]);
-var talktoken = sess["talktoken"]; // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
+const userSelf = sess["user"];
+const isGlobal = Boolean(sess["isGlobal"]);
+const isGlobalModeAccess = Boolean(sess["isGlobalModeAccess"]);
+const talktoken = sess["talktoken"]; // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
 console.log(talktoken);
 var local_wikis = [];
 if (sess["local_wikis"] !== "")
@@ -237,11 +238,13 @@ if (sess["local_wikis"] !== "")
 <body  class="full-screen" id="mainapp-body">
 
 <!-- Loading UI -->
-<div id="loading" class="secodnary-cont">
-    <div class="loading-icon">
-        <img src="./img/swviewer-logo-raw.svg">
+<div id="loading" class="secodnary-cont" style="padding: 16px; background: var(--bc-secondary); display: flex; align-items: center; justify-content: center; align-content: center; flex-wrap: wrap; position: fixed; z-index: 999;">
+    <div style="width: 75px; height: 75px;">
+        <svg version=1.1 id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space=preserve> <g id=sw-logo> <path id=base d="M255.9,503L255.9,503C119.3,503,8.5,392.3,8.5,255.6v0C8.5,119,119.3,8.2,255.9,8.2h0 c136.6,0,247.4,110.8,247.4,247.4v0C503.3,392.3,392.6,503,255.9,503z"/> <g id=diff> <path fill=#FFE49C d="M226.3,358.7l-69.2,18.6c-12,3.2-23.8-5.8-23.8-18.2v-207c0-12.4,11.8-21.5,23.8-18.2l69.2,18.6 c8.2,2.2,14,9.7,14,18.2v169.8C240.3,349,234.6,356.5,226.3,358.7z"/> <path fill=#D8ECFF d="M364.5,358.7l-69.2,18.6c-12,3.2-23.8-5.8-23.8-18.2v-207c0-12.4,11.8-21.5,23.8-18.2l69.2,18.6 c8.2,2.2,14,9.7,14,18.2v169.8C378.5,349,372.8,356.5,364.5,358.7z"/> </g> </g> </svg>
     </div>
-    <span class="loading-text fs-xl">SWViewer</span>
+    <h1 style="padding: 4px 16px 0">SWViewer
+        <div id="loadingBar" style="height: 4px; width: 10%; background-color: #efefef; border-radius: 4px; transition: width 200ms ease-in;"></div>
+    </h1>
 </div>
 
 <!-- Application UI -->
@@ -251,22 +254,28 @@ if (sess["local_wikis"] !== "")
             <!-- sidebar -->
             <div id="sidebar" class="sidebar-base primary-cont">
                 <div class="sidebar__options">
-                    <div id="btn-home" class="tab__active primary-hover" onclick="closePW(); clickHome()" aria-label="SWViewer [esc]" i-tooltip="right">
+                    <div id="btn-home" class="tab__active primary-hover" onclick="clickHome(); closePW();" aria-label="SWViewer [esc]" i-tooltip="right">
+                        <div class="tab-indicator"></div>
                         <img class="touch-ic primary-icon" src="./img/swviewer-filled.svg" alt="SWViewer image">
                     </div>
                     <div id="btn-talk" class="primary-hover" onclick="openPW('talkForm')" aria-label="Talk [t]" i-tooltip="right">
-                        <span class="badge-ic badge-ic__primary" style="background: none; color: var(--bc-primary);" id="badge-talk">{{filteredUsersTalk.length}}</span>
-                    </div>  
+                        <div class="tab-indicator"></div>
+                        <span class="loading-tab tab-notice-indicator">!</span>
+                        <span class="badge-ic badge-ic__primary" style="background: none; color: var(--bc-primary);" id="badge-talk">{{users.length}}</span>
+                    </div>
                     <div id="btn-logs" class="primary-hover" onclick="openPW('logs')" aria-label="Logs [l]" i-tooltip="right">
+                        <div class="tab-indicator"></div>
+                        <span class="loading-tab tab-notice-indicator">!</span>
                         <img class="touch-ic primary-icon" src="./img/doc-filled.svg" alt="Logs image">
                     </div>
-                    <div id="btn-unlogin" class="primary-hover" aria-label="Sign out [u]" i-tooltip="right">
+                    <div id="btn-unlogin" class="primary-hover" onclick="logout(); closeSidebar();" aria-label="Logout [u]" i-tooltip="right">
                         <img class="touch-ic primary-icon" src="./img/power-filled.svg" alt="Logout image">
                     </div>
-                    <div id="btn-about" class="primary-hover" onclick="openPO('about')" aria-label="About" i-tooltip="right">
+                    <div id="btn-about" class="primary-hover" style="margin-top: auto;" onclick="openPO('about'); closeSidebar();" aria-label="About" i-tooltip="right">
+                        <span class="loading-tab tab-notice-indicator">!</span>
                         <img class="touch-ic primary-icon" src="./img/about-filled.svg" alt="About image">
                     </div>
-                    <div id="btn-settings" class="primary-hover" onclick="openPW('settings')" aria-label="Settings and quick links [s]" i-tooltip="right">
+                    <div id="btn-settings" class="primary-hover" onclick="openPO('settingsOverlay'); closeSidebar();" aria-label="Settings and quick links [s]" i-tooltip="right">
                         <img class="touch-ic primary-icon" src="./img/settings-filled.svg" alt="Settings image">
                     </div>
                 </div>
@@ -275,44 +284,51 @@ if (sess["local_wikis"] !== "")
             <div id="queueDrawer" class="drawer-base primary-cont">
                 <div class="edit-queue-base">
                     <div class="action-header eq__header">
-                        <span class="action-header__title fs-lg">Queue</span>
+                        <div class="mobile-only primary-hover" onclick="openSidebar();" aria-label="Sidebar" i-tooltip="bottom-left">
+                            <img class="touch-ic primary-icon" src="./img/drawer-filled.svg" alt="Navigation image">
+                        </div>
+                        <span id="presetsArrow" class="presets-arrow action-header__title fs-lg" onClick="togglePresets()">
+                            <span id="drawerPresetTitle" class="drawer-preset-title" >Default</span>
+                        </span>
+                        <div id="editCurrentPreset" class="primary-hover" aria-label="Edit" i-tooltip="bottom-right">
+                            <img class="touch-ic primary-icon" src="./img/pencil-filled.svg" alt="Edit image">
+                        </div>
+                        <div id="moreOptionBtnMobile" class="mobile-only primary-hover disabled" onclick="toggleMoreControl();" aria-label="More options" i-tooltip="bottom-right">
+                            <img class="touch-ic primary-icon" src="./img/v-dots-filled.svg" alt="More option img">
+                        </div>
                     </div>
-                    <div class="eq__body">
-                        <div class="queue primary-scroll" id="queue">
-                            <div id="edits-Queue" ng-repeat="edit in edits track by $index">
-                                <div class="queue-row fs-sm primary-hover" ng-style="editColor(edit)" ng-click="select(edit)">{{edit.wiki}}</div>
+                    <div id="presetBody" class="preset__body" style="height: 0;">
+                        <div class="primary-scroll">
+                            <div id="presetsBase" class="fs-md">
+                                <button class="i-btn__primary primary-hover fs-sm" style="background-color: var(--bc-primary-hover);" onclick="editPreset();">
+                                    <img class="touch-ic primary-icon" src="./img/plus-filled.svg" alt="Plus image">Create
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="eqBody" class="eq__body">
+                        <div class="queue-base primary-scroll">
+                            <div class="queue" id="queue">
+                                <div class="primary-hover"  ng-click="select(edit)" ng-repeat="edit in edits track by $index">
+                                    <div class="queue-col">
+                                        <div class="queue-ores" style="background-color: {{edit.ores.color}}">{{edit.ores.score}}</div>
+                                        <div class="queue-new">{{edit.isNew}}</div>
+                                    </div>
+                                    <div class="queue-row">
+                                        <div class="queue-wikiname fs-sm" ng-style="editColor(edit)">{{edit.wiki}}</div>
+                                        <div class="queue-username fs-xs">{{edit.user}}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Status Bar -->
-            <div class="statusbar-base">
-
-            </div>
+            <div class="statusbar-base"></div>
             <!-- Main Window -->
             <div class="window-base secondary-cont">
-                <div class="diff-container">
-                    <!-- Mobile navbar -->
-                    <div class="main-navbar action-header mobile-only">
-                        <div class="primary-hover" onclick="openSidebar();" aria-label="Sidebar" i-tooltip="bottom-left">
-                            <img class="touch-ic primary-icon" src="./img/drawer-filled.svg" alt="Navigation image">
-                        </div>
-                        <!-- <span class="action-header__title fs-xl">Home</span> -->
-                        <div class="primary-hover" onclick="openPW('talkForm')" aria-label="Talk [t]" i-tooltip="bottom">
-                            <span id="badge-talk-ex1" class="badge-ic badge-ic__primary" style="background: none; color: var(--bc-primary);">{{filteredUsersTalk.length}}</span>
-                        </div>
-                        <div class="primary-hover" onclick="openPW('logs')" aria-label="Logs [l]" i-tooltip="bottom">
-                            <img class="touch-ic primary-icon" src="./img/doc-filled.svg" alt="Logs image">
-                        </div>
-                        <div id="moreOptionBtnMobile" class="primary-hover disabled" onclick="togglMoreControl();" aria-label="More options" i-tooltip="bottom">
-                            <img class="touch-ic primary-icon" src="./img/v-dots-filled.svg" alt="More option img">
-                        </div>
-                        <div id="btn-drawer" class="primary-hover" style="position: relative;" aria-label="Queue" i-tooltip="bottom-right">
-                            <span class="drawer-btn__edits-count">{{edits.length}}</span>
-                            <img class="touch-ic primary-icon" src="./img/drawer-filled.svg" alt="Drawer image">
-                        </div>
-                    </div>
+                <div id="windowContent" class="window-content">
                     <!-- description container -->
                     <div id="description-container" class="description-container fs-md" style="display: none; margin-top: 0;">
                         <div class="desc-un">
@@ -328,26 +344,46 @@ if (sess["local_wikis"] !== "")
                         </div>
                     </div>
                     <!-- Mobile next diff button -->
-                    <div id="next-diff" class="next-diff accent-hover mobile-only" ng-click='nextDiff()' aria-label="Next difference" i-tooltip="left">
-                        <div>
+                    <div id="drawerFab" class="drawer-fab mobile-only">
+                        <div id="next-diff" class="accent-hover" ng-click='nextDiff()' aria-label="Next difference" i-tooltip="top-right">
                             <img class="touch-ic accent-icon" src="./img/swviewer-filled.svg" alt="Next diffrence image">
                         </div>
-                        <div id="next-diff-title" class="fs-md">Fetching</div>
+                        <span id="next-diff-title" class="fs-md">Fetching</span>
+                        <div class="accent-hover" style="position: relative;" onclick="toggleMDrawer();" aria-label="Queue" i-tooltip="top-right">
+                            <span class="drawer-btn__edits-count">{{edits.length}}</span>
+                            <img class="touch-ic accent-icon" src="./img/drawer-filled.svg" alt="Drawer image">
+                        </div>
                     </div>
                     <!-- Controls -->
                     <div id="moreControlOverlay" class="more-control__overlay"  onclick="closeMoreControl();"></div>
                     <div id="controlsBase" class="controls-base floatbar"  style="display: none;">
                         <!-- More control -->
                         <div id="moreControl" class="more-control more-control__hidden secondary-scroll">
-                            <a class="secondary-hover fs-md" href='{{project_url}}/index.php?title={{title}}&action=history' onclick="togglMoreControl();" rel='noopener noreferrer' target='_blank'>View history</a>
-                            <a class="secondary-hover fs-md" href='https://tools.wmflabs.org/guc/?src=hr&by=date&user={{user}}' onclick="togglMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
-                            <a class="secondary-hover fs-md" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{user}}' id="CAUTH" onclick="togglMoreControl();" rel='noopener noreferrer' target='_blank'>Central auth</a>
-                            <span class="disabled secondary-hover fs-md" ng-click="requestsForm();" onclick="openPO('localRequests')">Local requests</span>
-                            <span class="disabled secondary-hover fs-md" ng-click="requestsForm();" onclick="openPO('globalRequests')"> Global requests</span>
+                            <div>
+                                <a class="secondary-hover fs-sm" href='https://meta.wikimedia.org/wiki/Meta:Requests_for_help_from_a_sysop_or_bureaucrat' rel='noopener noreferrer' target='_blank'>Meta:RFH</a>
+                                <span vr-line="secondary"></span>
+                                <a class="secondary-hover fs-sm" href='https://meta.wikimedia.org/wiki/Steward_requests/Miscellaneous' rel='noopener noreferrer' target='_blank'>SRM</a>
+                                <span vr-line="secondary"></span>
+                                <a class="secondary-hover fs-sm" href='https://meta.wikimedia.org/wiki/Steward_requests/Global' rel='noopener noreferrer' target='_blank'>SRG</a>
+                                <span vr-line="secondary"></span>
+                                <a class="secondary-hover fs-sm" href='https://meta.wikimedia.org/wiki/Global_sysops/Requests' rel='noopener noreferrer' target='_blank'>GSR</a>
+                            </div>
+                            <div>
+                                <a class="secondary-hover fs-md" href='{{project_url}}/index.php?title={{title}}&action=history' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>View history</a>
+                                <div class="secondary-hover" ng-click="copyViewHistory()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
+                            </div>
+                            <div>
+                                <a class="secondary-hover fs-md" href='https://tools.wmflabs.org/guc/?src=hr&by=date&user={{user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
+                                <div class="secondary-hover" ng-click="copyGlobalContribs()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
+                            </div>
+                            <div id="CAUTH">
+                                <a class="secondary-hover fs-md" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Central auth</a>
+                                <div class="secondary-hover" ng-click="copyCentralAuth()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
+                            </div>
                         </div>
                         <!-- Control buttons -->
                         <div id="control" class="toolbar">
-                            <div class="desktop-only secondary-hover" onclick="togglMoreControl();" aria-label="More options" i-tooltip="top-right">
+                            <div class="desktop-only secondary-hover" onclick="toggleMoreControl();" aria-label="More options" i-tooltip="top-right">
                                 <img class="touch-ic secondary-icon" src="./img/v-dots-filled.svg" alt="More option img">
                             </div>
                             <div id="browser" class="secondary-hover" ng-click="browser();" aria-label="Open in browser window [o]" i-tooltip="top-right">
@@ -367,200 +403,10 @@ if (sess["local_wikis"] !== "")
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Welcome page -->
-                    <div id='page-welcome' class='welcome-base frame-diff secondary-scroll' style='display: block;'>
-                        <label class="fs-xl" style="font-weight: bold;">Welcome back!</label>
-                        <div class="welcome-box">
-                            <form class="stat-search__base" onsubmit="searchStat();">
-                                <input id="statInput" class="i-input__secondary secondary-placeholder fs-md" type="text" autocomplete="off" placeholder="Search user">
-                                <button class="i-btn__accent accent-hover fs-md" type="submit">Search</button>
-                            </form>
-                            <div id="statContainer" class="stat-container">
-                                <div>
-                                    <span id="rollbackSpan" class="fs-xl" style="color: #c8b40e;">0</span>
-                                    <span class="fs-lg">Rollback</span>
-                                </div>
-                                <div>
-                                    <span id="undoSpan" class="fs-xl" style="color: #db24b0;">0</span>
-                                    <span class="fs-lg">Undo</span>
-                                </div>
-                                <div>
-                                    <span id="deleteSpan" class="fs-xl" style="color: #672dd2;">0</span>
-                                    <span class="fs-lg">Delete</span>
-                                </div>
-                                <div>
-                                    <span id="editSpan" class="fs-xl" style="color: #2dd280;">0</span>
-                                    <span class="fs-lg">Edit</span>
-                                </div>
-                                <div>
-                                    <span id="warnSpan" class="fs-xl" style="color: #d92c26;">0</span>
-                                    <span class="fs-lg">Warn</span>
-                                </div>
-                                <div>
-                                    <span id="reportSpan" class="fs-xl" style="color: #e3791c;">0</span>
-                                    <span class="fs-lg">Report</span>
-                                </div>
-                                <div>
-                                    <span id="protectSpan" class="fs-xl" style="color: #1cb3e3">0</span>
-                                    <span class="fs-lg">Protect</span>
-                                </div>
-                            </div>
-                            
-                            <div class="list-container">
-                                <label class="fs-md">Reminder</label>
-                                <ul class="i-ul fs-sm">
-                                    <li class="i-ul__imp">IMPORTANT: If app is not working properly, please re-login and clear cache.</li>
-                                    <li>Responsibility for edits rests with the owner of the account with which they are made.</li>
-                                    <li class="i-ul__imp">Please DO NOT sends warns if you don’t know the language (except in case of pure vandalism).</li>
-                                    <li>If you find a bug, please <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/Talk:SWViewer">report</a> it! Also attach screenshots or/and data from the browser console.</li>
-                                </ul>
-                            </div>
-                            <div class="list-container">
-                                <label class="fs-md">Tips</label>
-                                <ul class="i-ul fs-sm">
-                                    <li>If you use Chrome browser, you can install SWViewer as an WebApp on desktop as well as mobile, see <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Install_PWA">instructions</a>.</li>
-                                </ul>
-                            </div>
-                            <div class="list-container">
-                                <label class="fs-md">What's new </label>
-                                <ul class="i-ul fs-sm">
-                                    <label class="i-ul__subheader fs-sm">21 October 2019</label>
-                                    <li class="i-ul__imp">UI & UX improvments.</li>
-                                    <li class="i-ul__imp">Global mode and undo for non-GRs.</li>
-                                    <li class="i-ul__imp">New sounds, RH mode, Anonymous edits and Only new pages features added into settings.</li>
-                                    <li class="i-ul__imp">Advanced menu for difference viewer.</li>
-                                    <li class="i-ul__imp">Total statistics on welcome page.</li>
-                                    <li class="i-ul__imp">Bug fixed!</li>
-                                </ul>
-                                <ul id="moreWN" class="i-ul fs-sm" style="overflow: hidden; height: 0px;">
-                                    <label class="i-ul__subheader fs-sm">14 June 2019</label>
-                                    <li>We now support themes, and a new logo again but this is last.. swear :P</li>
-                                    <li>Also we now have customizable templates and edit summaries for each wikis, add for yours <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/config.json">here</a>.</li>
-                                    <label class="i-ul__subheader fs-sm">24 March 2019</label>
-                                    <li>Fully implimented new design along with new logo :)</li>
-                                    <li>New design for desktop and mobile.</li>
-                                    <li>Single login for all users (GR as well as local rollback).</li>
-                                    <label class="i-ul__subheader fs-sm">Older</label>
-                                    <li>50 new small projects have been added to the <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/wikis">SW list</a>.</li>
-                                    <li>Added option to select an additional list of projects with less than 300 active users. Which includes about 30 projects, including the best of the bests sebwiki. Check app's settings.</li>
-                                    <li>Added <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Hotkeys">hotkeys</a>.</li>
-                                    <li>Synchronization: If you doing rollback, edits of that page will be removed from queue of all users online in app.</li>
-                                </ul>
-                                <button class="i-btn__secondary-outlined secondary-hover fs-md" onclick="toggleMoreWN(this);">Show more</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Difference iframe -->
-                    <div class="iframe-container frame-diff secondary-scroll" style="display: none;" onscroll="hideDesc(this)">
-                        <iframe id='page' style="min-height: 100%;" title='Diff' sandbox='allow-same-origin allow-scripts' scrolling='no'></iframe>
-                    </div>
-
-                    <!-- talkForm | popup-window -->
-                    <div id="talkForm" class="pw__base" style="display: none;">
-                        <!--pw Header-->
-                        <div class="pw__header action-header">
-                            <div class="mobile-only secondary-hover" onclick="openSidebar();" aria-label="Sidebar" i-tooltip="bottom-left">
-                                <img class="touch-ic secondary-icon" src="./img/drawer-filled.svg" alt="Box Image">
-                            </div>
-                            <span class="action-header__title fs-xl">Talk</span>
-                            <div class="mobile-only secondary-hover" onclick="closePW()" aria-label="Close [esc]" i-tooltip="bottom-right">
-                                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
-                            </div>
-                            <div class="mobile-only secondary-hover" onclick="openPWDrawer('talkPWDrawer', 'talkPWOverlay')" aria-label="People" i-tooltip="bottom-right">
-                                <img class="touch-ic touch-ic__w-free secondary-icon" src="./img/people-filled.svg" alt="People image">
-                            </div>
-                            <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
-                        </div>
-                        <!--pw Content-->
-                        <div class="pw__content">
-                            <div id="talk-content" class="pw__content-body secondary-scroll">
-                                <div id="form-talk">
-                                    <div class="talk-svg fs-md">
-                                        <img class="secondary-icon" style="margin-bottom: 48px;" src="./img/message-filled.svg" alt="SWViewer image" width="100px">
-                                        <span>No messages</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="pw__floatbar">
-                                <form onsubmit="document.getElementById('btn-send-talk').onclick();"><input  id="phrase-send-talk" class="secondary-placeholder fs-md" autocomplete="off" onfocus="scrollToBottom('talk-content')" title="Text to sent" max-length="600" placeholder="What's on your mind?"></form>
-                                <span vr-line></span>
-                                <div id="btn-send-talk" class="secondary-hover" aria-label="Send" i-tooltip="top-right">
-                                    <img class="touch-ic secondary-icon" src="./img/send-filled.svg" alt="Send image">
-                                </div>
-                            </div>
-                        </div>
-                        <!--pw Drawer-->
-                        <div id="talkPWDrawer" class="pw__drawer secondary-scroll">
-                            <div class="action-header__sticky">
-                                <span class="action-header__title fs-lg">People</span>
-                            </div>
-                            <div class="pw__drawer__content">
-                                <div style="display: flex; flex-direction: column-reverse">
-                                    <div class="user-container fs-md" ng-repeat="talkUser in users|unique: talkUser as filteredUsersTalk">
-                                        <div class="user-talk" onclick="selectTalkUsers(this)">{{talkUser}}</div>
-                                        <a class="user-talk-CA" rel="noopener noreferrer" href="https://meta.wikimedia.org/wiki/Special:CentralAuth/{{talkUser}}" target="_blank">CA</a>
-                                    </div>
-                                </div>
-                                <div style="display: flex; flex-direction: column-reverse">
-                                    <div ng-repeat="talkUserOffline in offlineUsers track by $index">
-                                        <div class="user-talk fs-md" style="color: gray;">{{talkUserOffline}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--pw Overlay-->
-                        <div id="talkPWOverlay" class="pw__overlay" onclick="closePWDrawer('talkPWDrawer', 'talkPWOverlay')"></div>
-                    </div>
-
-                    <!-- Logs | popup-window -->
-                    <div id="logs" class="pw__base" style="display: none; grid-template-areas: 'pw__header pw__header' 'pw__content pw__content';">
-                        <!--pw Header-->
-                        <div class="pw__header action-header">
-                            <div class="mobile-only secondary-hover" onclick="openSidebar();" aria-label="Sidebar" i-tooltip="bottom-left">
-                                <img class="touch-ic secondary-icon" src="./img/drawer-filled.svg" alt="Box Image">
-                            </div>
-                            <span class="action-header__title fs-xl">Logs</span>
-                            <div class="secondary-hover" onclick="refreshLogs()" aria-label="Refresh" i-tooltip="bottom-right">
-                                <img class="touch-ic secondary-icon" src="./img/reload-filled.svg" alt="Reload image">
-                            </div>
-                            <div class="mobile-only secondary-hover" onclick="closePW()" aria-label="Close [esc]" i-tooltip="bottom-right">
-                                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
-                            </div>
-                            <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
-                        </div>
-                        <!--pw Content-->
-                        <div class="pw__content">
-                            <div class="pw__content-body secondary-scroll" style="padding: 0;">
-                                <div id="logsBox"></div>
-                                <div class="logBox-control">
-                                    <button id="prevLogs" class='i-btn__secondary-outlined secondary-hover fs-md' style="display: none;">Previous</button>
-                                    <button id="nextLogs" class='i-btn__secondary-outlined secondary-hover fs-md' style="display: none;">Next</button>
-                                </div>
-                            </div>
-
-                            <div class="pw__floatbar">
-                                <form onsubmit="searchLogs();"><input id="logsSearch-input"  class="secondary-placeholder fs-md" autocomplete="off" title="Search logs" max-length="600"" placeholder="Search for user or wiki."></form>
-                                <span vr-line></span>
-                                <div style="width: unset;">
-                                    <select id="actionSelector" class="i-select__secondary fs-md">
-                                        <option value="">All actions</option>
-                                        <option value="rollback">Rollback</option>
-                                        <option value="undo">Undo</option>
-                                        <option value="delete">Delete</option>
-                                        <option value="edit">Edit</option>
-                                        <option value="warn">Warn</option>
-                                        <option value="report">Report</option>
-                                        <option value="protect">Protect</option>
-                                    </select>
-                                </div>
-                                <span vr-line></span>
-                                <div id="btn-searchLogs" class="secondary-hover" onclick="searchLogs()" aria-label="Search" i-tooltip="top-right">
-                                    <img class="touch-ic secondary-icon" src="./img/search-filled.svg" alt="Search image">
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Welcome page and Difference viewer -->
+                    <div class="diff-container frame-diff">
+                        <iframe id='page-welcome' class='full-screen' style='display: block;' title='Welcome page' src='templates/welcome.html'></iframe>
+                        <iframe id='page' class='full-screen' style='display: none;' title='Diff' sandbox='allow-same-origin allow-scripts'></iframe>
                     </div>
 
                     <!-- Edit Source | popup-window -->
@@ -586,7 +432,7 @@ if (sess["local_wikis"] !== "")
                             <div class="pw__floatbar">
                                 <form ng-submit="doEdit()"><input id="summaryedit" class="secondary-placeholder fs-md" title="Summary" placeholder="Briefly describe your changes."></form>
                                 <span vr-line></span>
-                                <div id="editForm-save" class="secondary-hover" ng-click="doEdit()" onclick="closePW()" aria-label="Publish changes" i-tooltip="top-right">
+                                <div id="editForm-save" class="secondary-hover" ng-click="doEdit()" aria-label="Publish changes" i-tooltip="top-right">
                                     <img class="touch-ic secondary-icon" src="./img/save-filled.svg" alt="Save image">
                                 </div>
                             </div>
@@ -605,7 +451,7 @@ if (sess["local_wikis"] !== "")
                                     </div>
                                 </div>
                                 <div id="speedyReasonsBox">
-                                    <div id="speedyReasonsBox" ng-repeat="speedy in speedys track by $index" onclick="closePW();">
+                                    <div ng-repeat="speedy in speedys track by $index" onclick="closePW();">
                                         <a class="fs-sm" style="cursor: pointer;" ng-click="selectSpeedy(speedy)" ng-style="speedyColor(speedy)">{{speedy.name}}</a>
                                     </div>
                                 </div>
@@ -615,263 +461,14 @@ if (sess["local_wikis"] !== "")
                         <div id="editPWOverlay" class="pw__overlay" onclick="closePWDrawer('editPWDrawer', 'editPWOverlay')"></div>
                     </div>
 
-                    <!-- Settings | popup-window -->
-                    <div id="settings" class="pw__base" style="display: none;">
-                        <!--pw Header-->
-                        <div class="pw__header action-header">
-                            <div class="mobile-only secondary-hover" onclick="openSidebar();" aria-label="Sidebar" i-tooltip="bottom-left">
-                                <img class="touch-ic secondary-icon" src="./img/drawer-filled.svg" alt="Box Image">
-                            </div>
-                            <span class="action-header__title fs-xl">Settings</span>
-                            <div class="mobile-only secondary-hover" onclick="closePW()" aria-label="Close [esc]" i-tooltip="bottom-right">
-                                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
-                            </div>
-                            <div class="mobile-only secondary-hover" onclick="openPWDrawer('settingsPWDrawer', 'settingsPWOverlay')" aria-label="Quick links" i-tooltip="bottom-right">
-                                <img class="touch-ic secondary-icon" src="./img/v-dots-filled.svg">
-                            </div>
-                            <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
-                        </div>
-                        <!--pw Content-->
-                        <div class="pw__content">
-                            <div class="pw__content-body secondary-scroll">
-                                <div class="action-header">
-                                    <span class="action-header__title fs-lg">Customization</span>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Theme</div>
-                                    <div class="i__description fs-xs">Change theme.</div>
-                                    <div class="i__content fs-sm">
-                                        <select id="themeSelector" class="i-select__secondary fs-md"></select>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Sound</div>
-                                    <div class="i__description fs-xs">Change sound mode.</div>
-                                    <div class="i__content fs-sm">
-                                    <select id="soundSelector" class="i-select__secondary fs-md">
-                                        <option value="0">None</option>
-                                        <option value="1">All sounds</option>
-                                        <option value="2">Msg & mentions</option>
-                                        <option value="3">Only mentions</option>
-                                        <option value="4">Edits & mentions</option>
-                                        <option value="5">Only Edits</option>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Revisions</div>
-                                    <div class="i__description fs-xs">Set alert or open all consecutive revisions by same user at once (Only last is fastest).</div>
-                                    <div class="i__content fs-sm">
-                                    <select id="checkSelector" class="i-select__secondary fs-md">
-                                        <option value="0">Only last</option>
-                                        <option value="1">Alert on revert</option>
-                                        <option value="2">Show all</option>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Bottom-up</div>
-                                    <div class="i__description fs-xs">Show edits from bottom to up direction in queue.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="bottom-up-btn" class="t-btn__secondary" onclick="toggleTButton(this); bottomUp(this);"></div>
-                                    </div>
-                                </div>
-                                <div class="desktop-only i__base">
-                                    <div class="i__title fs-md">RH mode</div>
-                                    <div class="i__description fs-xs">Show queue on the right hand side.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="RH-mode-btn" class="t-btn__secondary" onclick="toggleTButton(this); RHModeBtn(this, false);"></div>
-                                    </div>
-                                </div>
-
-                                <div class="action-header">
-                                    <span class="action-header__title fs-lg">Behaviour</span>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Registered</div>
-                                    <div class="i__description fs-xs">Enable edits from registered users.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="registered-btn" class="t-btn__secondary" onclick="toggleTButton(this); registeredBtn(this);"></div>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Anonymous</div>
-                                    <div class="i__description fs-xs">Enable edits from anonymous users.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="onlyanons-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyAnonsBtn(this);"></div>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">New pages</div>
-                                    <div class="i__description fs-xs">Enable new pages creations.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="new-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); newPagesBtn(this);"></div>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Only new pages</div>
-                                    <div class="i__description fs-xs">Enable only new page creations.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="onlynew-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyNewPagesBtn(this);"></div>
-                                    </div>
-                                </div>
-                                <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Small Wikis</div>
-                                    <div class="i__description fs-xs">Enable edits from small wikis.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="small-wikis-btn" class="t-btn__secondary" onclick="toggleTButton(this); smallWikisBtn(this);"></div>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Less then 300 users</div>
-                                    <div class="i__description fs-xs">Enable edits from wikis with less then 300 active users.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
-                                    </div>
-                                </div>
-                                ';}?>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Queue limit</div>
-                                    <div class="i__description fs-xs">Max count of edits allowed to load in queue.</div>
-                                    <div class="i__content fs-sm">
-                                        <input id="max-queue" class="i-input__secondary secondary-placeholder fs-sm" name="max-queue" placeholder="No limit">
-                                    </div>
-                                </div>
-
-                                <div class="action-header">
-                                    <span class="action-header__title fs-lg">Filters</span>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Edits limit</div>
-                                    <div class="i__description fs-xs">Number of edits after which edits of user will be whitelisted.</div>
-                                    <div class="i__content fs-sm">
-                                        <input id="max-edits" class="i-input__secondary secondary-placeholder fs-sm" name="max-edits" placeholder="Max edits">
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Days limit</div>
-                                    <div class="i__description fs-xs">Account age in days after which edits of user will be whitelisted.</div>
-                                    <div class="i__content fs-sm">
-                                        <input id="max-days" class="i-input__secondary secondary-placeholder fs-sm" name="max-days" placeholder="Max days">
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Namespace filter</div>
-                                    <div class="i__description fs-xs">Add <a style="display: inline;" href="https://en.wikipedia.org/wiki/Help:MediaWiki_namespace" rel="noopener noreferrer" target="_blank">namespace</a> to filter edits in queue.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="btn-delete-ns" class="i-minus fs-sm">-</div>
-                                        <input id="ns-input" class="i-input__secondary secondary-placeholder fs-sm" name="" placeholder="Enter">
-                                        <div id="btn-add-ns" class="i-plus fs-sm">+</div>
-                                    </div>
-                                    <div class="i__extra">
-                                        <ul id="nsList" class="i-chip-list fs-sm"></ul>
-                                    </div>
-                                </div>
-                                <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Custom wikis</div>
-                                    <div class="i__description fs-xs">Add your home-wiki or wikis which are not in small wikis list.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="btn-bl-p-delete" class="i-minus fs-sm">-</div>
-                                        <input id="bl-p" class="i-input__secondary secondary-placeholder fs-sm" name="bl-p" placeholder="Enter">
-                                        <div id="btn-bl-p-add" class="i-plus fs-sm">+</div>
-                                    </div>
-                                    <div class="i__extra">
-                                        <ul id="blareap" class="i-chip-list fs-sm"></ul>
-                                    </div>
-                                </div>
-                                ';}?>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Users whitelist</div>
-                                    <div class="i__description fs-xs">Add users to skip their edits from queue.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="btn-wl-u-delete" class="i-minus fs-sm">-</div>
-                                        <input id="wladdu" class="i-input__secondary secondary-placeholder fs-sm" name="wladdu" placeholder="Enter">
-                                        <div id="btn-wl-u-add" class="i-plus fs-sm">+</div>
-                                    </div>
-                                    <div class="i__extra">
-                                        <ul id="wlareau" class="i-chip-list fs-sm"></ul>
-                                    </div>
-                                </div>
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Wikis whitelist</div>
-                                    <div class="i__description fs-xs">Add wikis to skip their edits from queue.</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="btn-wl-p-delete" class="i-minus fs-sm">-</div>
-                                        <input id="wladdp" class="i-input__secondary secondary-placeholder fs-sm" name="wladdp" placeholder="Enter">
-                                        <div id="btn-wl-p-add" class="i-plus fs-sm">+</div>
-                                    </div>
-                                    <div class="i__extra">
-                                        <ul id="wlareap" class="i-chip-list fs-sm"></ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--pw Drawer-->
-                        <div id="settingsPWDrawer" class="pw__drawer secondary-scroll">
-                            <div class="action-header__sticky">
-                                <span class="action-header__title fs-lg">Info</span>
-                            </div>
-                            <div class="pw__drawer__content">
-                                <a class="fs-sm" id="luxo" href='https://tools.wmflabs.org/guc/?by=date&user={{user}}' rel='noopener noreferrer' target='_blank'>Global contribs</a>
-                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{user}}' rel='noopener noreferrer' target='_blank'>Central auth</a>
-                            </div>
-                            <div class="action-header__sticky">
-                                <span class="action-header__title fs-lg">Reports</span>
-                            </div>
-                            <div class="pw__drawer__content">
-                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Meta:Requests_for_help_from_a_sysop_or_bureaucrat' rel='noopener noreferrer' target='_blank'>Meta:RFH</a>
-                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Steward_requests/Miscellaneous' rel='noopener noreferrer' target='_blank'>SRM</a>
-                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Steward_requests/Global' rel='noopener noreferrer' target='_blank'>SRG</a>
-                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/Global_sysops/Requests' rel='noopener noreferrer' target='_blank'>GSR</a>
-                            </div>
-                            <div class="action-header__sticky">
-                                <span class="action-header__title fs-lg">Scripts, templates</span>
-                            </div>
-                            <div class="pw__drawer__content">
-                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Tagger' rel='noopener noreferrer' target='_blank'>Tagger</a>
-                                <a class="fs-sm" href='https://meta.wikimedia.org/wiki/User:Syum90/Warning_templates' rel='noopener noreferrer' target='_blank'>Warnings</a>
-                            </div>
-                            <div class="action-header__sticky">
-                                <span class="action-header__title fs-lg">Translators</span>
-                            </div>
-                            <div class="pw__drawer__content">
-                                <a class="fs-sm" href='https://translate.google.com/#auto/en/' rel='noopener noreferrer' target='_blank'>Google</a>
-                                <a class="fs-sm" href='https://translate.yandex.com/' rel='noopener noreferrer' target='_blank'>Yandex</a>
-                                <a class="fs-sm" href='http://www.online-translator.com' rel='noopener noreferrer' target='_blank'>Promt</a>
-                                <a class="fs-sm" href='https://www.bing.com/translator' rel='noopener noreferrer' target='_blank'>Bing</a>
-                                <a class="fs-sm" href='https://www.deepl.com/en/translator' rel='noopener noreferrer' target='_blank'>DeepL</a>
-                            </div>
-                            <div class="action-header__sticky">
-                                <span class="action-header__title fs-lg">Contact</span>
-                            </div>
-                            <div class="pw__drawer__content">
-                                <a class="fs-sm" href='http://tools.wmflabs.org/ircredirect/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC</a>
-                                <a class="fs-sm" href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord</a>
-                            </div>
-                            <?php if ($userSelf == "Ajbura" || $userSelf == "Iluvatar" || $userSelf == "1997kB") {
-                                echo '
-                                <div class="action-header__sticky">
-                                    <span class="action-header__title fs-lg">Control SWV</span>
-                                </div>
-                                <div class="pw__drawer__content">
-                                    <a class="fs-sm" href="https://tools.wmflabs.org/swviewer/php/control.php" rel="noopener noreferrer" target="_blank">Control panel</a>
-                                </div>';
-                            }?>
-                            
-                        </div>
-                        <!--pw Overlay-->
-                        <div id="settingsPWOverlay" class="pw__overlay" onclick="closePWDrawer('settingsPWDrawer', 'settingsPWOverlay')"></div>
-                    </div>
-
                     <!-- floating overlay --> 
-                    <div id="floatingOverlay" class="floating-overlay"></div>
+                    <div id="floatingOverlay" class="floating-overlay" onclick="closeSidebar();"></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>document.getElementById('loadingBar').style.width = "30%";</script>
     <!-- customRevert | Popup-overlay -->
     <div id="customRevert" class="po__base">
         <div class="po__header action-header">
@@ -957,10 +554,10 @@ if (sess["local_wikis"] !== "")
         </div>
     </div>
 
-    <!-- Global requests | Popup-overlay -->
-    <div id="about" class="po__base">
+    <!-- Settings | Popup-overlay -->
+    <div id="settingsOverlay" class="po__base">
         <div class="po__header action-header">
-            <span class="action-header__title fs-lg">About</span>
+            <span class="action-header__title fs-lg">Settings</span>
             <div class="mobile-only secondary-hover" onclick="closePO()" aria-label="Close [esc]" i-tooltip="bottom-right">
                 <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
             </div>
@@ -968,41 +565,308 @@ if (sess["local_wikis"] !== "")
         </div>
         <div class="po__content">
             <div class="po__content-body secondary-scroll">
-                <div id="abox2" class="fs-md"></div>
+                <div id="settingsBase">
+                    <div class="i__base">
+                        <div class="i__title fs-md">Theme</div>
+                        <div class="i__description fs-xs">Change theme.</div>
+                        <div class="i__content fs-sm">
+                            <select id="themeSelector" class="i-select__secondary fs-md"></select>
+                        </div>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Sound</div>
+                        <div class="i__description fs-xs">Change sound mode.</div>
+                        <div class="i__content fs-sm">
+                        <select id="soundSelector" class="i-select__secondary fs-md">
+                            <option value="0">None</option>
+                            <option value="1">All sounds</option>
+                            <option value="2">Msg & mentions</option>
+                            <option value="3">Only mentions</option>
+                            <option value="4">Edits & mentions</option>
+                            <option value="5">Only Edits</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Revisions</div>
+                        <div class="i__description fs-xs">Set alert or open all consecutive revisions by same user at once (Only last is fastest).</div>
+                        <div class="i__content fs-sm">
+                            <select id="checkSelector" class="i-select__secondary fs-md">
+                                <option value="0">Only last</option>
+                                <option value="1">Alert on revert</option>
+                                <option value="2">Show all</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Bottom-up</div>
+                        <div class="i__description fs-xs">Show edits from bottom to up direction in queue.</div>
+                        <div class="i__content fs-sm">
+                            <div id="bottom-up-btn" class="t-btn__secondary" onclick="toggleTButton(this); bottomUp(this);"></div>
+                        </div>
+                    </div>
+                    <div class="desktop-only i__base">
+                        <div class="i__title fs-md">RH mode</div>
+                        <div class="i__description fs-xs">Show queue on the right hand side.</div>
+                        <div class="i__content fs-sm">
+                            <div id="RH-mode-btn" class="t-btn__secondary" onclick="toggleTButton(this); RHModeBtn(this, false);"></div>
+                        </div>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Terminate stream</div>
+                        <div class="i__description fs-xs">Terminate recent changes stream when queue limit reaches. Big data saving.</div>
+                        <div class="i__content fs-sm">
+                            <div id="terminate-stream-btn" class="t-btn__secondary" onclick="toggleTButton(this); terminateStreamBtn(this, false);"></div>
+                        </div>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Queue limit</div>
+                        <div class="i__description fs-xs">Max count of edits allowed to load in queue.</div>
+                        <div class="i__content fs-sm">
+                            <input id="max-queue" class="i-input__secondary secondary-placeholder fs-sm" name="max-queue" placeholder="No limit">
+                        </div>
+                    </div>
+                    <div class="action-header">
+                        <span class="action-header__title fs-lg" style="padding-left: 0;">Quick links</span>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Scripts, templates</div>
+                        <div class="i__extra">
+                            <ul class="i-chip-list fs-sm">
+                                <li><a class="fs-sm" href='https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Tagger' rel='noopener noreferrer' target='_blank'>Tagger</a></li>
+                                <li><a class="fs-sm" href='https://meta.wikimedia.org/wiki/User:Syum90/Warning_templates' rel='noopener noreferrer' target='_blank'>Warnings</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Translators</div>
+                        <div class="i__extra">
+                            <ul class="i-chip-list fs-sm">
+                                <li><a class="fs-sm" href='https://translate.google.com/#auto/en/' rel='noopener noreferrer' target='_blank'>Google</a></li>
+                                <li><a class="fs-sm" href='https://translate.yandex.com/' rel='noopener noreferrer' target='_blank'>Yandex</a></li>
+                                <li><a class="fs-sm" href='http://www.online-translator.com' rel='noopener noreferrer' target='_blank'>Promt</a></li>
+                                <li><a class="fs-sm" href='https://www.bing.com/translator' rel='noopener noreferrer' target='_blank'>Bing</a></li>
+                                <li><a class="fs-sm" href='https://www.deepl.com/en/translator' rel='noopener noreferrer' target='_blank'>DeepL</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="i__base">
+                        <div class="i__title fs-md">Contact</div>
+                        <div class="i__extra">
+                            <ul class="i-chip-list fs-sm">
+                                <li><a class="fs-sm" href='http://tools.wmflabs.org/ircredirect/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC</a></li>
+                                <li><a class="fs-sm" href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php if ($userSelf == "Ajbura" || $userSelf == "Iluvatar" || $userSelf == "1997kB") {
+                        echo '
+                            <div class="i__base">
+                                <div class="i__title fs-md">Control SWV</div>
+                                <div class="i__extra">
+                                    <ul class="i-chip-list fs-sm">
+                                        <li><a id="cpLink" class="fs-sm" href="https://tools.wmflabs.org/swviewer/php/control.php" rel="noopener noreferrer" target="_blank">Control panel</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        ';
+                    }?>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- po Overlay-->
     <div id="POOverlay" class="po__overlay" onclick="closePO()"></div>
+
+    <!-- Edit preset | Template -->
+    <template id="editPTitleTemplate">
+        <div>
+            <span class="fs-sm">Title</span>
+            <input id="presetTitleInput" class="i-input__secondary secondary-placeholder fs-md" type="text" autocomplete="off" placeholder="">
+        </div><br/>
+    </template>
+    <template id="editPresetTemplate">
+        <div class="i__base">
+            <div class="i__title fs-md">Registered</div>
+            <div class="i__description fs-xs">Enable edits from registered users.</div>
+            <div class="i__content fs-sm">
+                <div id="registered-btn" class="t-btn__secondary" onclick="toggleTButton(this); registeredBtn(this);"></div>
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">Anonymous</div>
+            <div class="i__description fs-xs">Enable edits from anonymous users.</div>
+            <div class="i__content fs-sm">
+                <div id="onlyanons-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyAnonsBtn(this);"></div>
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">New pages</div>
+            <div class="i__description fs-xs">Enable new pages creations.</div>
+            <div class="i__content fs-sm">
+                <div id="new-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); newPagesBtn(this);"></div>
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">Only new pages</div>
+            <div class="i__description fs-xs">Enable only new page creations.</div>
+            <div class="i__content fs-sm">
+                <div id="onlynew-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyNewPagesBtn(this);"></div>
+            </div>
+        </div>
+        <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
+        <div class="i__base">
+            <div class="i__title fs-md">Small Wikis</div>
+            <div class="i__description fs-xs">Enable edits from small wikis.</div>
+            <div class="i__content fs-sm">
+                <div id="small-wikis-btn" class="t-btn__secondary" onclick="toggleTButton(this); smallWikisBtn(this);"></div>
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">Less then 300 users</div>
+            <div class="i__description fs-xs">Enable edits from wikis with less then 300 active users.</div>
+            <div class="i__content fs-sm">
+                <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
+            </div>
+        </div>
+        ';}?>
+
+        <div class="i__base">
+            <div class="i__title fs-md">Edits limit</div>
+            <div class="i__description fs-xs">Number of edits after which edits of user will be whitelisted.</div>
+            <div class="i__content fs-sm">
+                <input id="max-edits" class="i-input__secondary secondary-placeholder fs-sm" name="max-edits" placeholder="Max edits">
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">Days limit</div>
+            <div class="i__description fs-xs">Account age in days after which edits of user will be whitelisted.</div>
+            <div class="i__content fs-sm">
+                <input id="max-days" class="i-input__secondary secondary-placeholder fs-sm" name="max-days" placeholder="Max days">
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">Namespace filter</div>
+            <div class="i__description fs-xs">Add <a style="display: inline;" href="https://en.wikipedia.org/wiki/Help:MediaWiki_namespace" rel="noopener noreferrer" target="_blank">namespace</a> to filter edits in queue.</div>
+            <div class="i__content fs-sm">
+                <div id="btn-delete-ns" class="i-minus fs-sm" onclick="nsDeleteFunct()">-</div>
+                <input id="ns-input" class="i-input__secondary secondary-placeholder fs-sm" name="" placeholder="Enter">
+                <div id="btn-add-ns" class="i-plus fs-sm" onclick="nsAddFunct()">+</div>
+            </div>
+            <div class="i__extra">
+                <ul id="nsList" class="i-chip-list fs-sm"></ul>
+            </div>
+        </div>
+        <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
+            <div class="i__base">
+                <div class="i__title fs-md">Custom wikis</div>
+                <div class="i__description fs-xs">Add your home-wiki or wikis which are not in small wikis list.</div>
+                <div class="i__content fs-sm">
+                    <div id="btn-bl-p-delete" class="i-minus fs-sm" onclick="blpDeleteFunct()">-</div>
+                    <input id="bl-p" class="i-input__secondary secondary-placeholder fs-sm" name="bl-p" placeholder="Enter">
+                    <div id="btn-bl-p-add" class="i-plus fs-sm" onclick="blpAddFunct()">+</div>
+                </div>
+                <div class="i__extra">
+                    <ul id="blareap" class="i-chip-list fs-sm"></ul>
+                </div>
+            </div>
+        ';}?>
+
+
+        <div class="i__base">
+            <div class="i__title fs-md">Users whitelist</div>
+            <div class="i__description fs-xs">Add users to skip their edits from queue.</div>
+            <div class="i__content fs-sm">
+                <div id="btn-wl-u-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
+                <input id="wladdu" class="i-input__secondary secondary-placeholder fs-sm" name="wladdu" placeholder="Enter">
+                <div id="btn-wl-u-add" class="i-plus fs-sm" onclick="wluAddFunct()">+</div>
+            </div>
+            <div class="i__extra">
+                <ul id="wlareau" class="i-chip-list fs-sm"></ul>
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">Wikis whitelist</div>
+            <div class="i__description fs-xs">Add wikis to skip their edits from queue.</div>
+            <div class="i__content fs-sm">
+                <div id="btn-wl-p-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
+                <input id="wladdp" class="i-input__secondary secondary-placeholder fs-sm" name="wladdp" placeholder="Enter">
+                <div id="btn-wl-p-add" class="i-plus fs-sm" onclick="wlpAddFunct()">+</div>
+            </div>
+            <div class="i__extra">
+                <ul id="wlareap" class="i-chip-list fs-sm"></ul>
+            </div>
+        </div>
+
+
+    </template>
+
 </div>
 
-
+<script src="js/index-noncritical.js" defer></script>
+<script src="js/modules/dialog.js" defer></script>
+<script src="js/modules/presets.js" defer></script>
 <!-- Scripts -->
 <script>
+document.getElementById('loadingBar').style.width = "50%";
 var diffstart, diffend, newstart, newend, startstring, endstring, starterror, enderror, config;
-var wlistu = [];
-var wlistp = [];
 var global = [];
 var vandals = [];
 var suspects = [];
-var customlist = [];
 var sandboxlist = {};
 var offlineUsers = [];
 var defaultWarnList = [];
 var defaultDeleteList = [];
-var nsList = { 0: "Main", 1: "Talk", 2: "User", 3: "User talk", 4: "Project", 5: "Project talk", 6: "File", 7: "File talk", 10: "Template", 11: "Template talk", 12: "Help", 13: "Help talk", 14: "Category", 15: "Category talk", 100: "Portal", 101: "Portal talk", 108: "Book", 109: "Book talk", 118: "Draft", 119: "Draft talk", 446: "Education program", 447: "Education program talk", 710: "TimedText", 711: "TimedText talk", 828: "Module", 828: "Module talk"}
-var nsList2 = [];
+var nsList = { 0: "Main", 1: "Talk", 2: "User", 3: "User talk", 4: "Project", 5: "Project talk", 6: "File", 7: "File talk", 10: "Template", 11: "Template talk", 12: "Help", 13: "Help talk", 14: "Category", 15: "Category talk", 100: "Portal", 101: "Portal talk", 108: "Book", 109: "Book talk", 118: "Draft", 119: "Draft talk", 446: "Education program", 447: "Education program talk", 710: "TimedText", 711: "TimedText talk", 828: "Module", 828: "Module talk"};
 var countqueue = 0;
 var regdays = 5;
 var checkMode = 0;
 var countedits = 100;
 var sound = 0;
 var newSound;
+var terminateStream = 0;
 var messageSound;
 var privateMessageSound;
 var firstClick = false;
 var firstClickEdit = false;
+var preSettings = {};
+// presets value here is temp until we refill it from database.
+var presets = [{ title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", blprojects: ""}];
+var selectedPreset = 0;
+var themeIndex = undefined;
+const R_HSL = {
+    h: (Math.floor(Math.random() * 361)),
+    s: (Math.floor(Math.random() * 30) + 0),
+    l: (Math.floor(Math.random() * 12) + 0)
+};
+const THEME_FIX = { '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)', '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)', '--tc-accent': 'rgba(255, 255, 255, 1)', '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)', '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px', '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5', };
+const BC_LIGHT = { '--bc-secondary': '#ffffff', '--bc-secondary-low': '#f4f4f4', '--bc-secondary-hover': 'rgba(0, 0, 0, .1)', };
+const TCP_ON_DARK = { '--tc-primary': 'rgba(255, 255, 255, 1)', '--tc-primary-low': 'rgba(255, 255, 255, .8)', };
+const TCP_ON_LIGHT = { '--tc-primary': 'rgba(0, 0, 0, 1)', '--tc-primary-low': 'rgba(0, 0, 0, .7)', };
+const TCS_ON_LIGHT = { '--tc-secondary': 'rgba(0, 0, 0, 1)', '--tc-secondary-low': 'rgba(0, 0, 0, .7)', };
+const TCS_ON_DARK = { '--tc-secondary': 'rgba(255, 255, 255, 1)', '--tc-secondary-low': 'rgba(255, 255, 255, .8)', };
+const BCA_LIGHT = { '--bc-accent': '#0063E4', '--bc-accent-hover': '#0056C7', };
+const BCA_DARK = { '--bc-accent': '#0050b8', '--bc-accent-hover': '#003c8a', };
+const ICP_ON_DARK = { '--ic-primary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)', };
+const ICP_ON_LIGHT = { '--ic-primary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)', };
+const ICS_ON_LIGHT = { '--ic-secondary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)', };
+const ICS_ON_DARK = { '--ic-secondary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)', };
+const THEME = {
+    "Default": { '--bc-primary': '#191919', '--bc-primary-low': '#212121', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
+        ...BC_LIGHT, ...ICP_ON_DARK, ...ICS_ON_LIGHT, ...BCA_LIGHT, ...TCP_ON_DARK, ...TCS_ON_LIGHT, ...THEME_FIX },
+    "Light": { '--bc-primary': '#e8e8e8', '--bc-primary-low': '#f6f6f6', '--bc-primary-hover': 'rgba(0, 0, 0, .1)',
+        ...BC_LIGHT, ...ICP_ON_LIGHT, ...ICS_ON_LIGHT, ...BCA_LIGHT, ...TCP_ON_LIGHT, ...TCS_ON_LIGHT,...THEME_FIX },
+    "Dark": { '--bc-primary': '#0f1115', '--bc-primary-low': '#15171d', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-secondary': '#1c1e26', '--bc-secondary-low': '#21242c', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
+        ...ICP_ON_DARK, ...ICS_ON_DARK, ...BCA_DARK, ...TCP_ON_DARK, ...TCS_ON_DARK, ...THEME_FIX },
+    "AMOLED": { '--bc-primary': '#000000', '--bc-primary-low': '#050505', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-secondary': '#000000', '--bc-secondary-low': '#111111', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
+        ...ICP_ON_DARK, ...ICS_ON_DARK, ...BCA_DARK, ...TCP_ON_DARK, ...TCS_ON_DARK, ...THEME_FIX },
+    "Random": { '--bc-primary': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l}%)`, '--bc-primary-low': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l + 5}%)`, '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
+        '--bc-secondary': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l + 8}%)`, '--bc-secondary-low': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l + 10}%)`, '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
+        ...ICP_ON_DARK, ...ICS_ON_DARK, ...BCA_DARK, ...TCP_ON_DARK, ...TCS_ON_DARK, ...THEME_FIX },
+};
 
 document.getElementById("mainapp-body").onclick = function() {
     if (firstClick === false) {
@@ -1015,7 +879,6 @@ document.getElementById("mainapp-body").onclick = function() {
         newSound.load();
     }
 };
-$('#abox2').html(aboutText);
 
 var xhr = new XMLHttpRequest();
 
@@ -1049,6 +912,21 @@ addSandbox(sandboxlist, "wikidatawiki", "Property:P4047");
 addSandbox(sandboxlist, "wikidatawiki", "Property:P5188");
 addSandbox(sandboxlist, "wikidatawiki", "Property:P5189");
 
+function getPresets(setList) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', "php/presets.php?action=get_presets", false);
+    xhr.send();
+    presets = JSON.parse(xhr.responseText);
+    presets.forEach(function(el, index) {
+        if (el["title"] === setList["preset"])
+            selectedPreset = index;
+        if (el["namespaces"] === null) presets[index]["namespaces"] = "";
+        if (el["blprojects"] === null) presets[index]["blprojects"] = "";
+        if (el["wlprojects"] === null) presets[index]["wlprojects"] = "";
+        if (el["wlusers"] === null) presets[index]["wlusers"] = "";
+    });
+}
+
 
 xhr.open('GET', "php/settings.php?action=get&query=all", false);
 xhr.send();
@@ -1058,30 +936,8 @@ if (xhr.responseText == "Invalid request")
 var settingslist  = xhr.responseText;
 settingslist = JSON.parse(settingslist);
 
-<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
-if (settingslist['swmt'] !== null && (typeof settingslist['swmt'] !== 'undefined') && settingslist['swmt'] !== '')
-    if ((settingslist['swmt'] === '1' || settingslist['swmt'] === '2') && isGlobal === true)
-        toggleTButton(document.getElementById('small-wikis-btn'));
-    if (settingslist['swmt'] === '2' && isGlobalModeAccess === true) {
-        toggleTButton(document.getElementById('small-wikis-btn'));
-}
-
-if (settingslist['users'] !== null && (typeof settingslist['users'] !== 'undefined') && settingslist['users'] !== '') {
-    if ((settingslist['users'] === '1' || settingslist['users'] === '2') && isGlobal === true)
-        toggleTButton(document.getElementById('lt-300-btn'));
-    if (settingslist['users'] == '2' && isGlobalModeAccess === true)
-        toggleTButton(document.getElementById('lt-300-btn'));
-}
-"; } ?>
-
-if (settingslist['registered'] !== null && (typeof settingslist['registered'] !== "undefined") && settingslist['registered'] !== "") {
-    if (settingslist['registered'] === "1")
-        toggleTButton(document.getElementById('registered-btn'));
-}
-
-if (settingslist['new'] !== null && (typeof settingslist['new'] !== "undefined") && settingslist['new'] !== "") {
-   if (settingslist['new'] === "1")
-       toggleTButton(document.getElementById('new-pages-btn'));
+if (settingslist['theme'] !== null && typeof settingslist['theme'] !== "undefined" && settingslist['theme'] !== "" && ( settingslist['theme'] >= 0 && settingslist['theme'] < (Object.keys(THEME)).length) ) {
+    themeIndex = parseInt(settingslist['theme']);
 }
 
 if (settingslist['checkmode'] !== null && (typeof settingslist['checkmode'] !== "undefined") && settingslist['checkmode'] !== "") {
@@ -1089,16 +945,6 @@ if (settingslist['checkmode'] !== null && (typeof settingslist['checkmode'] !== 
         checkMode = Number(settingslist['checkmode']);
         document.getElementById("checkSelector").value = checkMode;
     }
-}
-
-if (settingslist['onlynew'] !== null && (typeof settingslist['onlynew'] !== "undefined") && settingslist['onlynew'] !== "") {
-    if (settingslist['onlynew'] === "1")
-        toggleTButton(document.getElementById('onlynew-pages-btn'));
-}
-
-if (settingslist['onlyanons'] !== null && (typeof settingslist['onlyanons'] !== "undefined") && settingslist['onlyanons'] !== "") {
-    if (settingslist['onlyanons'] === "1")
-        toggleTButton(document.getElementById('onlyanons-btn'));
 }
 
 if (settingslist['direction'] !== null && (typeof settingslist['direction'] !== "undefined") && settingslist['direction'] !== "") {
@@ -1111,7 +957,11 @@ if (settingslist['direction'] !== null && (typeof settingslist['direction'] !== 
 if (settingslist['rhand'] !== null && (typeof settingslist['rhand'] !== "undefined") && settingslist['rhand'] !== "") {
     if (settingslist['rhand'] === "1") {
         toggleTButton(document.getElementById("RH-mode-btn"));
-        RHModeBtn(document.getElementById('RH-mode-btn'), true);
+    }
+}
+if (settingslist['terminateStream'] !== null && (typeof settingslist['terminateStream'] !== "undefined") && settingslist['terminateStream'] !== "") {
+    if (settingslist['terminateStream'] === "1") {
+        toggleTButton(document.getElementById("terminate-stream-btn"));
     }
 }
 
@@ -1125,56 +975,9 @@ if (settingslist['sound'] !== null && (typeof settingslist['sound'] !== "undefin
     document.getElementById("soundSelector").value = sound;
 }
 
-if (settingslist['editcount'] !== null && (typeof settingslist['editcount'] !== "undefined") && settingslist['editcount'] !== "") {
-    countedits = settingslist['editcount'];
-    document.getElementById("max-edits").value = countedits;
-}
-
 if (settingslist['countqueue'] !== null && (typeof settingslist['countqueue'] !== "undefined") && settingslist['countqueue'] !== "" && settingslist['countqueue'] !== "0") {
     countqueue = settingslist['countqueue'];
     document.getElementById("max-queue").value = countqueue;
-}
-
-if (settingslist['regdays'] !== null && (typeof settingslist['regdays'] !== "undefined") && settingslist['regdays'] !== "") {
-    regdays = settingslist['regdays'];
-    document.getElementById("max-days").value = regdays;
-}
-
-if (settingslist['namespaces'] !== null && (typeof settingslist['namespaces'] !== "undefined") && settingslist['namespaces'] !== "") {
-    nsList2 = settingslist['namespaces'].split(',');
-    nsList2.forEach(function(val) {
-        if (typeof nsList[val] !== "undefined")
-            val = nsList[val];
-        else
-            val = "Other (" + val + ")";
-        var ul = document.getElementById("nsList");
-        var li = document.createElement('li');
-        li.appendChild(createChipCross('btn-delete-ns'));
-        li.appendChild(document.createTextNode(val));
-        ul.appendChild(li);
-    });
-}
-
-if (settingslist['wlprojects'] !== null && (typeof settingslist['wlprojects'] !== "undefined") && settingslist['wlprojects'] !== "") {
-    wlistp = settingslist['wlprojects'].split(',');
-    wlistp.forEach(function(val) {
-        var ul = document.getElementById("wlareap");
-        var li = document.createElement('li');
-        li.appendChild(createChipCross('btn-wl-p-delete'));
-        li.appendChild(document.createTextNode(val));
-        ul.appendChild(li);
-    });
-}
-
-if (settingslist['wlusers'] !== null && (typeof settingslist['wlusers'] !== "undefined") && settingslist['wlusers'] !== "") {
-    wlistu = settingslist['wlusers'].split(',');
-    wlistu.forEach(function(val) {
-        var ul = document.getElementById("wlareau");
-        var li = document.createElement('li');
-        li.appendChild(createChipCross('btn-wl-u-delete'));
-        li.appendChild(document.createTextNode(val));
-        ul.appendChild(li);
-    });
 }
 
 if (settingslist['defaultdelete'] !== null && (typeof settingslist['defaultdelete'] !== "undefined") && settingslist['defaultdelete'] !== "") {
@@ -1184,19 +987,6 @@ if (settingslist['defaultdelete'] !== null && (typeof settingslist['defaultdelet
 if (settingslist['defaultwarn'] !== null && (typeof settingslist['defaultwarn'] !== "undefined") && settingslist['defaultwarn'] !== "") {
     defaultWarnList = settingslist['defaultwarn'].split(',');
 }
-
-<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
-if (settingslist['blprojects'] !== null && (typeof settingslist['blprojects'] !== 'undefined') && settingslist['blprojects'] !== '') {
-    customlist = settingslist['blprojects'].split(',');
-    customlist.forEach(function(val) {
-        var ul = document.getElementById('blareap');
-        var li = document.createElement('li');
-        li.appendChild(createChipCross('btn-bl-p-delete'));
-        li.appendChild(document.createTextNode(val));
-        ul.appendChild(li);
-    });
-}
-"; } ?>
 
 var globalFileCheck = true;
 try {
@@ -1225,101 +1015,21 @@ xhr.open('POST', "php/getOfflineUsers.php", false);
 xhr.send();
 offlineUsers = JSON.parse(xhr.responseText);
 
-xhr.open('POST', "templates/diffStart.html", false);
-xhr.send();
-diffstart = xhr.responseText;
-
-xhr.open('POST', "templates/diffEnd.html", false);
-xhr.send();
-diffend = xhr.responseText;
-
-xhr.open('POST', "templates/newStart.html", false);
-xhr.send();
-newstart = xhr.responseText;
-
-xhr.open('POST', "templates/newEnd.html", false);
-xhr.send();
-newend = xhr.responseText;
-
-xhr.open('POST', "templates/newStringStart.html", false);
-xhr.send();
-startstring = xhr.responseText;
-
-xhr.open('POST', "templates/newStringEnd.html", false);
-xhr.send();
-endstring = xhr.responseText;
-
-xhr.open('POST', "templates/errorStart.html", false);
-xhr.send();
-starterror = xhr.responseText;
-
-xhr.open('POST', "templates/errorEnd.html", false);
-xhr.send();
-enderror = xhr.responseText;
-
-const THEME = {
-    "Default": {
-        '--bc-primary': '#191919', '--bc-primary-low': '#212121', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
-        '--bc-secondary': '#FFFFFF', '--bc-secondary-low': '#F4F4F4', '--bc-secondary-hover': 'rgba(0, 0, 0, .1)',
-        '--bc-accent': '#0063E4', '--bc-accent-hover': '#0056C7',
-        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
-        '--ic-primary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--ic-secondary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--tc-primary': 'rgba(255, 255, 255, 1)', '--tc-primary-low': 'rgba(255, 255, 255, .8)',
-        '--tc-secondary': 'rgba(0, 0, 0, 1)', '--tc-secondary-low': 'rgba(0, 0, 0, .7)',
-        '--tc-accent': 'rgba(255, 255, 255, 1)',
-        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
-        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
-        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
-    },
-    "Light": {
-        '--bc-primary': '#f6f6f6', '--bc-primary-low': '#efefef', '--bc-primary-hover': 'rgba(0, 0, 0, .1)',
-        '--bc-secondary': '#FFFFFF', '--bc-secondary-low': '#F4F4F4', '--bc-secondary-hover': 'rgba(0, 0, 0, .1)',
-        '--bc-accent': '#0063E4', '--bc-accent-hover': '#0056C7',
-        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
-        '--ic-primary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--ic-secondary': 'invert(0.30) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--tc-primary': 'rgba(0, 0, 0, 1)', '--tc-primary-low': 'rgba(0, 0, 0, .7)',
-        '--tc-secondary': 'rgba(0, 0, 0, 1)', '--tc-secondary-low': 'rgba(0, 0, 0, .7)',
-        '--tc-accent': 'rgba(255, 255, 255, 1)',
-        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
-        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
-        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
-    },
-    "Dark": {
-        '--bc-primary': '#0f1115', '--bc-primary-low': '#15171d', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
-        '--bc-secondary': '#1c1e26', '--bc-secondary-low': '#21242c', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
-        '--bc-accent': '#0050b8', '--bc-accent-hover': '#003c8a',
-        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
-        '--ic-primary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--ic-secondary': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--tc-primary': 'rgba(255, 255, 255, 1)', '--tc-primary-low': 'rgba(255, 255, 255, .8)',
-        '--tc-secondary': 'rgba(255, 255, 255, 1)', '--tc-secondary-low': 'rgba(255, 255, 255, .8)',
-        '--tc-accent': 'rgba(255, 255, 255, 1)',
-        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
-        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
-        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
-    },
-    "AMOLED": {
-        '--bc-primary': '#000000', '--bc-primary-low': '#050505', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
-        '--bc-secondary': '#000000', '--bc-secondary-low': '#111111', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
-        '--bc-accent': '#0050b8', '--bc-accent-hover': '#003c8a',
-        '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)',
-        '--ic-primary': 'invert(0.85) sepia(1) saturate(68) hue-rotate(175deg)',
-        '--ic-secondary': 'invert(0.85) sepia(1) saturate(68) hue-rotate(175deg)',
-        '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)',
-        '--tc-primary': 'rgba(198, 225, 255, 1)', '--tc-primary-low': 'rgba(198, 225, 255, .8)',
-        '--tc-secondary': 'rgba(198, 225, 255, 1)', '--tc-secondary-low': 'rgba(198, 225, 255, .8)',
-        '--tc-accent': 'rgba(255, 255, 255, 1)',
-        '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)',
-        '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px',
-        '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5',
-    }
+function loadDiffTemp(url, callback) {
+    $.ajax({ type: 'POST', url: url, dataType: 'text',
+        success: text => callback(text)
+    })
 }
+loadDiffTemp('templates/diffStart.html', (text) =>  diffstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
+loadDiffTemp('templates/diffEnd.html', text => diffend = text );
+loadDiffTemp('templates/newStart.html', text => newstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
+loadDiffTemp('templates/newEnd.html', text => newend = text );
+loadDiffTemp('templates/newStringStart.html', text => startstring = text );
+loadDiffTemp('templates/newStringEnd.html', text => endstring = text );
+loadDiffTemp('templates/errorStart.html', text => starterror = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
+loadDiffTemp('templates/errorEnd.html', text => enderror = text );
 
+/*----themes----*/
 function loadThemeList() {
     for(name in Object.keys(THEME)) {
         var option = document.createElement('option');
@@ -1349,30 +1059,39 @@ function setTheme(THEME) {
     });
     
     /*-----chrome address bar color-------*/
-    $('meta[name=theme-color]').attr('content', THEME['--bc-primary']);
+    var metas = document.getElementsByTagName('meta')
+    Object.keys(metas).forEach((key) => {
+        if (metas[key].name === 'theme-color') {
+            metas[key].content = THEME['--bc-primary'];
+        }
+    });
 
     /*-----Send theme to iframes-------*/
     let strTheme = getStrTheme(THEME);
 
-    // var welcomeIF = document.getElementById("page-welcome").contentWindow;
-    // welcomeIF.postMessage(THEME, "*");
+    var welcomeIF = document.getElementById("page-welcome").contentWindow;
+    welcomeIF.postMessage({ THEME, user: '<?php echo $userSelf; ?>' }, window.origin);
 
-    diffstart = setStrTheme(diffstart, strTheme);
-    newstart = setStrTheme(newstart, strTheme);
-    starterror = setStrTheme(starterror, strTheme);
+    if (diffstart !== undefined && newstart !== undefined && starterror !== undefined) {
+        diffstart = setStrTheme(diffstart, strTheme);
+        newstart = setStrTheme(newstart, strTheme);
+        starterror = setStrTheme(starterror, strTheme);
+    }
     if(document.getElementById("page").srcdoc != "") {
         document.getElementById("page").srcdoc = setStrTheme(document.getElementById("page").srcdoc, strTheme);
     }
 };
-function changeTheme(select) { setTheme(THEME[Object.keys(THEME)[select]]); };
+function changeTheme(select) {
+    if (select === undefined) select = 0;
+    setTheme(THEME[Object.keys(THEME)[select]]);
+    if (document.getElementById('cpLink') !==  null) document.getElementById('cpLink').href = "https://tools.wmflabs.org/swviewer/php/control.php?themeIndex=" + select;
+};
 
 /*------Document variables------*/
 const $descriptionContainer = document.getElementById('description-container');
 const $queueDrawer = document.getElementById('queueDrawer');
 const $floatingOverlay = document.getElementById('floatingOverlay');
 const $sidebar = document.getElementById('sidebar');
-
-const $btnDrawer = document.getElementById('btn-drawer');
 
 /*------Sidebar-----*/
 function openSidebar () {
@@ -1384,177 +1103,68 @@ function closeSidebar () {
     $floatingOverlay.classList.remove('floating-overlay__active');
 }
 
-$floatingOverlay.addEventListener('click', () => closeSidebar());
 
 /*------drawer-btn-------*/
 var mDrawer;
-$btnDrawer.addEventListener('click', () => {
-    resizeDrawer(mDrawer, false);
-})
-
+function toggleMDrawer() { resizeDrawer(mDrawer, false); }
 function resizeDrawer(state, start) {
     mDrawer = state;
-    if (start === true) {
-        switch(mDrawer) {
-            case 0:
-                mDrawer = 2;
-                break;
-            case 1:
-                mDrawer = 0;
-                break;
-            case 2:
-                mDrawer = 1;
-                break;
-        }
-    }
-    resizeIFrame(document.getElementById('page'));
     switch (mDrawer) {
-        case 0:
-            document.getElementById('next-diff').style.transform = "scale(0)";
-            document.documentElement.style.setProperty('--m-queue-drawer-width', '48px');
-            mDrawer = 1;
-            break;
         case 1:
-            document.documentElement.style.setProperty('--m-queue-drawer-width', '90px');
-            mDrawer = 2;
-            break;
-        case 2:
-            document.documentElement.style.setProperty('--m-queue-drawer-width', '0px');
-            mDrawer = 0;
-            document.getElementById('next-diff').style.transform = "scale(1)";
-            break;
+        case 2: document.getElementById('eqBody').classList.add('eq__body__active');
+            mDrawer = 0; break;
+        default: document.getElementById('eqBody').classList.remove('eq__body__active');
+            mDrawer = 1;
     }
-    if (start !== true)
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'mobile', mobile: mDrawer }, dataType: 'json'});
+    if (start !== true) $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'mobile', mobile: state }, dataType: 'json'});
 };
 function closeMoreControl () {
     document.getElementById('moreControl').classList.add('more-control__hidden');
     document.getElementById('moreControlOverlay').classList.remove('more-control__overlay__active');
+    document.getElementById('drawerFab').style.transform = 'scale(1)';
 }
-function togglMoreControl () {
+function toggleMoreControl () {
     var mc = document.getElementById('moreControl');
     var mcOverlay = document.getElementById('moreControlOverlay');
     if (mc.classList.contains('more-control__hidden')) {
         mc.classList.remove('more-control__hidden');
         mcOverlay.classList.add('more-control__overlay__active');
+        document.getElementById('drawerFab').style.transform = 'scale(0)';
     } else { closeMoreControl(); }
 }
 
 /*------ Diff viewer -----*/
 
-function resizeIFrame (iFrame) {
-    setTimeout(() => {
-        iFrame.style.height = 'calc(' + iFrame.contentWindow.document.body.scrollHeight + 'px + 3 * var(--side-padding) + var(--floatbar-height) + 56px)';
-        iFrame.parentElement.style.paddingTop = $descriptionContainer.offsetHeight + 'px';
-        $descriptionContainer.style.marginTop = '0px';
-    }, 0);
-}
+window.addEventListener('message', receiveMessage, false);
+function receiveMessage(e) {
+    if (e.origin !== 'https://tools.wmflabs.org') return;
 
-document.getElementById('page').onload = function () {
-    resizeIFrame(this);
-    this.parentElement.scrollTop = 0;
-}
-
-var prevScroll = 0;
-function hideDesc (el) {
-    if (el.scrollTop > prevScroll && el.scrollTop > $descriptionContainer.offsetHeight) {
+    if (e.data === undefined)
+        e.source.postMessage($descriptionContainer.offsetHeight, window.origin);
+    else if (e.data === true)
         $descriptionContainer.style.marginTop = (-1 * ($descriptionContainer.offsetHeight + 1)) + 'px';
-    } else {
+    else if (e.data === false)
         $descriptionContainer.style.marginTop = '0px';
-    }
-    prevScroll = el.scrollTop;
 }
+document.getElementById('page').onload = () => $descriptionContainer.style.marginTop = '0px';
 
-/*###################
-------PW and PO Module------
-#####################*/
-var lastOpenedPW = undefined;
-function toggleTab (oldTab, newTab) {
-    const close = (tab) => {
-        if (tab === undefined) document.getElementById('btn-home').classList.remove('tab__active');
-        else if (tab === 'talkForm') document.getElementById('btn-talk').classList.remove('tab__active');
-        else if (tab === 'logs') document.getElementById('btn-logs').classList.remove('tab__active');
-        else if (tab === 'settings') document.getElementById('btn-settings').classList.remove('tab__active');
-    }
-    const open = (tab) => {
-        if (tab === undefined) document.getElementById('btn-home').classList.add('tab__active');
-        else if (tab === 'talkForm') document.getElementById('btn-talk').classList.add('tab__active');
-        else if (tab === 'logs') document.getElementById('btn-logs').classList.add('tab__active');
-        else if (tab === 'settings') document.getElementById('btn-settings').classList.add('tab__active');
-    }
-    close(oldTab);
-    open(newTab);
-}
-function openPW (pw) {
-    if (pw !== lastOpenedPW) {
-        if (lastOpenedPW !== undefined) closePW(true);
-        toggleTab(lastOpenedPW, pw);
-        lastOpenedPW = pw;
-        document.getElementById(pw).style.display = 'grid';
-        closeSidebar();
+document.getElementById('loadingBar').style.width = "75%";
 
-        if (pw === 'talkForm') onTalkOpen();
-    }
-}
-function closePW (dontToggle) {
-    closeSettingsSend();
-    if (lastOpenedPW !== undefined) {
-        document.getElementById(lastOpenedPW).style.display = 'none';
-        if (!dontToggle) {
-            toggleTab(lastOpenedPW, undefined);
-            lastOpenedPW = undefined;
-            closeSidebar();
-        }
-    }
-}
-function clickHome() {
-    if (lastOpenedPW == undefined && firstClickEdit !== false)
-        homeBtn(true);
-}
-function homeBtn(mod) {
-    if (document.getElementById('page-welcome').style.display === "none" && mod !== false) {
-        document.getElementById('description-container').style.display = "none";
-        document.getElementById('moreControlOverlay').style.display = "none";
-        document.getElementById('controlsBase').style.display = "none";
-        document.getElementById('page-welcome').style.display = "block";
-        document.getElementById('page').parentElement.style.display = "none";
-    } else {
-        document.getElementById('description-container').style.display = "grid";
-        document.getElementById('moreControlOverlay').style.display = "unset";
-        document.getElementById('controlsBase').style.display = "block";
-        document.getElementById('page-welcome').style.display = "none";
-        document.getElementById('page').parentElement.style.display = "block";
-    }
-}
-function openPWDrawer (drawer, overlay) {
-    document.getElementById(drawer).classList.add('pw__drawer__active');
-    document.getElementById(overlay).classList.add('pw__overlay__active');
-}
-function closePWDrawer (drawer, overlay) {
-    document.getElementById(drawer).classList.remove('pw__drawer__active');
-    document.getElementById(overlay).classList.remove('pw__overlay__active');
-}
 
-var lastOpenedPO = undefined;
-function openPO (po) {
-    document.getElementById(po).classList.add('po__active');
-    document.getElementById('POOverlay').classList.add('po__overlay__active');
-    lastOpenedPO = po;
-}
-function closePO () {
-    if (lastOpenedPO !== undefined) {
-        document.getElementById(lastOpenedPO).classList.remove('po__active');
-        document.getElementById('POOverlay').classList.remove('po__overlay__active');
-    }
-}
+
+function addSandbox(sbList, wiki, page) {
+    if (sbList.hasOwnProperty(wiki))
+        sbList[wiki] = sbList[wiki] + ", " + page;
+};
 
 /*###################
 ------- Common -------
 #####################*/
 
 function scrollToBottom(id){
-   var element = document.getElementById(id);
-   element.scrollTop = element.scrollHeight;
+    if (document.getElementById(id) !== null) {
+        document.getElementById(id).scrollTop = document.getElementById(id).scrollHeight;
+    }
 };
 
 function toggleTButton (button) {
@@ -1564,818 +1174,33 @@ function toggleTButton (button) {
     button.classList.add('t-btn__active');
 }
 
-window.onresize = function() {
-    resizeIFrame(document.getElementById('page'));
-}
-
-
-/*######################
-------- Settings -------
-######################*/
-
-function createChipCross(minus) {
-    var chipCross = document.createElement('span');
-    chipCross.textContent = '×';
-    chipCross.addEventListener('click', function() {
-        document.getElementById(minus).onclick((this.nextSibling).textContent, true);
-    });
-    return chipCross;
-}
-document.getElementById("btn-wl-u-add").onclick = function() {
-    if (document.getElementById("wladdu").value !== "") {
-        if (document.getElementById("wladdu").value.indexOf(",") == -1) {
-            wlistu.push(document.getElementById("wladdu").value);
-            var ul = document.getElementById("wlareau");
-            var li = document.createElement('li');
-            li.appendChild(createChipCross('btn-wl-u-delete'));
-            li.appendChild(document.createTextNode(document.getElementById("wladdu").value));
-            ul.appendChild(li);
-	    document.getElementById("wladdu").value = "";
-            $.ajax({ url: 'php/settings.php', type: 'POST', crossDomain: true, data:{action: 'set', query: "whitelist", wlusers: wlistu.join(',')}, dataType: 'json'});
-        } else
-            alert("Parameter is incorrect");
-    }
-};
-
-<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
-document.getElementById("btn-bl-p-add").onclick = function() {
-    if (document.getElementById("bl-p").value !== "") {
-        if (document.getElementById("bl-p").value.indexOf(",") == -1) {
-            customlist.push(document.getElementById("bl-p").value);
-            var ulp = document.getElementById("blareap");
-            var lip = document.createElement("li");
-            lip.appendChild(createChipCross("btn-bl-p-delete"));
-            lip.appendChild(document.createTextNode(document.getElementById("bl-p").value));
-            ulp.appendChild(lip);
-	    document.getElementById("bl-p").value = "";
-            $.ajax({ url: "php/settings.php", type: "POST", crossDomain: true, data:{action: "set", query: "blacklist", blprojects: customlist.join(",")}, dataType: "json"});
-        } else
-            alert("Parameter is incorrect");
-    }
-};
-'; } ?>
-
-document.getElementById("btn-wl-p-add").onclick = function() {
-    if (document.getElementById("wladdp").value !== "") {
-        if (document.getElementById("wladdp").value.indexOf(",") == -1) {
-            wlistp.push(document.getElementById("wladdp").value);
-            var ul = document.getElementById("wlareap");
-            var li = document.createElement('li');
-            li.appendChild(createChipCross('btn-wl-p-delete'));
-            li.appendChild(document.createTextNode(document.getElementById("wladdp").value));
-            ul.appendChild(li);
-	    document.getElementById("wladdp").value = "";
-            $.ajax({ url: 'php/settings.php', type: 'POST', crossDomain: true, data:{action: 'set', query: "whitelist", wlprojects: wlistp.join(',')}, dataType: 'json'});
-        } else
-            alert("Parameter is incorrect");
-    }
-};
-
-document.getElementById("btn-wl-u-delete").onclick = function(value, crossClick) {
-    if (document.getElementById("wladdu").value !== "" || crossClick == true) {
-        if (crossClick == true) var chipVal = value;
-        else var chipVal = document.getElementById("wladdu").value;
-        var index = wlistu.indexOf(chipVal);
-        if (index !== -1)
-            wlistu.splice(index, 1);
-        $('ul#wlareau li:contains('+ chipVal +')').first().remove();
-	    document.getElementById("wladdu").value = "";
-        $.ajax({ url: 'php/settings.php', type: 'POST', crossDomain: true, data:{action: 'set', query: "whitelist", wlusers: wlistu.join(',')}, dataType: 'json'});
-    }
-};
-
-<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
-document.getElementById("btn-bl-p-delete").onclick = function(value, crossClick) {
-    if (document.getElementById("bl-p").value !== "" || crossClick == true) {
-        if (crossClick == true) var chipVal = value;
-        else var chipVal = document.getElementById("bl-p").value;
-        var index = customlist.indexOf(chipVal);
-        if (index !== -1)
-            customlist.splice(index, 1);
-        $("ul#blareap li:contains("+ chipVal +")").first().remove();
-        document.getElementById("bl-p").value = "";
-        $.ajax({ url: "php/settings.php", type: "POST", crossDomain: true, data:{action: "set", query: "blacklist", blprojects: customlist.join(",")}, dataType: "json"});
-    }
-};
-'; } ?>
-
-document.getElementById("btn-wl-p-delete").onclick = function(value, crossClick) {
-    if (document.getElementById("wladdp").value !== "" || crossClick == true) {
-        if (crossClick == true) var chipVal = value;
-        else var chipVal = document.getElementById("wladdp").value;
-        var index = wlistp.indexOf(chipVal);
-        if (index !== -1)
-            wlistp.splice(index, 1);	
-        $('ul#wlareap li:contains('+ chipVal +')').first().remove();
-        document.getElementById("wladdp").value = "";
-        $.ajax({ url: 'php/settings.php', type: 'POST', crossDomain: true, data:{action: 'set', query: "whitelist", wlprojects: wlistp.join(',')}, dataType: 'json'});
-    }
-};
-
-document.getElementById("btn-unlogin").onclick = function() {
-    document.getElementById('btn-unlogin').blur();
-    if (confirm("Do you confirm Logout?")) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', "php/oauth.php?action=unlogin", false);
-        xhr.send();
-        if ( xhr.responseText == "Unlogin is done")
-            window.open("https://tools.wmflabs.org/swviewer/", "_self");
-    }
-};
-
-function closeSettingsSend() {
-    var checkSendSettings = false;
-    if (document.getElementById("settings").style.display !== "none") {
-        if ((typeof document.getElementById('max-days').value !== "undefined") &&
-            document.getElementById('max-days').value !== null &&
-            document.getElementById('max-days').value !== "0" &&
-            document.getElementById('max-days').value.match(/^\d+$/)) {
-                if (Number(regdays) !== parseInt(document.getElementById('max-days').value)) {
-                    checkSendSettings = true;
-                    regdays = parseInt(document.getElementById('max-days').value);
-                }
-        }
-
-        if ((typeof document.getElementById('max-edits').value !== "undefined") &&
-            document.getElementById('max-edits').value !== null &&
-            document.getElementById('max-edits').value !== "0" &&
-            document.getElementById('max-edits').value.match(/^\d+$/)) {
-                if (Number(countedits) !== parseInt(document.getElementById('max-edits').value)) {
-                    checkSendSettings = true;
-                    countedits = parseInt(document.getElementById('max-edits').value);
-                }
-        }
-        if ( (typeof document.getElementById('max-queue').value == "undefined") ||
-            document.getElementById('max-queue').value == null ||
-            document.getElementById('max-queue').value == "") {
-                if (Number(countqueue) !== 0) {
-                    countqueue = 0;
-                    checkSendSettings = true;
-                }
-        }
-        if (document.getElementById('max-queue').value.match(/^\d+$/)) {
-            if (Number(countqueue) !== parseInt(document.getElementById('max-queue').value)) {
-                countqueue = parseInt(document.getElementById('max-queue').value);
-                checkSendSettings = true;
-                if (Number(countqueue) !== 0)
-                    angular.element(document.getElementById("angularapp")).scope().removeLast();
-            }
-        }
-
-        document.getElementById('max-days').value = regdays;
-        document.getElementById('max-edits').value = countedits;
-        if (Number(countqueue) == 0)
-            document.getElementById('max-queue').value = "";
-        else
-            document.getElementById('max-queue').value = countqueue;
-
-        if (checkSendSettings === true)
-            $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-                action: 'set',
-                query: 'numbers',
-                editscount: countedits,
-                regdays: regdays,
-                countqueue: countqueue 
-            }, dataType: 'json'});
-    }
-};
-
-document.getElementById('themeSelector').onchange = function() {
-    changeTheme(document.getElementById('themeSelector').selectedIndex);
-
-    $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-        action: 'set',
-        query: 'theme',
-        limit: Object.keys(THEME),
-        theme: document.getElementById("themeSelector").selectedIndex
-    }, dataType: 'json'});
-};
-
-function bottomUp (button) {
-        var sendDirection;
-        if (button.classList.contains('t-btn__active')) {
-            document.getElementById("queue").setAttribute("style", "display:flex; flex-direction:column-reverse");
-            sendDirection = 1;
-        }
-        else {
-            document.getElementById("queue").removeAttribute("style");
-            sendDirection = 0;
-        }
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'direction',
-            direction: sendDirection
-        }, dataType: 'json'});
-};
-
-$("#soundSelector").on("change", function() {
-    sound = Number($(this).val());
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'sound',
-            sound: sound
-        }, dataType: 'json'});
-});
-
-$("#checkSelector").on("change", function() {
-    checkMode = Number($(this).val());
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'checkmode',
-            checkmode: checkMode
-        }, dataType: 'json'});
-});
-
-function RHModeBtn (button, start) {
-    var rhmode;
-    var sidebarOptions = document.getElementsByClassName('sidebar__options')[0];
-    var tooltipSide = "";
-    if (button.classList.contains('t-btn__active')) {
-        document.getElementById('baseGrid').classList.add('base-grid__RH-mode');
-        rhmode = 1; tooltipSide = 'left';
-    } else {
-        document.getElementById('baseGrid').classList.remove('base-grid__RH-mode');
-        rhmode = 0; tooltipSide = 'right';
-    }
-    for (let i = 1; i < sidebarOptions.childNodes.length; i += 2) {
-        sidebarOptions.childNodes[i].setAttribute('i-tooltip', tooltipSide);
-    }
-    if (start === false)
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'rhand',
-            rhand: rhmode
-        }, dataType: 'json'});
-}
-
-function registeredBtn (button) {
-        var sqlreg = 0;
-        if (button.classList.contains('t-btn__active'))
-            sqlreg = 1;
-        else {
-            if (!document.getElementById('onlyanons-btn').classList.contains('t-btn__active'))
-                document.getElementById('onlyanons-btn').click();
-        }
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'registered',
-            registered: sqlreg
-        }, dataType: 'json'});
-};
-
-function newPagesBtn (button) {
-        var sqlnew = 0;
-        if (button.classList.contains('t-btn__active'))
-            sqlnew = 1;
-        else {
-            if (document.getElementById('onlynew-pages-btn').classList.contains('t-btn__active'))
-                document.getElementById('onlynew-pages-btn').click();
-        }
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'newbies',
-            sqlnew: sqlnew
-        }, dataType: 'json'});
-};
-
-function onlyNewPagesBtn(button) {
-        var onlynew = 0;
-        if (button.classList.contains('t-btn__active')) {
-            onlynew = 1;
-            if (!document.getElementById('new-pages-btn').classList.contains('t-btn__active'))
-                document.getElementById('new-pages-btn').click();
-        }
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'onlynew',
-            onlynew: onlynew
-        }, dataType: 'json'});
-
-};
-
-function onlyAnonsBtn(button) {
-        var onlyanons = 0;
-        if (button.classList.contains('t-btn__active'))
-            onlyanons = 1;
-        else {
-            if (!document.getElementById('registered-btn').classList.contains('t-btn__active'))
-                document.getElementById('registered-btn').click();
-        }
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'anons',
-            anons: onlyanons
-        }, dataType: 'json'});
-
-};
-
-<?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo "
-function smallWikisBtn (button) {
-        var sqlswmt = 0;
-        if (button.classList.contains('t-btn__active')) {
-            sqlswmt = 1;
-            if (isGlobalModeAccess === true)
-                sqlswmt = 2;
-        }
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'swmt',
-            swmt: sqlswmt
-        }, dataType: 'json'});
-};
-
-function lt300Btn (button) {
-        var sqlusers = 0;
-        if (button.classList.contains('t-btn__active')) {
-            sqlusers = 1;
-            if (isGlobalModeAccess === true)
-                sqlusers = 2;
-        }
-        $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: {
-            action: 'set',
-            query: 'users',
-            users: sqlusers
-        }, dataType: 'json'});
-};
-"; } ?>
-
-function playSound (ps, ignoreIsSound) {
-    audiopromise = ps.play();
-    if (audiopromise !== undefined)
-        audiopromise.then( function() { return null; }).catch( function() { return null; });
-};
-
-document.getElementById("btn-add-ns").onclick = function () {
-    if (document.getElementById("ns-input").value == null || document.getElementById("ns-input").value == "" || typeof document.getElementById("ns-input").value == "undefined")
-        return;
-    nsChange(document.getElementById("ns-input").value, "add");
-}
-
-document.getElementById("btn-delete-ns").onclick = function (value, crossClick) {
-    if ((document.getElementById("ns-input").value == null || document.getElementById("ns-input").value == "" || typeof document.getElementById("ns-input").value == "undefined") && crossClick !== true)
-        return;
-    if (crossClick == true)
-        var chipVal = value;
-    else
-        var chipVal = document.getElementById("ns-input").value;
-    nsChange(chipVal, "delete");
-}
-
-function nsChange(val, action) {
-    var checkChange = false;
-    if (isNaN(val)) {
-        var match = /^Other\s\((\d+)\)$/g.exec(val);
-        if (match && typeof match[1] !== "undefined") {
-            if (nsList2.indexOf(match[1]) !== -1) {
-                nsList2.splice(nsList2.indexOf(match[1]), 1);
-                checkChange = val;
-            }
-        }
-        else {
-           var checkNsVal = findKey(val.toLowerCase(), nsList);
-           if (checkNsVal !== false) {
-               if (action == "add")
-                   if (nsList2.indexOf(checkNsVal) == -1) {
-                       nsList2.push(checkNsVal);
-                       checkChange = val;
-                   }
-               if (action == "delete") {
-                   if (nsList2.indexOf(checkNsVal) !== -1) {
-                       nsList2.splice(nsList2.indexOf(checkNsVal), 1);
-                       checkChange = val;
-                   }
-               }
-            }
-        }
-    }
-    else {
-        if (action == "add")
-            if (nsList2.indexOf(val) == -1) {
-                nsList2.push(val);
-                if (typeof nsList[val] !== "undefined")
-                    checkChange = nsList[val];
-                else
-                    checkChange = "Other (" + val + ")";
-            }
-        if (action == "delete")
-            if (nsList2.indexOf(val) !== -1) {
-                nsList2.splice(nsList2.indexOf(val), 1);
-                if (typeof nsList[val] !== "undefined")
-                    checkChange = nsList[val];
-                else
-                    checkChange = "Other (" + val + ")";
-            }
-    }
-    
-    if (checkChange !== false) {
-        if (action == "add") {
-            var ul = document.getElementById("nsList");
-            var li = document.createElement('li');
-            li.appendChild(createChipCross('btn-delete-ns'));
-            li.appendChild(document.createTextNode(checkChange));
-            ul.appendChild(li);
-        }
-        else {
-            $('ul#nsList li:contains('+ checkChange +')').first().remove();
-        }
-            
-        $.ajax({ url: 'php/settings.php', type: 'POST', crossDomain: true, data:{action: 'set', query: "namespaces", ns: nsList2.join(',')}, dataType: 'json'});
-    }
-
-    document.getElementById("ns-input").value = "";
-}
-
-function findKey(val, arr) {
-    for (var key in arr) {
-        if (arr[key].toLowerCase() == val)
-            return key;
-    }
-    return false;
-}
-
-function addSandbox(sbList, wiki, page) {
-    if (sbList.hasOwnProperty(wiki))
-        sbList[wiki] = sbList[wiki] + ", " + page;
-};
-
-/*#########################
---------- talk -------
-#########################*/
-
-function onTalkOpen () {
-    scrollToBottom("talk-content");
-    if (document.getElementById('badge-talk').style.background !== "rgb(251, 47, 47)") {
-        document.getElementById('badge-talk').style.background = "none";
-        document.getElementById('badge-talk-ex1').style.background = "none";
-        document.getElementById('badge-talk').classList.add('badge-ic__primary');
-        document.getElementById('badge-talk-ex1').classList.add('badge-ic__primary');
-    }
-}
-
-var userColor = new Map();
-function getUserColor(user) {
-    if(!userColor.has(user)) userColor.set(user, `hsl(${Math.floor(Math.random() * 361)}, ${(Math.floor(Math.random() * 50) + 40)}%, 50%`);
-    return userColor.get(user);
-}
-
-function parseDate(date) {
-  const parsed = Date.parse(date);
-  if (!isNaN(parsed)) {
-    return parsed;
-  }
-
-  return Date.parse(date.replace(/-/g, '/').replace(/[a-z]+/gi, ' '));
-}
-var lastMsg = { user: undefined, time: {hours: undefined, minuts: undefined} };
-addToTalk = function (timestamp, nickname, text) {
-    var hours, minuts, seconds, now;
-    if (timestamp == null) {
-        now = new Date;
-
-        hours = now.getUTCHours().toString();
-        minuts = now.getUTCMinutes().toString();
-        seconds = now.getUTCSeconds().toString();
-    }
-    else {
-        now = new Date(parseDate(timestamp));
-
-        hours = now.getHours().toString();
-        minuts = now.getMinutes().toString();
-        seconds = now.getSeconds().toString();
-    }
-
-        if (hours.length == "1") hours = "0" + hours;
-        if (minuts.length == "1") minuts = "0" + minuts;
-        if (seconds.length == "1") seconds = "0" + seconds;
-
-        var textTime =hours + ':' + minuts;
-        var textUser = nickname;
-        var textMessage = text;
-
-        var blockCap = document.createElement('div');
-        blockCap.className = 'phrase-cap ng-non-bindable';
-        var blockTime = document.createElement('div');
-        blockTime.className = 'phrase-line1 fs-xs ng-non-bindable';
-        var blockUser = document.createElement('div');
-        blockUser.className = 'phrase-line2 fs-md ng-non-bindable';
-        blockUser.setAttribute('onclick', 'selectTalkUsers(this)');
-        var blockMessage = document.createElement('div');
-        blockMessage.className = 'phrase-line3 fs-sm ng-non-bindable';
-
-        blockCap.textContent = textUser.substring(0, 2);
-        blockTime.textContent = textTime;
-        blockUser.textContent = textUser;
-
-        /* Find and attach links in user message. */
-        var linkPattern = /\b(http|https):\/\/\S+/g;
-        if(linkPattern.test(textMessage)) {
-            var links = textMessage.match(linkPattern);
-            subMessStart= 0;
-            subMessEnd = textMessage.indexOf(links[0]);
-            for(let index in links) {
-                blockMessage.appendChild(document.createTextNode(textMessage.substring(subMessStart, subMessEnd)));
-                
-                var link = document.createElement('a');
-                link.href = links[index];
-                link.target = "_blank";
-                link.rel = "noopener noreferrer"
-                link.style.wordBreak = "break-all";
-                link.textContent = links[index];
-                blockMessage.appendChild(link);
-                
-                subMessStart = (subMessEnd + links[index].length);
-                subMessEnd = subMessStart + (textMessage.substring(subMessStart, textMessage.length)).search(linkPattern);
-            }
-            blockMessage.appendChild(document.createTextNode(textMessage.substring(subMessStart, textMessage.length)));
-        } else {
-            blockMessage.textContent = textMessage;
-        }
-
-        var blockPhrase = document.createElement('div');
-        blockPhrase.className = 'phrase-talk';
-
-        if (lastMsg.user === nickname && lastMsg.time.hours ===  hours && lastMsg.time.minuts === minuts && !document.getElementById('form-talk').lastChild.classList.contains('days-ago-talk')) {
-            blockCap.style.height = '0px';
-            blockPhrase.appendChild(blockCap);
-            blockPhrase.appendChild(blockMessage);
-            document.getElementById('form-talk').lastChild.style.paddingBottom = "0";
-            blockPhrase.style.padding = "0 0 8px";
-        } else {
-            const userColor = getUserColor(nickname);
-
-            blockCap.style.background = userColor;
-            blockUser.style.color = userColor;
-            
-            blockPhrase.appendChild(blockCap);
-            blockPhrase.appendChild(blockTime);
-            blockPhrase.appendChild(blockUser);
-            blockPhrase.appendChild(blockMessage);
-            lastMsg.user = nickname;
-            lastMsg.time.hours = hours;
-            lastMsg.time.minuts = minuts;
-        }
-        document.getElementById('form-talk').appendChild(blockPhrase);
-        scrollToBottom("talk-content");
-}
-
-addToTalkSection = function(datatext) {
-    var blockMessage = document.createElement('div');
-    blockMessage.className ="days-ago-talk fs-md";
-    blockMessage.textContent = datatext;
-
-    document.getElementById('form-talk').appendChild(blockMessage);
-    scrollToBottom("talk-content");
-}
-
-var daysAgoToday = false;
-function downloadHistoryTalk() {
-    // $("#form-talk").empty(); // It delete the empty message.
-    xhr.open('Post', "php/talkHistory.php", false);
-    var formData = new FormData();
-    formData.append("action", "get");
-    xhr.send(formData);
-    if (xhr.responseText == "Invalid request")
-        location.reload();
-    var talkHistory  = JSON.parse(xhr.responseText);
-    var options = {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timezone: 'UTC'};
-
-    historyCount = 0;
-    for(i=4; i !== -1; i--) {
-        var daysAgo = null;
-        if (talkHistory.hasOwnProperty(i)) {
-            if (talkHistory[i] !== null && talkHistory[i].length > 0) {
-                if (i==0) {
-                    daysAgo = "Today";
-                    daysAgoToday = true;
-                }
-                else {
-                    if (i==1)
-                        daysAgo = "Yesterday";
-                    else {
-                        var dateHistory = new Date(Date.now() - (i*1000*60*60*24));
-                        daysAgo = dateHistory.toLocaleString("en-US", options);
-                    }
-                }
-
-                historyCount++;
-                addToTalkSection(daysAgo);
-
-                talkHistory[i].forEach(function(el) {
-                    addToTalk(el['msgtime'], el['name'], el['text']);
-                });
-            }
-        }
-    }
-}
-
-
-var talkWidth = $('#talk-content').outerWidth();
-var talkHeight = $('#talk-content').outerHeight();
-$(window).resize(function() {
-  if (talkWidth != $('#talk-content').outerWidth() || talkHeight != $('#talk-content').outerHeight()) {
-    talkWidth = $('#talk-content').outerWidth();
-    talkHeight = $('#talk-content').outerHeight();
-    scrollToBottom("talk-content");
-  }
-});
-
-downloadHistoryTalk();
-
-/*#########################
---------- Logs -------
-#########################*/
-
-var logsSearchPhrase = "", action = "", logsLimit = 40, logsOffset = 0;
-
-function refreshLogs() {
-    document.getElementById('logsSearch-input').value = '';
-    document.getElementById('actionSelector').selectedIndex = 0;
-    action = "";
-    logsSearchPhrase = "";
-    logsOffset = 0;
-    getLogs();
-}
-
-document.getElementById('nextLogs').onclick = function() {
-    logsOffset += logsLimit;
-    getLogs();
-}
-document.getElementById('prevLogs').onclick = function() {
-    logsOffset -= logsLimit;
-    if(logsOffset < 0) logsOffset = 0;
-    getLogs();
-}
-document.getElementById('actionSelector').onchange = function() {
-    action = this.value;
-}
-function handleLogsUI() {
-    if(logsOffset == 0) {
-        document.getElementById('prevLogs').style.display = 'none';
-        document.getElementById('prevLogs').parentElement.style.justifyContent = 'flex-end';
-    } else {
-        document.getElementById('prevLogs').style.display = 'unset';
-        document.getElementById('prevLogs').parentElement.style.justifyContent = 'space-between';
-    }
-    if(document.getElementById('logsTable').childElementCount <= logsLimit) {
-        document.getElementById('nextLogs').style.display = "none";
-        var noMore = document.createElement('div');
-        noMore.style.padding = "8px 0";
-        noMore.style.textAlign = "center";
-        noMore.style.color = "var(--tc-secondary-low)";
-        noMore.textContent = "No more Logs";
-        noMore.id = 'noMoreLogs';
-        document.getElementById('logsBox').append(noMore);
-    } else {
-        document.getElementById('nextLogs').style.display = "unset";
-    }
-}
-const actionColors = {
-    'rollback': '#c8b40e',
-    'undo': '#db24b0',
-    'delete': '#672dd2',
-    'edit': '#2dd280',
-    'warn': '#d92c26',
-    'report': '#e3791c',
-    'protect': '#1cb3e3'
-}
-function displayLogs (logs) {
-    const logsCols = ['lt__sno', 'lt__user', 'lt__action', 'lt__wiki', 'lt__title', 'lt__date'];
-    const logsColsName = ['SNo', 'User', 'Action', 'Wiki', 'Title', 'Date'];
-    var sno = logsOffset;
-
-    var logsTable = document.createElement('div');
-    logsTable.id = 'logsTable';
-    logsTable.className = 'logs-table';
-    
-    var headerRow = document.createElement('div');
-    headerRow.className = 'lt-row fs-md';
-    for (let i = 0; i < logsCols.length; i++) {
-        var headerColumn = document.createElement('div');
-        headerColumn.className = logsCols[i];
-        headerColumn.textContent = logsColsName[i];
-        headerRow.append(headerColumn);
-    }
-    logsTable.append(headerRow);
-
-    logs.forEach((log) => {
-        sno++;
-        var columns = {};
-        var row = document.createElement('div');
-        row.className = 'lt-row fs-sm';
-        logsCols.forEach((col) => {
-            var column = document.createElement('div');
-            column.className = col;
-            columns[col] = column;
-        })
-        columns['lt__sno'].textContent = sno;
-        var link = document.createElement('a');
-        link.href = log['diff'].substring(0, (log['diff'].indexOf('.org/')) + 5) + "wiki/user:" + log['user'];
-        link.textContent = log['user']; link.target = '_blank'; link.rel = "noopener noreferrer";
-        columns['lt__user'].append(link);
-        columns['lt__action'].textContent = log['type'];
-        columns['lt__action'].style.color = actionColors[log['type']];
-        columns['lt__wiki'].textContent = log['wiki'];
-        var link = document.createElement('a');
-        link.href = log['diff']; link.textContent = log['title']; link.target = '_blank'; link.rel = "noopener noreferrer";
-        columns['lt__title'].append(link);
-        columns['lt__date'].textContent = log['date'];
-
-        for (column in columns) row.append(columns[column]);
-        
-        logsTable.append(row);
-    });
-
-    var logsBox = document.getElementById('logsBox');
-    if (document.getElementById('noMoreLogs')) document.getElementById('noMoreLogs').remove();
-    if (document.getElementById('logsTable')) document.getElementById('logsTable').remove();
-    logsBox.append(logsTable);
-    logsBox.parentElement.scrollTop = 0;
-    handleLogsUI();
-    logsBox.parentElement.classList.remove('disabled');
-}
-function getLogs() {
-    document.getElementById('logsBox').parentElement.classList.add('disabled');
-
-    fetch('./php/logs.php', {
-        method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            sp: logsSearchPhrase,
-            st: action,
-            li: logsLimit,
-            of: logsOffset
-        })
-    }).then((response) => response.json())
-    .then((logs) => displayLogs(logs))
-    .catch((error) => console.error(error));
-}
-
-function searchLogs() {
-    logsSearchPhrase = document.getElementById('logsSearch-input').value;
-    logsOffset = 0;
-    getLogs();
-}
-getLogs();
-
-/*#########################
---------- stat -------
-#########################*/
-
-function searchStat () {
-    document.getElementById('statContainer').classList.add('disabled');
-    var stats = ['rollback', 'delete', 'undo', 'edit', 'report', 'warn', 'protect'];
-    stats.forEach((action) => document.getElementById(action + 'Span').textContent = '0');
-    var stateSearchPhrase = document.getElementById('statInput').value;
-    fetch('./php/welcome-stats.php', {
-        method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ user: stateSearchPhrase })
-    }).then((response) => response.json())
-    .then((stats) => {
-        document.getElementById('rollbackSpan').textContent = stats['rollback'];
-        document.getElementById('editSpan').textContent = stats['edits'];
-        document.getElementById('warnSpan').textContent = stats['warn'];
-        document.getElementById('undoSpan').textContent = stats['undos'];
-        document.getElementById('protectSpan').textContent = stats['protect'];
-        document.getElementById('reportSpan').textContent = stats['report'];
-        document.getElementById('deleteSpan').textContent = stats['del'];
-        document.getElementById('statContainer').classList.remove('disabled');
-    }).catch((error) => console.error(error));
-}
-searchStat();
-
-function toggleMoreWN (button) {
-    if (document.getElementById('moreWN').style.height == '0px') {
-        document.getElementById('moreWN').style.height = 'unset';
-        button.textContent = 'Show less';
-    } else {
-        document.getElementById('moreWN').style.height = '0px';
-        button.textContent = 'Show more';
-    }
-}
-
 /*#########################
 --------- onLoad -------
 #########################*/
 
 window.onload = function() {
+    document.getElementById('loadingBar').style.width = '100%';
     loadThemeList();
-    if (settingslist['theme'] !== null && typeof settingslist['theme'] !== "undefined" && settingslist['theme'] !== "" && ( settingslist['theme'] >= 0 && settingslist['theme'] < (Object.keys(THEME)).length) ) {
-        document.getElementById('themeSelector').selectedIndex = settingslist['theme'];
-        changeTheme(parseInt(settingslist['theme']));
+    if (themeIndex) {
+        document.getElementById('themeSelector').selectedIndex = themeIndex;
+        changeTheme(themeIndex);
     } else changeTheme(0);
     document.getElementById('loading').style.display = "none";
     document.getElementById('app').style.display = "block";
+    
+    import('https://tools.wmflabs.org/swviewer/js/modules/logs.js')
+    .then((r) => { r.createLogsPW(document.getElementById('windowContent')); removeTabNotice('btn-talk'); })
+    .catch((e) => console.error(e));
+    import('https://tools.wmflabs.org/swviewer/js/modules/talk.js')
+    .then((r) => { r.createTalkPW(document.getElementById('windowContent')); removeTabNotice('btn-logs'); })
+    .catch((e) => console.error(e));
+    import('https://tools.wmflabs.org/swviewer/js/modules/about.js')
+    .then((r) => { r.createAboutPO(document.getElementById('angularapp')); removeTabNotice('btn-about'); })
+    .catch((e) => console.error(e));
 };
 
 </script>
-<script src="js/swv.js?v=6"></script>
+<script src="js/swv.js?v=4"></script>
 <script>uiDisableList();</script>
 </body>
 </html>

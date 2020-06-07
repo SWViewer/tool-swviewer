@@ -1,0 +1,36 @@
+.action-header,
+.action-header__sticky {
+    width: 100%;
+    height: var(--action-header-height);
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.action-header__sticky {
+    position: sticky;
+    top: 0;
+}
+.action-header > div,
+.action-header__sticky > div {
+    width: var(--action-header-height);
+    height: var(--action-header-height);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.action-header > span.action-header__title,
+.action-header__sticky > span.action-header__title {
+    flex: 1 1;
+
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+.action-header > span.action-header__title:first-child,
+.action-header__sticky > span.action-header__title:first-child {
+    padding-left: var(--side-padding);
+}

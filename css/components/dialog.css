@@ -1,0 +1,86 @@
+.dialog__background {
+    padding: var(--side-padding) 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 198;
+
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    overflow-y: auto;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 200ms ease-in-out;
+}
+.dialog__flex { 
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dialog__base {
+    margin: auto;
+    padding: 24px;
+    max-width: 450px;
+    width: 100%;
+
+    background-color: var(--bc-secondary);
+    border-radius: 8px;
+    box-shadow: var(--floatbar-shadow);
+    overflow: hidden;
+    cursor: auto;
+    opacity: 0;
+    transform: scale(.5);
+    transition: opacity 200ms ease-in-out,
+        transform 200ms ease-in-out;
+}
+.dialog__animation {
+    opacity: 1;
+    transform: scale(1);
+}
+.dialog__header {
+    padding: 0 56px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.dialog__header > .d-title {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dialog__header > .d-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+}
+.dialog__body {
+    padding: 24px 0;
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+}
+.dialog__emoji,
+.dialog__message {
+    margin: auto;
+    max-width: 400px;
+    text-align: center;
+}
+.dialog__emoji {
+    padding-bottom: 24px;
+    font-size: 56px;
+}
+.dialog__custom:not(:first-child) { padding-top: 16px; }
+.dialog__buttons {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.dialog__buttons > button {
+    margin: 0 0 0 16px;
+}

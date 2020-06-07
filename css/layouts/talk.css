@@ -1,0 +1,90 @@
+.talk-svg:only-child { display: flex !important; }
+.talk-svg {
+    margin-top: 200px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: .3;
+}
+.phrase-talk {
+    padding: 8px 0;
+	overflow: hidden;
+    white-space: nowrap;
+    
+    display: grid;
+    grid-template-columns: 0fr 0fr 1fr;
+    grid-template-rows: auto auto;
+    grid-gap: 0px var(--side-padding);
+    grid-template-areas: 
+        'phrase-cap phrase2 phrase1'
+        'phrase-cap phrase3 phrase3';
+}
+.phrase-talk > * {
+    white-space: normal;
+}
+.phrase-cap {
+    grid-area: phrase-cap;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    font-size: var(--fs-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.phrase-line1,
+.phrase-line2 {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+.phrase-line1 {
+    grid-area: phrase1;
+}
+.phrase-line2 {
+    grid-area: phrase2;
+    cursor: pointer;
+}
+.phrase-line3 {
+    grid-area: phrase3;
+}
+.phrase-line3 a {
+	text-decoration: underline;
+}
+.days-ago-talk {
+    margin: var(--side-padding) 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+.days-ago-talk::before,
+.days-ago-talk::after {
+    content: "";
+    height: 1px;
+    background-color: var(--bc-secondary-hover);
+    flex: 1;
+    margin-right: 8px
+}
+.days-ago-talk::after {
+    margin-left: 8px;
+}
+
+/*----------usernames---------*/
+.user-container {
+	display: flex;
+}
+.user-talk {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+	white-space: nowrap;
+	color: var(--tc-secondary);
+	cursor: pointer;
+	flex: 1;
+}
+.user-talk-CA {
+	color: var(--link-color);
+}

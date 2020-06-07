@@ -1,1 +1,0 @@
-00 */12 * * * jstart -once -N Updater -mem 1G php /data/project/swviewer/service

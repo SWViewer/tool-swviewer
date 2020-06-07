@@ -1,0 +1,177 @@
+/*------ popup-window | popup-overlay ------*/
+.pw__base,
+.po__base {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 101;
+
+    background-color: var(--bc-secondary);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: calc(100% - var(--pw-drawer-width)) var(--pw-drawer-width);
+    grid-template-rows: var(--pw-header-height) calc(100% - var(--pw-header-height));
+    grid-template-areas: 
+        'pw__header pw__header'
+        'pw__content pw__drawer';
+}
+.po__base {
+    display: none;
+    position: fixed;
+    max-width: 400px;
+    transition: transform 200ms ease-in-out;
+    transform: translateX(100%);
+    grid-template-columns: 100%;
+    grid-template-areas:
+        'po__header'
+        'po__content';
+}
+.po__active {
+    transform: translateX(0);
+    box-shadow: -8px 0 16px 0 rgba(0,0,0,.2);
+}
+
+.pw__header,
+.po__header {
+    grid-area: pw__header;
+    z-index: 99;
+    width: inherit;
+    padding: 0 var(--side-padding);
+    background-color: var(--bc-secondary);
+}
+.po__header {
+    grid-area: po__header;
+    padding-left: 0;
+    border-bottom: 1px solid var(--bc-secondary-hover);
+}
+.pw__esc,
+.po__esc {
+    margin-left: var(--side-padding);
+    border: 1.4px solid var(--tc-secondary-low);
+    border-radius: 24px;
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+.pw__content,
+.po__content {
+    grid-area: pw__content;
+
+    display: flex;
+    flex-direction: column;
+    position: relative
+}
+.po__content {
+    grid-area: po__content;
+}
+.pw__content-body,
+.po__content-body {
+    flex-basis: calc(100% - var(--side-padding) - var(--floatbar-height) / 2);
+    padding: var(--side-padding);
+    padding-bottom: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.po__content-body { overflow-y: auto; }
+.pw__content-body:only-child,
+.po__content-body:only-child { flex-basis: 100%; }
+.pw__content-body::after,
+.po__content-body::after {
+    content: "";
+    display: block;
+    height: calc(var(--side-padding) + var(--floatbar-height) / 2);
+}
+.pw__content > .pw__floatbar {
+    width: calc(100% - 2 * var(--side-padding));
+    height: var(--floatbar-height);
+    position: absolute;
+    left: var(--side-padding);
+    bottom: var(--side-padding);
+
+    background-color: var(--bc-secondary);
+    box-shadow: var(--floatbar-shadow);
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+}
+.pw__content > .pw__floatbar > div {
+    width: var(--floatbar-height);
+    height: var(--floatbar-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 8px;
+
+    position: relative;
+}
+
+.pw__content > .pw__floatbar > input,
+.pw__content > .pw__floatbar > form,
+.pw__content > .pw__floatbar > form > input {
+    flex: 1 1;
+
+    min-width: 0;
+    padding: 0 var(--side-padding);
+    height: var(--floatbar-height);
+    border: none;
+    display: flex;
+}
+.pw__content > .pw__floatbar > form { padding: 0; }
+.pw__drawer {
+    grid-area: pw__drawer;
+
+    overflow: hidden;
+    overflow-y: auto;
+}
+.pw__drawer  > .action-header__sticky {
+    background-color: var(--bc-secondary);
+}
+.pw__drawer__content {
+    padding: var(--side-padding);
+    padding-top: 0;
+}
+.pw__drawer__content > a {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+@media screen and (max-width: 750px) {
+    
+    .pw__base {
+        grid-template-areas: 
+            'pw__header pw__header'
+            'pw__content pw__content'
+    }
+    .pw__header,
+    .po__header {
+        box-shadow: var(--floatbar-shadow);
+        border-bottom: none;
+        padding: 0;
+    }
+    .pw__drawer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 101;
+        width: var(--pw-drawer-width);
+        height: 100%;
+        
+        background-color: var(--bc-secondary);
+        transition: transform 200ms ease-in-out,
+            box-shadow 200ms ease-in-out;
+        transform: translateX(100%);
+        box-shadow: none;
+    }
+    .pw__drawer__active {
+        transform: translateX(0);
+        box-shadow: -8px 0 16px 0 rgba(0,0,0,.2);
+    }
+
+}
