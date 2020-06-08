@@ -71,6 +71,8 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         
         
         <script type="text/javascript" src="./js/modules/bakeEl.min.js" defer></script>
+        <script type="text/javascript" src="./js/modules/pw.js" defer></script>
+        <script type="text/javascript" src="./js/modules/po.js" defer></script>
         <!-- Fonts, stylesheet-->
         <link rel="stylesheet" href="css/base/fonts.css">
         <link rel="stylesheet" href="css/base/variables.css">
@@ -146,7 +148,8 @@ if ($checkLoginSWV == false) {
 
         <script>
             var lastOpenedPO = undefined;
-            async function openPO (po = 'about') {
+            $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js');
+            function openPO (po = 'about') {
                 function openPOLocal () {
                     document.getElementById(po).style.display = 'grid';
                     setTimeout(() => {
@@ -157,11 +160,8 @@ if ($checkLoginSWV == false) {
                 }
 
                 if (document.getElementById(po) === null) {
-                    if (po === 'about') 
-                        await import('./js/modules/about.js')
-                        .then((r) => r.createAboutPO(document.getElementById('POOverlay').parentElement))
-                        .catch((e) => console.error(e));
-                        
+                    if (po === 'about') $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js');
+
                     if (document.getElementById(po) !== null) openPOLocal();
                 } else openPOLocal();
             }
@@ -1188,15 +1188,9 @@ window.onload = function() {
     document.getElementById('loading').style.display = "none";
     document.getElementById('app').style.display = "block";
     
-    import('https://tools.wmflabs.org/swviewer/js/modules/logs.js')
-    .then((r) => { r.createLogsPW(document.getElementById('windowContent')); removeTabNotice('btn-talk'); })
-    .catch((e) => console.error(e));
-    import('https://tools.wmflabs.org/swviewer/js/modules/talk.js')
-    .then((r) => { r.createTalkPW(document.getElementById('windowContent')); removeTabNotice('btn-logs'); })
-    .catch((e) => console.error(e));
-    import('https://tools.wmflabs.org/swviewer/js/modules/about.js')
-    .then((r) => { r.createAboutPO(document.getElementById('angularapp')); removeTabNotice('btn-about'); })
-    .catch((e) => console.error(e));
+    $.getScript('https://tools.wmflabs.org/swviewer/js/modules/talk.js', () => removeTabNotice('btn-talk'));
+    $.getScript('https://tools.wmflabs.org/swviewer/js/modules/logs.js', () => removeTabNotice('btn-logs'));
+    $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js', () => removeTabNotice('btn-about'));
 };
 
 </script>

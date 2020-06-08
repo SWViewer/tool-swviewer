@@ -1212,16 +1212,13 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 if (countConnectAttemp >= 1) {
                     $scope.user = [];
                     if (document.getElementById('talkForm') !== null) {
-                        (async function () {
-                            const talkModule = await import('./modules/talk.js');
-                            talkModule.downloadHistoryTalk();
+                            downloadHistoryTalk();
                             var newDiv = document.createElement('div');
                             newDiv.className = 'phrase-talk';
                             newDiv.style.color = 'var(--tc-positive)';
                             newDiv.textContent = "SYSTEM: connection restored";
                             document.getElementById('form-talk').appendChild(newDiv);
                             scrollToBottom("form-talk");
-                        })();
                     }
                     document.getElementById('badge-talk').style.background = "none";
                     document.getElementById('badge-talk').classList.add('badge-ic__primary');
@@ -1263,14 +1260,11 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             }
             if (msg.type === 'message') {
                 if (document.getElementById('talkForm') !== null) {
-                    (async function () {
-                        const talkModule = await import('./modules/talk.js');
-                        if (talkModule.daysAgoToday === false && talkModule.historyCount !== 0) {
-                            talkModule.addToTalkSection("Today", false);
-                            talkModule.daysAgoToday = true;
-                        }
-                        talkModule.addToTalk(null, msg.nickname, msg.text);
-                    })();
+                    if (daysAgoToday === false && historyCount !== 0) {
+                        addToTalkSection("Today", false);
+                        daysAgoToday = true;
+                    }
+                    addToTalk(null, msg.nickname, msg.text);
                 }
                 if (msg.nickname !== userSelf && !document.getElementById('btn-talk').classList.contains('tab__active')) {
                     var userSelfTmp1 = "@" + userSelf + " ";

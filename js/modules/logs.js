@@ -1,5 +1,3 @@
-import { createPW } from './pw.js';
-
 const initLogs = () => {
     const LOGS_SEARCH_INPUT = document.getElementById('logsSearch-input');
     const ACTION_SELECTOR = document.getElementById('actionSelector');
@@ -189,4 +187,4 @@ const createLogsPW = (p) => {
     }
 };
 
-export { createLogsPW }
+createLogsPW(document.getElementById('windowContent'));

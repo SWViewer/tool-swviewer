@@ -1,5 +1,3 @@
-import { createPO } from './po.js';
-
 const addAbout = (id) => {
     fetch('https://tools.wmflabs.org/swviewer/templates/about.html')
     .then(res => res.text())
@@ -24,4 +22,4 @@ const createAboutPO = p => {
     }
 };
 
-export { createAboutPO };
+createAboutPO(document.getElementById('angularapp') || document.body);

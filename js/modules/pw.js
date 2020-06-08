@@ -66,5 +66,3 @@ const createPW = (pw) => {
         })(pw) 
     });
 };
-
-export { createPW }

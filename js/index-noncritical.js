@@ -44,7 +44,7 @@ function toggleTab (oldTab, newTab) {
     close(oldTab);
     open(newTab);
 }
-async function openPW (pw) {
+function openPW (pw) {
     function openPWLocal() {
         if (pw !== lastOpenedPW) {
             if (lastOpenedPW !== undefined) closePW(true);
@@ -57,16 +57,8 @@ async function openPW (pw) {
         }
     }
     if(document.getElementById(pw) === null) {
-        const pwParent = document.getElementById('windowContent');
-        if (pw === "logs") 
-            await import('https://tools.wmflabs.org/swviewer/js/modules/logs.js')
-            .then((r) => { r.createLogsPW(pwParent); removeTabNotice('btn-logs');})
-            .catch((e) => console.error(e));
-
-        if (pw === "talkForm") 
-            await import('https://tools.wmflabs.org/swviewer/js/modules/talk.js')
-            .then((r) => { r.createTalkPW(pwParent); removeTabNotice('btn-talk');})
-            .catch((e) => console.error(e));
+        if (pw === "logs") $.getScript('https://tools.wmflabs.org/swviewer/js/modules/logs.js', () => removeTabNotice('btn-logs'));
+        if (pw === "talkForm") $.getScript('https://tools.wmflabs.org/swviewer/js/modules/talk.js', () => removeTabNotice('btn-talk'));
             
         if (document.getElementById(pw) !== null) openPWLocal();
     } else openPWLocal();
@@ -91,7 +83,7 @@ function closePWDrawer (drawer, overlay) {
 }
 
 var lastOpenedPO = undefined;
-async function openPO (po) {
+function openPO (po) {
     function openPOLocal () {
         document.getElementById(po).style.display = 'grid';
         setTimeout(() => {
@@ -103,10 +95,7 @@ async function openPO (po) {
 
     if (document.getElementById(po) === null) {
         const poParent = document.getElementById('angularapp');
-        if (po === "about") 
-            await import('https://tools.wmflabs.org/swviewer/js/modules/about.js')
-            .then((r) => { r.createAboutPO(poParent); removeTabNotice('btn-about'); })
-            .catch((e) => console.error(e));
+        if (po === "about") $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js', () => removeTabNotice('btn-about'));
         if (document.getElementById(po) !== null) openPOLocal();
     } else openPOLocal();
 }

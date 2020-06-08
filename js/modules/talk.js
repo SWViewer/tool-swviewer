@@ -1,5 +1,3 @@
-import { createPW } from './pw.js';
-
 var userColor = new Map();
 const getUserColor = (user) => {
     if(!userColor.has(user)) userColor.set(user, `hsl(${Math.floor(Math.random() * 361)}, ${(Math.floor(Math.random() * 50) + 40)}%, 50%`);
@@ -224,4 +222,4 @@ const createTalkPW = (p) => {
     }
 };
 
-export { createTalkPW, downloadHistoryTalk, addToTalk, addToTalkSection, daysAgoToday, historyCount }
+createTalkPW(document.getElementById('windowContent'));
