@@ -132,7 +132,7 @@ if ($checkLoginSWV == false) {
             <div class='login-card'>
                 <div>
                     <span class='fs-xl' style='font-weight: bold;'>Welcome!</span>
-                    <a id='abtn' class='i-btn__accent accent-hover' style='margin: 16px 0; color: var(--tc-accent) !important; padding: 0 24px; text-decoration: none !important;' href='https://tools.wmflabs.org/swviewer/php/oauth.php?action=auth'>OAuth Login</a>
+                    <a id='abtn' class='i-btn__accent accent-hover' style='margin: 16px 0; color: var(--tc-accent) !important; padding: 0 24px; text-decoration: none !important;' href='https://swviewer.toolforge.org/php/oauth.php?action=auth'>OAuth Login</a>
                     <span class='fs-xs'>To use this application <a rel='noopener noreferrer' target='_blank' href='https://en.wikipedia.org/wiki/Wikipedia:Rollback'>local</a> or <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/Global_rollback'>global</a> rollback is required.</span>
                     <span class='fs-xs' style='margin-top: 3px; width: 304.14px'>By clicking on the \"OAuth Login\" button, you agree to our <div style='display:inline; color: var(--link-color); text-decoration: none; cursor: pointer;' onclick='openPO();'>Cookie and Privacy policy</div>.</span>
                 </div>
@@ -148,7 +148,7 @@ if ($checkLoginSWV == false) {
 
         <script>
             var lastOpenedPO = undefined;
-            $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js');
+            $.getScript('https://swviewer.toolforge.org/js/modules/about.js');
             function openPO (po = 'about') {
                 function openPOLocal () {
                     document.getElementById(po).style.display = 'grid';
@@ -160,7 +160,7 @@ if ($checkLoginSWV == false) {
                 }
 
                 if (document.getElementById(po) === null) {
-                    if (po === 'about') $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js');
+                    if (po === 'about') $.getScript('https://swviewer.toolforge.org/js/modules/about.js');
 
                     if (document.getElementById(po) !== null) openPOLocal();
                 } else openPOLocal();
@@ -223,13 +223,12 @@ if (!sess.hasOwnProperty("user") || !sess.hasOwnProperty("isGlobal") || !sess.ha
     xhr.open("GET", "php/oauth.php?action=unlogin", false);
     xhr.send();
     if (xhr.responseText == "Unlogin is done")
-        window.open("https://tools.wmflabs.org/swviewer/", "_self");
+        window.open("https://swviewer.toolforge.org/", "_self");
 }
 const userSelf = sess["user"];
 const isGlobal = Boolean(sess["isGlobal"]);
 const isGlobalModeAccess = Boolean(sess["isGlobalModeAccess"]);
 const talktoken = sess["talktoken"]; // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
-console.log(talktoken);
 var local_wikis = [];
 if (sess["local_wikis"] !== "")
     local_wikis = sess["local_wikis"].split(',');
@@ -373,7 +372,7 @@ if (sess["local_wikis"] !== "")
                                 <div class="secondary-hover" ng-click="copyViewHistory()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
                             </div>
                             <div>
-                                <a class="secondary-hover fs-md" href='https://tools.wmflabs.org/guc/?src=hr&by=date&user={{user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
+                                <a class="secondary-hover fs-md" href='https://guc.toolforge.org/?src=hr&by=date&user={{user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
                                 <div class="secondary-hover" ng-click="copyGlobalContribs()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
                             </div>
                             <div id="CAUTH">
@@ -654,7 +653,7 @@ if (sess["local_wikis"] !== "")
                         <div class="i__title fs-md">Contact</div>
                         <div class="i__extra">
                             <ul class="i-chip-list fs-sm">
-                                <li><a class="fs-sm" href='http://tools.wmflabs.org/ircredirect/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC</a></li>
+                                <li><a class="fs-sm" href='http://ircredirect.toolforge.org/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC</a></li>
                                 <li><a class="fs-sm" href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord</a></li>
                             </ul>
                         </div>
@@ -665,7 +664,7 @@ if (sess["local_wikis"] !== "")
                                 <div class="i__title fs-md">Control SWV</div>
                                 <div class="i__extra">
                                     <ul class="i-chip-list fs-sm">
-                                        <li><a id="cpLink" class="fs-sm" href="https://tools.wmflabs.org/swviewer/php/control.php" rel="noopener noreferrer" target="_blank">Control panel</a></li>
+                                        <li><a id="cpLink" class="fs-sm" href="https://swviewer.toolforge.org/php/control.php" rel="noopener noreferrer" target="_blank">Control panel</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -988,6 +987,14 @@ if (settingslist['defaultwarn'] !== null && (typeof settingslist['defaultwarn'] 
     defaultWarnList = settingslist['defaultwarn'].split(',');
 }
 
+var activeSysopsCheck = false;
+var activeSysops = [];
+xhr.open('POST', "lists/activeSysops.txt", false);
+xhr.send();
+activeSysops = JSON.parse(xhr.responseText);
+if (activeSysops.length > 5)
+    activeSysopsCheck = true;
+
 var globalFileCheck = true;
 try {
     xhr.open('POST', "lists/globalUsers.txt", false);
@@ -1084,7 +1091,7 @@ function setTheme(THEME) {
 function changeTheme(select) {
     if (select === undefined) select = 0;
     setTheme(THEME[Object.keys(THEME)[select]]);
-    if (document.getElementById('cpLink') !==  null) document.getElementById('cpLink').href = "https://tools.wmflabs.org/swviewer/php/control.php?themeIndex=" + select;
+    if (document.getElementById('cpLink') !==  null) document.getElementById('cpLink').href = "https://swviewer.toolforge.org/php/control.php?themeIndex=" + select;
 };
 
 /*------Document variables------*/
@@ -1137,7 +1144,7 @@ function toggleMoreControl () {
 
 window.addEventListener('message', receiveMessage, false);
 function receiveMessage(e) {
-    if (e.origin !== 'https://tools.wmflabs.org') return;
+    if (e.origin !== 'https://swviewer.toolforge.org') return;
 
     if (e.data === undefined)
         e.source.postMessage($descriptionContainer.offsetHeight, window.origin);
@@ -1188,9 +1195,9 @@ window.onload = function() {
     document.getElementById('loading').style.display = "none";
     document.getElementById('app').style.display = "block";
     
-    $.getScript('https://tools.wmflabs.org/swviewer/js/modules/talk.js', () => removeTabNotice('btn-talk'));
-    $.getScript('https://tools.wmflabs.org/swviewer/js/modules/logs.js', () => removeTabNotice('btn-logs'));
-    $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js', () => removeTabNotice('btn-about'));
+    $.getScript('https://swviewer.toolforge.org/js/modules/talk.js', () => removeTabNotice('btn-talk'));
+    $.getScript('https://swviewer.toolforge.org/js/modules/logs.js', () => removeTabNotice('btn-logs'));
+    $.getScript('https://swviewer.toolforge.org/js/modules/about.js', () => removeTabNotice('btn-about'));
 };
 
 </script>

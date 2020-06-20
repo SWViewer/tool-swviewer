@@ -103,7 +103,7 @@ const initLogs = () => {
     const getLogs = () => {
         LOGS_BOX.parentElement.classList.add('disabled');
 
-        fetch('https://tools.wmflabs.org/swviewer/php/logs.php', {
+        fetch('https://swviewer.toolforge.org/php/logs.php', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',

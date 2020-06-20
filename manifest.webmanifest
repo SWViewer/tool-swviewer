@@ -3,27 +3,27 @@
 	"lang" : "English",
 	"name" : "SWViewer",
 	"short_name" : "SWViewer",
-	"scope" : "/swviewer/",
+	"scope" : "/",
 	"display" : "standalone",
-	"start_url" : "https://tools.wmflabs.org/swviewer/",
+	"start_url" : "https://swviewer.toolforge.org/",
 	"theme_color" : "#212121",
 	"description" : "App for viewing queue of edits on small wikis for SWMT",
 	"background_color" : "#ffffff",
 	"icons" : [
         {
-            "src": "https://tools.wmflabs.org/swviewer/img/favicons/android-chrome-512x512.png",
+            "src": "https://swviewer.toolforge.org/img/favicons/android-chrome-512x512.png",
             "sizes": "512x512"
         },
 		{
-			"src": "https://tools.wmflabs.org/swviewer/img/favicons/apple-touch-icon.png",
+			"src": "https://swviewer.toolforge.org/img/favicons/apple-touch-icon.png",
 			"sizes": "180x180"
 		},
 		{
-			"src": "https://tools.wmflabs.org/swviewer/img/favicons/favicon-32x32.png",
+			"src": "https://swviewer.toolforge.org/img/favicons/favicon-32x32.png",
 			"sizes": "32x32"
 		},
 		{
-			"src": "https://tools.wmflabs.org/swviewer/img/favicons/favicon-16x16.png",
+			"src": "https://swviewer.toolforge.org/img/favicons/favicon-16x16.png",
 			"sizes": "16x16"
 		}]
 }

@@ -20,7 +20,11 @@ $local_wikis = "";
 if (isset($_SESSION['projects']))
     if ($_SESSION['projects'] !== null)
         $local_wikis = $_SESSION['projects'];
+$userRole = "none";
+if (isset($_SESSION['userRole']))
+    if ($_SESSION['userRole'] !== null)
+        $userRole = $_SESSION['userRole'];
 
 session_write_close();
-echo json_encode(["user" => $user, "talktoken" => $talktoken, "isGlobal" => $isGlobal, "isGlobalModeAccess" => $isGlobalModeAccess, "local_wikis" => $local_wikis]);
+echo json_encode(["user" => $user, "talktoken" => $talktoken, "isGlobal" => $isGlobal, "userRole" => $userRole, "isGlobalModeAccess" => $isGlobalModeAccess, "local_wikis" => $local_wikis]);
 ?>

@@ -132,7 +132,7 @@
 			};
 
 			function getMessage(event) {
-				if (event.origin !== 'https://tools.wmflabs.org') return;
+				if (event.origin !== 'https://swviewer.toolforge.org') return;
 				setTheme(event.data.THEME);
 				if (!(document.getElementById('welcomeLabel').childNodes.length < 2)) return;
 				let userTag = document.createElement('span');

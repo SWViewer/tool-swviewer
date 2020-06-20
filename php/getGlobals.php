@@ -24,7 +24,7 @@ echo $output;
 
 function getUsers($groups)
 {
-    $options = array('https' => array('method' => "POST", "User-Agent: SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) PHP / getGlobals.php"));
+    $options = array('https' => array('method' => "POST", "User-Agent: SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) PHP / getGlobals.php"));
     $context = stream_context_create($options);
 
     if ($groups == "all")

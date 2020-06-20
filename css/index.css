@@ -199,7 +199,7 @@ html, body, .full-screen, #loading {
     margin-left: 4px;
     height: 18px;
     width: 18px;
-    background-image: url(https://tools.wmflabs.org/swviewer/img/down-filled.svg);
+    background-image: url(https://swviewer.toolforge.org/img/down-filled.svg);
     background-size: 12px 12px;
     background-position: center;
     background-repeat: no-repeat;

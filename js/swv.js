@@ -264,7 +264,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                         $.ajax({
                             url: 'php/doEdit.php', type: 'POST',
                             beforeSend: function (xhr) {
-                                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Warns');
+                                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
                             },
                             crossDomain: true, dataType: 'text',
                             data: {
@@ -284,7 +284,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                                         $.ajax({
                                             url: 'php/doEdit.php', type: 'POST',
                                             beforeSend: function (xhr) {
-                                                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Warns');
+                                                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
                                             },
                                             crossDomain: true, dataType: 'text',
                                             data: {
@@ -535,7 +535,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         $.ajax({
             url: 'php/doEdit.php', type: 'POST',
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / M.Report');
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
             },
             crossDomain: true, dataType: 'json',
             data: {
@@ -555,7 +555,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     $.ajax({
                         url: 'php/doEdit.php', type: 'POST',
                         beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / M.Report');
+                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
                         },
                         crossDomain: true, dataType: 'json',
                         data: {
@@ -616,7 +616,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         $.ajax({
             url: 'php/doEdit.php', type: 'POST',
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / M.Report');
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
             },
             crossDomain: true, dataType: 'json',
             data: {
@@ -635,7 +635,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     $.ajax({
                         url: 'php/doEdit.php', type: 'POST',
                         beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / M.Report');
+                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
                         },
                         crossDomain: true, dataType: 'json',
                         data: {
@@ -695,7 +695,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         $.ajax({
             url: 'php/doEdit.php', type: 'POST',
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Protect');
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Protect');
             },
             crossDomain: true, dataType: 'json',
             data: {
@@ -714,7 +714,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     $.ajax({
                         url: 'php/doEdit.php', type: 'POST',
                         beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Protect');
+                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Protect');
                         },
                         crossDomain: true, dataType: 'json',
                         data: {
@@ -899,7 +899,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                                                                                         url: url,
                                                                                         type: 'GET',
                                                                                         beforeSend: function (xhr) {
-                                                                                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Warns');
+                                                                                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
                                                                                         },
                                                                                         crossDomain: true,
                                                                                         dataType: 'jsonp',
@@ -962,7 +962,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                                                                                                                     url: 'php/doEdit.php',
                                                                                                                     type: 'POST',
                                                                                                                     beforeSend: function (xhr) {
-                                                                                                                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Warns');
+                                                                                                                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
                                                                                                                     },
                                                                                                                     crossDomain: true,
                                                                                                                     dataType: 'json',
@@ -1021,7 +1021,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                                                                                                                                                 url: 'php/doEdit.php',
                                                                                                                                                 type: 'POST',
                                                                                                                                                 beforeSend: function (xhr) {
-                                                                                                                                                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Report');
+                                                                                                                                                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Report');
                                                                                                                                                 },
                                                                                                                                                 crossDomain: true,
                                                                                                                                                 dataType: 'json',
@@ -1064,7 +1064,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                                                                                                                                                                         url: 'php/doEdit.php',
                                                                                                                                                                         type: 'POST',
                                                                                                                                                                         beforeSend: function (xhr) {
-                                                                                                                                                                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / Report');
+                                                                                                                                                                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Report');
                                                                                                                                                                         },
                                                                                                                                                                         crossDomain: true,
                                                                                                                                                                         dataType: 'json',
@@ -1170,7 +1170,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
     }
 
     function connectTalk() {
-        var sc = new WebSocket("wss://tools.wmflabs.org/iluvatarbot/:9030?name=" + userSelf + "&token=" + talktoken);
+        var sc = new WebSocket("wss://iluvatarbot.toolforge.org/:9030?name=" + userSelf + "&token=" + talktoken);
 
         sc.onclose = function () {
             setTimeout(function () {
@@ -1440,7 +1440,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     $.ajax({
                         url: url, type: 'GET',
                         beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
                         },
                         crossDomain: true, dataType: 'jsonp', success: function (datainfo) {
                             var groups = datainfo["query"]["users"][0]["groups"];
@@ -1455,7 +1455,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                                 $.ajax({
                                     url: url, type: 'GET',
                                     beforeSend: function (xhr) {
-                                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+                                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
                                     },
                                     crossDomain: true, dataType: 'jsonp', success: function (data) {
                                         if (typeof data["users"][stuff.user] !== "undefined")
@@ -1528,7 +1528,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             $.ajax({
                 url: url, type: 'GET',
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
                 },
                 crossDomain: true, dataType: 'jsonp', success: function (wikidatatitle) {
                     if (wikidatatitle.hasOwnProperty("entities"))
@@ -1652,7 +1652,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             url: url,
             type: 'GET',
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / isCurrent');
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / isCurrent');
             },
             crossDomain: true,
             dataType: 'jsonp',
@@ -1705,7 +1705,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     url: url,
                     type: 'GET',
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / isCurrent');
+                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / isCurrent');
                     },
                     crossDomain: true,
                     dataType: 'jsonp',
@@ -1724,7 +1724,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                                 url: url,
                                 type: 'GET',
                                 beforeSend: function (xhr) {
-                                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / isCurrent');
+                                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / isCurrent');
                                 },
                                 crossDomain: true,
                                 dataType: 'jsonp',
@@ -1806,7 +1806,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             url: url,
             type: 'GET',
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / reqEnd');
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / reqEnd');
             },
             crossDomain: true,
             dataType: 'jsonp',
@@ -1862,7 +1862,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         }
     };
     $scope.copyViewHistory = () => copyToClipboard(encodeURI(`${$scope.project_url}/index.php?title=${$scope.title}&action=history`));
-    $scope.copyGlobalContribs = () => copyToClipboard(encodeURI(`https://tools.wmflabs.org/guc/?src=hr&by=date&user=${$scope.user}`));
+    $scope.copyGlobalContribs = () => copyToClipboard(encodeURI(`https://guc.toolforge.org/?src=hr&by=date&user=${$scope.user}`));
     $scope.copyCentralAuth = () => copyToClipboard(encodeURI(`https://meta.wikimedia.org/wiki/Special:CentralAuth?target=${$scope.user}`));
 
     function changeRollbacksDescription(wiki) {
@@ -2149,7 +2149,7 @@ function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
         var url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=query&prop=revisions&titles=" + encodeURIComponent(tTITLE) + "&rvprop=ids|user&rvlimit=1&rvexcludeuser=" + encodeURIComponent(tUSER) + "&rvstartid=" + tDNEW + "&format=json&utf8=1";
         $.ajax({
             url: url, type: 'GET', beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / diff');
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / diff');
             }, crossDomain: true, dataType: 'jsonp', success: function (fdata) {
                 if (typeof fdata["query"] !== "undefined" && typeof fdata["query"]["pages"] !== "undefined") {
                     var pageFData = null;
@@ -2185,7 +2185,7 @@ function checkLast(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, 
         var url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=compare&fromrev=" + tDNEW + "&torelative=prev&prop=user&utf8=1&format=json";
         $.ajax({
             url: url, type: 'GET', beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / checkLast');
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / checkLast');
             }, crossDomain: true, dataType: 'jsonp', success: function (fdata) {
                 if (typeof fdata["compare"] !== "undefined" && typeof fdata["compare"]["fromuser"] !== "undefined") {
                     if (fdata["compare"]["fromuser"] === tUSER) {
@@ -2212,7 +2212,7 @@ function endShowDiff(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI
         url: url,
         type: 'GET',
         beforeSend: function (xhr) {
-            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://tools.wmflabs.org/swviewer; swviewer@tools.wmflabs.org) Ajax / diff');
+            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / diff');
         },
         crossDomain: true,
         dataType: 'jsonp',

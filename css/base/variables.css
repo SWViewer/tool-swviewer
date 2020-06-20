@@ -18,6 +18,8 @@
     --ic-secondary: invert(0.30) sepia(1) saturate(0) hue-rotate(200deg);
     --ic-accent: invert(0.85) sepia(1) saturate(0) hue-rotate(200deg);
 
+    --bc-mid: #7d7d7d2e;
+
     /*-------text-color-----------*/
     --tc-primary: rgba(255, 255, 255, 1);
     --tc-primary-low: rgba(255, 255, 255, .8);

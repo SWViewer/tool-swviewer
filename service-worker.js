@@ -1,11 +1,19 @@
 const FILES_TO_CACHE = [
     'offline.html',
-    'index.php',
-    'css/variables.css',
-    'css/base.css',
-    'css/modules.css',
-    'css/swv-raw.css',
-    'js/swv.js'
+    'css/base/variables.css',
+    'css/base/fonts.css',
+    'css/base/base.css',
+    'css/components/comp.css',
+    'css/components/dialog.css',
+    'css/components/header.css',
+    'css/components/pw-po.css',
+    'css/layouts/logs.css',
+    'css/layouts/talk.css',
+    'css/index.css',
+    'js/swv.js',
+    'js/index-noncritical.js',
+    'js/modules/bakeEl.min.js',
+    'js/frame/frameKeys.js'
 ];
 
 const CACHE_NAME = 'SWV-cache';

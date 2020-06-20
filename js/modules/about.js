@@ -1,5 +1,5 @@
 const addAbout = (id) => {
-    fetch('https://tools.wmflabs.org/swviewer/templates/about.html')
+    fetch('https://swviewer.toolforge.org/templates/about.html')
     .then(res => res.text())
     .then(text => {
         let parser = new DOMParser();

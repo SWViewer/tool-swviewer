@@ -57,8 +57,8 @@ function openPW (pw) {
         }
     }
     if(document.getElementById(pw) === null) {
-        if (pw === "logs") $.getScript('https://tools.wmflabs.org/swviewer/js/modules/logs.js', () => removeTabNotice('btn-logs'));
-        if (pw === "talkForm") $.getScript('https://tools.wmflabs.org/swviewer/js/modules/talk.js', () => removeTabNotice('btn-talk'));
+        if (pw === "logs") $.getScript('https://swviewer.toolforge.org/js/modules/logs.js', () => removeTabNotice('btn-logs'));
+        if (pw === "talkForm") $.getScript('https://swviewer.toolforge.org/js/modules/talk.js', () => removeTabNotice('btn-talk'));
             
         if (document.getElementById(pw) !== null) openPWLocal();
     } else openPWLocal();
@@ -95,7 +95,7 @@ function openPO (po) {
 
     if (document.getElementById(po) === null) {
         const poParent = document.getElementById('angularapp');
-        if (po === "about") $.getScript('https://tools.wmflabs.org/swviewer/js/modules/about.js', () => removeTabNotice('btn-about'));
+        if (po === "about") $.getScript('https://swviewer.toolforge.org/js/modules/about.js', () => removeTabNotice('btn-about'));
         if (document.getElementById(po) !== null) openPOLocal();
     } else openPOLocal();
 }
@@ -180,7 +180,7 @@ function closeSettingsSend() {
         else
             document.getElementById('max-queue').value = countqueue;
 
-        $.ajax({url: 'https://tools.wmflabs.org/swviewer/php/settings.php', type: 'POST', crossDomain: true, data: {
+        $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'numbers',
             countqueue: countqueue 
@@ -191,7 +191,7 @@ function closeSettingsSend() {
 document.getElementById('themeSelector').onchange = function() {
     changeTheme(document.getElementById('themeSelector').selectedIndex);
 
-    $.ajax({url: 'https://tools.wmflabs.org/swviewer/php/settings.php', type: 'POST', crossDomain: true, data: {
+    $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
         action: 'set',
         query: 'theme',
         limit: Object.keys(THEME),
@@ -209,7 +209,7 @@ function bottomUp (button) {
             document.getElementById("queue").removeAttribute("style");
             sendDirection = 0;
         }
-        $.ajax({url: 'https://tools.wmflabs.org/swviewer/php/settings.php', type: 'POST', crossDomain: true, data: {
+        $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'direction',
             direction: sendDirection
@@ -218,7 +218,7 @@ function bottomUp (button) {
 
 document.getElementById("soundSelector").onchange = function() {
     sound = Number(document.getElementById("soundSelector").value);
-    $.ajax({url: 'https://tools.wmflabs.org/swviewer/php/settings.php', type: 'POST', crossDomain: true, data: {
+    $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
         action: 'set',
         query: 'sound',
         sound: sound
@@ -227,7 +227,7 @@ document.getElementById("soundSelector").onchange = function() {
 
 document.getElementById("checkSelector").onchange = function() {
     checkMode = Number(document.getElementById("checkSelector").value);
-    $.ajax({url: 'https://tools.wmflabs.org/swviewer/php/settings.php', type: 'POST', crossDomain: true, data: {
+    $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
         action: 'set',
         query: 'checkmode',
         checkmode: checkMode
@@ -249,7 +249,7 @@ function RHModeBtn (button, start) {
         sidebarOptions.childNodes[i].setAttribute('i-tooltip', tooltipSide);
     }
     if (start === false)
-        $.ajax({url: 'https://tools.wmflabs.org/swviewer/php/settings.php', type: 'POST', crossDomain: true, data: {
+        $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'rhand',
             rhand: rhmode
@@ -262,7 +262,7 @@ function terminateStreamBtn (button, start) {
     else terminateStream = 0;
 
     if (start === false)
-        $.ajax({url: 'https://tools.wmflabs.org/swviewer/php/settings.php', type: 'POST', crossDomain: true, data: {
+        $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
             action: 'set',
             query: 'terminateStream',
             terminateStream: terminateStream
@@ -481,7 +481,7 @@ function logout() {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', "php/oauth.php?action=unlogin", false);
                 xhr.send();
-                if ( xhr.responseText == "Unlogin is done") window.open("https://tools.wmflabs.org/swviewer/", "_self");
+                if ( xhr.responseText == "Unlogin is done") window.open("https://swviewer.toolforge.org/", "_self");
                 else {
                     removeDialog("unloginProgressDialog");
                     createDialog({ parentId: "angularapp", id: "unloginFailedDialog",

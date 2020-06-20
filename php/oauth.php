@@ -28,7 +28,7 @@ if (isset($_GET["action"])) {
     if ($_GET["action"] == "unlogin") {
         $_SESSION = Array();
         session_write_close();
-        setcookie("SWViewer-auth", null, time() - 1, "/swviewer", "tools.wmflabs.org", TRUE, TRUE);
+        setcookie("SWViewer-auth", null, time() - 1, "/", "swviewer.toolforge.org", TRUE, TRUE);
         echo "Unlogin is done";
         exit();
     }
@@ -37,8 +37,8 @@ if (isset($_GET["action"])) {
 if (!isset($_SESSION['request_key']) || !isset($_SESSION['request_secret']) || !isset($_GET['oauth_verifier'])) {
     $_SESSION = Array();
     session_write_close();
-    setcookie("SWViewer-auth", null, time() - 1, "/swviewer", "tools.wmflabs.org", TRUE, TRUE);
-    header("Location: https://tools.wmflabs.org/swviewer/php/oauth.php?action=auth");
+    setcookie("SWViewer-auth", null, time() - 1, "/", "swviewer.toolforge.org", TRUE, TRUE);
+    header("Location: https://swviewer.toolforge.org/php/oauth.php?action=auth");
     exit();
 }
 $requestToken = new Token($_SESSION['request_key'], $_SESSION['request_secret']);
@@ -57,9 +57,15 @@ $_SESSION['userName'] = $ident->username;
 $globalInfo = json_decode($client->makeOAuthCall($accessToken, "$apiUrl?action=query&meta=globaluserinfo&guiprop=groups|merged|editcount&guiuser=" . urlencode($ident->username) . "&utf8=1&format=json"), True);
 $global = false;
 
+$userRole = "none";
 forEach ($globalInfo['query']['globaluserinfo']['groups'] as $globalGroup) {
-    if ($globalGroup == 'steward' || $globalGroup == 'global-sysop' || $globalGroup == 'global-rollbacker')
+    if ($globalGroup == 'steward' || $globalGroup == 'global-sysop' || $globalGroup == 'global-rollbacker') {
         $global = true;
+        if ($globalGroup == 'steward')
+            $userRole = "S";
+        if ($globalGroup == 'global-sysop')
+            $userRole = "GS";
+    }
 }
 if ($global == true || $ident->username == "Ajbura" || $ident->username == "Exoped")
     $_SESSION['mode'] = 'global';
@@ -105,7 +111,7 @@ else {
     } else {
         $_SESSION = Array();
         session_write_close();
-        header("Location: https://tools.wmflabs.org/swviewer?error=rights");
+        header("Location: https://swviewer.toolforge.org/?error=rights");
         exit();
     }
 }
@@ -147,10 +153,11 @@ if (isset($_SESSION['accessGlobal']))
     $accessGlobal = $_SESSION['accessGlobal'];
 if (isset($_SESSION['projects']))
     $projects = $_SESSION['projects'];
+$_SESSION['userRole'] = $userRole;
 
-$cookie_json = json_encode(["userName" => $ident->username, "tokenKey" => $accessToken->key, "tokenSecret" => $accessToken->secret, "talkToken" => $_SESSION['talkToken'], "mode" => $_SESSION['mode'], "accessGlobal" => $accessGlobal, "projects" => $projects]);
-setcookie("SWViewer-auth", $cookie_json, time() + 60 * 60 * 24 * 31, "/swviewer", "tools.wmflabs.org", TRUE, TRUE);
+$cookie_json = json_encode(["userName" => $ident->username, "tokenKey" => $accessToken->key, "tokenSecret" => $accessToken->secret, "talkToken" => $_SESSION['talkToken'], "mode" => $_SESSION['mode'], "accessGlobal" => $accessGlobal, "userRole" => $userRole, "projects" => $projects]);
+setcookie("SWViewer-auth", $cookie_json, time() + 60 * 60 * 24 * 31, "/", "swviewer.toolforge.org", TRUE, TRUE);
 session_write_close();
 
-header("Location: https://tools.wmflabs.org/swviewer/");
+header("Location: https://swviewer.toolforge.org");
 ?>

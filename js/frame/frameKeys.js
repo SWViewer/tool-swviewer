@@ -13,7 +13,7 @@ var isDescHidden = false;
 const hideDescView = (m) => window.parent.postMessage(m, window.origin);
 
 function setDHeight (e) {
-    if (e.origin !== 'https://tools.wmflabs.org') return;
+    if (e.origin !== 'https://swviewer.toolforge.org') return;
     dHeight = e.data;
     document.getElementById('diffTable').style.paddingTop = (dHeight + 'px');
     document.getElementById('diffTable').style.paddingBottom = (160 + 'px');
