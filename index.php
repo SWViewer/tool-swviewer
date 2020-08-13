@@ -73,6 +73,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <script type="text/javascript" src="./js/modules/bakeEl.min.js" defer></script>
         <script type="text/javascript" src="./js/modules/pw.js" defer></script>
         <script type="text/javascript" src="./js/modules/po.js" defer></script>
+
         <!-- Fonts, stylesheet-->
         <link rel="stylesheet" href="css/base/fonts.css">
         <link rel="stylesheet" href="css/base/variables.css">
@@ -80,6 +81,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <link rel="stylesheet" href="css/components/comp.css">
         <link rel="stylesheet" href="css/components/header.css">
         <link rel="stylesheet" href="css/components/dialog.css">
+        <link rel="stylesheet" href="css/components/notification.css">
         <link rel="stylesheet" href="css/index.css?v=1.2">
 
         <link rel="stylesheet" href="css/components/pw-po.css">
@@ -101,7 +103,7 @@ exit();
 session_name( 'SWViewer' );
 session_start();
 $checkLoginSWV = true;
-if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName']) || !isset($_SESSION['mode']) || $_SESSION['mode'] == "" || !isset($_SESSION['talkToken']) || $_SESSION['talkToken'] == "") {
+if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName']) || !isset($_SESSION['userRole']) || !isset($_SESSION['mode']) || $_SESSION['mode'] == "" || !isset($_SESSION['talkToken']) || $_SESSION['talkToken'] == "") {
     $checkLoginSWV = false;
 
     if (isset($_COOKIE["SWViewer-auth"])) {
@@ -112,6 +114,7 @@ if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset(
             $_SESSION['tokenKey'] = $obj->tokenKey;
             $_SESSION['tokenSecret'] = $obj->tokenSecret;
             $_SESSION['talkToken'] = $obj->talkToken;
+            $_SESSION['userRole'] = $obj->userRole;
             $_SESSION['mode'] = $obj->mode;
             $_SESSION['accessGlobal'] = $obj->accessGlobal;
             $_SESSION['projects'] = $obj->projects;
@@ -210,6 +213,7 @@ else
     if (isset($_SESSION['accessGlobal']))
         if ($_SESSION['accessGlobal'] === "true")
             $isGlobalModeAccess = true;
+$userRole = $_SESSION['userRole'];
 session_write_close();
 ?>
 
@@ -226,6 +230,7 @@ if (!sess.hasOwnProperty("user") || !sess.hasOwnProperty("isGlobal") || !sess.ha
         window.open("https://swviewer.toolforge.org/", "_self");
 }
 const userSelf = sess["user"];
+const userRole = sess["userRole"];
 const isGlobal = Boolean(sess["isGlobal"]);
 const isGlobalModeAccess = Boolean(sess["isGlobalModeAccess"]);
 const talktoken = sess["talktoken"]; // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
@@ -257,10 +262,11 @@ if (sess["local_wikis"] !== "")
                         <div class="tab-indicator"></div>
                         <img class="touch-ic primary-icon" src="./img/swviewer-filled.svg" alt="SWViewer image">
                     </div>
-                    <div id="btn-talk" class="primary-hover" onclick="openPW('talkForm')" aria-label="Talk [t]" i-tooltip="right">
+                    <div id="btn-talk" class="primary-hover disabled" onclick="openPW('talkForm')" aria-label="Talk [t]" i-tooltip="right">
                         <div class="tab-indicator"></div>
+                        <span id="badge-talk" class="tab-notice-indicator" style="background-color: var(--tc-primary);">{{users.length}}</span>
                         <span class="loading-tab tab-notice-indicator">!</span>
-                        <span class="badge-ic badge-ic__primary" style="background: none; color: var(--bc-primary);" id="badge-talk">{{users.length}}</span>
+                        <img class="touch-ic primary-icon" src="./img/message-filled.svg" alt="Message image">
                     </div>
                     <div id="btn-logs" class="primary-hover" onclick="openPW('logs')" aria-label="Logs [l]" i-tooltip="right">
                         <div class="tab-indicator"></div>
@@ -274,6 +280,11 @@ if (sess["local_wikis"] !== "")
                         <span class="loading-tab tab-notice-indicator">!</span>
                         <img class="touch-ic primary-icon" src="./img/about-filled.svg" alt="About image">
                     </div>
+                    <div id="btn-notification" class="primary-hover" onclick="openPO('notificationPanel'); closeSidebar();" aria-label="Notifications [n]" i-tooltip="right">
+                        <span id="notify-indicator" class="tab-notice-indicator tab-notice-indicator__inactive" style="background-color: var(--bc-negative);">0</span>
+                        <span class="loading-tab tab-notice-indicator">!</span>
+                        <img class="touch-ic primary-icon" src="./img/bell-filled.svg" alt="Notification image">
+                    </div>
                     <div id="btn-settings" class="primary-hover" onclick="openPO('settingsOverlay'); closeSidebar();" aria-label="Settings and quick links [s]" i-tooltip="right">
                         <img class="touch-ic primary-icon" src="./img/settings-filled.svg" alt="Settings image">
                     </div>
@@ -286,10 +297,10 @@ if (sess["local_wikis"] !== "")
                         <div class="mobile-only primary-hover" onclick="openSidebar();" aria-label="Sidebar" i-tooltip="bottom-left">
                             <img class="touch-ic primary-icon" src="./img/drawer-filled.svg" alt="Navigation image">
                         </div>
-                        <span id="presetsArrow" class="presets-arrow action-header__title fs-lg" onClick="togglePresets()">
+                        <span id="presetsArrow" class="presets-arrow action-header__title fs-lg disabled" onClick="togglePresets()">
                             <span id="drawerPresetTitle" class="drawer-preset-title" >Default</span>
                         </span>
-                        <div id="editCurrentPreset" class="primary-hover" aria-label="Edit" i-tooltip="bottom-right">
+                        <div id="editCurrentPreset" class="primary-hover disabled" aria-label="Edit" i-tooltip="bottom-right">
                             <img class="touch-ic primary-icon" src="./img/pencil-filled.svg" alt="Edit image">
                         </div>
                         <div id="moreOptionBtnMobile" class="mobile-only primary-hover disabled" onclick="toggleMoreControl();" aria-label="More options" i-tooltip="bottom-right">
@@ -353,6 +364,12 @@ if (sess["local_wikis"] !== "")
                             <img class="touch-ic accent-icon" src="./img/drawer-filled.svg" alt="Drawer image">
                         </div>
                     </div>
+                    <div id="notificationFabBase" class="notification-fab-base notification-fab-base__inactive drawer-fab mobile-only">
+                        <div id="notificationFab" class="secondary-hover" onclick="openPO('notificationPanel');" aria-label="Notifications" i-tooltip="top-left">
+                            <span id="notify-fab-indicator" class="tab-notice-indicator" style="background-color: var(--bc-negative);">0</span>
+                            <img class="secondary-icon touch-ic" src="/img/bell-filled.svg" alt="Bell image">
+                        </div>
+                    </div>
                     <!-- Controls -->
                     <div id="moreControlOverlay" class="more-control__overlay"  onclick="closeMoreControl();"></div>
                     <div id="controlsBase" class="controls-base floatbar"  style="display: none;">
@@ -367,17 +384,23 @@ if (sess["local_wikis"] !== "")
                                 <span vr-line="secondary"></span>
                                 <a class="secondary-hover fs-sm" href='https://meta.wikimedia.org/wiki/Global_sysops/Requests' rel='noopener noreferrer' target='_blank'>GSR</a>
                             </div>
-                            <div>
-                                <a class="secondary-hover fs-md" href='{{project_url}}/index.php?title={{title}}&action=history' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>View history</a>
-                                <div class="secondary-hover" ng-click="copyViewHistory()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
-                            </div>
-                            <div>
-                                <a class="secondary-hover fs-md" href='https://guc.toolforge.org/?src=hr&by=date&user={{user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
-                                <div class="secondary-hover" ng-click="copyGlobalContribs()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
-                            </div>
                             <div id="CAUTH">
-                                <a class="secondary-hover fs-md" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Central auth</a>
-                                <div class="secondary-hover" ng-click="copyCentralAuth()"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
+                                <div class="secondary-hover" ng-click="copyCentralAuth()" aria-label="Copy link address" i-tooltip="top-left"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
+                                <a class="secondary-hover fs-md" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{selectedEdit.user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Central auth</a>
+                            </div>
+                            <div>
+                                <div class="secondary-hover" ng-click="copyGlobalContribs()" aria-label="Copy link address" i-tooltip="top-left"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
+                                <a class="secondary-hover fs-md" href='https://guc.toolforge.org/?src=hr&by=date&user={{selectedEdit.user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
+                            </div>
+                            <div>
+                                <div class="secondary-hover" ng-click="copyViewHistory()" aria-label="Copy link address" i-tooltip="top-left"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
+                                <a class="secondary-hover fs-md" href='{{selectedEdit.server_url + "" + selectedEdit.script_path}}/index.php?title={{selectedEdit.title}}&action=history' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>View history</a>
+                            </div>
+                            <div >
+                                <div id="editBtn" class="secondary-hover" ng-click="openEditSource();" onclick="openPW('editForm'); closeMoreControl();" aria-label="Edit source [e]" i-tooltip="top-left">
+                                    <img class="touch-ic secondary-icon" src="./img/edit-filled.svg" alt="Edit img">
+                                </div>
+                                <a class="secondary-hover fs-md" ng-click="openEditSource();" onclick="openPW('editForm'); closeMoreControl();"><span style="color: var(--tc-secondary);">Edit Source</span></a>
                             </div>
                         </div>
                         <!-- Control buttons -->
@@ -388,13 +411,13 @@ if (sess["local_wikis"] !== "")
                             <div id="browser" class="secondary-hover" ng-click="browser();" aria-label="Open in browser window [o]" i-tooltip="top-right">
                                 <img class="touch-ic secondary-icon" src="./img/open-newtab-filled.svg" alt="Open in new tab img">
                             </div>
-                            <div id="editBtn" class="secondary-hover" ng-click="checkEdit();" onclick="openPW('editForm')" aria-label="Edit source [e]" i-tooltip="top">
-                                <img class="touch-ic secondary-icon" src="./img/edit-filled.svg" alt="Edit img">
+                            <div id="tagBtn" class="secondary-hover" ng-click="openTagPanel();" onclick="openPW('tagPanel')" aria-label="Tag panel [d]" i-tooltip="top">
+                                <img class="touch-ic secondary-icon" src="./img/tag-filled.svg" alt="Edit img">
                             </div>
-                            <div id="customRevertBtn" class="secondary-hover" ng-click="customRevertSummary();" aria-label="Rollback with summary [y]" i-tooltip="top">
+                            <div id="customRevertBtn" class="secondary-hover" ng-click="openCustomRevertPanel();" aria-label="Rollback with summary [y]" i-tooltip="top">
                                 <img class="touch-ic secondary-icon" src="./img/custom-rollback-filled.svg" alt="Custom rollback img">
                             </div>
-                            <div id="revert" class="secondary-hover" ng-click="Revert();" aria-label="Quick Rollback [r]" i-tooltip="top">
+                            <div id="revert" class="secondary-hover" ng-click="doRevert();" aria-label="Quick Rollback [r]" i-tooltip="top">
                                 <img class="touch-ic secondary-icon" src="./img/rollback-filled.svg" alt="Rollback img">
                             </div>
                             <div id="back" class="secondary-hover" ng-click="Back();" aria-label="Previous diff [Left square bracket or p]" i-tooltip="top-left">
@@ -409,7 +432,7 @@ if (sess["local_wikis"] !== "")
                     </div>
 
                     <!-- Edit Source | popup-window -->
-                    <div id="editForm" class="pw__base" style="display: none;">
+                    <div id="editForm" class="pw__base" style='display: none; grid-template-areas: "pw__header pw__header" "pw__content pw__content";'>
                         <!--pw Header-->
                         <div class="pw__header action-header">
                             <div class="mobile-only secondary-hover" onclick="openSidebar();" aria-label="Sidebar" i-tooltip="bottom-left">
@@ -419,45 +442,21 @@ if (sess["local_wikis"] !== "")
                             <div class="mobile-only secondary-hover" onclick="closePW()" aria-label="Close [esc]" i-tooltip="bottom-right">
                                 <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
                             </div>
-                            <div class="mobile-only secondary-hover" onclick="openPWDrawer('editPWDrawer', 'editPWOverlay')" aria-label="Tags" i-tooltip="bottom-right">
-                                <img class="touch-ic secondary-icon" src="./img/tag-filled.svg">
-                            </div>
                             <span class="desktop-only pw__esc secondary-hover fs-md" onclick="closePW()">esc</span>
                         </div>
                         <!--pw Content-->
                         <div id="editFormBody" class="pw__content">
-                            <textarea id="textpage" class="pw__content-body secondary-scroll editForm__textarea fs-md" title="Source code of page"></textarea>
+                            <img id="editSourceLoadingAnim" class="secondary-icon touch-ic" src="/img/swviewer-droping-anim.svg" style="opacity: .4; width: 100px; height: 100px; margin: auto;">
+                            <textarea id="textpage" class="pw__content-body secondary-scroll editForm__textarea fs-md" style="padding-bottom: 40px;" title="Source code of page"></textarea>
 
                             <div class="pw__floatbar">
-                                <form ng-submit="doEdit()"><input id="summaryedit" class="secondary-placeholder fs-md" title="Summary" placeholder="Briefly describe your changes."></form>
+                                <form ng-submit="saveEdit()"><input id="summaryedit" class="secondary-placeholder fs-md" title="Summary" placeholder="Briefly describe your changes."></form>
                                 <span vr-line></span>
-                                <div id="editForm-save" class="secondary-hover" ng-click="doEdit()" aria-label="Publish changes" i-tooltip="top-right">
+                                <div id="editForm-save" class="secondary-hover" ng-click="saveEdit()" aria-label="Publish changes" i-tooltip="top-right">
                                     <img class="touch-ic secondary-icon" src="./img/save-filled.svg" alt="Save image">
                                 </div>
                             </div>
                         </div>
-                        <!--pw Drawer-->
-                        <div id="editPWDrawer" class="pw__drawer secondary-scroll">
-                            <div class="action-header__sticky">
-                                <span class="action-header__title fs-lg">Tags</span>
-                            </div>
-                            <div id="btn-group-delete" class="pw__drawer__content">
-                                <div class="i__base">
-                                    <div class="i__title fs-md">Warn user</div>
-                                    <div class="i__description fs-xs">Turning this on will left a notification on the user talk page after clicking templates (green only).</div>
-                                    <div class="i__content fs-sm">
-                                        <div id="warn-box-delete" class="t-btn__secondary"></div>
-                                    </div>
-                                </div>
-                                <div id="speedyReasonsBox">
-                                    <div ng-repeat="speedy in speedys track by $index" onclick="closePW();">
-                                        <a class="fs-sm" style="cursor: pointer;" ng-click="selectSpeedy(speedy)" ng-style="speedyColor(speedy)">{{speedy.name}}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--pw Overlay-->
-                        <div id="editPWOverlay" class="pw__overlay" onclick="closePWDrawer('editPWDrawer', 'editPWOverlay')"></div>
                     </div>
 
                     <!-- floating overlay --> 
@@ -479,9 +478,9 @@ if (sess["local_wikis"] !== "")
         </div>
         <div class="po__content">
             <div class="po__content-body secondary-scroll">
-                <form id="summariesContainer" style="display: flex" ng-submit="Revert();">
+                <form id="summariesContainer" style="display: flex" ng-submit="doRevert();">
                     <input class="i-input__secondary secondary-placeholder fs-md" style="margin-right: 8px;" title="Reason" name="credit" id="credit" placeholder="Provide a reason."/>
-                    <button type="button" class="i-btn__accent accent-hover fs-md" id="btn-cr-u-apply" ng-click="Revert();">Revert</button>
+                    <button type="button" class="i-btn__accent accent-hover fs-md" id="btn-cr-u-apply" ng-click="doRevert();">Revert</button>
                 </form>
                 <br>
                 <div class="i__base">
@@ -492,67 +491,46 @@ if (sess["local_wikis"] !== "")
                     </div>
                 </div>
                 <label class="fs-md">Common Summaries:</label>
-                <div class="panel-cr-reasons" ng-repeat="description in descriptions track by $index">
-                    <div class="fs-sm" ng-style="descriptionColor(description)" ng-click="selectDescription(description)">{{description.name}}</div>
+                <div class="panel-cr-reasons" ng-repeat="description in selectedEdit.config.rollback track by $index">
+                    <div class="fs-sm" ng-style="descriptionColor(description)" ng-click="selectRollbackDescription(description)">{{description.name}}</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Local requests | Popup-overlay -->
-    <div id="localRequests" class="po__base">
+    <!-- tagPanel | Popup-overlay -->
+    <div id="tagPanel" class="po__base">
         <div class="po__header action-header">
-            <span class="action-header__title fs-lg">Local Requests</span>
+            <span class="action-header__title fs-lg">Tag for deletion</span>
             <div class="mobile-only secondary-hover" onclick="closePO()" aria-label="Close [esc]" i-tooltip="bottom-right">
                 <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
             </div>
             <span class="desktop-only po__esc secondary-hover fs-md" onclick="closePO()">esc</span>
         </div>
         <div class="po__content">
-            <div class="po__content-body secondary-scroll" style="padding-top: 0;">
-                <div id="reportDiffsLocal">
-                    <label class="fs-md" style="padding-top: var(--side-padding);">Local blocks</label>
-                    <input id="reportHeaderLocal"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
-                    <textarea id="reportCommentLocal" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
-                    <div id="request-btn-block-send-l" class="i-btn__accent accent-hover fs-md" ng-click="sendReportLocal();">Send</div>
+            <div class="po__content-body secondary-scroll">
+                <div class="i__base">
+                    <div class="i__title fs-md">Warn user</div>
+                    <div class="i__description fs-xs">Turning this on will left a notification on the user talk page after clicking templates (green only).</div>
+                    <div class="i__content fs-sm">
+                        <div id="warn-box-delete" class="t-btn__secondary"></div>
+                    </div>
                 </div>
-                <div id="protectDiffsLocal">
-                    <label class="fs-md" style="padding-top: var(--side-padding);">Local protect</label>
-                    <input id="protectHeaderLocal"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
-                    <textarea id="protectCommentLocal" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
-                    <div id="request-btn-protect-send-l" class="i-btn__accent accent-hover fs-md" ng-click="sendRequestProtect();">Send</div>
+                <div id="speedyReasonsBox">
+                    <div class="panel-cr-reasons" ng-repeat="speedy in selectedEdit.config.speedy track by $index" onclick="closePO();">
+                        <div class="fs-sm" ng-style="speedyColor(speedy)" ng-click="selectSpeedy(speedy)">{{speedy.name}}</div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Global requests | Popup-overlay -->
-    <div id="globalRequests" class="po__base">
-        <div class="po__header action-header">
-            <span class="action-header__title fs-lg">Global Requests</span>
-            <div class="mobile-only secondary-hover" onclick="closePO()" aria-label="Close [esc]" i-tooltip="bottom-right">
-                <img class="touch-ic secondary-icon" src="./img/cross-filled.svg" alt="Cross image">
-            </div>
-            <span class="desktop-only po__esc secondary-hover fs-md" onclick="closePO()">esc</span>
-        </div>
-        <div class="po__content">
-            <div class="po__content-body secondary-scroll" style="padding-top: 0;">
-                <div id="reportDiffs">
-                    <label class="fs-md" style="padding-top: var(--side-padding);">Global locks</label>
-                    <input id="reportHeader"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
-                    <textarea id="reportComment" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
-                    <div id="request-btn-block-send-g" class="i-btn__accent accent-hover fs-md" ng-click="reqBlockG();">Send</div>
-                </div>
-                <div id="othersDiffsGlobal">
-                    <label class="fs-md" style="padding-top: var(--side-padding);">Global miscellaneous</label>
-                    <input id="othersHeaderGlobal"class="i-input__secondary secondary-placeholder fs-md" type="text"/>
-                    <textarea id="othersCommentGlobal" class="i-textarea__secondary secondary-scroll fs-sm"></textarea>
-                    <div id="request-btn-others-send-g" class="i-btn__accent accent-hover fs-md" ng-click="reqOthersG();">Send</div>
+                <br/>
+                <div id="btn-group-addToGSR" class="i__base">
+                    <?php if ($userRole == "none") echo '<div class="i__title fs-md">Add to GSR</div>'; ?>
+                    <div id="addToGSR-description" class="i__description fs-xs"></div>
+                    <div class="i__content fs-sm" <?php if ($userRole !== "none") echo 'style="display: none"'; ?> >
+                        <span id="addToGSR" class="i-checkbox" onclick="toggleICheckBox (this);"></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Settings | Popup-overlay -->
     <div id="settingsOverlay" class="po__base">
         <div class="po__header action-header">
@@ -714,22 +692,6 @@ if (sess["local_wikis"] !== "")
                 <div id="onlynew-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyNewPagesBtn(this);"></div>
             </div>
         </div>
-        <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
-        <div class="i__base">
-            <div class="i__title fs-md">Small Wikis</div>
-            <div class="i__description fs-xs">Enable edits from small wikis.</div>
-            <div class="i__content fs-sm">
-                <div id="small-wikis-btn" class="t-btn__secondary" onclick="toggleTButton(this); smallWikisBtn(this);"></div>
-            </div>
-        </div>
-        <div class="i__base">
-            <div class="i__title fs-md">Less then 300 users</div>
-            <div class="i__description fs-xs">Enable edits from wikis with less then 300 active users.</div>
-            <div class="i__content fs-sm">
-                <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
-            </div>
-        </div>
-        ';}?>
 
         <div class="i__base">
             <div class="i__title fs-md">Edits limit</div>
@@ -757,10 +719,25 @@ if (sess["local_wikis"] !== "")
                 <ul id="nsList" class="i-chip-list fs-sm"></ul>
             </div>
         </div>
+        
         <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
             <div class="i__base">
+                <div class="i__title fs-md">Small wikis</div>
+                <div class="i__description fs-xs">Enable edits from small wikis.</div>
+                <div class="i__content fs-sm">
+                    <div id="small-wikis-btn" class="t-btn__secondary" onclick="toggleTButton(this); smallWikisBtn(this);"></div>
+                </div>
+            </div>
+            <div class="i__base">
+                <div class="i__title fs-md">Additional wikis</div>
+                <div class="i__description fs-xs">Enable edits from <a style="display: inline;" href="https://meta.wikimedia.org/wiki/SWViewer/wikis" rel="noopener noreferrer" target="_blank">wikis</a> with less then 300 active users.</div>
+                <div class="i__content fs-sm">
+                    <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
+                </div>
+            </div>
+            <div class="i__base">
                 <div class="i__title fs-md">Custom wikis</div>
-                <div class="i__description fs-xs">Add your home-wiki or wikis which are not in small wikis list.</div>
+                <div class="i__description fs-xs">Add your home-wiki or wikis which are not in small wikis list. Example: enwiki</div>
                 <div class="i__content fs-sm">
                     <div id="btn-bl-p-delete" class="i-minus fs-sm" onclick="blpDeleteFunct()">-</div>
                     <input id="bl-p" class="i-input__secondary secondary-placeholder fs-sm" name="bl-p" placeholder="Enter">
@@ -772,22 +749,9 @@ if (sess["local_wikis"] !== "")
             </div>
         ';}?>
 
-
-        <div class="i__base">
-            <div class="i__title fs-md">Users whitelist</div>
-            <div class="i__description fs-xs">Add users to skip their edits from queue.</div>
-            <div class="i__content fs-sm">
-                <div id="btn-wl-u-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
-                <input id="wladdu" class="i-input__secondary secondary-placeholder fs-sm" name="wladdu" placeholder="Enter">
-                <div id="btn-wl-u-add" class="i-plus fs-sm" onclick="wluAddFunct()">+</div>
-            </div>
-            <div class="i__extra">
-                <ul id="wlareau" class="i-chip-list fs-sm"></ul>
-            </div>
-        </div>
         <div class="i__base">
             <div class="i__title fs-md">Wikis whitelist</div>
-            <div class="i__description fs-xs">Add wikis to skip their edits from queue.</div>
+            <div class="i__description fs-xs">Add wikis to skip their edits from queue. Example: enwiki</div>
             <div class="i__content fs-sm">
                 <div id="btn-wl-p-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
                 <input id="wladdp" class="i-input__secondary secondary-placeholder fs-sm" name="wladdp" placeholder="Enter">
@@ -795,6 +759,18 @@ if (sess["local_wikis"] !== "")
             </div>
             <div class="i__extra">
                 <ul id="wlareap" class="i-chip-list fs-sm"></ul>
+            </div>
+        </div>
+        <div class="i__base">
+            <div class="i__title fs-md">Users whitelist</div>
+            <div class="i__description fs-xs">Add users to skip their edits from queue. Example: JohnDoe</div>
+            <div class="i__content fs-sm">
+                <div id="btn-wl-u-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
+                <input id="wladdu" class="i-input__secondary secondary-placeholder fs-sm" name="wladdu" placeholder="Enter">
+                <div id="btn-wl-u-add" class="i-plus fs-sm" onclick="wluAddFunct()">+</div>
+            </div>
+            <div class="i__extra">
+                <ul id="wlareau" class="i-chip-list fs-sm"></ul>
             </div>
         </div>
 
@@ -806,11 +782,14 @@ if (sess["local_wikis"] !== "")
 <script src="js/index-noncritical.js" defer></script>
 <script src="js/modules/dialog.js" defer></script>
 <script src="js/modules/presets.js" defer></script>
+<script src="js/modules/swipe.js" defer></script>
+
 <!-- Scripts -->
 <script>
 document.getElementById('loadingBar').style.width = "50%";
-var diffstart, diffend, newstart, newend, startstring, endstring, starterror, enderror, config;
+var diffstart, diffend, newstart, newend, startstring, endstring, config;
 var global = [];
+var activeSysops = [];
 var vandals = [];
 var suspects = [];
 var sandboxlist = {};
@@ -924,6 +903,8 @@ function getPresets(setList) {
         if (el["wlprojects"] === null) presets[index]["wlprojects"] = "";
         if (el["wlusers"] === null) presets[index]["wlusers"] = "";
     });
+    document.getElementById('presetsArrow').classList.remove('disabled');
+    document.getElementById('editCurrentPreset').classList.remove('disabled');
 }
 
 
@@ -987,41 +968,6 @@ if (settingslist['defaultwarn'] !== null && (typeof settingslist['defaultwarn'] 
     defaultWarnList = settingslist['defaultwarn'].split(',');
 }
 
-var activeSysopsCheck = false;
-var activeSysops = [];
-xhr.open('POST', "lists/activeSysops.txt", false);
-xhr.send();
-activeSysops = JSON.parse(xhr.responseText);
-if (activeSysops.length > 5)
-    activeSysopsCheck = true;
-
-var globalFileCheck = true;
-try {
-    xhr.open('POST', "lists/globalUsers.txt", false);
-    xhr.send();
-    global = xhr.responseText.slice(0, -1).split(",");
-}
-catch(e) {
-    globalFileCheck = false;
-}
-if (global.length < 5)
-    globalFileCheck = false;
-if (globalFileCheck === false) {
-    xhr.open('POST', "php/getGlobals.php", false);
-    xhr.send();
-    global = xhr.responseText.slice(0, -1).split(",");
-}
-
-xhr.open('POST', "php/getConfig.php", false);
-xhr.send();
-if (xhr.responseText == "Invalid request")
-    location.reload();
-config = JSON.parse(xhr.responseText);
-
-xhr.open('POST', "php/getOfflineUsers.php", false);
-xhr.send();
-offlineUsers = JSON.parse(xhr.responseText);
-
 function loadDiffTemp(url, callback) {
     $.ajax({ type: 'POST', url: url, dataType: 'text',
         success: text => callback(text)
@@ -1033,8 +979,6 @@ loadDiffTemp('templates/newStart.html', text => newstart = setStrTheme(text, get
 loadDiffTemp('templates/newEnd.html', text => newend = text );
 loadDiffTemp('templates/newStringStart.html', text => startstring = text );
 loadDiffTemp('templates/newStringEnd.html', text => endstring = text );
-loadDiffTemp('templates/errorStart.html', text => starterror = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
-loadDiffTemp('templates/errorEnd.html', text => enderror = text );
 
 /*----themes----*/
 function loadThemeList() {
@@ -1079,10 +1023,9 @@ function setTheme(THEME) {
     var welcomeIF = document.getElementById("page-welcome").contentWindow;
     welcomeIF.postMessage({ THEME, user: '<?php echo $userSelf; ?>' }, window.origin);
 
-    if (diffstart !== undefined && newstart !== undefined && starterror !== undefined) {
+    if (diffstart !== undefined && newstart !== undefined) {
         diffstart = setStrTheme(diffstart, strTheme);
         newstart = setStrTheme(newstart, strTheme);
-        starterror = setStrTheme(starterror, strTheme);
     }
     if(document.getElementById("page").srcdoc != "") {
         document.getElementById("page").srcdoc = setStrTheme(document.getElementById("page").srcdoc, strTheme);
@@ -1153,7 +1096,12 @@ function receiveMessage(e) {
     else if (e.data === false)
         $descriptionContainer.style.marginTop = '0px';
 }
-document.getElementById('page').onload = () => $descriptionContainer.style.marginTop = '0px';
+document.getElementById('page').onload = () => {
+    $descriptionContainer.style.marginTop = '0px';
+    try {
+        Guesture.onSwipe(document.getElementById('page').contentDocument.body, "rightSwipe", () => openSidebar());
+    } catch(e) {}
+}
 
 document.getElementById('loadingBar').style.width = "75%";
 
@@ -1174,13 +1122,17 @@ function scrollToBottom(id){
     }
 };
 
-function toggleTButton (button) {
-    if (button.classList.contains('t-btn__active')) {
-        return button.classList.remove('t-btn__active');
+function classToggler (el, cssClass) {
+    if (el.classList.contains(cssClass)) {
+        return el.classList.remove(cssClass);
     }
-    button.classList.add('t-btn__active');
+    el.classList.add(cssClass);
 }
-
+function toggleTButton (button) { classToggler(button, 't-btn__active'); }
+function toggleICheckBox (checkbox) { classToggler(checkbox, 'i-checkbox__active'); }
+</script>
+<script src="js/swv.js?v=4"></script>
+<script>
 /*#########################
 --------- onLoad -------
 #########################*/
@@ -1198,10 +1150,10 @@ window.onload = function() {
     $.getScript('https://swviewer.toolforge.org/js/modules/talk.js', () => removeTabNotice('btn-talk'));
     $.getScript('https://swviewer.toolforge.org/js/modules/logs.js', () => removeTabNotice('btn-logs'));
     $.getScript('https://swviewer.toolforge.org/js/modules/about.js', () => removeTabNotice('btn-about'));
+    $.getScript('https://swviewer.toolforge.org/js/modules/notification.js', () => removeTabNotice('btn-notification'));
+    
+    Guesture.onSwipe(document.getElementById('page-welcome').contentDocument.body, "rightSwipe", () => openSidebar());
 };
-
 </script>
-<script src="js/swv.js?v=4"></script>
-<script>uiDisableList();</script>
 </body>
 </html>

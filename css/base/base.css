@@ -72,6 +72,12 @@ button, select {
     width: 20px;
     height: 20px;
     pointer-events: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .touch-ic__w-free {
     width: unset;

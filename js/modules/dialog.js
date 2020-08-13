@@ -125,7 +125,7 @@ const createDialog = (dialog) => {
         setTimeout(() => {
             document.getElementById(dialog.id).classList.add('dialog__animation');
             document.getElementById(dialog.id).childNodes[0].childNodes[0].classList.add('dialog__animation');
-        }, 0);
+        }, 100);
         return true;
     } else {
         console.error('Parent with id: "' + dialog.parentId + '" for dialog not found!');

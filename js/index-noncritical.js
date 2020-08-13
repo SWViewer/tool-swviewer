@@ -89,8 +89,11 @@ function openPO (po) {
         setTimeout(() => {
             document.getElementById(po).classList.add('po__active');
             document.getElementById('POOverlay').classList.add('po__overlay__active');
-        }, 0);
+        }, 100);
         lastOpenedPO = po;
+
+        const notifyIndicator = document.getElementById('notify-indicator');
+        if (po === 'notificationPanel' && !notifyIndicator.classList.contains('tab-notice-indicator__inactive')) notifyIndicator.classList.add('tab-notice-indicator__inactive');
     }
 
     if (document.getElementById(po) === null) {
@@ -137,9 +140,8 @@ function homeBtn(mod) {
 
 function onTalkOpen () {
     scrollToBottom("talk-content");
-    if (document.getElementById('badge-talk').style.background !== "rgb(251, 47, 47)") {
-        document.getElementById('badge-talk').style.background = "none";
-        document.getElementById('badge-talk').classList.add('badge-ic__primary');
+    if (document.getElementById('badge-talk').style.background !== "var(--bc-negative)") {
+        document.getElementById('badge-talk').style.background = "var(--tc-primary)";
     }
 }
 

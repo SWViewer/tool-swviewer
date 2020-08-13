@@ -64,7 +64,7 @@
 .days-ago-talk::after {
     content: "";
     height: 1px;
-    background-color: var(--bc-secondary-hover);
+    background-color: var(--bc-secondary-low);
     flex: 1;
     margin-right: 8px
 }

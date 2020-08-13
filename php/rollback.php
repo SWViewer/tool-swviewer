@@ -2,7 +2,7 @@
 require_once 'includes/headerOAuth.php';
 
 if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName']) || !isset($_POST["page"]) || !isset($_POST["wiki"]) || !isset($_POST["project"]) || !isset($_POST["user"]) || !isset($_POST["rbmode"]) || ($_POST["rbmode"] === "undo" && (!isset($_POST["basetimestamp"]) || !isset($_POST["id"])))) {
-    echo json_encode(["result" => "error", "info" => "Invalid request"]);
+    echo json_encode(["result" => "Invalid request data.", "info" => "Invalid request"]);
     session_write_close();
     exit();
 }

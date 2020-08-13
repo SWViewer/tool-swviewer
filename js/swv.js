@@ -1,125 +1,82 @@
-var old;
-var times = 1;
+// ===> suspect "i"
 var i = 0;
-var edits_history = [];
+
 angular.module("swv", ["ui.directives", "ui.filters"])
 .controller("Queue", function ($scope, $compile, $timeout) {
-    var server_url, server_name, script_path, server_uri, namespace, user, dnew, title, wikidatat, userip, wiki,
-        timestamp, summary, withoutSection, speedySummary, othersArray, protectArray, reportArray, speedySection,
-        speedyWarnSummary, warn;
+
     const ns = ["<font color='green'>Main</font>", "<font color='tomato'>Talk</font>", "<font color='tomato'>User</font>", "<font color='tomato'>User talk</font>", "<font color='orange'>Project</font>", "<font color='tomato'>Project talk</font>", "<font color='orange'>File</font>", "<font color='tomato'>File talk</font>", "<font color='tomato'>MediaWiki</font>", "<font color='tomato'>MediaWiki talk</font>", "<font color='orange'>Template</font>", "<font color='tomato'>Template talk</font>", "<font color='orange'>Help</font>", "<font color='tomato'>Help talk</font>", "<font color='orange'>Category</font>", "<font color='tomato'>Category talk</font>"];
     const wikis = ["afwiki", "alswiki", "amwiki", "anwiki", "angwiki", "arwikisource", "arwikiversity", "aswikisource", "astwiki", "avwiki", "azwiki", "wikisource", "wikisourcewiki", "sourceswiki", "bat_smgwiki", "bgwikibooks", "brwiki", "bswiki", "bswikiquote", "cawikiquote", "cswiktionary", "csbwiki", "csbwiktionary", "cywiki", "dawikisource", "dewikisource", "dinwiki", "diqwiki", "elwikiquote", "elwikisource", "enwikiversity", "eowikinews", "eowiki", "eowikisource", "eswiktionary", "etwikibooks", "fawikiquote", "fawikivoyage", "fiwikisource", "frwikinews", "frpwiki", "gawiki", "glwikibooks", "hewikibooks", "hewikiquote", "hrwikisource", "hrwiktionary", "htwiki", "huwikibooks", "huwikiquote", "huwiktionary", "hywiktionary", "iawiktionary", "idwikiquote", "iewiktionary", "iowiki", "iswiktionary", "jvwiki", "kawiki", "kkwiki", "kowikibooks", "kowikisource", "kuwiki", "kywiki", "lawiki", "lawikisource", "lawiktionary", "ladwiki", "lbwiki", "liwiki", "lmowiki", "ltgwiki", "lvwiki", "maiwiki", "map_bmswiki", "metawiki", "mgwiki", "mkwikibooks", "mlwiki", "mlwiktionary", "mrwikisource", "mrjwiki", "mswiktionary", "ndswiktionary", "nds_nlwiki", "newwiki", "nlwikisource", "nowikisource", "orwikisource", "pamwiki", "pdcwiki", "plwikinews", "plwikiquote", "pnbwiktionary", "pswiki", "rmywiki", "rowikinews", "ruewiki", "sawiki", "sawiktionary", "sdwiktionary", "siwiki", "skwiktionary", "sqwiki", "srwikisource", "stwiktionary", "stqwiki", "svwikibooks", "svwikinews", "svwikiversity", "tawikinews", "tawiki", "tewiki", "ttwiki", "tyvwiki", "ugwiki", "urwiki", "vepwiki", "vlswiki", "yiwiktionary", "zhwikiquote", "zh_classicalwiki", "zh_yuewiki", "abwiki", "adywiki", "afwiktionary", "angwiktionary", "arcwiki", "aywiki", "aywiktionary", "barwiki", "be_x_oldwiki", "be_taraskwiki", "biwiki", "bnwikisource", "bswikisource", "cawikibooks", "crwiki", "crhwiki", "cuwiki", "cvwiki", "dewikibooks", "dewiktionary", "dvwiki", "dvwiktionary", "eewiki", "eowikibooks", "eswikibooks", "eswikinews", "eswikiquote", "eswikisource", "eswikiversity", "euwikiquote", "fawiktionary", "fjwiki", "fowiktionary", "fywiki", "glwiktionary", "guwiki", "hewikisource", "hewiktionary", "hiwiktionary", "hsbwiki", "hsbwiktionary", "huwikisource", "hywikibooks", "iawiki", "idwikibooks", "iewiki", "jbowiki", "kawiktionary", "klwiki", "kmwikibooks", "kmwiktionary", "knwiki", "kuwikiquote", "kvwiki", "kywikibooks", "ltwikisource", "ltwiktionary", "lvwiktionary", "mediawikiwiki", "mznwiki", "nawiktionary", "nahwiktionary", "ndswiki", "newiki", "newiktionary", "nlwiktionary", "nnwikiquote", "nnwiktionary", "ocwiki", "outreachwiki", "pagwiki", "papwiki", "piwiki", "plwikibooks", "ptwikibooks", "ptwikinews", "ptwikiquote", "ptwikisource", "ptwikivoyage", "ptwiktionary", "quwiki", "rmwiki", "ruwikiquote", "ruwikisource", "rwwiki", "sawikisource", "sahwikisource", "scowiki", "skwikibooks", "skwiki", "skwikiquote", "slwikibooks", "slwiki", "snwiki", "sowiki", "sqwikibooks", "sqwikiquote", "stwiki", "suwiktionary", "swwiktionary", "tawikiquote", "tawikisource", "tgwiki", "tgwiktionary", "thwikibooks", "thwikiquote", "thwikisource", "thwiktionary", "tkwiki", "tnwiki", "towiki", "tpiwiki", "twwiki", "tywiki", "udmwiki", "ukwikiquote", "uzwiki", "viwikibooks", "viwikisource", "vowiki", "vowiktionary", "wowiki", "xhwiki", "yiwikisource", "yowiki", "zh_min_nanwiki", "amwiktionary", "arwikinews", "arwiktionary", "astwiktionary", "bewikisource", "betawikiversity", "bmwiki", "bnwiki", "brwiktionary", "bswikibooks", "bswiktionary", "bxrwiki", "cawiktionary", "cswikinews", "cswikiquote", "cswikiversity", "dawikibooks", "dewikinews", "dewikiquote", "dtywiki", "enwikibooks", "enwikiquote", "etwiki", "etwikiquote", "euwikibooks", "extwiki", "fawikibooks", "ffwiki", "fiwikinews", "fiwiktionary", "fjwiktionary", "frwikibooks", "frwikiversity", "ganwiki", "gdwiki", "glwikiquote", "gnwiktionary", "gotwiki", "guwikisource", "gvwiki", "hewikinews", "hiwikibooks", "hiwiki", "hifwiki", "hrwiki", "iawikibooks", "idwikisource", "ikwiki", "incubatorwiki", "jamwiki", "kaawiki", "kabwiki", "kbdwiki", "kgwiki", "kiwiki", "knwikiquote", "kswiki", "kuwikibooks", "kuwiktionary", "kwwiki", "kywikiquote", "liwikisource", "ltwikibooks", "ltwikiquote", "mdfwiki", "mgwikibooks", "miwiki", "mlwikiquote", "mrwikibooks", "mrwikiquote", "mrwiktionary", "mtwiki", "myvwiki", "nlwikibooks", "nowikibooks", "nowiktionary", "novwiki", "nvwiki", "olowiki", "omwiki", "oswiki", "plwikisource", "plwikivoyage", "ptwikiversity", "quwiktionary", "rowikiquote", "rowikisource", "ruwikibooks", "ruwikimedia", "ruwikinews", "ruwiktionary", "sahwiki", "sewiki", "sgwiki", "slwiktionary", "sqwikinews", "srwikibooks", "srwikinews", "srnwiki", "sswiki", "suwiki", "svwikiquote", "svwikisource", "swwiki", "szlwiki", "szywiki", "shywiktionary", "tcywiki", "tewikisource", "tewiktionary", "thwiki", "tiwiki", "tlwiki", "ttwiktionary", "ukwikinews", "ukwiktionary", "urwikiquote", "wuuwiki", "xalwiki", "zhwikibooks", "acewiki", "afwikiquote", "anwiktionary", "arwikibooks", "azwikiquote", "azwiktionary", "bewiki", "bewiktionary", "bgwiki", "bgwikiquote", "bgwiktionary", "bjnwiki", "bpywiki", "brwikisource", "bswikinews", "bugwiki", "cdowiki", "chrwiki", "chywiki", "ckbwiki", "cswikibooks", "cswikisource", "dawiktionary", "dsbwiki", "elwikinews", "elwikiversity", "elwiktionary", "eowiktionary", "etwikisource", "etwiktionary", "fawikinews", "fiwikibooks", "fiwikiversity", "fiwikivoyage", "fiu_vrowiki", "fowiki", "fowikisource", "fywikibooks", "gagwiki", "glkwiki", "guwikiquote", "guwiktionary", "hawiki", "hywiki", "hywikiquote", "idwiktionary", "ilowiki", "iowiktionary", "iswiki", "jvwiktionary", "kawikibooks", "kkwikibooks", "kkwiktionary", "kmwiki", "kowikiversity", "koiwiki", "krcwiki", "kwwiktionary", "lezwiki", "lgwiki", "liwikibooks", "liwiktionary", "lnwiktionary", "mhrwiki", "mnwiki", "mnwwiki", "mnwiktionary", "mswikibooks", "mwlwiki", "newikibooks", "nlwikiquote", "nowikiquote", "nsowiki", "nycwikimedia", "orwiktionary", "pawikibooks", "pawikisource", "pflwiki", "pihwiki", "plwiktionary", "pnbwiki", "pntwiki", "pswiktionary", "rowiktionary", "ruwikiversity", "rwwiktionary", "sawikibooks", "sawikiquote", "sdwiki", "siwikibooks", "siwiktionary", "slwikiquote", "slwikiversity", "specieswiki", "srwiktionary", "suwikiquote", "svwiktionary", "tawikibooks", "tewikiquote", "tgwikibooks", "trwikibooks", "trwikimedia", "trwikinews", "trwikiquote", "trwikisource", "trwiktionary", "tswiki", "ukwikibooks", "uzwikiquote", "vewiki", "vecwiktionary", "viwikiquote", "viwiktionary", "wawiki", "xmfwiki", "yiwiki", "zeawiki", "zhwikinews", "zhwikisource", "zh_min_nanwiktionary", "afwikibooks", "akwiki", "arwikiquote", "arzwiki", "aswiki", "azwikibooks", "azwikisource", "bawiki", "bclwiki", "bewikibooks", "bewikiquote", "bgwikisource", "bhwiki", "bnwikibooks", "bnwiktionary", "bowiki", "brwikiquote", "cawikinews", "cawikisource", "cbk_zamwiki", "cewiki", "chwiki", "chrwiktionary", "cowiki", "cvwikibooks", "cywikibooks", "cywikiquote", "cywikisource", "cywiktionary", "dawikiquote", "dewikiversity", "dkwikimedia", "dzwiki", "elwikibooks", "eowikiquote", "euwiki", "euwiktionary", "fawikisource", "fiwikiquote", "frwikiquote", "frrwiki", "fywiktionary", "gawiktionary", "gdwiktionary", "glwiki", "glwikisource", "gnwiki", "gvwiktionary", "hawiktionary", "hakwiki", "hawwiki", "hiwikiquote", "hiwikisource", "hrwikibooks", "hrwikiquote", "hywikisource", "igwiki", "iswikibooks", "iswikiquote", "iswikisource", "iuwiki", "iuwiktionary", "jbowiktionary", "kawikiquote", "klwiktionary", "knwikisource", "knwiktionary", "kowikinews", "kowikiquote", "kowiktionary", "kswiktionary", "kshwiki", "kywiktionary", "lawikibooks", "lawikiquote", "lbwiktionary", "lbewiki", "liwikiquote", "lnwiki", "lowiki", "lowiktionary", "ltwiki", "miwiktionary", "minwiki", "mkwikisource", "mkwiktionary", "mlwikibooks", "mlwikisource", "mswiki", "mtwiktionary", "mywiki", "mywiktionary", "nawiki", "nahwiki", "nlwikimedia", "nowikinews", "nrmwiki", "nywiki", "ocwikibooks", "ocwiktionary", "omwiktionary", "orwiki", "pawiki", "pawiktionary", "pcdwiki", "plwikimedia", "rnwiki", "rowikibooks", "roa_rupwiki", "roa_rupwiktionary", "sgwiktionary", "shwiktionary", "skwikisource", "slwikisource", "smwiki", "gcrwiki", "smwiktionary", "sowiktionary", "sqwiktionary", "srwikiquote", "sswiktionary", "tawiktionary", "tewikibooks", "tetwiki", "tiwiktionary", "tkwiktionary", "tlwikibooks", "tlwiktionary", "tnwiktionary", "tpiwiktionary", "tswiktionary", "ttwikibooks", "tumwiki", "uawikimedia", "nqowiki", "ugwiktionary", "ukwikisource", "urwikibooks", "urwiktionary", "uzwiktionary", "wawiktionary", "wowikiquote", "wowiktionary", "zawiki", "zh_min_nanwikisource", "zuwiki", "zuwiktionary", "arwikimedia", "bdwikimedia", "bewikimedia", "brwikimedia", "cawikimedia", "cowikimedia", "eewikimedia", "fiwikimedia", "mkwikimedia", "mxwikimedia", "nowikimedia", "sewikimedia", "ptwikimedia", "bawikibooks", "itwikibooks", "itwikinews", "jawikinews", "nlwikinews", "liwikinews", "furwiki", "lijwiki", "roa_tarawiki", "scwiki", "lrcwiki", "gomwiki", "atjwiki", "banwiki", "kbpwiki", "gorwiki", "inhwiki", "lfnwiki", "satwiki", "shnwiki", "jawikiquote", "sahwikiquote", "jawikisource", "vecwikisource", "euwikisource", "pmswikisource", "itwikiversity", "jawikiversity", "hiwikiversity", "zhwikiversity", "frwikivoyage", "itwikivoyage", "nlwikivoyage", "ruwikivoyage", "svwikivoyage", "eswikivoyage", "rowikivoyage", "elwikivoyage", "hewikivoyage", "ukwikivoyage", "viwikivoyage", "zhwikivoyage", "hiwikivoyage", "bnwikivoyage", "pswikivoyage", "cowiktionary", "hifwiktionary", "yuewiktionary", "wikimaniawiki"];
     const active_users = ["alswikibooks", "jawikibooks", "enwikinews", "cebwiki", "emlwiki", "mkwiki", "napwiki", "nnwiki", "pmswiki", "scnwiki", "shwiki", "vecwiki", "warwiki", "azbwiki", "alswikiquote", "itwikiquote", "frwikisource", "itwikisource", "dewikivoyage", "alswiktionary", "itwiktionary", "jawiktionary", "mgwiktionary", "mowiktionary", "scnwiktionary", "simplewiktionary", "zhwiktionary"];
+
+    const edits_history = [];
+    const deleteReasonsArray = ["Nonsense", "Vandalism", "Spam", "Test page", "Empty page", "No useful content", "Out of project scope"];
     var vandalsReport = [];
-    $scope.descriptions = config["wikis"][0]["others"][0]["rollback"];
-    $scope.speedys = config["wikis"][0]["others"][0]["speedy"];
-    $scope.offlineUsers = offlineUsers;
-    $scope.users = [];
-    $scope.project_url = "";
-    $scope.user = "";
-    $scope.title = "";
     var countConnectAttemp = 0;
-    var checkWarn = false;
-    var checkWarnDelete = false;
-    var isdelete = false;
-    var warnDelete = null;
 
+    // ===> $scope variables
+    $scope.oresWikiList = {}; // list of ores wiki.
+    $scope.edits = []; // for edits in queue.
+    $scope.users = []; // for online users.
+    $scope.offlineUsers = offlineUsers; // for offline users.
+    
+    // ===> Currently opened edit
+    $scope.selectedEdit = {};
+    $scope.getSelectedEdit = () => { return {...$scope.selectedEdit} };
+    $scope.setSelectedEdit = (edit) => { 
+        $scope.selectedEdit = {...edit};
+        $scope.selectedEdit.config = getConfig(edit.wiki);
+        $scope.selectedEdit.settings = {
+            checkWarnDelete: (defaultDeleteList.indexOf(edit.wiki) !== -1)? true: false,
+            checkWarn: (defaultWarnList.indexOf(edit.wiki) !== -1)? true: false
+        };
+    };
 
+    $scope.selectTop = function() { 
+        if ($scope.edits.length > 0) {
+            $scope.select($scope.edits[0]);
+        } else document.getElementById('btn-home').click();
+    }
+    // ===> Selecting an edit from queue.
     $scope.select = function (edit) {
         if (!$scope.recentChange.isConnected) $scope.recentChange.connect();
-        uiEnableNew();
+        disableNewUI();
         firstClickEdit = true;
         document.getElementById("queue").classList.add("disabled"); // disable queue during change diff
         homeBtn(false);
         if (document.getElementById('eqBody').classList.contains('eq__body__active')) toggleMDrawer();
-        if ((typeof user !== "undefined") && (i === 0)) {
-            if (edits_history.length === 6)
-                edits_history.splice(5, 1);
-            var eh = {
-                "server_url": server_url,
-                "server_name": server_name,
-                "script_path": script_path,
-                "server_uri": server_uri,
-                "wiki": wiki,
-                "namespace": namespace,
-                "user": user,
-                "old": old,
-                "dnew": dnew,
-                "title": title,
-                "userip": userip,
-                "wikidatat": wikidatat,
-                "summary": summary
-            };
-            edits_history.unshift(eh);
+
+        // ===> suspect "i"
+        if ($scope.selectedEdit !== null && i === 0) {
+            if (edits_history.length === 6) edits_history.splice(5, 1);
+            edits_history.unshift($scope.getSelectedEdit());
         }
+        // ===> suspect "i"
         i = 0;
-        nextDiffStyle();
-        $scope.selected = edit;
-        server_url = edit.server_url;
-        server_name = edit.server_name;
-        script_path = edit.script_path;
-        server_uri = edit.server_uri;
-        wiki = edit.wiki;
-        namespace = edit.namespace;
-        user = edit.user;
-        old = edit.old;
-        dnew = edit['new'];
-        title = edit.title;
-        userip = edit.isIp;
-        summary = edit.comment;
-        $scope.user = user;
-        $scope.title = title;
-        $scope.project_url = server_url + script_path;
-        wikidatat = edit.wikidata_title;
-        changeRollbacksDescription(wiki);
-        SHOW_DIFF(edit.server_url, edit.server_name, edit.script_path, edit.server_uri, edit.wiki, edit.namespace, edit.user, edit.old, edit['new'], edit.title, edit.isIp, edit.comment, wikidatat, true);
+        $scope.setSelectedEdit(edit);
+        enableLoadingDiffUI();
+        loadDiff($scope.selectedEdit);
         $scope.edits.splice($scope.edits.indexOf(edit), 1);
     };
+
+    // ===> To navigate back into edit_history.
     $scope.Back = function () {
-        if (edits_history.length > 0 && edits_history.length - 1 >= i) {
-            uiEnableNew();
-            homeBtn(false);
-            if (i === 0) {
-                if (edits_history.length === 6) edits_history.splice(5, 1);
-                var eh = {
-                    "server_url": server_url,
-                    "server_name": server_name,
-                    "script_path": script_path,
-                    "server_uri": server_uri,
-                    "wiki": wiki,
-                    "namespace": namespace,
-                    "user": user,
-                    "old": old,
-                    "dnew": dnew,
-                    "title": title,
-                    "userip": userip,
-                    "summary": summary,
-                    "wikidatat": wikidatat
-                };
-                edits_history.unshift(eh);
-                i = i + 1;
-            }
-            server_url = edits_history[i]["server_url"];
-            server_name = edits_history[i]["server_name"];
-            script_path = edits_history[i]["script_path"];
-            server_uri = edits_history[i]["server_uri"];
-            wiki = edits_history[i]["wiki"];
-            namespace = edits_history[i]["namespace"];
-            user = edits_history[i]["user"];
-            old = edits_history[i]["old"];
-            dnew = edits_history[i]["dnew"];
-            title = edits_history[i]["title"];
-            userip = edits_history[i]["userip"];
-            summary = edits_history[i]["summary"];
-            wikidatat = edits_history[i]["wikidatat"];
-            $scope.user = user;
-            $scope.title = title;
-            $scope.project_url = server_url + script_path;
-            changeRollbacksDescription(wiki);
-            SHOW_DIFF(server_url, server_name, script_path, server_uri, wiki, namespace, user, old, dnew, title, userip, summary, wikidatat, true);
+        if (edits_history.length > 0 && edits_history.length - 1 >= i) disableNewUI();
+        else return;
+        homeBtn(false);
+        // ===> suspect "i"
+        if (i === 0) {
+            if (edits_history.length === 6) edits_history.splice(5, 1);
+            edits_history.unshift($scope.getSelectedEdit());
+            // ===> suspect "i"
             i = i + 1;
         }
-    };
+
+        $scope.setSelectedEdit(edits_history[i]);
+        loadDiff($scope.selectedEdit);
+        // ===> suspect "i"
+        i = i + 1;
+    }
+
     $scope.editColor = function (edit) {
         if (vandals.indexOf(edit.user) !== -1 || (vandals.indexOf(edit.user) !== -1 && suspects.indexOf(edit.user) !== -1))
             return {color: "red"};
@@ -127,7 +84,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             return {color: "pink"};
     };
     $scope.descriptionColor = function (description) {
-        if (checkWarn === true && description.warn !== null && typeof description.warn !== "undefined" && description.warn !== "")
+        if ($scope.selectedEdit.settings.checkWarn === true && description.warn !== null && typeof description.warn !== "undefined" && description.warn !== "")
             return {color: "var(--tc-positive)"};
         else {
             if (description.global === true) {
@@ -138,1040 +95,545 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         }
     };
     $scope.speedyColor = function (speedy) {
-        if (checkWarnDelete === true && speedy.warn !== null && typeof speedy.warn !== "undefined" && speedy.warn !== "")
+        if ($scope.selectedEdit.settings.checkWarnDelete === true && speedy.warn !== null && typeof speedy.warn !== "undefined" && speedy.warn !== "")
             return {color: "var(--tc-positive)"};
         else
             return {color: "var(--link-color)"};
     };
-
+    
+    // ===> To open edit on wiki.
     $scope.browser = function () {
-        if (typeof dnew !== "undefined") {
-            var urlbrowser;
-            if (old !== null)
-                urlbrowser = server_url + script_path + "/index.php?diff=" + dnew + "&oldid=" + old + "&uselang=en&redirect=no&mobileaction=toggle_view_desktop";
-            else
-                urlbrowser = server_uri + "?uselang=en&redirect=no&mobileaction=toggle_view_desktop";
-            var diffWindow = window.open(urlbrowser, "_blank");
-            diffWindow.location;
-            diffWindow.focus();
-        }
-    };
+        if (typeof $scope.selectedEdit.new === "undefined") return;
+        var url;
+        if ($scope.selectedEdit.old !== null) url = $scope.selectedEdit.server_url + $scope.selectedEdit.script_path + "/index.php?diff=" + $scope.selectedEdit.new + "&oldid=" + $scope.selectedEdit.old + "&uselang=en&redirect=no&mobileaction=toggle_view_desktop";
+        else url = $scope.selectedEdit.server_url + "?uselang=en&redirect=no&mobileaction=toggle_view_desktop";
+        var diffWindow = window.open(url, "_blank");
+        diffWindow.location;
+        diffWindow.focus();
+    }
 
-    $scope.SD = function (tmpl, summary) {
-        isdelete = true;
-        var dtext = document.getElementById('textpage').value;
-        document.getElementById('textpage').value = tmpl.replace(/\$1/gi, userSelf) + dtext;
-        document.getElementById('summaryedit').value = summary;
-        setTimeout($scope.doEdit(), 500);
-    };
-
-    $scope.checkEdit = function () {
-        if (typeof dnew == "undefined")
-            return;
-        document.getElementById("speedyReasonsBox").classList.add("disabled");
-        document.getElementById('warn-box-delete').parentElement.parentElement.classList.add('disabled');
-
-        $scope.speedys.forEach(function (elS) {
-            if (typeof elS.warn !== "undefined")
-                document.getElementById('warn-box-delete').parentElement.parentElement.classList.remove('disabled');
-        });
-
-        if (defaultDeleteList.indexOf(wiki) !== -1) {
-            document.getElementById('warn-box-delete').classList.add('t-btn__active');
-            checkWarnDelete = true;
-        } else {
-            document.getElementById('warn-box-delete').classList.remove('t-btn__active');
-            checkWarnDelete = false;
-        }
-
+    // ===> Open to edit source.
+    $scope.openEditSource = async function () {
+        if (typeof $scope.selectedEdit.new === "undefined") return;
+        
         document.getElementById("editFormBody").classList.add("disabled");
         document.getElementById('textpage').value = "";
-        document.getElementById('btn-group-delete').style.display = "block";
+        document.getElementById('textpage').style.display = 'none';
+        document.getElementById('editSourceLoadingAnim').style.display = 'unset';
 
-        $scope.isCURRENT(server_url, script_path, title, dnew, old, function (cb) {
-            if (cb == null || cb === false)
-                return;
-            var url = "php/getPage.php";
-            $.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'text',
-                data: {
-                    server: server_url + script_path,
-                    oldid: dnew
-                },
-                success: function (datapage) {
-                    if (datapage === "Error! Loading page is not success") {
-                        document.getElementById("speedyReasonsBox").classList.remove("disabled");
-                        alert('Failed... dev code: 004.1. Failed http-request. Maybe page was delete or server is down.');
-                    } else {
-                        document.getElementById('textpage').value = "";
-                        document.getElementById('summaryedit').value = "";
-                        document.getElementById('textpage').value = datapage;
-                        // document.getElementById('textpage').focus(); //it create a lag in mobile ui animation
-                        document.getElementById('textpage').scrollTop = 0;
-                        document.getElementById("editFormBody").classList.remove("disabled");
-                        document.getElementById("speedyReasonsBox").classList.remove("disabled");
-                    }
-                }, error: function (error) {
-                    document.getElementById("speedyReasonsBox").classList.remove("disabled");
-                    alert('Failed... dev code: 004; error code: ' + error.status + '.');
-                    document.getElementById("editFormBody").classList.remove("disabled");
+        await isLatestRevision($scope.selectedEdit.server_url, $scope.selectedEdit.script_path, $scope.selectedEdit.title, $scope.selectedEdit.new)
+        .then(async edit => {
+            if (edit.isLatest) {
+                await getEditSource($scope.selectedEdit.server_url, $scope.selectedEdit.script_path, $scope.selectedEdit.new)
+                .then(editSource => {
+                    document.getElementById('textpage').value = editSource;
+                    $scope.selectedEdit.timestamp = edit.revision.timestamp;
+                })
+                .catch(err => ESOpeningError(err));
+            } else {
+                if ($scope.selectedEdit.old == null) {
+                    $scope.selectedEdit.old = $scope.selectedEdit.new;
+                    if (i > 0) edits_history[i - 1]["old"] = $scope.selectedEdit.new;
                 }
-            });
-        });
-    };
+                
+                $scope.selectedEdit.user = edit.revision.user;
+                $scope.selectedEdit.new = edit.revision.revid;
+                $scope.selectedEdit.comment = edit.revision.comment;
+                if (i > 0) {
+                    edits_history[i - 1]["user"] = edit.revision.user;
+                    edits_history[i - 1]["new"] = edit.revision.revid;
+                    edits_history[i - 1]["comment"] = edit.revision.comment;
+                }
+                await getDiff($scope.selectedEdit.server_url, $scope.selectedEdit.script_path, $scope.selectedEdit.wiki, $scope.selectedEdit.new, $scope.selectedEdit.old)
+                .then(async diff => {
+                    await getUserInfo($scope.selectedEdit.server_url, $scope.selectedEdit.script_path, $scope.selectedEdit.user)
+                    .then(user => {
+                        if (user.editcount === 'undefined') {
+                            $scope.selectedEdit.isIp = "ip";
+                            if (i > 0) edits_history[i - 1]["isIp"] = "ip";
+                        } else {
+                            $scope.selectedEdit.isIp = "registered";
+                            if (i > 0) edits_history[i - 1]["isIp"] = "registered";
+                        }
+                        loadDiffDesc($scope.selectedEdit);
+                        document.getElementById('page').srcdoc = diff;
+                        
+                        throw "Can't perform this action, this is not latest revision. Loaded new revision.";
+                    }).catch(err => ESOpeningError(err));
+                }).catch(err => ESOpeningError(err));
+            }
+        }).catch(err => ESOpeningError(err));
 
-    $scope.doEdit = function () {
-        var isdeletetmp = false;
-        if (isdelete === true) {
-            isdelete = false;
-            isdeletetmp = true;
+        function ESOpeningError(err) {
+            closePW();
+            createDialog({
+                parentId: 'angularapp', id: 'editSourceErrorDialog',
+                title: 'Loading failed', removable: true,
+                alert: {
+                    emoji: '⚠️',
+                    message: err
+                },
+                buttons: [{ type: 'accent', title: 'Alright', remove: true }]
+            });
         }
-        if ((document.getElementById('textpage').value == null) || (typeof document.getElementById('textpage').value == "undefined"))
-            return;
-        uiDisable();
-        var textpage = document.getElementById('textpage').value;
-        var summaryEdit = "";
-        if ((document.getElementById('summaryedit').value !== "") && (document.getElementById('summaryedit').value !== null) && (typeof document.getElementById('summaryedit').value !== "undefined"))
-            summaryEdit = document.getElementById('summaryedit').value;
+
+        document.getElementById('textpage').scrollTop = 0;
+        document.getElementById('summaryedit').value = "";
+        document.getElementById('textpage').style.display = 'unset';
+        document.getElementById('editSourceLoadingAnim').style.display = 'none';
+        document.getElementById("editFormBody").classList.remove("disabled");
+    }
+
+    // ===> open Tag panel
+    $scope.openTagPanel = function () {
+        if (typeof $scope.selectedEdit.new === "undefined") return;
+
+        const warnBoxDelete = document.getElementById('warn-box-delete');
+        warnBoxDelete.parentElement.parentElement.classList.add('disabled');
+        $scope.selectedEdit.config.speedy.forEach(elS => {
+            if (typeof elS.warn !== "undefined") warnBoxDelete.parentElement.parentElement.classList.remove('disabled');
+        });
+
+        if (defaultDeleteList.indexOf($scope.selectedEdit.wiki) !== -1) {
+            warnBoxDelete.classList.add('t-btn__active');
+            $scope.selectedEdit.settings.checkWarnDelete = true;
+        } else {
+            warnBoxDelete.classList.remove('t-btn__active');
+            $scope.selectedEdit.settings.checkWarnDelete = false;
+        }
+
+        document.getElementById('btn-group-addToGSR').classList.add('disabled');
+        document.getElementById('addToGSR').classList.remove('i-checkbox__active');
+        const GSR_description = document.getElementById('addToGSR-description');
+        GSR_description.textContent = "";
+
+        if (Object.keys(activeSysops).find(key => key === $scope.selectedEdit.wiki)) {
+            const createGSRDesc = (color, text) => bakeEl({
+                type: 'span', child:[
+                    bakeEl({ type: 'span', att: { style: `display: inline-block; margin-right: 8px; width: 8px; height: 8px; background-color: ${color}; border-radius: 50%;` } }),
+                    text
+                ]
+            });
+            if (activeSysops[$scope.selectedEdit.wiki][1] === 0) {
+                GSR_description.append(createGSRDesc('var(--bc-positive)', `This wiki have ${activeSysops[$scope.selectedEdit.wiki][3]} active sysop (total ${activeSysops[$scope.selectedEdit.wiki][2]}).`));
+                document.getElementById('btn-group-addToGSR').classList.remove('disabled');
+            } else if (activeSysops[$scope.selectedEdit.wiki][1] === 1) {
+                GSR_description.append(createGSRDesc('orange', `This wiki have ${activeSysops[$scope.selectedEdit.wiki][3]} active sysop (total ${activeSysops[$scope.selectedEdit.wiki][2]}).${ (userRole == "GS" || userRole == "S") ? "" : " Maybe it's better to wait for the reaction of local sysop." }`));
+                document.getElementById('btn-group-addToGSR').classList.remove('disabled');
+            } else {
+                GSR_description.append(createGSRDesc('var(--bc-negative)', `This wiki have ${ (activeSysops[$scope.selectedEdit.wiki][3] == "3+") ? "more than 3" : activeSysops[$scope.selectedEdit.wiki][3].replace("?", "unknown") } active sysop (total ${activeSysops[$scope.selectedEdit.wiki][2]}).`));
+            }
+        } else GSR_description.append('It is not a global sysop wiki.');
+        openPO('tagPanel');
+    }
+
+    // ===> on selected speedy delete
+    $scope.selectSpeedy = function(speedy) {
+        if (!speedy.hasOwnProperty('template')) return;
+        if (speedy.template === null || speedy.template === "") return;
+
+        var warnDelete = null;
+        var speedySection = null;
+        if (typeof speedy.warn !== 'undefined' && speedy.warn !== null && speedy.warn !== '') warnDelete = speedy.warn;
+        if (typeof speedy.sectionWarn !== 'undefined' && speedy.sectionWarn !== null && speedy.sectionWarn !== '') speedySection = speedy.sectionWarn.replace(/\$1/gi, $scope.selectedEdit.title);
+
+        getEditSource($scope.selectedEdit.server_url, $scope.selectedEdit.script_path, $scope.selectedEdit.new)
+        .then(editSourceData => {
+            const editSource = speedy.template.replace(/\$1/gi, userSelf) + editSourceData;
+            const editSummary = $scope.selectedEdit.config.speedySummary;
+            const speedyLabel = speedy.name;
+
+            $scope.doEdit(editSource, editSummary, speedyLabel, speedySection, warnDelete, true);
+        })
+        .catch(err => createNotify({
+            img: '/img/warning-filled.svg',
+            title: 'Speedy deletion failed',
+            content: err,
+            removable: true
+        }));
+        closePO();
+    }
+
+    $scope.openCustomRevertPanel = function () {
+        if ($scope.selectedEdit.old === null || isNaN($scope.selectedEdit.old) === true) return;
+        document.getElementById('credit').value = "";
+        openPO('customRevert');
+    
+        const warnBtn = document.getElementById('warn-box');
+        if ($scope.selectedEdit.config.warn !== null && typeof $scope.selectedEdit.config.warn !== "undefined") {
+            warnBtn.parentElement.parentElement.classList.remove('disabled');
+            if (defaultWarnList.indexOf($scope.selectedEdit.wiki) !== -1) {
+                warnBtn.classList.add('t-btn__active');
+                $scope.selectedEdit.settings.checkWarn = true;
+            } else {
+                warnBtn.classList.remove('t-btn__active');
+                $scope.selectedEdit.settings.checkWarn = false;
+            }
+        } else {
+            warnBtn.parentElement.parentElement.classList.add('disabled');
+        }
+    }
+    
+    $scope.selectRollbackDescription = function (description) {
+        if (!description.hasOwnProperty('summary')) return;
+        if (description.summary === null || description.summary === "") return;
+        if (!($scope.selectedEdit.settings.checkWarn === true && 
+            $scope.selectedEdit.config.warn !== null && 
+            typeof description.warn !== "undefined" && 
+            typeof $scope.selectedEdit.config.warn[description.warn] !== "undefined")) description.warn = null;
+    
+        description.withoutSection = description.withoutSection || false;
+        $scope.doRevert(description);
+    }
+
+
+    // ===> on saving the edited artical
+    $scope.saveEdit = function() {
+        const editSource = document.getElementById('textpage').value;
+        var editSummary = "";
+        const ESElement = document.getElementById('summaryedit');
+        if (ESElement.value !== '' && ESElement.value !== null && typeof ESElement !== 'undefined') editSummary = ESElement.value;
+
+        $scope.doEdit(editSource, editSummary);
+        closePW();
+    }
+
+    // ===> do the edit.
+    $scope.doEdit = function(editSource, editSummary, speedyLabel, speedySection, warnDelete, isDelete = false) {
         document.getElementById('textpage').value = "";
         document.getElementById('summaryedit').value = "";
-        closePW();
-        $.ajax({
-            url: 'php/doEdit.php',
-            type: 'POST',
-            crossDomain: true,
-            dataType: 'text',
-            data: {
-                project: server_url + script_path + "/api.php",
-                wiki: wiki,
-                isdelete: isdeletetmp,
-                page: title,
-                text: textpage,
-                summary: summaryEdit,
-                basetimestamp: timestamp
-            },
-            success: function (dataedit) {
-                dataedit = JSON.parse(dataedit);
-                if (dataedit["result"] === "Success") {
-                    if (isdeletetmp === true) {
-                        suspects.push(user);
-                        var rawSend = {"type": "synch", "wiki": wiki, "nickname": user, "vandal": "2", "page": title};
-                        connectTalk.talkSendInside(rawSend);
-                    }
-                    if (isdeletetmp === true && checkWarnDelete === true && warnDelete !== null && speedyWarnSummary !== null) {
-                        $.ajax({
-                            url: 'php/doEdit.php', type: 'POST',
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
-                            },
-                            crossDomain: true, dataType: 'text',
-                            data: {
-                                getfirstuser: 1,
-                                warn: 1,
-                                project: server_url + script_path + "/api.php",
-                                wiki: wiki,
-                                page: title,
-                                text: "1",
-                                user: user,
-                                summary: "1"
-                            },
-                            success: function (datafirstuser) {
-                                if (datafirstuser !== null && datafirstuser !== "") {
-                                    datafirstuser = JSON.parse(datafirstuser);
-                                    if (datafirstuser["result"] === "sucess") {
-                                        $.ajax({
-                                            url: 'php/doEdit.php', type: 'POST',
-                                            beforeSend: function (xhr) {
-                                                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
-                                            },
-                                            crossDomain: true, dataType: 'text',
-                                            data: {
-                                                warn: "speedy",
-                                                project: server_url + script_path + "/api.php",
-                                                wiki: wiki,
-                                                page: "User_talk:" + datafirstuser["user"],
-                                                text: warnDelete.replace(/\$1/gi, title).replace(/\$2/gi, user).replace(/\$3/gi, userSelf),
-                                                sectiontitle: speedySection,
-                                                summary: speedyWarnSummary.replace(/\$1/gi, title)
-                                            },
-                                            success: function () {
-                                                $scope.reqEnd(dataedit);
-                                            },
-                                            error: function () {
-                                                $scope.reqEnd(dataedit);
-                                            }
-                                        });
-                                    } else
-                                        $scope.reqEnd(dataedit);
-                                } else
-                                    $scope.reqEnd(dataedit);
-                            },
-                            error: function () {
-                                $scope.reqEnd(dataedit);
-                            }
+        const SEdit = {...$scope.selectedEdit};
+
+        isLatestRevision(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.new)
+        .then(edit => {
+            SEdit.timestamp = edit.revision.timestamp;
+            if (edit.isLatest) performEdit(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.title, SEdit.timestamp, editSource, editSummary, isDelete)
+            .then(async editData => {
+                const isReportGSR = document.getElementById("addToGSR").classList.contains("i-checkbox__active") && isDelete === true;
+                
+                if (isReportGSR) {
+                    speedyLabel = deleteReasonsArray.includes(speedyLabel)? speedyLabel: "none";
+                    await reportGSR(SEdit.server_url, SEdit.wiki, SEdit.title, speedyLabel)
+                    .then(() => createNotify({
+                        img: '/img/warning-filled.svg',
+                        title: 'GSR report successfull',
+                        content: `${SEdit.title} has been successfully reported to GSR for deletion`,
+                        removable: true
+                    })).catch(err => createNotify({
+                        img: '/img/warning-filled.svg',
+                        title: 'GSR report failed',
+                        content: "Error 3.1: " + err,
+                        removable: true
+                    }));
+                }
+                if (isDelete) {
+                    suspects.push(SEdit.user);
+                    var rawSend = {"type": "synch", "wiki": SEdit.wiki, "nickname": SEdit.user, "vandal": "2", "page": SEdit.title};
+                    connectTalk.talkSendInside(rawSend);
+                }
+                if (isDelete && SEdit.settings.checkWarnDelete && warnDelete !== null && SEdit.config.speedyWarnSummary !== null) {
+                    await getFirstEditor(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.title, SEdit.user)
+                    .then(firstEditor => notifyEditor(SEdit.server_url, SEdit.script_path, SEdit.wiki, 
+                        warnDelete.replace(/\$1/gi, SEdit.title).replace(/\$2/gi, SEdit.user).replace(/\$3/gi, userSelf),
+                        SEdit.config.speedyWarnSummary.replace(/\$1/gi, SEdit.title),
+                        speedySection, firstEditor
+                    )).then((isNotifyed) => {
+                        if (typeof isNotifyed === 'undefined') return
+                        createNotify({
+                            img: '/img/warning-filled.svg',
+                            title: 'Warned successfully',
+                            content: `${SEdit.user} has been warned for edit on ${SEdit.title}.`,
+                            removable: true
                         });
-                    } else
-                        $scope.reqEnd(dataedit);
-                } else {
-                    if (dataedit['code'] === "undofailure" || dataedit['code'] === "editconflict" || dataedit['code'] === "alreadyrolled") {
-                        $scope.isCURRENT(server_url, script_path, title, dnew, old, function (cb2) {
-                            if (cb2 == null) {
-                                uiEnable();
-                                return;
-                            }
-                            if (cb2 === false) {
-                                uiEnable();
-                                return;
-                            }
-                            document.getElementById('page').srcdoc = starterror + "Edit error: " + escapeXSS(dataedit['result']) + enderror;
-                            uiEnable();
-                        });
-                    } else {
-                        // if null-edit
-                        if (dataedit['result'] == null || dataedit['code'] === "alreadydone") {
-                            document.getElementById('page').srcdoc = starterror + "Such changes has already been made." + enderror;
-                            $scope.isCURRENT(server_url, script_path, title, dnew, old, function (cb3) {
-                                if (cb3 == null) {
-                                    uiEnable();
-                                    return;
-                                }
-                                if (cb3 === false) {
-                                    uiEnable();
-                                    return;
-                                }
-                                document.getElementById('page').srcdoc = starterror + "Such changes has already been made." + enderror;
-                                uiEnable();
-                            });
-                        } else {
-                            document.getElementById('page').srcdoc = starterror + "Edit error: " + escapeXSS(dataedit['result']) + enderror;
-                            uiEnable();
-                        }
-                    }
+                    }).catch(err => createNotify({
+                        img: '/img/warning-filled.svg',
+                        title: 'Warned failed',
+                        content: 'Error: 3.2' + err,
+                        removable: true
+                    }));
                 }
-            }, error: function (error, e2) {
-                document.getElementById('page').srcdoc = starterror + "Failed... dev code: 007; error code: " + escapeXSS(error.status) + escapeXSS(e2) + enderror;
-                uiEnable();
-            }
-        });
-    };
+                $scope.reqSuccessNotify(editData, SEdit, 'edit');
+            }).catch(err => createNotify({
+                img: '/img/warning-filled.svg',
+                title: 'Edit failed',
+                content: "Error 2: " + err,
+                removable: true
+            }));
+            else return bindLatestRevision(SEdit, edit.revision)
+        }).then(latestEdit => {
+            if (typeof latestEdit === 'undefined') return;
+            createNotify({
+                img: '/img/edit-filled.svg',
+                title: 'Edit failed',
+                content: `Can't perform this action, this is not latest revision. Loaded new revision.`,
+                removable: true,
+                buttons: [{
+                    title: 'View latest',
+                    remove: true, type: 'positive',
+                    onClick: () => { closePO(); $scope.select(latestEdit); }
+                }, { title: "Cancel", remove: true }]
+            })
+        }).catch(error => createNotify({
+            img: '/img/warning-filled.svg',
+            title: 'Edit failed',
+            content: "Error 1: " + error,
+            removable: true
+        }));
+        $scope.selectTop();
+    }
 
-
-    $scope.customRevertSummary = function () {
-        if ((old !== null) && (isNaN(old) === false)) {
-            document.getElementById('credit').value = "";
-            openPO('customRevert');
-
-            if (warn !== null && typeof warn !== "undefined") {
-                document.getElementById('warn-box').parentElement.parentElement.classList.remove('disabled');
-                if (defaultWarnList.indexOf(wiki) !== -1) {
-                    document.getElementById('warn-box').classList.add('t-btn__active');
-                    checkWarn = true;
-                } else {
-                    document.getElementById('warn-box').classList.remove('t-btn__active');
-                    checkWarn = false;
-                }
-            } else {
-                document.getElementById('warn-box').parentElement.parentElement.classList.add('disabled');
-            }
-            // document.getElementById('credit').focus(); //it create a lag in mobile ui animation
+    $scope.doRevert = function (description = {}) {
+        const SEdit = {...$scope.selectedEdit};
+        if (SEdit.old == null || isNaN(SEdit.old) === true) return;
+    
+        var rollbackSummary = "";
+        const RSInput = document.getElementById('credit');
+        if (description.summary !== null && typeof description.summary !== "undefined") rollbackSummary = description.summary.replace(/\$7/gi, $scope.selectedEdit.title);
+        else if (RSInput.value !== "" && RSInput.value !== null && document.getElementById('customRevert').classList.contains('po__active')) {
+            rollbackSummary = RSInput.value;
         }
-    };
-
-    $scope.selectDescription = function (description) {
-        withoutSection = false;
-        if (description.hasOwnProperty("summary"))
-            if (description.summary !== null && description.summary !== "")
-                if (checkWarn === true && warn !== null && typeof description.warn !== "undefined" && typeof warn[description.warn] !== "undefined") {
-                    if (typeof description.withoutSection !== "undefined")
-                        if (description.withoutSection === true)
-                            withoutSection = true;
-                    $scope.Revert(description.summary, description.warn);
-                } else
-                    $scope.Revert(description.summary, null);
-    };
-
-    $scope.selectSpeedy = function (speedy) {
-        if (speedy.hasOwnProperty("template"))
-            if (speedy.template !== null && speedy.template !== "") {
-                warnDelete = null;
-                speedySection = null;
-                if (typeof speedy.warn !== "undefined" && speedy.warn !== null && speedy.warn !== "")
-                    warnDelete = speedy.warn;
-                if (typeof speedy.sectionWarn !== "undefined" && speedy.sectionWarn !== null && speedy.sectionWarn !== "")
-                    speedySection = speedy.sectionWarn.replace(/\$1/gi, title);
-                $scope.SD(speedy.template, speedySummary);
-            }
-    };
-
-    $scope.requestsForm = function () {
-        // global block start
-        var lineReport = [];
-        vandalsReport.forEach(function (el, eln) {
-            if (el["user"] === user) {
-                var n;
-                if (el["newid"] !== null) {
-                    n = {
-                        header: el['wiki'],
-                        project: el['project'],
-                        line: "<a href='" + el['project'] + "/wiki/Special:Diff/" + el['oldid'] + "/" + el['newid'] + "' target='_blank'>" + eln + "</a>"
-                    };
-                    lineReport.push(n);
-                } else {
-                    n = {
-                        header: el['wiki'],
-                        project: el['project'],
-                        line: "<a href='" + el['project'] + "/w/index.php?oldid=" + el['oldid'] + "'' target='_blank'>" + eln + "</a>"
-                    };
-                    lineReport.push(n);
-                }
-            }
-        });
-        var headersReport = [];
-        var wikisReport = [];
-        var reportHeader = "";
-        var wikiReport = "";
-        lineReport.forEach(function (el, eln) {
-            createCB(eln, el["line"], "reportDiffs");
-            if (headersReport.indexOf(el["header"]) === -1) {
-                headersReport.push(el["header"]);
-                wikisReport.push(el["project"]);
-            }
-        });
-        headersReport.forEach(function (header) {
-            reportHeader += header + ", ";
-        });
-        reportHeader = reportHeader.slice(0, -2);
-        wikisReport.forEach(function (p, pp) {
-            wikiReport += "[" + p + "/wiki/Special:Contribs/" + encodeURIComponent(user).replace(/'/g, '%27') + " " + headersReport[pp] + "], ";
-        });
-        wikiReport = wikiReport.slice(0, -2);
-        document.getElementById("reportHeader").value = reportHeader;
-        if (wikisReport.length === 0)
-            document.getElementById("reportComment").value = "See contribs: [" + server_url + "/wiki/Special:Contribs/" + encodeURIComponent(user).replace(/'/g, '%27') + " " + wiki + "].";
-        else
-            document.getElementById("reportComment").value = "See contribs: " + wikiReport + ".";
-        // global block end
-
-
-        // local protect start
-        var checkProtect = false;
-        if (protectArray !== null)
-            if (checkKey("pageProtect", wiki, protectArray))
-                if (checkKey("regexProtect", wiki, protectArray))
-                    if (checkKey("sectionProtect", wiki, protectArray) || (checkKey("withoutSectionProtect", wiki, protectArray) && protectArray["withoutSectionProtect"] === true))
-                        if (checkKey("textProtect", wiki, protectArray))
-                            if (checkKey("summaryProtect", wiki, protectArray))
-                                checkProtect = true;
-        if (checkProtect === false) {
-            document.getElementById("protectDiffsLocal").classList.add("disabled");
-        } else {
-            document.getElementById("protectCommentLocal").value = protectArray["textProtect"].replace(/\$1/gi, title);
-            if (checkKey("withoutSectionProtect", wiki, protectArray) && protectArray["withoutSectionProtect"] === true)
-                document.getElementById("protectHeaderLocal").classList.add("disabled");
-            else {
-                document.getElementById("protectHeaderLocal").value = protectArray["sectionProtect"].replace(/\$1/gi, title);
-                document.getElementById("protectHeaderLocal").classList.remove("disabled");
-            }
-            document.getElementById("protectDiffsLocal").classList.remove("disabled");
-        }
-        // local protect end
-
-
-        // local report start
-        var checkReportNotAuto = false;
-        if (reportArray !== null)
-            if (checkKey("pageReport", wiki, reportArray))
-                if (checkKey("regexReport", wiki, reportArray))
-                    if (checkKey("sectionReport", wiki, reportArray) || (checkKey("withoutSectionReport", wiki, reportArray) && reportArray["withoutSectionReport"] === true))
-                        if (checkKey("textReport", wiki, reportArray))
-                            if (checkKey("summaryReport", wiki, reportArray))
-                                checkReportNotAuto = true;
-        if (checkReportNotAuto === false) {
-            document.getElementById("reportDiffsLocal").classList.add("disabled");
-        } else {
-            document.getElementById("reportCommentLocal").value = reportArray["textReport"].replace(/\$1/gi, user);
-            if (checkKey("withoutSectionReport", wiki, reportArray) && reportArray["withoutSectionReport"] === true)
-                document.getElementById("reportHeaderLocal").classList.add("disabled");
-            else {
-                document.getElementById("reportHeaderLocal").value = reportArray["sectionReport"].replace(/\$1/gi, user);
-                document.getElementById("reportHeaderLocal").classList.remove("disabled");
-            }
-            document.getElementById("reportDiffsLocal").classList.remove("disabled");
-        }
-        // local report end
-
-        // SRM start
-        var checkSRM = true;
-
-        if (checkSRM === false)
-            document.getElementById("othersDiffsGlobal").classList.add("disabled");
-        else {
-            var textSRM = othersArray["SRM"][0]["text"].replace(/\$1/gi, user).replace(/\$2/gi, title).replace(/\$3/gi, wiki).replace(/\$4/gi, "\n");
-            if (userip === "registered")
-                textSRM = textSRM.replace(/\$5/gi, "sultool");
-            if (userip === "ip")
-                textSRM = textSRM.replace(/\$5/gi, "luxotool");
-            document.getElementById("othersCommentGlobal").value = textSRM;
-            document.getElementById("othersHeaderGlobal").value = othersArray["SRM"][0]["section"].replace(/\$1/gi, wiki);
-            document.getElementById("othersDiffsGlobal").classList.remove("disabled");
-        }
-        // SRM end
-    };
-
-// .........................................................................................................................
-    $scope.sendSRM = function () {
-        var sectionSRM = "";
-        if (typeof document.getElementById("othersHeaderGlobal").value === "undefined" || document.getElementById("othersHeaderGlobal").value == null || document.getElementById("othersHeaderGlobal").value === "")
-            return;
-        if (typeof document.getElementById("othersCommentGlobal").value === "undefined" || document.getElementById("othersCommentGlobal").value == null || document.getElementById("othersCommentGlobal").value === "")
-            return;
-        sectionSRM = document.getElementById("othersHeaderGlobal").value;
-        var textSRM = document.getElementById("othersCommentGlobal").value;
-        var summarySRM = "+ new request (" + wiki + ")";
-        var pageSRM = "Steward requests/Miscellaneous";
-
-        $.ajax({
-            url: 'php/doEdit.php', type: 'POST',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
-            },
-            crossDomain: true, dataType: 'json',
-            data: {
-                checkreport: 1,
-                srm: 1,
-                warn: 1,
-                project: server_url + script_path + "/api.php",
-                wiki: wiki,
-                page: pageSRM,
-                text: "{{Status|in progress}}\n" + textSRM + "--~~~~",
-                user: user,
-                regexreport: 1,
-                summary: summarySRM
-            },
-            success: function (s) {
-                if (s["result"] === false) {
-                    $.ajax({
-                        url: 'php/doEdit.php', type: 'POST',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
-                        },
-                        crossDomain: true, dataType: 'json',
-                        data: {
-                            warn: "SRM",
-                            withoutsection: false,
-                            project: server_url + script_path + "/api.php",
-                            wiki: wiki,
-                            page: pageSRM,
-                            text: textSRM,
-                            sectiontitle: sectionSRM,
-                            summary: summarySRM
-                        },
-                        success: function () {
-                            closePO();
-                        },
-                        error: function () {
-                            alert("Unknow network error");
-                            closePO();
-                        },
-                    });
-                } else
-                    alert("Already requested!");
-            }
-        });
-
-    };
-
-
-    $scope.sendReportLocal = function () {
-        var sectionReport = "";
-        if (checkKey("withoutSectionReport", wiki, reportArray) === false || reportArray["withoutSectionReport"] === false) {
-            if (typeof document.getElementById("reportHeaderLocal").value === "undefined" || document.getElementById("reportHeaderLocal").value == null || document.getElementById("reportHeaderLocal").value === "")
-                return;
-            else
-                sectionReport = document.getElementById("reportHeaderLocal").value;
-        }
-        if (typeof document.getElementById("reportCommentLocal").value === "undefined" || document.getElementById("reportCommentLocal").value == null || document.getElementById("reportCommentLocal").value === "")
-            return;
-
-        var checkReport = false;
-        if (reportArray !== null)
-            if (checkKey("pageReport", wiki, reportArray))
-                if (checkKey("regexReport", wiki, reportArray))
-                    checkReport = true;
-        if (checkReport === false)
-            return;
-
-        var pageReport = reportArray["pageReport"];
-        var regexReport = reportArray["regexReport"];
-        var textReport = document.getElementById("reportCommentLocal").value;
-        var summaryReport = reportArray["summaryReport"].replace(/\$1/gi, user);
-        var withoutSectionReport = false;
-        if (checkKey("withoutSectionReport", wiki, reportArray))
-            if (reportArray["withoutSectionReport"] === true)
-                withoutSectionReport = true;
-
-
-        $.ajax({
-            url: 'php/doEdit.php', type: 'POST',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
-            },
-            crossDomain: true, dataType: 'json',
-            data: {
-                checkreport: 1,
-                warn: 1,
-                project: server_url + script_path + "/api.php",
-                wiki: wiki,
-                page: pageReport,
-                text: textReport,
-                user: user,
-                regexreport: regexReport,
-                summary: summaryReport
-            },
-            success: function (s) {
-                if (s["result"] === false) {
-                    $.ajax({
-                        url: 'php/doEdit.php', type: 'POST',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / M.Report');
-                        },
-                        crossDomain: true, dataType: 'json',
-                        data: {
-                            warn: "report",
-                            withoutsection: withoutSectionReport,
-                            project: server_url + script_path + "/api.php",
-                            wiki: wiki,
-                            page: pageReport,
-                            text: textReport,
-                            sectiontitle: sectionReport,
-                            summary: summaryReport
-                        },
-                        success: function () {
-                            closePO();
-                        },
-                        error: function () {
-                            alert("Unknow network error");
-                            closePO();
-                        },
-                    });
-                } else
-                    alert("Already requested!");
-            }
-        });
-    };
-
-
-    $scope.sendRequestProtect = function () {
-        var sectionProtect = "";
-        if (checkKey("withoutSectionProtect", wiki, protectArray) === false || protectArray["withoutSectionProtect"] === false) {
-            if (typeof document.getElementById("protectHeaderLocal").value === "undefined" || document.getElementById("protectHeaderLocal").value == null || document.getElementById("protectHeaderLocal").value === "")
-                return;
-            else
-                sectionProtect = document.getElementById("protectHeaderLocal").value;
-        }
-        if (typeof document.getElementById("protectCommentLocal").value === "undefined" || document.getElementById("protectCommentLocal").value == null || document.getElementById("protectCommentLocal").value === "")
-            return;
-
-        var checkProtect = false;
-        if (protectArray !== null)
-            if (checkKey("pageProtect", wiki, protectArray))
-                if (checkKey("regexProtect", wiki, protectArray))
-                    checkProtect = true;
-        if (checkProtect === false)
-            return;
-
-        var pageProtect = protectArray["pageProtect"];
-        var regexProtect = protectArray["regexProtect"];
-        var textProtect = document.getElementById("protectCommentLocal").value;
-        var summaryProtect = protectArray["summaryProtect"].replace(/\$1/gi, title);
-        var withoutSectionProtect = false;
-        if (checkKey("withoutSectionProtect", wiki, protectArray))
-            if (protectArray["withoutSectionProtect"] === true)
-                withoutSectionProtect = true;
-
-
-        $.ajax({
-            url: 'php/doEdit.php', type: 'POST',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Protect');
-            },
-            crossDomain: true, dataType: 'json',
-            data: {
-                checkreport: 1,
-                warn: 1,
-                project: server_url + script_path + "/api.php",
-                wiki: wiki,
-                page: pageProtect,
-                text: textProtect,
-                user: title,
-                regexreport: regexProtect,
-                summary: summaryProtect
-            },
-            success: function (s) {
-                if (s["result"] === false) {
-                    $.ajax({
-                        url: 'php/doEdit.php', type: 'POST',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Protect');
-                        },
-                        crossDomain: true, dataType: 'json',
-                        data: {
-                            warn: "protect",
-                            withoutsection: withoutSectionProtect,
-                            project: server_url + script_path + "/api.php",
-                            wiki: wiki,
-                            page: pageProtect,
-                            text: textProtect,
-                            sectiontitle: sectionProtect,
-                            summary: summaryProtect
-                        },
-                        success: function () {
-                            closePO();
-                        },
-                        error: function () {
-                            alert("Unknow network error");
-                            closePO();
-                        },
-                    });
-                } else
-                    alert("Already requested!");
-            }
-        });
-    };
-
-    $scope.Revert = function (summaryPreset, warnPreset) {
-        if ((old == null) || (isNaN(old) === true))
-            return;
-        uiDisable();
-        var summarypre = "";
-        if (summaryPreset !== null && typeof summaryPreset !== "undefined")
-            summarypre = summaryPreset.replace(/\$7/gi, title);
-        else {
-            if (document.getElementById('credit').value !== "" && document.getElementById('credit').value !== null && document.getElementById('customRevert').classList.contains('po__active'))
-                summarypre = document.getElementById('credit').value;
-        }
-        document.getElementById('credit').value = "";
+        RSInput.value = "";
         closePO();
-        checkLast(server_url, server_name, script_path, server_uri, wiki, namespace, user, old, dnew, times,function(cb0) {
-            if (cb0 === false) {
-                SHOW_DIFF(server_url, server_name, script_path, server_uri, wiki, namespace, user, old, dnew, title, userip, summary, wikidatat, "second");
-                createDialog({
-                    parentId: 'angularapp', id: 'multipleEditDialog',
-                    title: 'Multiple edits',
-                    alert: { message: 'This user made multiple edits on this article. Please check article history first.' },
-                    buttons: [{ type: 'accent', title: 'Alright', remove: true }]
-                })
-                return;
-            }
-
-            $scope.isCURRENT(server_url, script_path, title, dnew, old, function (cb) {
-                if (cb == null || cb === false) {
-                    uiEnable();
-                    return;
+    
+        isLatestRevision(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.new)
+        .then(edit => {
+            if (!edit.isLatest) return bindLatestRevision(SEdit, edit.revision);
+            SEdit.timestamp = edit.revision.timestamp;
+            checkMultipleEdits(SEdit.server_url, SEdit.script_path, SEdit.user, SEdit.new)
+            .then(async isMulitpleEdits => {
+                if (isMulitpleEdits && checkMode === 1) {
+                    const lastUserRevId = await getLastUserRevId(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.user, SEdit.new);
+                    if (lastUserRevId !== SEdit.old) return lastUserRevId;
                 }
-
-                var rbmode = "rollback";
-                if (isGlobalModeAccess === true && local_wikis.indexOf(wiki) === -1)
-                    rbmode = "undo";
-
-                var undoSummary = 'Undid edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1';
-                if (config["wikis"][0].hasOwnProperty(wiki))
-                    if (config["wikis"][0][wiki][0].hasOwnProperty("defaultUndoSummary"))
-                        if (config["wikis"][0][wiki][0]["defaultUndoSummary"] !== null && config["wikis"][0][wiki][0]["defaultUndoSummary"] !== "")
-                            undoSummary = config["wikis"][0][wiki][0]["defaultUndoSummary"];
-                var revertData = {};
-                if (summarypre === "") {
-                    if (rbmode === "undo")
-                        revertData = {
-                            rbmode: rbmode,
-                            basetimestamp: timestamp,
-                            page: title,
-                            id: dnew,
-                            user: user,
-                            wiki: wiki,
-                            summary: undoSummary.replace(/\$2/gi, user).replace(/\$3/gi, title),
-                            project: server_url + script_path + "/api.php"
-                        };
-                    else
-                        revertData = {
-                            rbmode: rbmode,
-                            basetimestamp: timestamp,
-                            page: title,
-                            id: dnew,
-                            user: user,
-                            wiki: wiki,
-                            project: server_url + script_path + "/api.php"
-                        };
-                    var rawV = {user: user, project: server_url + script_path, wiki: wiki, oldid: old, newid: dnew};
-                    vandalsReport.push(rawV);
-                    vandals.push(user);
-                    var rawSend = {"type": "synch", "wiki": wiki, "nickname": user, "vandal": "1", "page": title};
-                    connectTalk.talkSendInside(rawSend);
-                } else {
-                    var undoPrefix = 'Undid edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1: '.replace(/\$2/gi, user).replace(/\$3/gi, title);
-                    if (config["wikis"][0].hasOwnProperty(wiki))
-                        if (config["wikis"][0][wiki][0].hasOwnProperty("defaultUndoPrefix"))
-                            if (config["wikis"][0][wiki][0]["defaultUndoPrefix"] !== null && config["wikis"][0][wiki][0]["defaultUndoPrefix"] !== "")
-                                undoPrefix = config["wikis"][0][wiki][0]["defaultUndoPrefix"].replace(/\$2/gi, user).replace(/\$3/gi, title);
-
-                    var rollbackPrefix = 'Reverted edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1: ';
-                    if (config["wikis"][0].hasOwnProperty(wiki))
-                        if (config["wikis"][0][wiki][0].hasOwnProperty("defaultRollbackPrefix"))
-                            if (config["wikis"][0][wiki][0]["defaultRollbackPrefix"] !== null && config["wikis"][0][wiki][0]["defaultRollbackPrefix"] !== "")
-                                rollbackPrefix = config["wikis"][0][wiki][0]["defaultRollbackPrefix"].replace(/\$7/gi, title);
-
-                    if (rbmode === "undo")
-                        rollbackPrefix = undoPrefix;
-                    revertData = {
-                        rbmode: rbmode,
-                        basetimestamp: timestamp,
-                        page: title,
-                        id: dnew,
-                        user: user,
-                        wiki: wiki,
-                        summary: rollbackPrefix + summarypre,
-                        project: server_url + script_path + "/api.php"
-                    };
-                    rawV = {user: user, project: server_url + script_path, wiki: wiki, oldid: old, newid: dnew};
-                    vandalsReport.push(rawV);
-                    suspects.push(user);
-                    rawSend = {"type": "synch", "wiki": wiki, "nickname": user, "vandal": "2", "page": title};
-                    connectTalk.talkSendInside(rawSend);
-                }
-                $.ajax({
-                    url: 'php/rollback.php',
-                    type: 'POST',
-                    crossDomain: true,
-                    data: revertData,
-                    dataType: 'json',
-                    success: function (datarollback) {
-                        if (datarollback["result"] === "Success") {
-                            $scope.$apply(function () {
-                                $scope.edits.map(function (e, index) {
-                                    if (e.wiki === wiki && e.title === title) {
-                                        $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
-                                    }
-                                });
-                            });
-
-                            if (warnPreset !== null && typeof warnPreset !== "undefined") {
-                                var checkWarnCorrect = false;
-                                if (warn !== null)
-                                    if (typeof warn["summaryWarn"] !== "undefined")
-                                        if (warn["summaryWarn"] !== null && warn["summaryWarn"] !== "")
-                                            if (typeof warn["sectionWarn"] !== "undefined")
-                                                if (warn["sectionWarn"] !== null && warn["sectionWarn"] !== "")
-                                                    if (typeof warn["countWarn"] !== "undefined")
-                                                        if (warn["countWarn"] !== null && warn["countWarn"] !== "")
-                                                            if (typeof warn[warnPreset] !== "undefined")
-                                                                if (warn[warnPreset] !== null && warn[warnPreset] !== "")
-                                                                    if (typeof warn[warnPreset][0]["tags"] !== "undefined")
-                                                                        if (warn[warnPreset][0]["tags"] !== null && warn[warnPreset][0]["tags"] !== "")
-                                                                            if (typeof warn[warnPreset][0]["templates"] !== "undefined")
-                                                                                if (warn[warnPreset][0]["templates"] !== null && warn[warnPreset][0]["templates"] !== "") {
-                                                                                    checkWarnCorrect = true;
-                                                                                    var timeWarn = moment.utc().subtract('10', 'days').format('YYYY-MM-DDTHH:mm:ss') + "Z";
-                                                                                    var warnSection = warn["sectionWarn"];
-                                                                                    var warnSummary = warn["summaryWarn"];
-                                                                                    var warnCount = Number(warn["countWarn"]) - 1;
-                                                                                    var warnMonth = moment.utc().format('MMMM');
-
-                                                                                    if (typeof warn["months"] !== "undefined")
-                                                                                        if (typeof warn["months"][0][parseInt(moment.utc().format('MM'))] !== "undefined")
-                                                                                            if (warn["months"][0][parseInt(moment.utc().format('MM'))] !== null)
-                                                                                                warnMonth = warn["months"][0][parseInt(moment.utc().format('MM'))];
-                                                                                    var tags = [];
-                                                                                    var templates = [];
-
-                                                                                    for (var keyTags in warn[warnPreset][0]["tags"][0]) {
-                                                                                        if (warn[warnPreset][0]["tags"][0].hasOwnProperty(keyTags))
-                                                                                            tags.push(warn[warnPreset][0]["tags"][0][keyTags]);
-                                                                                    }
-                                                                                    for (var keyTemplates in warn[warnPreset][0]["templates"][0]) {
-                                                                                        if (warn[warnPreset][0]["templates"][0].hasOwnProperty(keyTemplates))
-                                                                                            templates.push(warn[warnPreset][0]["templates"][0][keyTemplates]);
-                                                                                    }
-
-                                                                                    var url = server_url + script_path + "/api.php?action=query&prop=revisions&titles=User_talk:" + encodeURIComponent(user) + "&rvslots=main&rvprop=ids&rvdir=newer&rvstart=" + timeWarn + "&rvlimit=500&format=json&utf8=1";
-                                                                                    $.ajax({
-                                                                                        url: url,
-                                                                                        type: 'GET',
-                                                                                        beforeSend: function (xhr) {
-                                                                                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
-                                                                                        },
-                                                                                        crossDomain: true,
-                                                                                        dataType: 'jsonp',
-                                                                                        success: function (idsWarns) {
-                                                                                            var level = -1;
-                                                                                            var pageIdsWarns = null;
-                                                                                            if (typeof idsWarns["query"] !== "undefined" && typeof idsWarns["query"]["pages"] !== "undefined") {
-                                                                                                for (var k in idsWarns["query"]["pages"]) {
-                                                                                                    if (idsWarns["query"]["pages"].hasOwnProperty(k))
-                                                                                                        if (Number(k) !== -1)
-                                                                                                            pageIdsWarns = idsWarns["query"]["pages"][k];
-                                                                                                }
-                                                                                                var oldIdsWarns = -1;
-                                                                                                var newIdsWarns = -1;
-                                                                                                if (pageIdsWarns !== null && typeof pageIdsWarns["revisions"] !== "undefined") {
-                                                                                                    newIdsWarns = pageIdsWarns["revisions"][pageIdsWarns["revisions"].length - 1]["revid"];
-                                                                                                    if (typeof pageIdsWarns["revisions"][0]["parentid"] !== "undefined" && pageIdsWarns["revisions"][0]["parentid"] !== null && pageIdsWarns["revisions"][0]["parentid"] !== "")
-                                                                                                        oldIdsWarns = pageIdsWarns["revisions"][0]["parentid"];
-                                                                                                }
-                                                                                                var url = server_url + script_path + "/api.php?action=compare&fromrev=" + oldIdsWarns + "&torev=" + newIdsWarns + "&utf8=1&format=json";
-                                                                                                if (oldIdsWarns === -1)
-                                                                                                    url = server_url + script_path + "/api.php?action=compare&fromrev=" + newIdsWarns + "&torelative=prev&utf8=1&format=json";
-                                                                                                if (oldIdsWarns === 0)
-                                                                                                    url = server_url + script_path + "/api.php?action=query&prop=revisions&titles=User_talk:" + encodeURIComponent(user) + "&rvslots=main&rvprop=content&rvlimit=1&format=json&utf8=1";
-                                                                                                $.ajax({
-                                                                                                    url: url,
-                                                                                                    type: 'GET',
-                                                                                                    crossDomain: true,
-                                                                                                    dataType: 'jsonp',
-                                                                                                    success: function (revisionsWarn) {
-                                                                                                        var diffWarnContent = "";
-                                                                                                        if ((typeof revisionsWarn["compare"] !== "undefined" && typeof revisionsWarn["compare"]["*"] !== "undefined") || (typeof revisionsWarn["query"] !== "undefined" && typeof revisionsWarn["query"]["pages"] !== "undefined" && revisionsWarn["query"]["pages"] !== -1)) {
-                                                                                                            if (typeof revisionsWarn["query"] !== "undefined" && typeof revisionsWarn["query"]["pages"] !== "undefined") {
-                                                                                                                var pageIdContent = "";
-                                                                                                                for (var k in revisionsWarn["query"]["pages"]) {
-                                                                                                                    if (revisionsWarn["query"]["pages"].hasOwnProperty(k))
-                                                                                                                        if (Number(k) !== -1)
-                                                                                                                            pageIdContent = revisionsWarn["query"]["pages"][k];
-                                                                                                                }
-                                                                                                                if (typeof pageIdContent["revisions"] !== "undefined" && typeof pageIdContent["revisions"][0] !== "undefined" && typeof pageIdContent["revisions"][0]["slots"] !== "undefined" && typeof pageIdContent["revisions"][0]["slots"]["main"] !== "undefined" && typeof pageIdContent["revisions"][0]["slots"]["main"]["*"] !== "undefined")
-                                                                                                                    diffWarnContent = pageIdContent["revisions"][0]["slots"]["main"]["*"];
-                                                                                                            } else {
-                                                                                                                if (typeof revisionsWarn["compare"] !== "undefined" && typeof revisionsWarn["compare"]["*"] !== "undefined")
-                                                                                                                    diffWarnContent = revisionsWarn["compare"]["*"];
-                                                                                                            }
-                                                                                                            diffWarnContent = getNewFromDiff(diffWarnContent);
-                                                                                                            for (var tagWarn in tags) {
-                                                                                                                if (tags.hasOwnProperty(tagWarn))
-                                                                                                                    if (diffWarnContent.indexOf(tags[tagWarn]) !== -1)
-                                                                                                                        if (level < tagWarn)
-                                                                                                                            level = Number(tagWarn);
-                                                                                                            }
-                                                                                                        }
-
-                                                                                                        if (level === -1 || (level !== -1 && level < warnCount)) {
-                                                                                                            level = level + 1;
-                                                                                                            if (typeof templates[level] !== "undefined") {
-
-                                                                                                                $.ajax({
-                                                                                                                    url: 'php/doEdit.php',
-                                                                                                                    type: 'POST',
-                                                                                                                    beforeSend: function (xhr) {
-                                                                                                                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
-                                                                                                                    },
-                                                                                                                    crossDomain: true,
-                                                                                                                    dataType: 'json',
-                                                                                                                    data: {
-                                                                                                                        warn: "rollback",
-                                                                                                                        withoutsection: withoutSection,
-                                                                                                                        project: server_url + script_path + "/api.php",
-                                                                                                                        wiki: wiki,
-                                                                                                                        page: 'User_talk:' + user,
-                                                                                                                        text: templates[level].replace(/\$1/gi, title).replace(/\$2/gi, old).replace(/\$3/gi, dnew).replace(/\$4/gi, user).replace(/\$5/gi, "Special:Diff/" + old + "/" + dnew).replace(/\$6/gi, server_url + script_path + "/index.php?oldid=" + old + "&diff=" + dnew),
-                                                                                                                        sectiontitle: warnSection.replace(/\$DD/gi, moment.utc().format('DD')).replace(/\$MMMM/gi, warnMonth).replace(/\$MM/gi, moment.utc().format('MM')).replace(/\$YYYY/gi, moment.utc().format('YYYY')),
-                                                                                                                        summary: warnSummary.replace(/\$1/gi, level + 1)
-                                                                                                                    },
-                                                                                                                    success: function () {
-                                                                                                                        $scope.reqEnd(datarollback);
-                                                                                                                    },
-                                                                                                                    error: function () {
-                                                                                                                        $scope.reqEnd(datarollback);
-                                                                                                                    }
-                                                                                                                });
-                                                                                                            } else
-                                                                                                                $scope.reqEnd(datarollback);
-                                                                                                        } else {
-                                                                                                            if (level === warnCount) {
-                                                                                                                var checkReport = false;
-                                                                                                                if (reportArray !== null)
-                                                                                                                    if (checkKey("autoReport", wiki, reportArray))
-                                                                                                                        if (reportArray["autoReport"] === true)
-                                                                                                                            if (checkKey("pageReport", wiki, reportArray))
-                                                                                                                                if (checkKey("regexReport", wiki, reportArray))
-                                                                                                                                    if (checkKey("sectionReport", wiki, reportArray) || (checkKey("withoutSectionReport", wiki, reportArray) && reportArray["withoutSectionReport"] === true))
-                                                                                                                                        if (checkKey("textReport", wiki, reportArray)) {
-                                                                                                                                            checkReport = true;
-                                                                                                                                            var pageReport = reportArray["pageReport"];
-                                                                                                                                            var regexReport = reportArray["regexReport"].replace(/\$1/gi, user);
-                                                                                                                                            var regexReport2 = "";
-                                                                                                                                            if (checkKey("regexReport2", wiki, reportArray))
-                                                                                                                                                regexReport2 = reportArray["regexReport2"].replace(/\$1/gi, user);
-                                                                                                                                            var textReport = reportArray["textReport"].replace(/\$1/gi, user);
-                                                                                                                                            if (checkKey("textReportIP", wiki, reportArray))
-                                                                                                                                                if (userip === "ip")
-                                                                                                                                                    textReport = reportArray["textReportIP"].replace(/\$1/gi, user);
-                                                                                                                                            var summaryReport = "[[Special:Contribs/" + user + "|" + user + "]]";
-                                                                                                                                            if (checkKey("summaryReport", wiki, reportArray))
-                                                                                                                                                summaryReport = reportArray["summaryReport"].replace(/\$1/gi, user);
-                                                                                                                                            var withoutSectionReport = false;
-                                                                                                                                            if (checkKey("withoutSectionReport", wiki, reportArray))
-                                                                                                                                                if (reportArray["withoutSectionReport"] === true)
-                                                                                                                                                    withoutSectionReport = true;
-                                                                                                                                            var sectionReport = null;
-                                                                                                                                            if (withoutSectionReport === false)
-                                                                                                                                                sectionReport = reportArray["sectionReport"].replace(/\$1/gi, user);
-
-
-                                                                                                                                            $.ajax({
-                                                                                                                                                url: 'php/doEdit.php',
-                                                                                                                                                type: 'POST',
-                                                                                                                                                beforeSend: function (xhr) {
-                                                                                                                                                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Report');
-                                                                                                                                                },
-                                                                                                                                                crossDomain: true,
-                                                                                                                                                dataType: 'json',
-                                                                                                                                                data: {
-                                                                                                                                                    checkreport: 1,
-                                                                                                                                                    warn: 1,
-                                                                                                                                                    project: server_url + script_path + "/api.php",
-                                                                                                                                                    wiki: wiki,
-                                                                                                                                                    page: pageReport,
-                                                                                                                                                    text: textReport,
-                                                                                                                                                    user: user,
-                                                                                                                                                    regexreport: regexReport,
-                                                                                                                                                    regexreport2: regexReport2,
-                                                                                                                                                    summary: summaryReport
-                                                                                                                                                },
-                                                                                                                                                success: function (s) {
-                                                                                                                                                    if (s["result"] === false) {
-                                                                                                                                                        var isTop = false;
-                                                                                                                                                        if (config["wikis"][0].hasOwnProperty(wiki))
-                                                                                                                                                            if (config["wikis"][0][wiki][0].hasOwnProperty("report"))
-                                                                                                                                                                if (config["wikis"][0][wiki][0]["report"][0].hasOwnProperty("reportTop"))
-                                                                                                                                                                    if (config["wikis"][0][wiki][0]["report"][0]["reportTop"] !== null && config["wikis"][0][wiki][0]["report"][0]["reportTop"] !== "" && config["wikis"][0][wiki][0]["report"][0]["reportTop"] === true)
-                                                                                                                                                                        isTop = true;
-                                                                                                                                                        var preamb = false;
-                                                                                                                                                        if (config["wikis"][0].hasOwnProperty(wiki))
-                                                                                                                                                            if (config["wikis"][0][wiki][0].hasOwnProperty("report"))
-                                                                                                                                                                if (config["wikis"][0][wiki][0]["report"][0].hasOwnProperty("reportPreamb"))
-                                                                                                                                                                    if (config["wikis"][0][wiki][0]["report"][0]["reportPreamb"] !== null && config["wikis"][0][wiki][0]["report"][0]["reportPreamb"] !== "" && config["wikis"][0][wiki][0]["report"][0]["reportPreamb"] === true)
-                                                                                                                                                                        preamb = true;
-                                                                                                                                                        createDialog({
-                                                                                                                                                            parentId: "angularapp",
-                                                                                                                                                            id: "autoReportDialog",
-                                                                                                                                                            title: "Auto report",
-                                                                                                                                                            alert: { emoji: "😡", message: "This user has been warned multiple times. Do you want to report them to administators?" },
-                                                                                                                                                            buttons: [{
-                                                                                                                                                                type: "negative",
-                                                                                                                                                                title: "Report",
-                                                                                                                                                                onClick: () => {
-                                                                                                                                                                    $.ajax({
-                                                                                                                                                                        url: 'php/doEdit.php',
-                                                                                                                                                                        type: 'POST',
-                                                                                                                                                                        beforeSend: function (xhr) {
-                                                                                                                                                                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Report');
-                                                                                                                                                                        },
-                                                                                                                                                                        crossDomain: true,
-                                                                                                                                                                        dataType: 'json',
-                                                                                                                                                                        data: {
-                                                                                                                                                                            warn: "report",
-                                                                                                                                                                            withoutsection: withoutSectionReport,
-                                                                                                                                                                            project: server_url + script_path + "/api.php",
-                                                                                                                                                                            wiki: wiki,
-                                                                                                                                                                            top: isTop,
-                                                                                                                                                                            preamb: preamb,
-                                                                                                                                                                            page: pageReport,
-                                                                                                                                                                            text: textReport,
-                                                                                                                                                                            sectiontitle: sectionReport,
-                                                                                                                                                                            summary: summaryReport
-                                                                                                                                                                        },
-                                                                                                                                                                        success: function () {
-                                                                                                                                                                            $scope.reqEnd(datarollback);
-                                                                                                                                                                        },
-                                                                                                                                                                        error: function () {
-                                                                                                                                                                            $scope.reqEnd(datarollback);
-                                                                                                                                                                        }
-                                                                                                                                                                    });
-                                                                                                                                                                },
-                                                                                                                                                                remove: true
-                                                                                                                                                            }, {
-                                                                                                                                                                title: "Cancel",
-                                                                                                                                                                onClick: () => {
-                                                                                                                                                                    $scope.reqEnd(datarollback);
-                                                                                                                                                                },
-                                                                                                                                                                remove: true
-                                                                                                                                                            }]
-                                                                                                                                                        })
-                                                                                                                                                    } else
-                                                                                                                                                        $scope.reqEnd(datarollback);
-                                                                                                                                                },
-                                                                                                                                                error: function () {
-                                                                                                                                                    $scope.reqEnd(datarollback);
-                                                                                                                                                }
-                                                                                                                                            });
-                                                                                                                                        }
-                                                                                                            }
-                                                                                                            if (checkReport === false)
-                                                                                                                $scope.reqEnd(datarollback);
-                                                                                                        }
-                                                                                                    }, error() {
-                                                                                                        $scope.reqEnd(datarollback);
-                                                                                                    }
-                                                                                                });
-                                                                                            } else
-                                                                                                $scope.reqEnd(datarollback);
-                                                                                        },
-                                                                                        error() {
-                                                                                            $scope.reqEnd(datarollback);
-                                                                                        }
-                                                                                    });
-                                                                                } else
-                                                                                    $scope.reqEnd(datarollback);
-                                if (checkWarnCorrect === false) {
-                                    alert("Warning error. Maybe confug is not correctly");
-                                    $scope.reqEnd(datarollback);
-                                }
-                            } else
-                                $scope.reqEnd(datarollback);
-                        } else {
-                            if (datarollback['code'] === "undofailure" || datarollback['code'] === "editconflict" || datarollback['code'] === "alreadyrolled") {
-                                $scope.isCURRENT(server_url, script_path, title, dnew, old, function (cb2) {
-                                    if (cb2 == null) {
-                                        uiEnable();
-                                        return;
-                                    }
-                                    if (cb2 === false) {
-                                        uiEnable();
-                                        return;
-                                    }
-                                    document.getElementById('page').srcdoc = starterror + "Rollback error: " + escapeXSS(datarollback['result']) + enderror;
-                                    uiEnable();
-                                });
-                            } else {
-                                document.getElementById('page').srcdoc = starterror + "Rollback error: " + escapeXSS(datarollback['result']) + enderror;
-                                uiEnable();
-                            }
-                        }
-                    }, error: function (error) {
-                        document.getElementById('page').srcdoc = starterror + "Rollback error. Please open page in the new tab.<br><small>Error code: " + escapeXSS(error.status) + enderror;
-                        uiEnable();
+                var RBMode = "rollback";
+                if (isGlobalModeAccess === true && local_wikis.indexOf(SEdit.wiki) === -1) RBMode = 'undo';
+    
+                const revertData = {
+                    rbmode: RBMode,
+                    basetimestamp: SEdit.timestamp,
+                    page: SEdit.title,
+                    id: SEdit.new,
+                    user: SEdit.user,
+                    wiki: SEdit.wiki,
+                    project: SEdit.server_url + SEdit.script_path + '/api.php'
+                };
+                if (rollbackSummary === "") {
+                    if (RBMode === 'undo') {
+                        var undoSummary = 'Undid edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1';
+                        if (SEdit.config.hasOwnProperty('defaultUndoSummary'))
+                        if (SEdit.config['defaultUndoSummary'] !== null && SEdit.config['defaultUndoSummary'] !== "")
+                            undoSummary = SEdit.config['defaultUndoSummary'];
+                        revertData.summary = undoSummary.replace(/\$2/gi, SEdit.user).replace(/\$3/gi, SEdit.title);
                     }
+                } else {
+                    if (RBMode === 'undo') {
+                        var undoPrefix = 'Undid edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1: '.replace(/\$2/gi, SEdit.user).replace(/\$3/gi, SEdit.title);
+                        if (SEdit.config.hasOwnProperty('defaultUndoPrefix'))
+                        if (SEdit.config['defaultUndoPrefix'] !== null && SEdit.config['defaultUndoPrefix'] !== "")
+                            undoPrefix = SEdit.config['defaultUndoPrefix'].replace(/\$2/gi, SEdit.user).replace(/\$3/gi, SEdit.title);
+                        revertData.summary = undoPrefix + rollbackSummary;
+                    } else {
+                        var rollbackPrefix = 'Reverted edits by [[Special:Contribs/$2|$2]] ([[User talk:$2|talk]]) to last version by $1: ';
+                        if (SEdit.config.hasOwnProperty('defaultRollbackPrefix'))
+                        if (SEdit.config['defaultRollbackPrefix'] !== null && SEdit.config['defaultRollbackPrefix'] !== "")
+                            rollbackPrefix = SEdit.config['defaultRollbackPrefix'].replace(/\$7/gi, SEdit.title);
+                        revertData.summary = rollbackPrefix + rollbackSummary;
+                    }
+                }
+                const rawV = { user: SEdit.user, project: SEdit.server_url + SEdit.script_path, wiki: SEdit.wiki, oldid: SEdit.old, newid: SEdit.new };
+                vandalsReport.push(rawV);
+                suspects.push(SEdit.user);
+                const rawSend = {"type": "synch", "wiki": SEdit.wiki, "nickname": SEdit.user, "vandal": rollbackSummary === ""? "1": "2", "page": SEdit.title};
+                connectTalk.talkSendInside(rawSend);
+    
+                performRollback(revertData)
+                .then(rollbackData => {
+                    $scope.$apply(() => $scope.edits.map((e, index) => {
+                        if (e.wiki === SEdit.wiki && e.title === SEdit.title) {
+                            $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
+                        }
+                    }));
+    
+                    $scope.reqSuccessNotify(rollbackData, SEdit, 'rollback', RBMode);
+                    if (description.warn === null || typeof description.warn === 'undefined') return;
+                    $scope.doWarn(rollbackData, SEdit, description);
+                }).catch(err => createNotify({
+                    img: '/img/warning-filled.svg',
+                    title: 'Rollback failed!',
+                    content: err,
+                    removable: true
+                }));
+            }).then(revId => {
+                if (typeof revId === 'undefined') return;
+                SEdit.old = revId;
+                createNotify({
+                    img: "/img/rollback-filled.svg",
+                    title: 'Rollback failed!',
+                    content: `${SEdit.user} has multiple edits on "${SEdit.title}". Please check artical history first.`,
+                    removable: true,
+                    buttons: [{
+                        title: 'Load history',
+                        type: 'positive', remove: true,
+                        onClick: () => { closePO(); $scope.select(SEdit); }
+                    }, {title: 'Cancel', remove: true }]
                 });
-            });
-        });
-    };
+            }).catch(err => createNotify({
+                img: '/img/warning-filled.svg',
+                title: 'Rollback failed!',
+                content: err,
+                removable: true
+            }));
+        }).then(latestEdit => {
+            if (typeof latestEdit === 'undefined') return;
+            createNotify({
+                img: "/img/rollback-filled.svg", 
+                title: 'Rollback failed',
+                content: `Can't perform this action, "${latestEdit.title}" is not latest revision. Loaded new revision.`,
+                removable: true,
+                buttons: [{
+                    title: 'View latest',
+                    remove: true, type: 'positive',
+                    onClick: () => { closePO(); $scope.select(latestEdit); }
+                }, { title: "Cancel", remove: true }]
+            })
+        }).catch(err => createNotify({
+            img: '/img/warning-filled.svg',
+            title: 'Rollback failed!',
+            content: err,
+            removable: true
+        }));
+        $scope.selectTop();
+    }
 
-    function getNewFromDiff(diffContent) {
-        return diffContent.replace(/<tr>([^]*?)<\/tr>/g, function ($0, $1) {
-            if ($1.search(/<td class="deletedline">/g) === -1 &&
-                $1.search(/<td class="diff-marker">-<\/td>/g) === -1 &&
-                $1.search(/<td class="diff-context">/g) === -1 &&
-                $1.search(/<ins/g) === -1 &&
-                $1.search(/<del/g) === -1)
-                return $1;
-            else
-                return "";
+    $scope.doWarn = function (rollbackData, SEdit, description) {
+        
+        if (SEdit.config.warn === null ||
+            typeof SEdit.config.warn['summaryWarn'] === 'undefined' || SEdit.config.warn['summaryWarn'] === null || SEdit.config.warn['summaryWarn'] === "" ||
+            typeof SEdit.config.warn['sectionWarn'] === 'undefined' || SEdit.config.warn['sectionWarn'] === null || SEdit.config.warn['sectionWarn'] === "" ||
+            typeof SEdit.config.warn['countWarn'] === 'undefined' || SEdit.config.warn['countWarn'] === null || SEdit.config.warn['countWarn'] === "" ||
+            typeof SEdit.config.warn[description.warn] === 'undefined' || SEdit.config.warn[description.warn] === null || SEdit.config.warn[description.warn] === "" ||
+            typeof SEdit.config.warn[description.warn][0]['tags'] === 'undefined' || SEdit.config.warn[description.warn][0]['tags'] === null || SEdit.config.warn[description.warn][0]['tags'] === "" ||
+            typeof SEdit.config.warn[description.warn][0]['templates'] === 'undefined' || SEdit.config.warn[description.warn][0]['templates'] === null || SEdit.config.warn[description.warn][0]['templates'] === ""
+        ) return createNotify({
+            img: '/img/warning-filled.svg',
+            title: 'Warn failed!',
+            content: `Warn for ${SEdit.title} is not being send. Maybe config are not define correctly`,
+            removable: true
         });
+
+        const timeWarn = moment.utc().subtract('10', 'days').format('YYYY-MM-DDTHH:mm:ss') + "Z";
+        var maxWarnCount = Number(SEdit.config.warn['countWarn']) - 1;
+        var warnMonth = moment.utc().format('MMMM');
+
+        if (typeof SEdit.config.warn['months'] !== 'undefined')
+        if (typeof SEdit.config.warn['months'][0][parseInt(moment.utc().format('MM'))] !== 'undefined')
+        if (SEdit.config.warn['months'][0][parseInt(moment.utc().format('MM'))] !== null)
+            warnMonth = SEdit.config.warn['months'][0][parseInt(moment.utc().format('MM'))];
+        
+        const tags = [];
+        const templates = [];
+
+        for (let tagKey in SEdit.config.warn[description.warn][0]['tags'][0]) tags.push(SEdit.config.warn[description.warn][0]['tags'][0][tagKey]);
+        for (let templateKey in SEdit.config.warn[description.warn][0]['templates'][0]) templates.push(SEdit.config.warn[description.warn][0]['templates'][0][templateKey]);
+
+        getUrlToCountWarn(SEdit.server_url, SEdit.script_path, SEdit.user, timeWarn)
+        .then(url => getExistingWarnCount(url, tags))
+        .then(async warnCount => {
+            if (warnCount === -1 || (warnCount !== -1 && warnCount < maxWarnCount)) {
+                warnCount = warnCount + 1;
+                if (templates[warnCount] === "undefined") throw `Warn for ${SEdit.title} is not being send. Maybe config are not define correctly`;
+                await sendWarning(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.new, SEdit.old, SEdit.title, SEdit.user, warnCount, templates, warnMonth, SEdit.config.warn['summaryWarn'], SEdit.config.warn['sectionWarn'], (description.withoutSection || false));
+                createNotify({
+                    img: '/img/warning-filled.svg',
+                    title: 'Warning performed',
+                    content: `${SEdit.user} has been successfully warned for edit on ${SEdit.title}.`,
+                    removable: true
+                });
+            } else if (warnCount === maxWarnCount) $scope.doReport(SEdit);
+        }).catch(err => createNotify({
+            img: '/img/warning-filled.svg',
+            title: 'Warn failed',
+            content: err,
+            removable: true
+        }));
+    }
+
+    $scope.doReport = function (SEdit) {
+        if (!(checkKey('autoReport', SEdit.config.report) &&
+            SEdit.config.report['autoReport'] === true &&
+            checkKey('pageReport', SEdit.config.report) &&
+            checkKey('regexReport', SEdit.config.report) &&
+            (checkKey('sectionReport', SEdit.config.report) || (checkKey('withoutSectionReport', SEdit.config.report) && SEdit.config.report['withoutSectionReport'] === true)) &&
+            checkKey('textReport', SEdit.config.report))
+        ) return createNotify({
+            img: '/img/warning-filled.svg',
+            title: 'Report failed!',
+            content: `Report for ${SEdit.title} is not being send. Maybe config are not define correctly`,
+            removable: true
+        });
+
+        var pageReport = SEdit.config.report['pageReport'];
+        var regexReport = SEdit.config.report['regexReport'].replace(/\$1/gi, SEdit.user);
+        var regexReport2 = "";
+        if (checkKey('regexReport2', SEdit.config.report)) regexReport2 = SEdit.config.report['regexReport2'].replace(/\$1/gi, SEdit.user);
+        var textReport = SEdit.config.report['textReport'].replace(/\$1/gi, SEdit.user);
+        if (checkKey('textReportIP', SEdit.config.report))
+            if (SEdit.isIp === "ip") textReport = SEdit.config.report['textReportIP'].replace(/\$1/gi, SEdit.user);
+        var summaryReport = "[[Special:Contribs/" + SEdit.user + "|" + SEdit.user + "]]";
+        if (checkKey('summaryReport', SEdit.config.report)) summaryReport = SEdit.config.report['summaryReport'].replace(/\$1/gi, SEdit.user);
+        var withoutSectionReport = false;
+        if (checkKey('withoutSectionReport', SEdit.config.report))
+            if (SEdit.config.report['withoutSectionReport'] === true) withoutSectionReport = true;
+        var sectionReport = null;
+        if (withoutSectionReport === false) sectionReport = SEdit.config.report['sectionReport'].replace(/\$1/gi, SEdit.user);
+        
+        checkIfAlreadyReported(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.user, pageReport, textReport, regexReport, regexReport2, summaryReport)
+        .then(isAreadyReported => {
+            if (isAreadyReported) throw "The user has already Reported";
+            var isTop = false;
+            var preamb = false;
+            if (SEdit.config.report['reportTop'] === true) isTop = true;
+            if (SEdit.config.report['reportPreamb'] === true) preamb = true;
+            createNotify({
+                img: '/img/warning-filled.svg',
+                title: 'Auto report', 
+                content: `${SEdit.user} has been warned muliple times. Do you want to report them to adminstators?`,
+                removable: true,
+                buttons: [{
+                    type: 'negative',
+                    title: 'Report',
+                    remove: true, 
+                    onClick: () => {
+                        closePO();
+                        performReport(SEdit.server_url, SEdit.script_path, SEdit.wiki, withoutSectionReport, isTop, preamb, pageReport, textReport, sectionReport, summaryReport)
+                        .then(() => createNotify({
+                            img: '/img/warning-filled.svg',
+                            title: 'Warning performed',
+                            content: `${SEdit.user} has been successfully reported for edit on ${SEdit.title}.`,
+                            removable: true
+                        })).catch(err => createNotify({
+                            img: '/img/warning-filled.svg',
+                            title: 'Report failed',
+                            content: err,
+                            removable: true
+                        }));
+                    }
+                }, {
+                    title: 'Cancel',
+                    remove: true
+                }]
+            });
+        }).catch(err => createNotify({
+            img: '/img/warning-filled.svg',
+            title: 'Report failed',
+            content: err,
+            removable: true
+        }));
     }
 
     function connectTalk() {
         var sc = new WebSocket("wss://iluvatarbot.toolforge.org/:9030?name=" + userSelf + "&token=" + talktoken);
-
+    
         sc.onclose = function () {
             setTimeout(function () {
                 connectTalk();
@@ -1192,11 +654,10 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 }
             }
             countConnectAttemp++;
-            document.getElementById('badge-talk').style.background = "rgb(251, 47, 47)";
-            document.getElementById('badge-talk').classList.remove('badge-ic__primary');
+            document.getElementById('badge-talk').style.background = "var(--bc-negative)";
             sc.close();
         };
-
+    
         function sendTalk () {
             var phraseTalk = document.getElementById('phrase-send-talk').value;
             if (typeof phraseTalk !== "undefined" && phraseTalk !== null && phraseTalk !== "" && sc.readyState === 1) {
@@ -1204,7 +665,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 sc.send(JSON.stringify({"type": "message", "text": phraseTalk}));
             }
         };
-
+    
         sc.onmessage = function (event) {
             var msg = JSON.parse(event.data);
             var indextmp = 0;
@@ -1220,8 +681,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                             document.getElementById('form-talk').appendChild(newDiv);
                             scrollToBottom("form-talk");
                     }
-                    document.getElementById('badge-talk').style.background = "none";
-                    document.getElementById('badge-talk').classList.add('badge-ic__primary');
+                    document.getElementById('badge-talk').style.background = "var(--tc-primary)";
                 }
                 countConnectAttemp = 0;
                 $scope.$apply(function () {
@@ -1235,9 +695,9 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                         });
                     indextmp++;
                 }
-
+    
             }
-
+    
             if (msg.type === 'connected') {
                 $scope.$apply(function () {
                     if ($scope.users.find(user => user === msg.nickname) === undefined) $scope.users.push(msg.nickname);
@@ -1277,11 +737,10 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     }
                 }
                 if (!document.getElementById('btn-talk').classList.contains('tab__active')) {
-                    document.getElementById('badge-talk').style.background = "rgb(36, 164, 100)";
-                    document.getElementById('badge-talk').classList.remove('badge-ic__primary');
+                    document.getElementById('badge-talk').style.background = "var(--bc-positive)";
                 }
             }
-
+    
             if (msg.type === "synch") {
                 $scope.edits.map(function (e, index) {
                     if (e.wiki === msg.wiki && e.title === msg.page)
@@ -1299,38 +758,36 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     });
             }
         };
-
+    
         function talkSendInside(messageInside) {
             if (sc.readyState === 1)
                 sc.send(JSON.stringify(messageInside));
         }
-
+    
         connectTalk.talkSendInside = talkSendInside;
         connectTalk.sendTalk = sendTalk;
     }
-
-    connectTalk();
-    $scope.sendTalkMsg = connectTalk.sendTalk;
+    
     $scope.displayTalkPeople = () => {
         const peopleTemplate = `<div style="display: flex; flex-direction: column-reverse"> <div class="user-container fs-md" ng-repeat="talkUser in users|unique: talkUser as filteredUsersTalk"> <div class="user-talk" onclick="selectTalkUsers(this)">{{talkUser}}</div> <a class="user-talk-CA" rel="noopener noreferrer" href="https://meta.wikimedia.org/wiki/Special:CentralAuth/{{talkUser}}" target="_blank">CA</a> </div> </div> <div style="display: flex; flex-direction: column-reverse"> <div ng-repeat="talkUserOffline in offlineUsers track by $index"> <div class="user-talk fs-md" style="color: gray;">{{talkUserOffline}}</div> </div> </div>`;
         var peopleCompiled = $compile(peopleTemplate)($scope)
         angular.element(document.getElementById('talkPeopleContent')).append(peopleCompiled);
         $scope.$apply();
     }
+    
 
-    $scope.oresWikiList = {};
     $.ajax({
         type: 'GET',
         url: 'https://ores.wikimedia.org/v3/scores',
         dataType: 'text json',
-        success: result => oresWikiList = result
+        success: result => $scope.oresWikiList = result
     });
     $scope.genORES = (wiki, revId, refObj) => {
-        if (Object.keys(oresWikiList).length === 0) return;
-        if (Object.keys(oresWikiList).find(oresWiki => oresWiki === wiki) === undefined) return;
+        if (Object.keys($scope.oresWikiList).length === 0) return;
+        if (Object.keys($scope.oresWikiList).find(oresWiki => oresWiki === wiki) === undefined) return;
         var oresModel;
-        if (oresWikiList[wiki]['models']['damaging'] !== undefined) oresModel = 'damaging';
-        else if (oresWikiList[wiki]['models']['reverted'] !== undefined) oresModel = 'reverted';
+        if ($scope.oresWikiList[wiki]['models']['damaging'] !== undefined) oresModel = 'damaging';
+        else if ($scope.oresWikiList[wiki]['models']['reverted'] !== undefined) oresModel = 'reverted';
         else return;
         $.ajax({
             type: 'GET',
@@ -1347,490 +804,218 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             error: e => { console.error(e); return; }
         });
     }
-    $scope.edits = [];
+    
     if (typeof (EventSource) == "undefined") {
         alert("Sorry, your browser does not support server-sent events.");
         return;
     }
-
     $scope.recentChange = {
         connect: function () {
             if (this.isConnected) return;
             this.source = new EventSource("https://stream.wikimedia.org/v2/stream/recentchange");
             this.isConnected = true;
             this.source.onmessage = function (event) {
-                var stuff = JSON.parse(event.data);
-                var namespacetemp = "";
-                var swmt = false; var setusers = false;
-        
-                if (isGlobal === true || isGlobalModeAccess === true) {
-                    swmt = (presets[selectedPreset]["swmt"] === "1" || presets[selectedPreset]["swmt"] === "2") ? true : false;
-                    setusers = (presets[selectedPreset]["users"] === "1" || presets[selectedPreset]["users"] === "2") ? true : false;
+                const editData = JSON.parse(event.data);
+                var namespaceTemp = "";
+                var swmt = false;
+                var lt300 = false;
+                if (isGlobal || isGlobalModeAccess) {
+                    swmt = (presets[selectedPreset]["swmt"] === "1" || presets[selectedPreset]["swmt"] === "2")? true: false;
+                    lt300 = (presets[selectedPreset]["users"] === "1" || presets[selectedPreset]["users"] === "2")? true: false;
                 }
-        
+    
                 var registeredSSE = (presets[selectedPreset]["registered"] === "1") ? true : false;
-                var rcMode1 = (presets[selectedPreset]["new"] === "1") ? "new" : "none";
-                var rcMode2 = (presets[selectedPreset]["onlynew"] === "1") ? "none" : "edit";
+                var newPages = (presets[selectedPreset]["new"] === "1") ? "new" : "none";
+                var onlyNewPages = (presets[selectedPreset]["onlynew"] === "1") ? "none" : "edit";
                 var anonsSSE = (presets[selectedPreset]["anons"] === "1") ? true : false;
-        
-                if (stuff.namespace >= 0 && stuff.namespace <= 15) namespacetemp = ns[stuff.namespace];
-                else namespacetemp = "<font color='brown'>Non-canon (" + stuff.namespace + ")</font>";
-        
-                if (stuff.user !== userSelf && (stuff.type === rcMode1 || stuff.type === rcMode2) && stuff.bot === false && (presets[selectedPreset]["namespaces"].indexOf(stuff.namespace.toString()) >= 0 || presets[selectedPreset]["namespaces"].length === 0) && stuff.patrolled !== true && ((presets[selectedPreset]["blprojects"].indexOf(stuff.wiki) >= 0) || (local_wikis.indexOf(stuff.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(stuff.wiki) >= 0 && swmt === true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(stuff.wiki) >= 0 && setusers === true && (isGlobal === true || isGlobalModeAccess === true)))) {
-                    if (typeof sandboxlist[stuff.wiki] !== "undefined")
-                        if (sandboxlist[stuff.wiki] === stuff.title)
-                            return;
-                    if (global.indexOf(stuff.user) !== -1 || presets[selectedPreset]["wlusers"].indexOf(stuff.user) !== -1 || presets[selectedPreset]["wlprojects"].indexOf(stuff.wiki) !== -1)
-                        return;
-        
-                    // IP user
-                    if (/^\d*?\.\d*?\.\d*?\.\d*?$/.test(stuff.user) || stuff.user.indexOf(":") !== -1) {
-                        if (!anonsSSE)
-                            return;
-        
-                        // if it's element of WD. Get label
-                        if (stuff.wiki === "wikidatawiki" && (stuff.namespace === 120 || stuff.namespace === 0)) {
-                            $scope.wikidata_title(stuff, namespacetemp, "ip");
-                            return;
-                        }
-                        // remove old edits by same user in same wiki on same page
-                        $scope.edits.map(function (e, index) {
-                            if (e.wiki === stuff.wiki && e.title === stuff.title && e.user === stuff.user && checkMode === 2)
-                                $scope.$apply(function () {
-                                    $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
-                                });
-                        });
-                        $scope.$apply(function () {
-                            if (countqueue !== 0 && $scope.edits.length >= countqueue) {
-                                if (terminateStream === 1) {
-                                    $scope.recentChange.disconnect();
-                                    return;
-                                }
-                                $scope.edits.pop();
-                            }
-                            var new_el = {
-                                "server_url": stuff.server_url,
-                                "server_name": stuff.server_name,
-                                "script_path": stuff.server_script_path,
-                                "server_uri": stuff.meta.uri,
-                                "wiki": stuff.wiki,
-                                "namespace": namespacetemp,
-                                "user": stuff.user,
-                                "title": stuff.title,
-                                "comment": stuff.comment,
-                                "old": stuff.revision.old,
-                                "new": stuff['revision']['new'],
-                                "isIp": "ip",
-                                "wikidata_title": null,
-                                "ores": undefined,
-                                "isNew": (stuff.type === "new") ? "N" : ""
-                            };
-                            $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
-                            $scope.edits.unshift(new_el);
-                            if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
-                                playSound(newSound, false);
-                        });
-                        return;
-                    }
-                    if (!registeredSSE)
-                        return;
-        
-                    // Registered user
-                    var url = stuff.server_url + stuff.server_script_path + "/api.php?action=query&list=users&ususers=" + encodeURIComponent(stuff.user).replace(/'/g, '%27') + "&usprop=groups|registration|editcount&utf8&format=json";
-                    $.ajax({
-                        url: url, type: 'GET',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
-                        },
-                        crossDomain: true, dataType: 'jsonp', success: function (datainfo) {
-                            var groups = datainfo["query"]["users"][0]["groups"];
-                            if (groups.includes("sysop") === false && groups.includes("editor") === false && groups.includes("autoreviewer") === false && groups.includes("confirmed") === false && groups.includes("extendedconfirmed") === false && groups.includes("filemover") === false && groups.includes("patroller") === false && groups.includes("templateeditor") === false && groups.includes("autopatrolled") === false && groups.includes("autoeditor") === false && groups.includes("closer") === false && groups.includes("rollbacker") === false && groups.includes("translator") === false && groups.includes("translationadmin") === false && groups.includes("engineer") === false && groups.includes("global-renamer") === false && groups.includes("oversight") === false && groups.includes("reviewer") === false && groups.includes("bureaucrat") === false) {
-                                var d = new Date();
-                                if (datainfo["query"]["users"][0]["registration"] == null)
-                                    return; // WMF have lost registration date of some very old accounts
-                                var dateDiff = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()) - Date.parse(datainfo["query"]["users"][0]["registration"])) / 1000 / 60 / 60 / 24;
-                                if (parseInt(datainfo["query"]["users"][0]["editcount"]) >= parseInt(presets[selectedPreset]["editscount"]) && dateDiff >= parseInt(presets[selectedPreset]["regdays"]))
-                                    return;
-                                var url = "https://cvn.wmflabs.org/api.php?users=" + encodeURIComponent(stuff.user).replace(/'/g, '%27');
-                                $.ajax({
-                                    url: url, type: 'GET',
-                                    beforeSend: function (xhr) {
-                                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
-                                    },
-                                    crossDomain: true, dataType: 'jsonp', success: function (data) {
-                                        if (typeof data["users"][stuff.user] !== "undefined")
-                                            if (data["users"][stuff.user]["type"] === "whitelist")
-                                                return;
-        
-                                        // if it's element of WD. Get label
-                                        if (stuff.wiki === "wikidatawiki" && (stuff.namespace === 120 || stuff.namespace === 0)) {
-                                            $scope.wikidata_title(stuff, namespacetemp, "registered");
-                                            return;
-                                        }
-                                        // remove old edits by same user in same wiki on same page
-                                        $scope.edits.map(function (e, index) {
-                                            if (e.wiki === stuff.wiki && e.title === stuff.title && e.user === stuff.user && checkMode === 2)
-                                                $scope.$apply(function () {
-                                                    $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
-                                                });
-                                        });
-                                        $scope.$apply(function () {
-                                            if (countqueue !== 0 && $scope.edits.length >= countqueue) {
-                                                if (terminateStream === 1) {
-                                                    $scope.recentChange.disconnect();
-                                                    return;
-                                                }
-                                                $scope.edits.pop();
-                                            }
-                                            var new_el = {
-                                                "server_url": stuff.server_url,
-                                                "server_name": stuff.server_name,
-                                                "script_path": stuff.server_script_path,
-                                                "server_uri": stuff.meta.uri,
-                                                "wiki": stuff.wiki,
-                                                "namespace": namespacetemp,
-                                                "user": stuff.user,
-                                                "title": stuff.title,
-                                                "comment": stuff.comment,
-                                                "old": stuff.revision.old,
-                                                "new": stuff['revision']['new'],
-                                                "isIp": "registered",
-                                                "wikidata_title": null,
-                                                "ores": undefined,
-                                                "isNew": (stuff.type === "new") ? "N" : ""
-                                            };
-                                            $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
-                                            $scope.edits.unshift(new_el);
-                                            if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
-                                                playSound(newSound, false);
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                    });
+    
+                if (editData.namespace >= 0 && editData.namespace <= 15) namespaceTemp = ns[editData.namespace];
+                else namespaceTemp = "<font color='brown'>Non-canon (" + editData.namespace + ")</font>";
+    
+                if (editData.user !== userSelf && (editData.type === newPages || editData.type === onlyNewPages) && editData.bot === false && (presets[selectedPreset]["namespaces"].indexOf(editData.namespace.toString()) >= 0 || presets[selectedPreset]["namespaces"].length === 0) && editData.patrolled !== true && ((presets[selectedPreset]["blprojects"].indexOf(editData.wiki) >= 0) || (local_wikis.indexOf(editData.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(editData.wiki) >= 0 && swmt === true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(editData.wiki) >= 0 && lt300 === true && (isGlobal === true || isGlobalModeAccess === true)))) 
+                {} else return;
+    
+                if (typeof sandboxlist[editData.wiki] !== "undefined" && sandboxlist[editData.wiki] === editData.title) return;
+                if (global.indexOf(editData.user) !== -1 || presets[selectedPreset]["wlusers"].indexOf(editData.user) !== -1 || presets[selectedPreset]["wlprojects"].indexOf(editData.wiki) !== -1) return;
+                
+                // ==> IP user.
+                if (/^\d*?\.\d*?\.\d*?\.\d*?$/.test(editData.user) || editData.user.indexOf(":") !== -1) {
+                    if (!anonsSSE) return;
+                    $scope.addToQueue(editData, namespaceTemp, 'ip');
+                    return;
                 }
-            };
-        },
-        disconnect: function () {
+                
+                if (!registeredSSE) return;
+                // ==> Registered user.
+                getUserInfo(editData.server_url, editData.server_script_path, editData.user)
+                .then(user => {
+                    const userGroup = user['groups'];
+                    if (userGroup.includes("sysop") || userGroup.includes("editor") || userGroup.includes("autoreviewer") || userGroup.includes("confirmed") || userGroup.includes("extendedconfirmed") || userGroup.includes("filemover") || userGroup.includes("patroller") || userGroup.includes("templateeditor") || userGroup.includes("autopatrolled") || userGroup.includes("autoeditor") || userGroup.includes("closer") || userGroup.includes("rollbacker") || userGroup.includes("translator") || userGroup.includes("translationadmin") || userGroup.includes("engineer") || userGroup.includes("global-renamer") || userGroup.includes("oversight") || userGroup.includes("reviewer") || userGroup.includes("bureaucrat"))
+                        return;
+                    
+                    if (user["registration"] == null) return; // WMF have lost registration date of some very old accounts
+                    const d = new Date();
+                    var dateDiff = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()) - Date.parse(user["registration"])) / 1000 / 60 / 60 / 24;
+                    if (parseInt(user["editcount"]) >= parseInt(presets[selectedPreset]["editscount"]) && dateDiff >= parseInt(presets[selectedPreset]["regdays"])) return;
+    
+                    // => Checking CVN blacklist
+                    return getCVNBlacklist(editData.user)
+                }).then(blacklist => {
+                    if (typeof blacklist == "undefined") return;
+                    if (typeof blacklist[editData.user] !== "undefined")
+                        if (blacklist[editData.user]["type"] === "whitelist") return;
+                    
+                    $scope.addToQueue(editData, namespaceTemp, 'registered');
+                }).catch(error => { })
+            }
+        }, 
+        disconnect: function() {
             if (!this.isConnected) return;
             this.source.close();
             this.isConnected = false;
         }
     }
-    $scope.recentChange.connect();
-
-    $scope.wikidata_title = function (stuff, nstmp, reg) {
-        var namespacetemp = nstmp;
-        var wikidata_title = null;
-        if (stuff.title.search(/^P\d*?$/gm) !== -1 || stuff.title.search(/^Q\d*?$/gm) !== -1) {
-            var url = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=" + encodeURIComponent(stuff.title) + "&props=labels&languages=en&format=json&utf8=1";
-            $.ajax({
-                url: url, type: 'GET',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
-                },
-                crossDomain: true, dataType: 'jsonp', success: function (wikidatatitle) {
-                    if (wikidatatitle.hasOwnProperty("entities"))
-                        if (wikidatatitle["entities"].hasOwnProperty(stuff.title))
-                            if (wikidatatitle["entities"][stuff.title].hasOwnProperty("labels"))
-                                if (wikidatatitle["entities"][stuff.title]["labels"].hasOwnProperty("en"))
-                                    if (wikidatatitle["entities"][stuff.title]["labels"]["en"].hasOwnProperty("value"))
-                                        if (wikidatatitle["entities"][stuff.title]["labels"]["en"]["value"] !== null || wikidatatitle["entities"][stuff.title]["labels"]["en"]["value"] !== "")
-                                            wikidata_title = wikidatatitle["entities"][stuff.title]["labels"]["en"]["value"];
-                    $scope.$apply(function () {
-                        if (countqueue !== 0 && $scope.edits.length >= countqueue) {
-                            if (terminateStream === 1) {
-                                $scope.recentChange.disconnect();
-                                return;
-                            }
-                            $scope.edits.pop();
-                        }
-                        var new_el = {
-                            "server_url": stuff.server_url,
-                            "server_name": stuff.server_name,
-                            "script_path": stuff.server_script_path,
-                            "server_uri": stuff.meta.uri,
-                            "wiki": stuff.wiki,
-                            "namespace": namespacetemp,
-                            "user": stuff.user,
-                            "title": stuff.title,
-                            "comment": stuff.comment,
-                            "old": stuff.revision.old,
-                            "new": stuff['revision']['new'],
-                            "isIp": reg,
-                            "wikidata_title": wikidata_title,
-                            "ores": undefined,
-                            "isNew": (stuff.type === "new") ? "N" : ""
-                        };
-                        $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
-                        $scope.edits.unshift(new_el);
-                        if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
-                            playSound(newSound, false);
-                    });
-                }, error: function () {
-                    $scope.$apply(function () {
-                        if (countqueue !== 0 && $scope.edits.length >= countqueue) {
-                            if (terminateStream === 1) {
-                                $scope.recentChange.disconnect();
-                                return;
-                            }
-                            $scope.edits.pop();
-                        }
-                        var new_el = {
-                            "server_url": stuff.server_url,
-                            "server_name": stuff.server_name,
-                            "script_path": stuff.server_script_path,
-                            "server_uri": stuff.meta.uri,
-                            "wiki": stuff.wiki,
-                            "namespace": namespacetemp,
-                            "user": stuff.user,
-                            "title": stuff.title,
-                            "comment": stuff.comment,
-                            "old": stuff.revision.old,
-                            "new": stuff['revision']['new'],
-                            "isIp": reg,
-                            "wikidata_title": wikidata_title,
-                            "ores": undefined,
-                            "isNew": (stuff.type === "new") ? "N" : ""
-                        };
-                        $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
-                        $scope.edits.unshift(new_el);
-                        if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
-                            playSound(newSound, false);
-                    });
-                }
-            });
-        } else {
-            $scope.$apply(function () {
-                if (countqueue !== 0 && $scope.edits.length >= countqueue) {
-                    if (terminateStream === 1) {
-                        $scope.recentChange.disconnect();
-                        return;
-                    }
-                    $scope.edits.pop();
-                }
-                var new_el = {
-                    "server_url": stuff.server_url,
-                    "server_name": stuff.server_name,
-                    "script_path": stuff.server_script_path,
-                    "server_uri": stuff.meta.uri,
-                    "wiki": stuff.wiki,
-                    "namespace": namespacetemp,
-                    "user": stuff.user,
-                    "title": stuff.title,
-                    "comment": stuff.comment,
-                    "old": stuff.revision.old,
-                    "new": stuff['revision']['new'],
-                    "isIp": reg,
-                    "wikidata_title": wikidata_title,
-                    "ores": undefined,
-                    "isNew": (stuff.type === "new") ? "N" : ""
-                };
-                $scope.genORES(stuff.wiki, stuff['revision']['new'], new_el);
-                $scope.edits.unshift(new_el);
-                if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined")
-                    playSound(newSound, false);
-            });
-        }
-    };
-
-    $scope.removeLast = function () {
-        $timeout(function () {
-            $scope.$apply(function () {
-                if ($scope.edits.length >= countqueue)
-                    while ($scope.edits.length > countqueue)
-                        $scope.edits.pop();
-                else $scope.recentChange.connect();
-            });
-        }, 0);
-    };
-
-    $scope.isCURRENT = function (tSERVER_URL, tSCRIPT_PATH, tTITLE, tDNEW, tOLD, CALLBACK) {
-        var url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=query&prop=revisions&titles=" + encodeURIComponent(tTITLE).replace(/'/g, '%27') + "&rvprop=ids|timestamp|user|comment&rvlimit=1&format=json&utf8=1";
+    function downloadIMPData() {
         $.ajax({
-            url: url,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / isCurrent');
-            },
-            crossDomain: true,
-            dataType: 'jsonp',
-            success: function (data) {
-                if (typeof data.error !== "undefined") {
-                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + escapeXSS(data.error.info) + enderror;
-                    CALLBACK(null);
-                    return;
-                }
-
-                if (typeof data["query"]["pages"] !== "undefined") {
-                    var pageId = "";
-                    for (var k in data["query"]["pages"]) {
-                        pageId = k;
-                    }
-                }
-
-                if (typeof data["query"]["pages"][pageId]["revisions"][0]["revid"] == "undefined" || typeof data["query"]["pages"] == "undefined" || data["query"]["pages"] === "-1") {
-                    if (typeof data.error !== "undefined")
-                        document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page was deleted.<br><small>Server error info: " + escapeXSS(data.error.info) + "</small>" + enderror;
-                    else
-                        document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page was deleted.";
-                    CALLBACK(null);
-                    return;
-                }
-
-                if (tDNEW === data["query"]["pages"][pageId]["revisions"][0]["revid"]) {
-                    timestamp = data["query"]["pages"][pageId]["revisions"][0]["timestamp"];
-                    CALLBACK(true);
-                    return;
-                }
-
-                if (tOLD == null)
-                    old = tDNEW;
-                else
-                    old = tOLD;
-                user = data["query"]["pages"][pageId]["revisions"][0]["user"];
-                dnew = data["query"]["pages"][pageId]["revisions"][0]["revid"];
-                summary = data["query"]["pages"][pageId]["revisions"][0]["comment"];
-                $scope.user = user;
-                if (i > 0) {
-                    edits_history[i - 1]["user"] = user;
-                    edits_history[i - 1]["dnew"] = dnew;
-                    edits_history[i - 1]["summary"] = summary;
-                    if (tOLD == null)
-                        edits_history[i - 1]["old"] = old;
-                }
-                var url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=compare&format=json&uselang=en&fromrev=" + old + "&torev=" + dnew + "&utf8=1&prop=diff";
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / isCurrent');
-                    },
-                    crossDomain: true,
-                    dataType: 'jsonp',
-                    success: function (data) {
-                        if (typeof data.error !== "undefined") {
-                            document.getElementById('page').srcdoc = starterror + "Opening error; Server error info: " + escapeXSS(data.error.info) + enderror;
-                            CALLBACK(null);
-                            return;
-                        }
-                        if (typeof data.compare['*'] == "undefined") {
-                            document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page has been deleted.<br><small>Server error info: " + escapeXSS(data.error.info) + "</small>" + enderror;
-                            CALLBACK(null);
-                        } else {
-                            url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=query&list=users&ususers=" + encodeURIComponent(user).replace(/'/g, '%27') + "&usprop=editcount&utf8&format=json";
-                            $.ajax({
-                                url: url,
-                                type: 'GET',
-                                beforeSend: function (xhr) {
-                                    xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / isCurrent');
-                                },
-                                crossDomain: true,
-                                dataType: 'jsonp',
-                                success: function (data4) {
-                                    lastOpenedPW = undefined;
-                                    if (typeof data4.error !== "undefined") {
-                                        document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + escapeXSS(data.error.info) + enderror;
-                                        CALLBACK(null);
-                                        return;
-                                    }
-
-                                    if (typeof data4["query"]["users"][0]["editcount"] == "undefined") {
-                                        userip = "ip";
-                                        document.getElementById("userLinkSpec").style.color = "green";
-                                        document.getElementById("userLinkSpec").textContent = user;
-                                        if (i > 0)
-                                            edits_history[i - 1]["userip"] = "ip";
-                                    } else {
-                                        userip = "registered";
-                                        document.getElementById("userLinkSpec").style.color = "#3366BB";
-                                        document.getElementById("userLinkSpec").textContent = user;
-                                        if (i > 0)
-                                            edits_history[i - 1]["userip"] = "registered";
-                                    }
-                                    document.getElementById('com').textContent = "Comment: " + summary;
-                                    if (data.compare['*'] === "" || data.compare['*'].indexOf("<tr>") === -1)
-                                        document.getElementById('page').srcdoc = starterror + "This edit has been reverted already." + enderror;
-                                    else {
-                                        if (wiki !== "commonswiki" && wiki !== "wikidatawiki")
-                                            document.getElementById('page').srcdoc = diffstart + escapeXSSDiff(data.compare['*']) + diffend;
-                                        else
-                                            document.getElementById('page').srcdoc = diffstart + structuredData(data.compare['*'].replace(/<a class="mw-diff-movedpara-left".*?<\/a>/g, '-').replace(/<a class="mw-diff-movedpara-right".*?<\/a>/g, '+').replace(/<a name="movedpara_.*?<\/a>/g, ''), tSERVER_URL) + diffend;
-                                    }
-                                    document.getElementById('page').scrollTop = 0;
-                                    $scope.$apply(function () {
-                                        $scope.edits.map(function (e, index) {
-                                            if (e.wiki === wiki && e.title === title) {
-                                                $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1);
-                                            }
-                                        });
-                                    });
-                                    if (data.compare['*'] !== "" || data.compare['*'].indexOf("<tr>") !== -1) {
-                                        document.getElementById('editForm').style.display = 'none';
-                                        alert("Can't perform this action, this is not latest revision. Loaded new revision.");
-                                    }
-                                    CALLBACK(false);
-                                }, error: function (error) {
-                                    lastOpenedPW = undefined;
-                                    alert('Failed... dev code: 001; error code: ' + error.status + '.');
-                                }
-                            });
-                        }
-                    }, error: function (error) {
-                        alert('Failed... dev code: 002; error code: ' + error.status + '.');
+            type: 'POST',
+            url: 'php/getConfig.php',
+            dataType: 'text',
+            success: result =>{ 
+                config = JSON.parse(result);
+                startEsenServices();
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: 'lists/activeSysops.txt',
+            dataType: 'text',
+            success: result =>{ 
+                activeSysops = JSON.parse(result);
+                Object.keys(activeSysops).forEach(key => {
+                    if (Number(key + 1)) {
+                        activeSysops[activeSysops[key][0]] = activeSysops[key].slice(1);
+                        delete activeSysops[key];
                     }
                 });
-            }, error: function (error) {
-                alert('Failed... dev code: 003; error code: ' + error.status + '.');
+                startEsenServices();
             }
         });
-    };
-
-    $scope.reqEnd = function (tDATA) {
-        user = tDATA["user"];
-        old = tDATA["oldrevid"];
-        dnew = tDATA["newrevid"];
-        $scope.user = user;
-        summary = tDATA["summary"];
-        if (i > 0) {
-            edits_history[i - 1]["user"] = user;
-            edits_history[i - 1]["old"] = old;
-            edits_history[i - 1]["dnew"] = dnew;
-            edits_history[i - 1]["summary"] = summary;
-            edits_history[i - 1]["userip"] = "registered";
+        var globalFileCheck = true;
+        function checkGlobals() {
+            if (global.length < 5 || globalFileCheck === false) {
+                globalFileCheck = false;
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/getGlobals.php',
+                    dataType: 'text',
+                    success: result =>{ 
+                        global = result.slice(0, -1).split(",");
+                        startEsenServices();
+                    }
+                });
+            } else startEsenServices();
         }
-        userip = "registered";
-        var url = server_url + script_path + "/api.php?action=compare&format=json&uselang=en&fromrev=" + old + "&torev=" + dnew + "&utf8=1&prop=diff";
         $.ajax({
-            url: url,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / reqEnd');
-            },
-            crossDomain: true,
-            dataType: 'jsonp',
-            success: function (data) {
-                if (typeof data.error !== "undefined") {
-                    document.getElementById('page').srcdoc = starterror + "Opening error; server error info: " + escapeXSS(data.error.infoescapeXSS) + enderror;
-                    uiEnable();
+            type: 'POST',
+            url: 'lists/globalUsers.txt',
+            dataType: 'text',
+            success: result =>{ 
+                try {
+                    global = result.slice(0, -1).split(",");
+                } catch (e) {
+                    globalFileCheck = false;
+                }
+                checkGlobals();
+            }, error: err => checkGlobals()
+        });
+        $.ajax({
+            type: 'POST',
+            url: 'php/getOfflineUsers.php',
+            dataType: 'text',
+            success: result =>{ 
+                offlineUsers = JSON.parse(result);
+                $scope.offlineUsers = offlineUsers;
+                startEsenServices();
+            }
+        });
+    }
+    var esenServicesCount = 0;
+    const totalEsenServicesCount = 4;
+    function startEsenServices() {
+        ++esenServicesCount;
+        if (esenServicesCount < totalEsenServicesCount) return;
+        $scope.recentChange.connect();
+        connectTalk();
+        $scope.sendTalkMsg = connectTalk.sendTalk;
+        document.getElementById('btn-talk').classList.remove('disabled');
+    }
+    downloadIMPData();
+
+    $scope.addToQueue = async function (editData, namespaceTemp, ipType) {
+        // => If it's element of wikidata. get label
+        var wikidataTitle = null;
+        if (editData.wiki === "wikidatawiki" && (editData.namespace === 120 || editData.namespace === 0)) {
+            if (editData.title.search(/^P\d*?$/gm) !== -1 || editData.title.search(/^Q\d*?$/gm) !== -1)
+                wikidataTitle = await getWikidataTitle(editData.title);
+        }
+    
+        // ==> remove old edits by same user in same wiki on same page
+        $scope.edits.map((e, index) => {
+            if (e.wiki === editData.wiki && e.title === editData.title && e.user === editData.user && checkMode === 2) $scope.$apply(() =>  $scope.edits.splice($scope.edits.indexOf($scope.edits[index]), 1) );
+        });
+    
+        $scope.$apply(() => {
+            if (countqueue !== 0 && $scope.edits.length >= countqueue) {
+                if (terminateStream === 1) {
+                    $scope.recentChange.disconnect();
                     return;
                 }
-                document.getElementById("userLinkSpec").style.color = "#3366BB";
-                document.getElementById("userLinkSpec").textContent = user;
-                document.getElementById('com').textContent = "Comment: " + summary;
-                if (wiki !== "commonswiki" && wiki !== "wikidatawiki")
-                    document.getElementById('page').srcdoc = diffstart + escapeXSSDiff(data.compare['*']) + diffend;
-                else
-                    document.getElementById('page').srcdoc = diffstart + structuredData(data.compare['*'].replace(/<a class="mw-diff-movedpara-left".*?<\/a>/g, '-').replace(/<a class="mw-diff-movedpara-right".*?<\/a>/g, '+').replace(/<a name="movedpara_.*?<\/a>/g, ''), server_url) + diffend;
-                document.getElementById('page').scrollTop = 0;
-                uiEnable();
-            }, error: function (error) {
-                alert('Failed... dev code: 009; error code: ' + error.status + '.');
-                uiEnable();
+                $scope.edits.pop();
             }
+            var editTemp = {
+                "server_url": editData.server_url,
+                "server_name": editData.server_name,
+                "script_path": editData.server_script_path,
+                "server_uri": editData.meta.uri,
+                "wiki": editData.wiki,
+                "namespace": namespaceTemp,
+                "user": editData.user,
+                "title": editData.title,
+                "comment": editData.comment,
+                "old": editData.revision.old,
+                "new": editData['revision']['new'],
+                "isIp": ipType,
+                "wikidata_title": wikidataTitle,
+                "ores": undefined,
+                "isNew": (editData.type === "new") ? "N" : ""
+            };
+            $scope.genORES(editData.wiki, editData['revision']['new'], editTemp);
+            $scope.edits.unshift(editTemp);
+            if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined") playSound(newSound, false);
         });
-    };
+    }
+
+    // => Send notification to after request complition
+    $scope.reqSuccessNotify = function(newEdit, oldEdit, type, extra) {
+        extra = extra || type;
+        oldEdit = {...oldEdit};
+        oldEdit.user = newEdit.user;
+        oldEdit.old = newEdit.oldrevid;
+        oldEdit.new = newEdit.newrevid;
+        oldEdit.comment = newEdit.summary;
+        oldEdit.isIp = 'registered';
+        createNotify({
+            img: `/img/${type}-filled.svg`,
+            title: 'Request performed',
+            content: `Request for ${oldEdit.title} to ${extra} is performed successfully.`,
+            removable: true,
+            buttons: [{
+                title: 'View latest',
+                remove: true, type: 'accent',
+                onClick: () => { closePO(); $scope.select(oldEdit); }
+            }, { title: "Cancel", remove: true }]
+        });
+    }
 
     var noDiffON = false;
     $scope.nextDiff = function () {
@@ -1848,154 +1033,106 @@ angular.module("swv", ["ui.directives", "ui.filters"])
 
     $scope.openLink = function (tTYPE) {
         if (tTYPE === "page") {
-            var urldiff = server_url + "/w/index.php?oldid=" + dnew;
+            var urldiff = $scope.selectedEdit.server_url + "/w/index.php?oldid=" + $scope.selectedEdit.new;
             var diffWindow = window.open(urldiff, "_blank");
             diffWindow.location;
             diffWindow.focus();
             return;
         }
-        var urldiff = server_url + "/wiki/Special:Contributions/" + encodeURIComponent(user).replace(/'/g, '%27');
+        var urldiff = $scope.selectedEdit.server_url + "/wiki/Special:Contributions/" + encodeURIComponent($scope.selectedEdit.user).replace(/'/g, '%27');
         if (tTYPE === "diff") {
             var diffWindow = window.open(urldiff, "_blank");
             diffWindow.location;
             diffWindow.focus();
         }
     };
-    $scope.copyViewHistory = () => copyToClipboard(encodeURI(`${$scope.project_url}/index.php?title=${$scope.title}&action=history`));
-    $scope.copyGlobalContribs = () => copyToClipboard(encodeURI(`https://guc.toolforge.org/?src=hr&by=date&user=${$scope.user}`));
-    $scope.copyCentralAuth = () => copyToClipboard(encodeURI(`https://meta.wikimedia.org/wiki/Special:CentralAuth?target=${$scope.user}`));
-
-    function changeRollbacksDescription(wiki) {
-        $scope.descriptions = config["wikis"][0]["others"][0]["rollback"];
-        othersArray = config["wikis"][0]["others"][0];
-        warn = null;
-        protectArray = null;
-        reportArray = null;
-        if (config["wikis"][0].hasOwnProperty(wiki))
-            if (config["wikis"][0][wiki][0].hasOwnProperty("rollback"))
-                $scope.descriptions = config["wikis"][0][wiki][0]["rollback"];
-
-        $scope.speedys = config["wikis"][0]["others"][0]["speedy"];
-        if (config["wikis"][0].hasOwnProperty(wiki))
-            if (config["wikis"][0][wiki][0].hasOwnProperty("speedy"))
-                $scope.speedys = config["wikis"][0][wiki][0]["speedy"];
-
-        speedySummary = "+ delete";
-        if (config["wikis"][0].hasOwnProperty(wiki))
-            if (config["wikis"][0][wiki][0].hasOwnProperty("speedySummary"))
-                speedySummary = config["wikis"][0][wiki][0]["speedySummary"];
-
-        if (config["wikis"][0].hasOwnProperty(wiki))
-            if (config["wikis"][0][wiki][0].hasOwnProperty("rollback"))
-                if (config["wikis"][0][wiki][0].hasOwnProperty("warn"))
-                    warn = config["wikis"][0][wiki][0]["warn"][0];
-
-        speedyWarnSummary = null;
-        if (config["wikis"][0].hasOwnProperty(wiki))
-            if (config["wikis"][0][wiki][0].hasOwnProperty("speedyWarnSummary"))
-                speedyWarnSummary = config["wikis"][0][wiki][0]["speedyWarnSummary"];
-
-
-        if (config["wikis"][0].hasOwnProperty(wiki))
-            if (config["wikis"][0][wiki][0].hasOwnProperty("protect"))
-                protectArray = config["wikis"][0][wiki][0]["protect"][0];
-
-        if (config["wikis"][0].hasOwnProperty(wiki))
-            if (config["wikis"][0][wiki][0].hasOwnProperty("report"))
-                reportArray = config["wikis"][0][wiki][0]["report"][0];
-
-    }
+    $scope.copyViewHistory = () => copyToClipboard(encodeURI(`${$scope.selectedEdit.server_url}${$scope.selectedEdit.script_path}/index.php?title=${$scope.selectedEdit.title}&action=history`));
+    $scope.copyGlobalContribs = () => copyToClipboard(encodeURI(`https://guc.toolforge.org/?src=hr&by=date&user=${$scope.selectedEdit.user}`));
+    $scope.copyCentralAuth = () => copyToClipboard(encodeURI(`https://meta.wikimedia.org/wiki/Special:CentralAuth?target=${$scope.selectedEdit.user}`));
 
     document.getElementById('warn-box').onclick = function () {
-        if (checkWarn === false) {
+        if ($scope.selectedEdit.settings.checkWarn === false) {
             this.classList.add('t-btn__active');
-            checkWarn = true;
-            if (defaultWarnList.indexOf(wiki) === -1) {
-                defaultWarnList.push(wiki);
-                $.ajax({
-                    url: 'php/settings.php',
-                    type: 'POST',
-                    crossDomain: true,
-                    data: {action: 'set', query: "defaultwarn", defaultwarn: defaultWarnList.join(',')},
-                    dataType: 'json'
-                });
+            $scope.selectedEdit.settings.checkWarn = true;
+            if (defaultWarnList.indexOf($scope.selectedEdit.wiki) === -1) {
+                defaultWarnList.push($scope.selectedEdit.wiki);
+                sendDefaultWarnList()
             }
 
         } else {
             this.classList.remove('t-btn__active');
-            checkWarn = false;
-            if (defaultWarnList.indexOf(wiki) !== -1) {
+            $scope.selectedEdit.settings.checkWarn = false;
+            if (defaultWarnList.indexOf($scope.selectedEdit.wiki) !== -1) {
                 for (var dflcount = defaultWarnList.length - 1; dflcount >= 0; dflcount--) {
-                    if (defaultWarnList[dflcount] === wiki) {
+                    if (defaultWarnList[dflcount] === $scope.selectedEdit.wiki) {
                         defaultWarnList.splice(dflcount, 1);
                     }
                 }
-                $.ajax({
-                    url: 'php/settings.php',
-                    type: 'POST',
-                    crossDomain: true,
-                    data: {action: 'set', query: "defaultwarn", defaultwarn: defaultWarnList.join(',')},
-                    dataType: 'json'
-                });
+                sendDefaultWarnList();
             }
         }
+        function sendDefaultWarnList() {
+            // send default-warn list to DB
+            $.ajax({
+                url: 'php/settings.php',
+                type: 'POST',
+                crossDomain: true,
+                data: {action: 'set', query: "defaultwarn", defaultwarn: defaultWarnList.join(',')},
+                dataType: 'json'
+            });
+        }
         $scope.$apply(function () {
-            $scope.descriptions;
+            $scope.selectedEdit.config.rollback;
         });
     };
 
     document.getElementById("warn-box-delete").onclick = function () {
-        if (checkWarnDelete === false) {
+        if ($scope.selectedEdit.settings.checkWarnDelete === false) {
             this.classList.add('t-btn__active');
-            checkWarnDelete = true;
-            if (defaultDeleteList.indexOf(wiki) === -1) {
-                defaultDeleteList.push(wiki);
-                $.ajax({
-                    url: 'php/settings.php',
-                    type: 'POST',
-                    crossDomain: true,
-                    data: {action: 'set', query: "defauldelete", defaultdelete: defaultDeleteList.join(',')},
-                    dataType: 'json'
-                });
+            $scope.selectedEdit.settings.checkWarnDelete = true;
+            if (defaultDeleteList.indexOf($scope.selectedEdit.wiki) === -1) {
+                defaultDeleteList.push($scope.selectedEdit.wiki);
+                sendDefaultDeleteList();
             }
 
         } else {
             this.classList.remove('t-btn__active');
-            checkWarnDelete = false;
-            if (defaultDeleteList.indexOf(wiki) !== -1) {
+            $scope.selectedEdit.settings.checkWarnDelete = false;
+            if (defaultDeleteList.indexOf($scope.selectedEdit.wiki) !== -1) {
                 for (var dflcount = defaultDeleteList.length - 1; dflcount >= 0; dflcount--) {
-                    if (defaultDeleteList[dflcount] === wiki) {
+                    if (defaultDeleteList[dflcount] === $scope.selectedEdit.wiki) {
                         defaultDeleteList.splice(dflcount, 1);
                     }
                 }
-                $.ajax({
-                    url: 'php/settings.php',
-                    type: 'POST',
-                    crossDomain: true,
-                    data: {action: 'set', query: "defaultdelete", defaultdelete: defaultDeleteList.join(',')},
-                    dataType: 'json'
-                });
+                sendDefaultDeleteList();
             }
         }
+        function sendDefaultDeleteList() {
+            // send default-warn list (about soeedy deletion) to DB
+            $.ajax({
+                url: 'php/settings.php',
+                type: 'POST',
+                crossDomain: true,
+                data: {action: 'set', query: "defaultdelete", defaultdelete: defaultDeleteList.join(',')},
+                dataType: 'json'
+            });
+        }
         $scope.$apply(function () {
-            $scope.speedy;
+            $scope.selectedEdit.config.speedy;
         });
     };
 
-    var timeoutkey = setTimeout(function () {
-        checktimeout = true;
-    }, 5000);
+    var timeoutkey = setTimeout(() => checktimeout = true, 5000);
     var checktimeout = true;
     document.onkeydown = function (e) {
-        if (!e)
-            e = window.event;
+        if (!e) e = window.event;
         var keyCode = e.which || e.keyCode || e.key;
         $scope.keyDownFunct(keyCode);
     };
 
     $scope.keyDownFunct = function (keyCode) {
         keyCode = Number(keyCode);
-        if (keyCode !== 13 && keyCode !== 27 && keyCode !== 32 && keyCode !== 65 && keyCode !== 191 && keyCode !== 85 && keyCode !== 80 && keyCode !== 83 && keyCode !== 84 && keyCode !== 89 && keyCode !== 79 && keyCode !== 76 && keyCode !== 69 && keyCode !== 82 && keyCode !== 219 && keyCode !== 144 && keyCode !== 145 && keyCode !== 37 && keyCode !== 38 && keyCode !== 39 && keyCode !== 40)
+        if (keyCode !== 13 && keyCode !== 27 && keyCode !== 32 && keyCode !== 65 && keyCode !== 68 && keyCode !== 191 && keyCode !== 85 && keyCode !== 80 && keyCode !== 83 && keyCode !== 84 && keyCode !== 89 && keyCode !== 78 && keyCode !== 79 && keyCode !== 76 && keyCode !== 69 && keyCode !== 82 && keyCode !== 219 && keyCode !== 144 && keyCode !== 145 && keyCode !== 37 && keyCode !== 38 && keyCode !== 39 && keyCode !== 40)
             if (isNotModal()) {
                 if (timeoutkey) {
                     clearTimeout(timeoutkey);
@@ -2007,288 +1144,686 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 }, 5000);
             }
 
-        if (checktimeout === false && isNotModal())
-            return;
+        if (checktimeout === false && isNotModal()) return;
 
-        if (keyCode === 82)
-            if (isNotModal()) {
-                document.getElementById('revert').click();
+        if (keyCode === 82 && isNotModal()) {
+            document.getElementById('revert').click();
+            return false;
+        }
+        if (keyCode === 89 && isNotModal()) {
+            document.getElementById('customRevertBtn').click();
+            return false;
+        }
+        if ((keyCode === 219 || keyCode === 80) && isNotModal()) {
+            document.getElementById('back').click();
+            return false;
+        }
+        if (keyCode === 68 && isNotModal()) {
+            document.getElementById('tagBtn').click();
+            return false;
+        }
+        if (keyCode === 69 && isNotModal()) {
+            document.getElementById('editBtn').click();
+            return false;
+        }
+        if (keyCode === 76 && isNotModal()) {
+            document.getElementById('btn-logs').click();
+            return false;
+        }
+        if (keyCode === 78 && isNotModal()) {
+            document.getElementById('btn-notification').click();
+            return false;
+        }
+        if (keyCode === 79 && isNotModal()) {
+            document.getElementById('browser').click();
+            return false;
+        }
+        if (keyCode === 84 && isNotModal()) {
+            document.getElementById('btn-talk').click();
+            return false;
+        }
+        if (keyCode === 83 && isNotModal()) {
+            document.getElementById('btn-settings').click();
+            return false;
+        }
+        if (keyCode === 85 && isNotModal()) {
+            document.getElementById('btn-unlogin').click();
+            return false;
+        }
+        if (keyCode === 191 && isNotModal()) {
+            document.getElementById('luxo').click();
+            return false;
+        }
+        if (keyCode === 65 && isNotModal()) {
+            if (document.getElementById('userLinkSpec').style.display !== "none") {
+                document.getElementById('userLinkSpec').click();
                 return false;
             }
-        if (keyCode === 89)
-            if (isNotModal()) {
-                document.getElementById('customRevertBtn').click();
+        }
+        if (keyCode === 32 && isNotModal()) {
+            if ($scope.edits.length > 0) {
+                $scope.select($scope.edits[0]);
+                $scope.$digest();
                 return false;
-            }
-        if (keyCode === 219 || keyCode === 80)
-            if (isNotModal()) {
-                document.getElementById('back').click();
-                return false;
-            }
-        if (keyCode === 69)
-            if (isNotModal()) {
-                document.getElementById('editBtn').click();
-                return false;
-            }
-        if (keyCode === 76)
-            if (isNotModal()) {
-                document.getElementById('btn-logs').click();
-                return false;
-            }
-        if (keyCode === 79)
-            if (isNotModal()) {
-                document.getElementById('browser').click();
-                return false;
-            }
-        if (keyCode === 84)
-            if (isNotModal()) {
-                document.getElementById('btn-talk').click();
-                return false;
-            }
-        if (keyCode === 83)
-            if (isNotModal()) {
-                document.getElementById('btn-settings').click();
-                return false;
-            }
-        if (keyCode === 85)
-            if (isNotModal()) {
-                document.getElementById('btn-unlogin').click();
-                return false;
-            }
-        if (keyCode === 191)
-            if (isNotModal()) {
-                document.getElementById('luxo').click();
-                return false;
-            }
-        if (keyCode === 65)
-            if (isNotModal()) {
-                if (document.getElementById('userLinkSpec').style.display !== "none") {
-                    document.getElementById('userLinkSpec').click();
-                    return false;
-                }
-            }
-        if (keyCode === 32) {
-            if (isNotModal()) {
-                if ($scope.edits.length > 0) {
-                    $scope.select($scope.edits[0]);
-                    $scope.$digest();
-                    return false;
-                }
             }
         }
         if (keyCode === 27) {
-            if (Object.keys(dialogStack).length !== 0) {
-                removeDialog();
-                return false;
-            }
-            else if (document.getElementById('POOverlay').classList.contains('po__overlay__active')) {
+            if (Object.keys(dialogStack).length !== 0) removeDialog();
+            else if (document.getElementById('POOverlay').classList.contains('po__overlay__active')) 
                 closePO();
-                return false;
-            } else if (!document.getElementById('btn-home').classList.contains('tab__active')) {
+            else if (!document.getElementById('btn-home').classList.contains('tab__active')) 
                 closePW();
-                return false;
-            }
+            return false;
         }
     };
-
 });
 
-function SHOW_DIFF(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW, tTITLE, tUSERIP, tSUMMARY, tWDT, checkPrev = false) {
-    uiDisableList();
-    closePW();
-    closeMoreControl();
-    document.getElementById('description-container').style.marginTop = '0px';
-    if (tUSERIP === "registered")
-        document.getElementById("userLinkSpec").style.color = "#3366BB";
-    else
-        document.getElementById("userLinkSpec").style.color = "green";
-    if (tUSERIP === "ip")
-        document.getElementById('CAUTH').classList.add('disabled');
-    else
-        document.getElementById('CAUTH').classList.remove('disabled');
-    document.getElementById("userLinkSpec").textContent = tUSER;
-    document.getElementById('com').textContent = "Comment: " + tSUMMARY;
 
-    var diffTempNs = tNAMESPACE;
-    if (tWIKI === "wikidatawiki") {
-        if (tNAMESPACE === "<font color='brown'>Non-canon (146)</font>")
-            diffTempNs = "Lexeme";
-        if (tNAMESPACE === "<font color='brown'>Non-canon (122)</font>")
-            diffTempNs = "Query";
-        if (tNAMESPACE === "<font color='brown'>Non-canon (120)</font>")
-            if (tTITLE.search(/^P\d*?$/gm) !== -1)
-                diffTempNs = "Property";
-        if (tWDT !== null) {
-            document.getElementById("tit").setAttribute("aria-label", tWDT);
+// => load diff to view
+async function loadDiff(edit, showAll) {
+    disableControl(); closeMoreControl();
+    closePW();
+    loadDiffDesc(edit);
+    document.getElementById('page').srcdoc = "";
+
+    if (typeof edit.old !== "undefined" && (checkMode === 2 || showAll === true)) {
+
+        await getLastUserRevId(edit.server_url, edit.script_path, edit.title, edit.user, edit.new)
+        .then(revId => {
+            // ===> suspect "i"
+            if (i > 0) edit_history[i - 1]["old"] = old
+            edit.old = revId;
+        }).catch(err => {});
+    }
+
+    if (edit.isNew === "N") enableNewUI();
+    await getDiff(edit.server_url, edit.script_path, edit.wiki, edit.new, edit.old)
+    .then(diff => document.getElementById('page').srcdoc = diff)
+    .catch(err => createDialog({
+        parentId: 'angularapp', id: 'diffLoadingErrorDialog',
+        title: 'Loading failed',
+        alert: { message: err },
+        buttons: [{ type: 'accent', title: 'Alright', remove: true }]
+    }));
+    disableLoadingDiffUI();
+}
+
+// => load diff description container
+function loadDiffDesc(edit) {
+    document.getElementById('description-container').style.marginTop = '0px';
+    if (edit.isIp === "registered") document.getElementById("userLinkSpec").style.color = "#3366BB";
+    else document.getElementById("userLinkSpec").style.color = "green";
+    if (edit.isIp === "ip") document.getElementById('CAUTH').classList.add('disabled');
+    else document.getElementById('CAUTH').classList.remove('disabled');
+    document.getElementById("userLinkSpec").textContent = edit.user;
+    document.getElementById('com').textContent = "Comment: " + edit.comment;
+
+    var tempNs = edit.namespace;
+    if (edit.wiki === "wikidatawiki") {
+        if (edit.namespace === "<font color='brown'>Non-canon (146)</font>") tempNs = "Lexeme";
+        if (edit.namespace === "<font color='brown'>Non-canon (122)</font>") tempNs = "Query";
+        if (edit.namespace === "<font color='brown'>Non-canon (120)</font>")
+            if (edit.title.search(/^P\d*?$/gm) !== -1) tempNs = "Property";
+        if (edit.wikidata_title !== null) {
+            document.getElementById("tit").setAttribute("aria-label", edit.wikidata_title);
             document.getElementById("tit").setAttribute("i-tooltip", "bottom-left");
             document.getElementById("pageLinkSpec").style.borderBottom = "1px dotted var(--link-color)";
-        } else {
-            document.getElementById("tit").removeAttribute("aria-label");
-            document.getElementById("tit").removeAttribute("i-tooltip");
-            document.getElementById("pageLinkSpec").style.borderBottom = "unset";
         }
     } else {
-        if (tWIKI === "enwiki" && tNAMESPACE === "<font color='brown'>Non-canon (118)</font>")
-            diffTempNs = "Draft";
-        if (tWIKI === "enwiki" && tNAMESPACE === "<font color='brown'>Non-canon (119)</font>")
-            diffTempNs = "Draft talk";
+        if (edit.wiki === "enwiki" && edit.namespace === "<font color='brown'>Non-canon (118)</font>") tempNs = "Draft";
+        if (edit.wiki === "enwiki" && edit.namespace === "<font color='brown'>Non-canon (119)</font>") tempNs = "Draft talk";
+    }
+    if (edit.wikidata_title === null) {
         document.getElementById("tit").removeAttribute("aria-label");
         document.getElementById("tit").removeAttribute("i-tooltip");
         document.getElementById("pageLinkSpec").style.borderBottom = "unset";
     }
-
-    document.getElementById('pageLinkSpec').textContent = tTITLE;
-    if ((tWIKI === "testwiki") || (tWIKI === "test2wiki") || (tWIKI === "testwikidata") || (tWIKI === "testwikidatawiki"))
-        document.getElementById('wiki').innerHTML = "Wiki: <font color='tomato'>" + tWIKI + "</font>";
+    document.getElementById('pageLinkSpec').textContent = edit.title;
+    if ((edit.title === "testwiki") || (edit.title === "test2wiki") || (edit.title === "testwikidata") || (edit.title === "testwikidatawiki"))
+        document.getElementById('wiki').innerHTML = "Wiki: <font color='tomato'>" + edit.wiki + "</font>";
     else
-        document.getElementById('wiki').innerHTML = "Wiki: " + tWIKI;
-    document.getElementById('ns').innerHTML = "Namespace: " + diffTempNs;
+        document.getElementById('wiki').innerHTML = "Wiki: " + edit.wiki;
+    document.getElementById('ns').innerHTML = "Namespace: " + tempNs;
+}
 
-    if (typeof tOLD !== "undefined" && ((checkPrev === true && checkMode === 2) || checkPrev === "second")) {
-        times = 2;
-        var url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=query&prop=revisions&titles=" + encodeURIComponent(tTITLE) + "&rvprop=ids|user&rvlimit=1&rvexcludeuser=" + encodeURIComponent(tUSER) + "&rvstartid=" + tDNEW + "&format=json&utf8=1";
+// => perform edit on page.
+function performEdit(serverUrl, scriptPath, wiki, title, timestamp, editSource, editSummary, isDelete) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/doEdit.php',
+            type: 'POST',
+            crossDomain: true,
+            dataType: 'text',
+            data: {
+                project: serverUrl + scriptPath + '/api.php',
+                wiki: wiki,
+                isdelete: isDelete,
+                page: title,
+                text: editSource,
+                summary: editSummary,
+                basetimestamp: timestamp
+            },
+            success: editData => {
+                editData = JSON.parse(editData);
+                if (editData['result'] === 'Success') resolve(editData);
+                if (editData['result'] == null || editData['code'] === "alreadydone") reject(`Such changes has already been made.`);
+                reject(`Edit error: ${escapeXSS(editData['result'])}`);
+            }, error: (error, e2) => reject(`Failed... dev code: 007; error code: ${escapeXSS(error.status)}${escapeXSS(e2)}`)
+        });
+    });
+}
+
+// => report to GSR
+function reportGSR(serverUrl, wiki, title, speedyLabel) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/gsr.php',
+            type: 'POST',
+            crossDomain: true,
+            dataType: 'text',
+            data: {
+                project: serverUrl,
+                wiki: wiki,
+                title: title,
+                type: "delete",
+                reason: speedyLabel
+            }, success: () => resolve(),
+            error: err => reject(err)
+        })
+    });
+}
+
+// => notify the editor.
+function notifyEditor(serverUrl, scriptPath, wiki, text, summary, speedySection, firstEditor) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/doEdit.php', type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
+            },
+            crossDomain: true, dataType: 'text',
+            data: {
+                warn: "speedy",
+                project: serverUrl + scriptPath + "/api.php",
+                wiki: wiki,
+                page: "User_talk:" + firstEditor,
+                text: text,
+                sectiontitle: speedySection,
+                summary: summary
+            },
+            success: () => resolve(true),
+            error: () => reject('Network error.')
+        });
+    });
+}
+
+function performRollback(revertData) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/rollback.php',
+            type: 'POST',
+            crossDomain: true,
+            data: revertData,
+            dataType: 'json',
+            success: rollbackData => {
+                if (rollbackData['result'] === "Success") resolve(rollbackData);
+                reject(`Rollback error: ${rollbackData['result']}`);
+            }, error: err => reject(`Rollback error. Please open page in the new tab. Error code: ${escapeXSS(err.status)}`)
+    
+        });
+    });
+}
+
+function sendWarning(serverUrl, scriptPath, wiki, newId, oldId, title, user, warnLevel, warnTemplates, warnMonth, warnSummary, warnSection, withoutSection) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/doEdit.php',
+            type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
+            },
+            crossDomain: true,
+            dataType: 'json',
+            data: {
+                warn: "rollback",
+                withoutsection: withoutSection,
+                project: serverUrl + scriptPath + "/api.php",
+                wiki: wiki,
+                page: 'User_talk:' + user,
+                text: warnTemplates[warnLevel].replace(/\$1/gi, title).replace(/\$2/gi, oldId).replace(/\$3/gi, newId).replace(/\$4/gi, user).replace(/\$5/gi, "Special:Diff/" + oldId + "/" + newId).replace(/\$6/gi, serverUrl + scriptPath + "/index.php?oldid=" + oldId + "&diff=" + newId),
+                sectiontitle: warnSection.replace(/\$DD/gi, moment.utc().format('DD')).replace(/\$MMMM/gi, warnMonth).replace(/\$MM/gi, moment.utc().format('MM')).replace(/\$YYYY/gi, moment.utc().format('YYYY')),
+                summary: warnSummary.replace(/\$1/gi, warnLevel + 1)
+            },
+            success: () => resolve(),
+            error: err => reject(err)
+        });
+    });
+}
+
+
+function performReport(serverUrl, scriptPath, wiki, withoutSectionReport, isTop, preamb, pageReport, textReport, sectionReport, summaryReport) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/doEdit.php',
+            type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Report');
+            },
+            crossDomain: true,
+            dataType: 'json',
+            data: {
+                warn: "report",
+                withoutsection: withoutSectionReport,
+                project: serverUrl + scriptPath + "/api.php",
+                wiki: wiki,
+                top: isTop,
+                preamb: preamb,
+                page: pageReport,
+                text: textReport,
+                sectiontitle: sectionReport,
+                summary: summaryReport
+            },
+            success: () => resolve(),
+            error: err => reject(err)
+        });
+    });
+}
+
+
+/*  
+====================
+----Data getters----
+====================
+*/
+// get diff html from wikipedia
+function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
+    return new Promise((resolve, reject) => {
+        const url = `${serverUrl}${scriptPath}/api.php?action=compare&format=json&uselang=en&fromrev=${(typeof oldId === 'undefined')? newId + "&torelative=prev": oldId + "&torev=" + newId }&utf8=1&prop=diff`;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / diff');
+            },
+            crossDomain: true,
+            dataType: 'jsonp',
+            success: data => {
+                if (typeof data.error !== "undefined") {
+                    if (data.error.code === "nosuchrevid") reject("Opening error. This page has been deleted.");
+                    reject(`Opening error. Maybe page has been deleted. Server error info: ${escapeXSS(data.error.info)}`);
+                }
+                if (data.compare['*'] === "" || data.compare['*'].indexOf("<tr>") === -1) {
+                    if (typeof oldId !== 'undefined') reject("This edit has already been reverted.");
+                    var newPageDiff = startstring + data.compare['*'] + endstring;
+                    resolve(newstart + newPageDiff + newend);
+                }
+                var diffTextToFrame = data.compare['*'];
+                if (typeof oldId === 'undefined') diffTextToFrame = diffTextToFrame.replace(/(<td colspan="2" class="diff-lineno">)Line 1:(<\/td>)/, ($0, $1, $2) => $1 + "Not exist" + $2);
+                if (wiki !== "commonswiki" && wiki !== "wikidatawiki") diffTextToFrame = escapeXSSDiff(diffTextToFrame);
+                else diffTextToFrame = structuredData(diffTextToFrame.replace(/<a class="mw-diff-movedpara-left".*?<\/a>/g, '-').replace(/<a class="mw-diff-movedpara-right".*?<\/a>/g, '+').replace(/<a name="movedpara_.*?<\/a>/g, ''), serverUrl);
+                resolve(diffstart + diffTextToFrame + diffend);
+            },
+            error: error => reject(`Failed... dev code: 010; error code: ${error.status}.`)
+        });
+    });
+}
+
+// get last user revision id to show all edits.
+function getLastUserRevId(serverUrl, scriptPath, title, user, newId) {
+    return new Promise((resolve, reject) => {
+        const url = serverUrl + scriptPath + "/api.php?action=query&prop=revisions&titles=" + encodeURIComponent(title) + "&rvprop=ids|user&rvlimit=1&rvexcludeuser=" + encodeURIComponent(user) + "&rvstartid=" + newId + "&format=json&utf8=1";
         $.ajax({
             url: url, type: 'GET', beforeSend: function (xhr) {
                 xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / diff');
-            }, crossDomain: true, dataType: 'jsonp', success: function (fdata) {
-                if (typeof fdata["query"] !== "undefined" && typeof fdata["query"]["pages"] !== "undefined") {
-                    var pageFData = null;
-                    for (var k in fdata["query"]["pages"]) {
-                        if (fdata["query"]["pages"].hasOwnProperty(k))
-                            if (Number(k) !== -1)
-                                pageFData = fdata["query"]["pages"][k];
-                    }
-                    if (pageFData !== null && typeof pageFData["revisions"] !== "undefined" && typeof pageFData["revisions"][0] !== "undefined" && typeof pageFData["revisions"][0]["revid"] !== "undefined" && pageFData["revisions"][0]["revid"] !== 0) {
-                        tOLD = pageFData["revisions"][0]["revid"];
-                        old = tOLD;
-                        if (i > 0)
-                            edits_history[i - 1]["old"] = old;
-                    }
-                }
-                endShowDiff(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW);
-            }, error() {
-                endShowDiff(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW);
-            }
+            }, crossDomain: true, dataType: 'jsonp', success: fdata => {
+                if (typeof fdata["query"] === "undefined" || typeof fdata["query"]["pages"] === "undefined") reject();
+                var pageFData = null;
+                for(let k in fdata["query"]["pages"]) 
+                    if (fdata["query"]["pages"].hasOwnProperty(k))
+                    if (Number(k) !== -1)
+                    pageFData = fdata["query"]["pages"][k];
+                if (pageFData !== null && typeof pageFData["revisions"] !== "undefined" && typeof pageFData["revisions"][0] !== "undefined" && typeof pageFData["revisions"][0]["revid"] !== "undefined" && pageFData["revisions"][0]["revid"] !== 0)
+                    resolve(pageFData["revisions"][0]["revid"]);
+                reject('Unable to get last user revision id.');
+                    
+            }, error: error => reject(error)
+
         });
-    } else {
-        times = 1;
-        endShowDiff(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW);
-    }
+    });
+}
+// get information about user account.
+function getUserInfo (serverUrl, scriptPath, username) {
+    return new Promise((resolve, reject) => {
+        const url = serverUrl + scriptPath + "/api.php?action=query&list=users&ususers=" + encodeURIComponent(username).replace(/'/g, '%27') + "&usprop=groups|registration|editcount&utf8&format=json";
+        $.ajax({
+            url: url, type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+            },
+            crossDomain: true, dataType: 'jsonp',
+            success: datainfo => resolve(datainfo["query"]["users"][0]),
+            error: error => reject(error)
+        });
+    });
 }
 
-function checkLast(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW, times, CALLBACK) {
-    if (checkMode !== 1 ||times === 2) {
-        CALLBACK(null);
-        return;
-    }
-    if (typeof tOLD !== "undefined") {
-        var url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=compare&fromrev=" + tDNEW + "&torelative=prev&prop=user&utf8=1&format=json";
+// get CVN blacklist of users
+function getCVNBlacklist (username) {
+    return new Promise((resolve, reject) => {
+        const url = "https://cvn.wmflabs.org/api.php?users=" + encodeURIComponent(username).replace(/'/g, '%27');
+        $.ajax({
+            url: url, type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+            },
+            crossDomain: true, dataType: 'jsonp', success: data => resolve(data["users"]), 
+            error: error => reject(error)
+        });
+    });
+}
+
+// Get labels for Wikidata elements. Instead "Q2735363" we will see title of article
+function getWikidataTitle (editTitle) {
+    return new Promise((resolve, reject) => {
+        var url = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=" + encodeURIComponent(editTitle) + "&props=labels&languages=en&format=json&utf8=1";
+        $.ajax({
+            url: url, type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / SSE parsing');
+            },
+            crossDomain: true, dataType: 'jsonp', success: wikidatatitle => {
+                if (wikidatatitle.hasOwnProperty("entities"))
+                if (wikidatatitle["entities"].hasOwnProperty(editTitle))
+                if (wikidatatitle["entities"][editTitle].hasOwnProperty("labels"))
+                if (wikidatatitle["entities"][editTitle]["labels"].hasOwnProperty("en"))
+                if (wikidatatitle["entities"][editTitle]["labels"]["en"].hasOwnProperty("value"))
+                if (wikidatatitle["entities"][editTitle]["labels"]["en"]["value"] !== null || wikidatatitle["entities"][editTitle]["labels"]["en"]["value"] !== "")
+                    resolve(wikidatatitle["entities"][editTitle]["labels"]["en"]["value"]);
+            }, error: error => resolve(null)
+        });
+    });
+}
+
+// => to see if the given revision is latest or not
+function isLatestRevision(serverUrl, scriptPath, title, newId) {
+    return new Promise((resolve, reject) => {
+        const url = `${serverUrl}${scriptPath}/api.php?action=query&prop=revisions&titles=${encodeURIComponent(title).replace(/'/g, '%27')}&rvprop=ids|timestamp|user|comment&rvlimit=1&format=json&utf8=1`;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / isCurrent');
+            },
+            crossDomain: true,
+            dataType: 'jsonp',
+            success: data => {
+                if (typeof data.error !== "undefined") reject(`Opening error; server error info:${escapeXSS(data.error.info)}`);
+                var pageId = "";
+                if (typeof data['query']['pages'] !== 'undefined') for (let k in data['query']['pages']) pageId = k;
+                if (typeof data['query']['pages'] === 'undefined' || data['query']['pages'] === '-1' || typeof data['query']['pages'][pageId]['revisions'][0]['revid'] === 'undefined') {
+                    if (typeof data.error !== 'undefined') reject(`Opening error. Maybe page was deleted. Server error info: ${escapeXSS(data.error.info)}`);
+                    else reject(`Opening error. Maybe page was deleted.`);
+                }
+
+                if (newId === data["query"]["pages"][pageId]["revisions"][0]["revid"]) resolve({ isLatest: true, revision: data["query"]["pages"][pageId]["revisions"][0] });
+                resolve({ isLatest: false, revision: data["query"]["pages"][pageId]["revisions"][0] });
+            }, error: error => reject(error)
+        });
+    });
+}
+
+// => get the latest revision with old
+function bindLatestRevision(oldEdit, revision) {
+    return new Promise(async (resolve, reject) => {
+        if (oldEdit.old == null) oldEdit.old = oldEdit.new;
+        oldEdit.user = revision.user;
+        oldEdit.new = revision.revid;
+        oldEdit.comment = revision.comment;
+        await getUserInfo(oldEdit.server_url, oldEdit.script_path, oldEdit.user)
+        .then(user => {
+            if (user.editcount === 'undefined') oldEdit.isIp = 'ip';
+            else oldEdit.isIp = 'registered';
+            resolve(oldEdit);
+        }).catch(err => reject(err));
+    });
+}
+
+// => check for multiple edits if true return true else false.
+function checkMultipleEdits(serverUrl, scriptPath, user, newId) {
+    return new Promise((resolve, reject) => {
+        const url = serverUrl + scriptPath + "/api.php?action=compare&fromrev=" + newId + "&torelative=prev&prop=user&utf8=1&format=json";
         $.ajax({
             url: url, type: 'GET', beforeSend: function (xhr) {
                 xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / checkLast');
-            }, crossDomain: true, dataType: 'jsonp', success: function (fdata) {
-                if (typeof fdata["compare"] !== "undefined" && typeof fdata["compare"]["fromuser"] !== "undefined") {
-                    if (fdata["compare"]["fromuser"] === tUSER) {
-                        CALLBACK(false);
-                        return;
-                    }
-                }
-                CALLBACK(null);
-            }, error() {
-                CALLBACK(null);
+            }, crossDomain: true, dataType: 'jsonp', 
+            success: function (fdata) {
+                if (typeof fdata["compare"] !== "undefined" &&
+                    typeof fdata["compare"]["fromuser"] !== "undefined" &&
+                    fdata["compare"]["fromuser"] === user) resolve(true);
+                
+                resolve(false);
+            }, error: err => {
+                reject(err);
             }
         });
-    } else
-        CALLBACK(true);
-}
-
-function endShowDiff(tSERVER_URL, tSERVER_NAME, tSCRIPT_PATH, tSERVER_URI, tWIKI, tNAMESPACE, tUSER, tOLD, tDNEW) {
-    var url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=compare&format=json&uselang=en&fromrev=" + tOLD + "&torev=" + tDNEW + "&utf8=1&prop=diff";
-    if (typeof tOLD === "undefined") {
-        uiDisableNew();
-        url = tSERVER_URL + tSCRIPT_PATH + "/api.php?action=compare&format=json&uselang=en&fromrev=" + tDNEW + "&torelative=prev&utf8=1&prop=diff";
-    }
-    $.ajax({
-        url: url,
-        type: 'GET',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / diff');
-        },
-        crossDomain: true,
-        dataType: 'jsonp',
-        success: function (data) {
-            if (typeof data.error !== "undefined") {
-                if (data.error.code === "nosuchrevid")
-                    document.getElementById('page').srcdoc = starterror + "Opening error. This page has been deleted." + enderror;
-                else
-                    document.getElementById('page').srcdoc = starterror + "Opening error. Maybe page has been deleted.<br><small>Server error info: " + escapeXSS(data.error.info) + "</small>" + enderror;
-                uiEnable();
-                return;
-            }
-
-            if (data.compare['*'] === "" || data.compare['*'].indexOf("<tr>") === -1) {
-                if (typeof tOLD !== "undefined")
-                    document.getElementById('page').srcdoc = starterror + "The edit has already was reverted." + enderror;
-                else {
-                    var newPageDiff = startstring + data.compare['*'] + endstring;
-                    document.getElementById('page').srcdoc = newstart + newPageDiff + newend;
-                }
-            } else {
-                var diffTextToFrame = data.compare['*'];
-                if (typeof tOLD === "undefined")
-                    diffTextToFrame = diffTextToFrame.replace(/(<td colspan="2" class="diff-lineno">)Line 1:(<\/td>)/, function ($0, $1, $2) {
-                        return $1 + "Not exist" + $2;
-                    });
-                if (tWIKI !== "commonswiki" && tWIKI !== "wikidatawiki")
-                    diffTextToFrame = escapeXSSDiff(diffTextToFrame);
-                else
-                    diffTextToFrame = structuredData(diffTextToFrame.replace(/<a class="mw-diff-movedpara-left".*?<\/a>/g, '-').replace(/<a class="mw-diff-movedpara-right".*?<\/a>/g, '+').replace(/<a name="movedpara_.*?<\/a>/g, ''), tSERVER_URL);
-                document.getElementById('page').srcdoc = diffstart + diffTextToFrame + diffend;
-            }
-            uiEnable();
-        },
-        error: function (error) {
-            alert('Failed... dev code: 010; error code: ' + error.status + '.');
-            uiEnable();
-        }
     });
-    document.getElementById('page').scrollTop = 0;
 }
 
-function nextDiffStyle() {
+// => to get source code of an edit
+function getEditSource(serverUrl, scriptPath, newId) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "php/getPage.php",
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                server: serverUrl + scriptPath,
+                oldid: newId
+            }, success: pageData => {
+                if (pageData === "Error! Loading page is not success") reject('Failed... dev code: 004.1. Failed http-request. Maybe page was delete or server is down.');
+                resolve(pageData);
+            }, error: err => reject(`Failed... dev code: 004; error code: ${err.status}.`)
+        });
+    });
+}
+
+// => get first editor of the page.
+function getFirstEditor(serverUrl, scriptPath, wiki, title, user) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/doEdit.php', type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
+            },
+            crossDomain: true, dataType: 'text',
+            data: {
+                getfirstuser: 1, warn: 1,
+                project: serverUrl + scriptPath + "/api.php",
+                wiki: wiki, 
+                page: title, text: "1", 
+                user: user, summary: "1"
+            },
+            success: firstEditorData => {
+                if (firstEditorData === null || firstEditorData === "") reject('Unable to get first editor.');
+                firstEditorData = JSON.parse(firstEditorData);
+                if (firstEditorData['result'] !== "sucess") reject('Unable to get first editor.');
+                resolve(firstEditorData['user']);
+            },
+            error: () => reject('Network error: Unable to get first editor.')
+        });
+    });
+}
+
+function getUrlToCountWarn(serverUrl, scriptPath, username, timeWarn) {
+    return new Promise((resolve, reject) => {
+        const url = serverUrl + scriptPath + "/api.php?action=query&prop=revisions&titles=User_talk:" + encodeURIComponent(username) + "&rvslots=main&rvprop=ids&rvdir=newer&rvstart=" + timeWarn + "&rvlimit=500&format=json&utf8=1";
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Warns');
+            },
+            crossDomain: true,
+            dataType: 'jsonp',
+            success: idsWarns => {
+                if (typeof idsWarns['query'] === 'undefined' || typeof idsWarns['query']['pages'] === 'undefined')
+                    reject('Unable to get url to count warn');
+                var pageIds = null;
+                for (let key in idsWarns['query']['pages'])
+                    if (idsWarns['query']['pages'].hasOwnProperty(key))
+                    if (Number(key) !== -1) pageIds = idsWarns['query']['pages'][key];
+                
+                var oldId = -1, newId = -1;
+                if (pageIds !== null && typeof pageIds['revisions'] !== 'undefined') {
+                    newId = pageIds['revisions'][pageIds['revisions'].length - 1]['revid'];
+                    if (typeof pageIds['revisions'][0]['parentid'] !== 'undefined' && pageIds['revisions'][0]['parentid'] !== null && pageIds['revisions'][0]['parentid'] !== "")
+                        oldId = pageIds['revisions'][0]['parentid'];
+                }
+                var url = serverUrl + scriptPath + "/api.php?action=compare&fromrev=" + oldId + "&torev=" + newId + "&utf8=1&format=json";
+                if (oldId === -1) url = serverUrl + scriptPath + "/api.php?action=compare&fromrev=" + newId + "&torelative=prev&utf8=1&format=json";
+                if (oldId === 0) url = serverUrl + scriptPath + "/api.php?action=query&prop=revisions&titles=User_talk:" + encodeURIComponent(username) + "&rvslots=main&rvprop=content&rvlimit=1&format=json&utf8=1";
+                resolve(url);
+            }, error: err => reject(err)
+        });
+    });
+}
+function getExistingWarnCount(url, tags) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            crossDomain: true,
+            dataType: 'jsonp',
+            success: revisionsWarn => {
+                var diffWarnContent = "", level = -1;
+                if ((typeof revisionsWarn['compare'] === 'undefined' || typeof revisionsWarn['compare']['*'] === 'undefined') && (typeof revisionsWarn['query'] === 'undefined' || typeof revisionsWarn['query']['pages'] === 'undefined' || revisionsWarn['query']['pages'] === -1))
+                    resolve(level);
+                if (typeof revisionsWarn["query"] !== "undefined" && typeof revisionsWarn["query"]["pages"] !== "undefined") {
+                    var pageIdContent;
+                    for (let key in revisionsWarn['query']['pages']) if (Number(key) !== -1) pageIdContent = revisionsWarn['query']['pages'][key];
+                    if (typeof pageIdContent["revisions"] !== "undefined" && typeof pageIdContent["revisions"][0] !== "undefined" && typeof pageIdContent["revisions"][0]["slots"] !== "undefined" && typeof pageIdContent["revisions"][0]["slots"]["main"] !== "undefined" && typeof pageIdContent["revisions"][0]["slots"]["main"]["*"] !== "undefined")
+                        diffWarnContent = pageIdContent["revisions"][0]["slots"]["main"]["*"];
+                } else if (typeof revisionsWarn["compare"] !== "undefined" && typeof revisionsWarn["compare"]["*"] !== "undefined") {
+                    diffWarnContent = revisionsWarn["compare"]["*"]; 
+                }
+                diffWarnContent = getNewFromDiff(diffWarnContent);
+                for (let tagWarn in tags) if(diffWarnContent.indexOf(tags[tagWarn]) !== -1) if (level < tagWarn) level = Number(tagWarn);
+                resolve(level);
+            }, error: err => reject(err)
+        });
+    });
+}
+
+function checkIfAlreadyReported(serverUrl, scriptPath, wiki, user, pageReport, textReport, regexReport, regexReport2, summaryReport) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/doEdit.php',
+            type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Api-User-Agent', 'SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) Ajax / Report');
+            },
+            crossDomain: true,
+            dataType: 'json',
+            data: {
+                checkreport: 1,
+                warn: 1,
+                project: serverUrl + scriptPath + "/api.php",
+                wiki: wiki,
+                page: pageReport,
+                text: textReport,
+                user: user,
+                regexreport: regexReport,
+                regexreport2: regexReport2,
+                summary: summaryReport
+            },
+            success: s => {
+                if (s['result'] === false) resolve(false);
+                resolve(true);
+            }, error: err => reject(err)
+        });
+    });
+}
+
+function getNewFromDiff(diffContent) {
+    return diffContent.replace(/<tr>([^]*?)<\/tr>/g, function ($0, $1) {
+        if ($1.search(/<td class="deletedline">/g) === -1 &&
+            $1.search(/<td class="diff-marker">-<\/td>/g) === -1 &&
+            $1.search(/<td class="diff-context">/g) === -1 &&
+            $1.search(/<ins/g) === -1 &&
+            $1.search(/<del/g) === -1)
+            return $1;
+        else
+            return "";
+    });
+}
+
+function checkKey(k, targetArray) {
+    var checkArrayKey = false;
+    if (targetArray.hasOwnProperty(k))
+        if (targetArray[k] !== null)
+            if (targetArray[k] !== "")
+                if (typeof targetArray[k] !== "undefined")
+                    checkArrayKey = true;
+    return checkArrayKey;
+}
+
+// => get wiki configs
+function getConfig(wiki) {
+    var wikiConfig;
+    if (config["wikis"][0].hasOwnProperty(wiki)) wikiConfig = { ...config["wikis"][0][wiki][0] }
+    else wikiConfig = { ...config["wikis"][0]["others"][0] }
+
+    if (!wikiConfig.hasOwnProperty('speedySummary')) wikiConfig['speedySummary'] = "+ delete";
+    if (!wikiConfig.hasOwnProperty('speedyWarnSummary')) wikiConfig['speedyWarnSummary'] = null;
+    if (!wikiConfig.hasOwnProperty('speedy')) wikiConfig['speedy'] = config["wikis"][0]["others"][0]['speedy'];
+    if (!wikiConfig.hasOwnProperty('rollback')) wikiConfig['rollback'] = config["wikis"][0]["others"][0]['rollback'];
+    if (!wikiConfig.hasOwnProperty('warn') || !wikiConfig.hasOwnProperty('rollback')) wikiConfig['warn'] = null;
+    else wikiConfig['warn'] = wikiConfig['warn'][0];
+    if (!wikiConfig.hasOwnProperty('report')) wikiConfig['report'] = null;
+    else wikiConfig['report'] = wikiConfig['report'][0];
+    if (!wikiConfig.hasOwnProperty('protect')) wikiConfig['protect'] = null;
+    else wikiConfig['protect'] = wikiConfig['protect'][0];
+    return wikiConfig;
+}
+
+/*  
+====================
+-----UI handlers----
+====================
+*/
+// => to enable newPage UI
+function enableNewUI() {
+    document.getElementById("revert").classList.add("disabled");
+    document.getElementById("customRevertBtn").classList.add("disabled");
+}
+
+// => To disabe newPage UI
+function disableNewUI() {
+    document.getElementById("queue").classList.remove("disabled");
+    document.getElementById("revert").classList.remove("disabled");
+    document.getElementById("customRevertBtn").classList.remove("disabled");
+}
+
+// => ready ui to show diff
+function enableLoadingDiffUI() {
     document.getElementById("page-welcome").style.display = "none";
     document.getElementById("description-container").style.display = "grid";
     document.getElementById("controlsBase").style.display = "block";
     document.getElementById("moreOptionBtnMobile").classList.remove('disabled');
     document.getElementById("page").style.display = "block";
 }
-
-function uiDisable() {
-    document.getElementById("queue").classList.add("disabled");
-    document.getElementById("control").classList.add("disabled");
-    document.getElementById('next-diff').classList.add('disabled');
-}
-
-function uiDisableList() {
-    document.getElementById("control").classList.add("disabled");
-}
-
-function uiDisableNew() {
-    document.getElementById("revert").classList.add("disabled");
-    document.getElementById("customRevertBtn").classList.add("disabled");
-}
-
-function uiEnable() {
+// => enable ui after diff load
+function disableLoadingDiffUI() {
     document.getElementById("queue").classList.remove("disabled");
     document.getElementById("control").classList.remove("disabled");
     document.getElementById('next-diff').classList.remove('disabled');
 }
 
-function uiEnableNew() {
-    document.getElementById("queue").classList.remove("disabled");
-    document.getElementById("revert").classList.remove("disabled");
-    document.getElementById("customRevertBtn").classList.remove("disabled");
+// => disable controls
+function disableControl() {
+    document.getElementById("control").classList.add("disabled");
 }
+
 
 function isNotModal() {
     return !document.getElementById('customRevert').classList.contains("po__active") &&
@@ -2313,17 +1848,6 @@ function selectTalkUsers(selectedUser) {
     document.getElementById("phrase-send-talk").focus();
     closePWDrawer('talkPWDrawer', 'talkPWOverlay');
 }
-
-function checkKey(k, wiki, targetArray) {
-    var checkArrayKey = false;
-    if (targetArray.hasOwnProperty(k))
-        if (targetArray[k] !== null)
-            if (targetArray[k] !== "")
-                if (typeof targetArray[k] !== "undefined")
-                    checkArrayKey = true;
-    return checkArrayKey;
-}
-
 function keyDownFunctOutside(keyCode) {
     angular.element(document.getElementById('angularapp')).scope().keyDownFunct(keyCode);
 }

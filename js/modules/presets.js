@@ -12,8 +12,8 @@ const savePreset = (index) => {
     if (document.getElementById("presetTitleInput") !== null) {
         var presetTitle = document.getElementById("presetTitleInput").value;
         let titlePosition = presets.findIndex(item => item['title'] === presetTitle);
-        if ((titlePosition !== -1 && titlePosition !== index) || !/^(\s|\w|\d|\-|\(|\)|\[|\]|\{|\})*?$/.test(presetTitle) || /^default$/i.test(presetTitle) || presetTitle === "" || presetTitle === null || presetTitle === undefined) {
-            invalidAlert('Invalid Title', 'This preset title is not valid. please try using "A-Z, a-b, 0-9, (), [], {}, -, _".');
+        if ((titlePosition !== -1 && titlePosition !== index) || !/^(\s|\w|\d|\-|\(|\)|\[|\]|\{|\})*?$/.test(presetTitle) || presetTitle === "" || presetTitle === null || presetTitle === undefined) {
+            invalidAlert('Invalid Title', 'This preset title is not valid. Please try using "A-Z, a-b, 0-9, (), [], {}, -, _".');
             return;
         }
     } else { var presetTitle = presets[index]['title']; }
@@ -193,8 +193,8 @@ const editPreset = (index) => {
         if (PTitle !== "Default")
             document.getElementById("presetTitleInput").value = preSettings['title'];
         else {
-            // document.getElementById("DefaultPresetDialog").getElementsByClassName("dialog__base")[0].getElementsByClassName("dialog__body")[0].classList.add("disabled");
-            // document.getElementById("DefaultPresetDialog").getElementsByClassName("dialog__base")[0].getElementsByClassName("dialog__buttons")[0].getElementsByClassName("i-btn__accent")[0].classList.add("disabled");
+            // document.querySelector("#DefaultPresetDialog").querySelector(".dialog__body").classList.add("disabled");
+            // document.querySelector("#DefaultPresetDialog").querySelector(".dialog__base").querySelector(".dialog__buttons").querySelector(".i-btn__accent").classList.add("disabled");
         }
     }
 }

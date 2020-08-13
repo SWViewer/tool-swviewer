@@ -157,20 +157,24 @@ html, body, .full-screen, #loading {
     display: block;
 }
 .tab-notice-indicator {
-    width: 16px;
-    height: 16px;
+    min-width: 20px;
+    height: 20px;
     background: #6b54b1;
     position: absolute;
     top: 12px;
-    left: 10px;
+    right: 10px;
     z-index: 8;
-    border-radius: 100%;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 12px;
-    color: white;
+    color: var(--bc-primary);
+    border: 2px solid var(--bc-primary);
+    padding: 0 4px;
+    transform: scale(0.8);
 }
+.tab-notice-indicator__inactive { display: none; }
 
 /*#####################
 ------drawer-base------
@@ -416,6 +420,28 @@ html, body, .full-screen, #loading {
     background-color: black;
     filter: var(--ic-accent);
 }
+
+.notification-fab-base {
+    min-width: 56px;
+    width: 56px;
+    left: var(--side-padding);
+    right: unset;
+    z-index: 93;
+    background-color: var(--bc-secondary);
+}
+.notification-fab-base > div {
+    padding: 0 !important;
+    border-radius: 50% !important;
+}
+.notification-fab-base > div > .tab-notice-indicator {
+    background-color: var(--tc-secondary);
+    border-color: var(--bc-secondary);
+    color: var(--bc-secondary);
+}
+.notification-fab-base__inactive {
+    transform: scale(0);
+}
+
 /*-------Controls-----*/
 .controls-base {
     bottom: var(--side-padding);
@@ -427,7 +453,7 @@ html, body, .full-screen, #loading {
 }
 /*-------more control------*/
 .more-control {
-    height: calc(4 * 48px);
+    height: calc(5 * 48px);
     overflow: hidden;
     transition: height 200ms ease-in-out;
 }

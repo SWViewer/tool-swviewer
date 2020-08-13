@@ -9,6 +9,8 @@ if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset(
     exit();
 }
 $userName = $_SESSION['userName'];
+if ($userName == "Iluvatar")
+    $userName = "轻语者";
 session_write_close();
 if (!check($_GET["action"]) && ($_GET["action"] !== "get_presets" && !check($_GET["preset_name"])) ) {
     echo json_encode(["result" => "error", "info" => "Invalid request; dev. code 2"]);
@@ -53,6 +55,10 @@ if ($_GET["action"] === "delete_preset" && check($_GET["preset_name"])) {
 }
 
 if ($_GET["action"] === "edit_preset" && check($_GET["preset_name"])) {
+    // if ($_GET["preset_name"] === "Default") {
+    //     echo json_encode(["result" => "error", "info" => "Default preset"]);
+    //     exit();
+    // }
     $q = $db->prepare('SELECT preset FROM presets WHERE name = :userName');
     $q->execute(array(':userName' => $userName));
     if ($q->rowCount() > 0) {
