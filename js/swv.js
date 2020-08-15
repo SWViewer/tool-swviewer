@@ -83,6 +83,13 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         else if (suspects.indexOf(edit.user) !== -1)
             return {color: "pink"};
     };
+    $scope.byteCountColor = function (byteCount) {
+        if (byteCount == 0) return {opacity: "0.6"};
+        if (byteCount > 0) if (byteCount < 500) return {color: "var(--tc-positive)"};
+            else return {color: "var(--tc-positive)", fontWeight: "bold"};
+        if (byteCount > -500) return {color: "hsl(0, 50%, 56%)"};
+        return {color: "hsl(0, 50%, 56%)", fontWeight: "bold"};
+    }
     $scope.descriptionColor = function (description) {
         if ($scope.selectedEdit.settings.checkWarn === true && description.warn !== null && typeof description.warn !== "undefined" && description.warn !== "")
             return {color: "var(--tc-positive)"};
@@ -987,7 +994,15 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 "isIp": ipType,
                 "wikidata_title": wikidataTitle,
                 "ores": undefined,
-                "isNew": (editData.type === "new") ? "N" : ""
+                "isNew": (editData.type === "new") ? "N" : "",
+                "byteCount": ((newByte, oldByte) => {
+                    let byteCount
+                    console.log(newByte, oldByte);
+                    if (typeof oldByte === 'undefined') byteCount = newByte;
+                    else byteCount = newByte - oldByte;
+                    if (byteCount > 0) return "+" + byteCount;
+                    return byteCount;
+                })(editData.length.new, editData.length.old)
             };
             $scope.genORES(editData.wiki, editData['revision']['new'], editTemp);
             $scope.edits.unshift(editTemp);

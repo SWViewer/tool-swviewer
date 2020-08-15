@@ -325,7 +325,11 @@ if (sess["local_wikis"] !== "")
                                         <div class="queue-new">{{edit.isNew}}</div>
                                     </div>
                                     <div class="queue-row">
-                                        <div class="queue-wikiname fs-sm" ng-style="editColor(edit)">{{edit.wiki}}</div>
+                                        <div class="queue-wikiname fs-sm" ng-style="editColor(edit)">
+                                            {{edit.wiki}}
+                                            <span class="fs-xs" ng-style="byteCountColor(edit.byteCount)">({{edit.byteCount}})</span>
+                                        </div>
+                                        <div class="queue-username fs-xs" style="opacity: 0.9;">{{edit.title}}</div>
                                         <div class="queue-username fs-xs">{{edit.user}}</div>
                                     </div>
                                 </div>
@@ -386,11 +390,11 @@ if (sess["local_wikis"] !== "")
                             </div>
                             <div id="CAUTH">
                                 <div class="secondary-hover" ng-click="copyCentralAuth()" aria-label="Copy link address" i-tooltip="top-left"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
-                                <a class="secondary-hover fs-md" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{selectedEdit.user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Central auth</a>
+                                <a class="secondary-hover fs-md" href='https://meta.wikimedia.org/wiki/Special:CentralAuth?target={{selectedEdit.user}}' onclick="closeMoreControl();" rel='noopener noreferrer' target='_blank'>Central auth</a>
                             </div>
                             <div>
                                 <div class="secondary-hover" ng-click="copyGlobalContribs()" aria-label="Copy link address" i-tooltip="top-left"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
-                                <a class="secondary-hover fs-md" href='https://guc.toolforge.org/?src=hr&by=date&user={{selectedEdit.user}}' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
+                                <a id="luxo" class="secondary-hover fs-md" href='https://guc.toolforge.org/?src=hr&by=date&user={{selectedEdit.user}}' onclick="closeMoreControl();" rel='noopener noreferrer' target='_blank'>Global contribs</a>
                             </div>
                             <div>
                                 <div class="secondary-hover" ng-click="copyViewHistory()" aria-label="Copy link address" i-tooltip="top-left"><img class="touch-ic secondary-icon" src="./img/copy-filled.svg" alt="Copy Image"></div>
