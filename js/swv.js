@@ -997,7 +997,6 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 "isNew": (editData.type === "new") ? "N" : "",
                 "byteCount": ((newByte, oldByte) => {
                     let byteCount
-                    console.log(newByte, oldByte);
                     if (typeof oldByte === 'undefined') byteCount = newByte;
                     else byteCount = newByte - oldByte;
                     if (byteCount > 0) return "+" + byteCount;
