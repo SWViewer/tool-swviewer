@@ -615,7 +615,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                         performReport(SEdit.server_url, SEdit.script_path, SEdit.wiki, withoutSectionReport, isTop, preamb, pageReport, textReport, sectionReport, summaryReport)
                         .then(() => createNotify({
                             img: '/img/warning-filled.svg',
-                            title: 'Warning performed',
+                            title: 'Report performed',
                             content: `${SEdit.user} has been successfully reported for edit on ${SEdit.title}.`,
                             removable: true
                         })).catch(err => createNotify({

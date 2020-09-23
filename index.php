@@ -23,8 +23,8 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
         <meta name="application-name" content="SWViewer">
         <meta name="author" content="Iluvatar, Ajbura, 1997kB">
-        <meta name="description" content="App for viewing queue of edits on small wikis for SWMT">
-        <meta name="keywords" content="SWMT">
+        <meta name="description" content="App for monitoring recent changes of Wikipedia in real-time.">
+        <meta name="keywords" content="swmt, patrolling wikipedia, recent changes, ">
         <meta name="msapplication-TileColor" content="#808d9f">
         <!-- icons -->
         <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png">

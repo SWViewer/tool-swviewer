@@ -1,3 +1,3 @@
-# tool-swviewer
+SWViewer is a user friendly webapp that is used to detect and revert vandalism, spam, and other types of unconstructive edits made at various Wikimedia projects. With simple and intuitive UI, you can monitor changes in real-time. In doing so, it provides a lot of features; such as rollback, speedy deletion, edit source.
 
-SWViewer is a mobile friendly webapp with simple and intuitive UI that enables you to monitor recent changes in real-time. In doing so it provides a lot of features; such as diff, rollback, edit-source and much more. In order to use the application, user should have rollback on project they want to use or global rollback. 
+Read more at https://meta.wikimedia.org/wiki/SWViewer
