@@ -93,7 +93,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 # Callback errors
 if (isset($_GET["error"])) {
     if ($_GET["error"] == "rights")
-        echo "<div style='background-color: red;' align=center>Sorry, to use this application <a rel='noopener noreferrer' target='_blank' href='https://en.wikipedia.org/wiki/Wikipedia:Rollback'>local</a> or <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/Global_rollback'>global</a> rollback is required.<br>If you have rollback right and see that error, then report about it on <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/SWViewer'>talk page</a>. Thanks!</div>";
+        echo "<div style='background-color: red;' align=center>Sorry, to use this application <a rel='noopener noreferrer' target='_blank' href='https://en.wikipedia.org/wiki/Wikipedia:Rollback'>local</a> or <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/Global_rollback'>global</a> rollback is required.<br>If you have rollback right and see that error, then report about it on <a rel='noopener noreferrer' target='_blank' href='https://meta.wikimedia.org/wiki/Talk:SWViewer'>talk page</a>. Thanks!</div>";
     if ($_GET["error"] == "internal")
         echo "<div style='background-color: red;' align=center>Internal server error</div>";
 exit();
