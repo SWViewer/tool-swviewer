@@ -218,7 +218,7 @@
   "tooltip-reason": "Reason",
   "welcome-frame-title": "Welcome",
   "welcome-frame-button": "Search",
-  "welcome-frame-placeholder": "Search user",
+  "welcome-frame-placeholder": "Search edit stats by user. Example: JohnDoe",
   "welcome-frame-rollback": "Rollback",
   "welcome-frame-undo": "Undo",
   "welcome-frame-edit": "Edit",
