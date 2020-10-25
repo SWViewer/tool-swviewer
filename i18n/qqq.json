@@ -169,6 +169,8 @@
   "warn-fail-title": "Error text in 'Notifications' when warning fails.",
   "edit-fail-title": "Error text in 'Notifications' when edit to an article fails.",
   "view-latest": "'View latest' text in 'Notifications' when edit to an article fails.",
+  "request-performed-title": "'Request performed' text in 'Notifications' when action to an article is performed.",
+  "request-performed-content": "Description text in 'Notifications' when action to an article is performed. Parameters:\n* $1 - action name\n* $2 - article name",
   "rollback-fail-title": "Error text in 'Notifications' when rollback to an edit fails.",
   "rollback-fail-content": "Description text in 'Notifications' when rollback to an edit fails. Parameters:\n* $1 - username/IP of user\n* $2 - page name which user has edited",
   "load-history": "'Load history' text in 'Notifications' when edit to an article fails.",

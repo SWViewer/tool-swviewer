@@ -169,6 +169,8 @@
   "warn-fail-title": "Warned failed!",
   "edit-fail-title": "Edit failed!",
   "view-latest": "View latest",
+  "request-performed-title": "Request performed",
+  "request-performed-content": "Request for $1 on $2 has been performed successfully.",
   "rollback-fail-title": "Rollback failed!",
   "rollback-fail-content": "$1 has made multiple edits on $2. Please check the article history first.",
   "load-history": "Load history",
