@@ -172,7 +172,7 @@
   "request-performed-title": "Request performed",
   "request-performed-content": "Request for $1 on $2 has been performed successfully.",
   "rollback-fail-title": "Rollback failed!",
-  "rollback-fail-content": "$1 has made multiple edits on $2. Please check the article history first.",
+  "rollback-fail-content": "$1 has made multiple edits on $2. Please check the page history first.",
   "load-history": "Load history",
   "rollback-fail-not-latest": "Can not perform this action, this edit on $1 is not the latest revision.",
   "warn-perform-fail": "A warning for edit on $1 has failed. Looks like config is not defined correctly.",
