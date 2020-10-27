@@ -225,6 +225,7 @@
   "welcome-frame-undo": "Undo",
   "welcome-frame-edit": "Edit",
   "welcome-frame-warn": "Warn",
+  "welcome-frame-del": "Delete",
   "welcome-frame-protect": "Protect",
   "welcome-frame-report": "Report",
   "welcome-frame-reminder": "Reminder",
