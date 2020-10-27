@@ -7,7 +7,7 @@
     ]
   },
   "tooltip-edit-preset": "Queue settings",
-  "tooltip-home": "SWViewer [esc]",
+  "tooltip-home": "Welcome [esc]",
   "tooltip-talk": "Talk [t]",
   "tooltip-logs": "Logs [l]",
   "tooltip-logout": "Logout [u]",
@@ -295,7 +295,7 @@
   "img-custom-rb": "Custom rollback",
   "img-rollback": "Rollback",
   "img-back": "Previous diff",
-  "img-box": "Sidear",
+  "img-box": "Sidebar",
   "img-save": "Save",
   "cancel": "Cancel",
   "alright": "Alright",
