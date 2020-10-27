@@ -225,6 +225,7 @@
   "welcome-frame-undo": "'Undo' text in stats on welcome page.",
   "welcome-frame-edit": "'Edit' text in stats on welcome page.",
   "welcome-frame-warn": "'Warn' text in stats on welcome page.",
+  "welcome-frame-del": "'Delete' text in stats on welcome page.",
   "welcome-frame-protect": "'Protect' text in stats on welcome page.",
   "welcome-frame-report": "'Report' text in stats on welcome page.",
   "welcome-frame-reminder": "'Reminder' title text on welcome page.",
