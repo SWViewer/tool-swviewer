@@ -86,7 +86,7 @@
   "presets-default-q": "We don't recommend you to delete default preset!",
   "presets-create": "Create preset",
   "presets-invalid-title": "Invalid Title",
-  "presets-invalid-title-desc": "This preset title is not valid. Please try using \"A-Z, a-b, 0-9, (), [], {}, -, _\".",
+  "presets-invalid-title-desc": "This preset title is not valid. Please try using \"A-Z, a-z, 0-9, (), [], {}, -, _\".",
   "presets-invalid-edits-limit-title": "Invalid Edits limit",
   "presets-invalid-edits-limit-desc": "Edit limit should be numeric and non-empty.",
   "presets-invalid-days-limit": "Invalid Days limit",
