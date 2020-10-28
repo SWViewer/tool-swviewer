@@ -70,6 +70,7 @@
   "presets-days-limit-desc": "Description text below 'Days limit' option in 'Queue settings'.",
   "presets-days-limit-placeholder": "Placeholder in 'Days limit' input area in 'Queue settings'.",
   "presets-ns": "'Namespace filter' text in 'Queue settings'.",
+  "presets-enter-placeholder": "Placeholder in input areas in 'Queue settings'.",
   "presets-ns-desc": "Description text below 'Namespace filter' option in 'Queue settings'. Parameters:\n* $1 - Help:Namespace link",
   "presets-sw": "'Small wikis' text in 'Queue settings'.",
   "presets-sw-desc": "Description text below 'Small wikis' option in 'Queue settings'.",
