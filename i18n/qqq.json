@@ -213,6 +213,7 @@
   "warn-user-title": "'Warn user' text in 'Custom revert' panel.",
   "warn-user-desc": "Description text below 'Warn user' button in 'Custom revert' panel.",
   "common-summaries": "'Common Summaries' text below 'Warn user' button description in 'Custom revert' panel.",
+  "tag-deletion-title": "'Tag for deletion' title in 'Tag panel'.",
   "gsr-add": "'Add to GSR' text in 'Tag for deletion' panel.",
   "edit-source-title": "'Edit source' title in edit source page.",
   "summary-title": "'Summary' text when hovered over summary input area in edit source page.",
