@@ -232,6 +232,7 @@
 	"welcome-frame-del": "'Delete' text in stats on welcome page.",
 	"welcome-frame-protect": "'Protect' text in stats on welcome page.",
 	"welcome-frame-report": "'Report' text in stats on welcome page.",
+	"welcome-frame-total": "'Total' text in stats on welcome page.",
 	"welcome-frame-reminder": "'Reminder' title text on welcome page.",
 	"welcome-frame-reminder-cache": "Text under 'Reminder' title on welcome page.",
 	"welcome-frame-reminder-respons": "Text under 'Reminder' title on welcome page.",
