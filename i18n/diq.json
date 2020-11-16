@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"1917 Ekim Devrimi"
+			"1917 Ekim Devrimi",
+			"Mirzali"
 		]
 	},
 	"tooltip-edit-preset": "Eyarê rêze",
-	"tooltip-home": "Pela seri [esc]",
+	"tooltip-home": "Keye [esc]",
 	"tooltip-talk": "Werênayış [t]",
 	"tooltip-logs": "Roceki [l]",
 	"tooltip-logout": "Veciyayış [u]",
