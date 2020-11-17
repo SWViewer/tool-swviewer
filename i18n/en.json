@@ -83,6 +83,7 @@
   "presets-users-wl": "Users whitelist",
   "presets-users-wl-desc": "Add users to skip their edits from the queue. Example: JohnDoe",
   "presets-save": "Save",
+  "presets-restore": "Restore",
   "presets-delete-q": "Delete $1 preset?",
   "presets-default-q": "We don't recommend you to delete default preset!",
   "presets-create": "Create preset",
