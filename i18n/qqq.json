@@ -85,6 +85,7 @@
 	"presets-users-wl": "'Users whitelist' text in 'Queue settings'.",
 	"presets-users-wl-desc": "Description text below 'Users whitelist' option in 'Queue settings'.",
 	"presets-save": "'Save' button text in 'Queue settings'.",
+  	"presets-restore": "'Restore' button text in 'Queue settings'.",
 	"presets-delete-q": "Text appears on delete dialog after clicking 'Delete' button inside dropdown list of presets. Parameters:\n* $1 - the name of the preset user is deleting",
 	"presets-default-q": "Text message when someone try to delete Default preset forcefully.",
 	"presets-create": "'Create preset' text appears above 'Title' in create preset dialog.",
