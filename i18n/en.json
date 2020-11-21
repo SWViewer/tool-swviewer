@@ -184,7 +184,7 @@
   "report-fail-content": "Report for edit on $1 has failed. Looks like config is not define correctly.",
   "report-already-reported": "The user has been already reported.",
   "autoreport-title": "Auto report",
-  "autoreport-content": "$1 has been warned muliple times. Do you want to report them to Admin Noticeboard?",
+  "autoreport-content": "$1 has been warned multiple times. Do you want to report them to Admin Noticeboard?",
   "report-title": "Report",
   "report-performed-content": "$1 has been successfully reported for edit on $2.",
   "browser-sse": "Sorry, your browser does not support Server-Sent Events.",
