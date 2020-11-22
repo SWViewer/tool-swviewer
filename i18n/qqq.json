@@ -54,6 +54,7 @@
 	"settings-control-panel": "Link below 'Dev tools' heading in 'General settings'.",
 	"settings-beta": "Heading 'Beta' in 'General settings'.",
 	"settings-beta-tester": "Link below 'Beta' heading in 'General settings'.",
+	"queue-empty-msg": "'Queue is empty' text appear in empty queue.",
 	"presets-default-title": "'Default' preset name inside dropdown list of presets.",
 	"presets-enter-placeholder": "Placeholder in input areas in 'Queue settings'.",
 	"presets-button-create": "'Create' button inside dropdown list of presets.",

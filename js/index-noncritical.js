@@ -314,7 +314,7 @@ function removeFilter(listId, inputId, key, chipVal, crossClick) {
     if (crossClick === true) var val = chipVal;
     else var val = document.getElementById(inputId).value;
     if (val !== "" && val !== null && typeof val !== 'undefined' || crossClick === true) {
-        if (key === 'namespaces'){ nsChange(chipVal, "delete"); return}
+        if (key === 'namespaces'){ nsChange(val, "delete"); return}
         removeChip(listId, val);
         document.getElementById(inputId).value = "";
 

@@ -52,6 +52,7 @@
   "settings-control-panel": "Control panel",
   "settings-beta": "Beta",
   "settings-beta-tester": "Open beta version",
+  "queue-empty-msg": "Queue is empty",
   "presets-default-title": "Default",
   "presets-enter-placeholder": "Enter",
   "presets-button-create": "Create",

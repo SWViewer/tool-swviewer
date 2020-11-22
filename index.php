@@ -757,7 +757,7 @@ if (sess["local_wikis"] !== "")
             <div class="i__title fs-md">Wikis whitelist</div>
             <div class="i__description fs-xs">Add wikis to skip their edits from queue. Example: enwiki</div>
             <div class="i__content fs-sm">
-                <div id="btn-wl-p-delete" class="i-minus fs-sm" onclick="wluDeleteFunct()">-</div>
+                <div id="btn-wl-p-delete" class="i-minus fs-sm" onclick="wlpDeleteFunct()">-</div>
                 <input id="wladdp" class="i-input__secondary secondary-placeholder fs-sm" name="wladdp" placeholder="Enter">
                 <div id="btn-wl-p-add" class="i-plus fs-sm" onclick="wlpAddFunct()">+</div>
             </div>
