@@ -46,6 +46,10 @@
     padding-left: 0;
     border-bottom: 1px solid var(--bc-secondary-hover);
 }
+html[dir="rtl"] .po__header {
+    padding-right: 0;
+    padding-left: var(--side-padding);
+}
 .pw__esc,
 .po__esc {
     margin-left: var(--side-padding);
@@ -54,6 +58,8 @@
     padding: 0 16px;
     cursor: pointer;
 }
+html[dir="rtl"] .pw__esc,
+html[dir="rtl"] .po__esc { margin-left: 0; margin-right: var(--side-padding); }
 
 .pw__content,
 .po__content {
@@ -153,7 +159,7 @@
     .po__header {
         box-shadow: var(--floatbar-shadow);
         border-bottom: none;
-        padding: 0;
+        padding: 0 !important;
     }
     .pw__drawer {
         position: absolute;

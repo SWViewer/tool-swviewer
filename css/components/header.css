@@ -34,3 +34,8 @@
 .action-header__sticky > span.action-header__title:first-child {
     padding-left: var(--side-padding);
 }
+html[dir="rtl"] .action-header > span.action-header__title:first-child,
+html[dir="rtl"] .action-header__sticky > span.action-header__title:first-child {
+    padding-right: var(--side-padding);
+    padding-left: unset;
+}

@@ -9,11 +9,9 @@ if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset(
     exit();
 }
 $userName = $_SESSION['userName'];
-if ($userName == "Iluvatar")
-    $userName = "轻语者";
 session_write_close();
-if (!check($_GET["action"]) && ($_GET["action"] !== "get_presets" && !check($_GET["preset_name"])) ) {
-    echo json_encode(["result" => "error", "info" => "Invalid request; dev. code 2"]);
+if (!check($_POST["action"]) || ($_POST["action"] !== "get_presets" && !check($_GET["preset_name"])) ) {
+    echo json_encode(["result" => $_POST["action"], "info" => "Invalid request; dev. code 2"]);
     exit();
 }
 $ts_pw = posix_getpwuid(posix_getuid());
@@ -22,7 +20,7 @@ $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $t
 unset($ts_mycnf, $ts_pw);
 
 
-if ($_GET["action"] === "get_presets") {
+if ($_POST["action"] === "get_presets") {
     $q = $db->prepare('SELECT swmt, anons, registered, new, users, onlynew, regdays, editscount, namespaces, wlusers, wlprojects, blprojects, preset AS title FROM presets WHERE name = :userName GROUP BY preset;');
     $q->execute(array(':userName' => $userName));
     echo json_encode($q->fetchAll(PDO::FETCH_ASSOC));
@@ -55,10 +53,6 @@ if ($_GET["action"] === "delete_preset" && check($_GET["preset_name"])) {
 }
 
 if ($_GET["action"] === "edit_preset" && check($_GET["preset_name"])) {
-    // if ($_GET["preset_name"] === "Default") {
-    //     echo json_encode(["result" => "error", "info" => "Default preset"]);
-    //     exit();
-    // }
     $q = $db->prepare('SELECT preset FROM presets WHERE name = :userName');
     $q->execute(array(':userName' => $userName));
     if ($q->rowCount() > 0) {

@@ -28,10 +28,10 @@ const createNotify = (notify) => {
             var notiChilds = [];
             if (typeof notify.img === 'string') notiChilds.push(bakeEl({
                 type: 'div', att: { class: 'noti-img' },
-                child: bakeEl({ type: 'img', att: { class: 'secondary-icon', src: notify.img, alt: 'noti img' } })
+                child: bakeEl({ type: 'img', att: { class: 'secondary-icon', src: notify.img, alt: useLang["notifications-img"] } })
             }));
             if (typeof notify.removable === 'boolean' && notify.removable === true) notiChilds.push(bakeEl({
-                type: 'img', att: { class: "noti-cross secondary-hover secondary-icon", onClick: `removeNotify('${notiID}')`, src: './img/cross-filled.svg', alt: 'cross img' }
+                type: 'img', att: { class: "noti-cross secondary-hover secondary-icon", onClick: `removeNotify('${notiID}')`, src: './img/cross-filled.svg', alt: useLang["po-img-cross"] }
             }));
             if (typeof notify.title === 'string') notiChilds.push(bakeEl({
                 type: 'div', child: notify.title, att: { class: 'noti-title fs-lg' }
@@ -85,16 +85,16 @@ const createNotificationPanel = p => {
 
     p.append(createPO({
         id: 'notificationPanel',
-        header: { title: 'Notifications' },
+        header: { title: useLang["notifications-title"] },
         content: {
             child: bakeEl({ 
                 type: 'div', att: { id: 'notify-box', class: 'fs-md' }, 
                 child: bakeEl({
                     type: 'div', att: { class: "talk-svg fs-md" },
                     child: [bakeEl({
-                        type: 'img', att: { class: "secondary-icon", style: "margin-bottom: 48px", src: "./img/bell-filled.svg", alt: "Norification image", width: "100px" }
+                        type: 'img', att: { class: "secondary-icon", style: "margin-bottom: 48px", src: "./img/bell-filled.svg", alt: useLang["notifications-img"], width: "100px" }
                     }), bakeEl({
-                        type: 'span', child: "No notifications"
+                        type: 'span', child: useLang["notifications-empty"]
                     })]
                 })
             })
@@ -104,9 +104,9 @@ const createNotificationPanel = p => {
     document.getElementById('notify-box').parentElement.parentNode.append(bakeEl({
         type: 'div', att: { id: 'clearAllNotify-base', style: 'display: flex; align-items: center; padding-left: var(--side-padding); box-shadow: var(--floatbar-shadow); transform: translateX(100%);' },
         child: [
-            bakeEl({ type: 'span', child: 'Clear all notifications', att: {class: 'fs-sm', style: 'flex:1 ;' } }),
+            bakeEl({ type: 'span', child: useLang['notifications-img-clear'], att: {class: 'fs-sm', style: 'flex:1 ;' } }),
             bakeEl({ type: 'div', att: { onClick: 'removeAllNotify(); closePO();', class: 'secondary-hover', style: 'height: 48px; width: 48px; cursor: pointer; display: flex; justify-content: center; align-items: center;'},
-                child: bakeEl({ type: 'img', att: { class: 'touch-ic secondary-icon', src: '/img/clear-bars-filled.svg', alt: 'Clear all image'} })
+                child: bakeEl({ type: 'img', att: { class: 'touch-ic secondary-icon', src: '/img/clear-bars-filled.svg', alt: useLang["notifications-img-clear"]} })
             })
         ]
     }));

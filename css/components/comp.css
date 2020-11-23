@@ -73,6 +73,7 @@
     transition: background-color 200ms ease-in-out;
     cursor: pointer;
     background-color: var(--bc-mid);
+    direction: ltr;
 }
 
 [class^="t-btn"]::before {
@@ -116,6 +117,7 @@
 .i-select__primary,
 .i-select__secondary {
     padding: 0 8px;
+    width: 100px;
     height: 25px;
     border-radius: 4px;
     border: none;
@@ -211,6 +213,7 @@
 
 /*---- UL list ---*/ 
 .i-ul { margin: 8px 0; padding-left: 1em; list-style: none; }
+html[dir="rtl"] .i-ul { padding-right: 1em; }
 .i-ul li { padding: 2px 0; }
 .i-ul li::before {
     content: "\2022";
@@ -219,6 +222,7 @@
     width: 1em;
     margin-left: -1em;
 }
+html[dir="rtl"] .i-ul li::before { margin-left: 0; margin-right: -1em; }
 .i-ul li.i-ul__imp::before { color: #d9534f; }
 .i-ul label.i-ul__subheader { margin: 16px 0 8px -1rem; }
 .list-container {

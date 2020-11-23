@@ -1,192 +1,278 @@
-<html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="./../css/base/fonts.css">
-		<link rel="stylesheet" href="./../css/base/variables.css">
-        <link rel="stylesheet" href="./../css/base/base.css">
-        <link rel="stylesheet" href="./../css/components/comp.css">
-		<style type="text/css">
+<html id="parentHTML">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./../css/base/fonts.css">
+    <link rel="stylesheet" href="./../css/base/variables.css">
+    <link rel="stylesheet" href="./../css/base/base.css">
+    <link rel="stylesheet" href="./../css/components/comp.css">
+    <style type="text/css">
 
-			body {
-				margin: 0;
-				padding: var(--side-padding);
-				width: 100%;
-			}
-		    .welcome-box { max-width: 788px; }
-			.stat-search__base {margin: var(--side-padding) 0; display: flex; }
-			.stat-search__base > input { flex: 1; margin-right: var(--side-padding); }
+        body {
+            margin: 0;
+            padding: var(--side-padding);
+            width: 100%;
+        }
+        .welcome-box { max-width: 788px; }
+        .stat-search__base {margin: var(--side-padding) 0; display: flex; }
+        .stat-search__base > input { flex: 1; margin-right: var(--side-padding); }
+        html[dir="rtl"] .stat-search__base > input { margin-right: 0; margin-left: var(--side-padding); }
 
-			.stat-container {
-				margin-bottom: var(--side-padding);
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: space-between;
-			}
-			.stat-container > div {
-				flex: 1 1;
-				padding: 8px 16px;
-				padding-left: 0;
-				display: flex;
-				flex-direction: column;
-			}
-			.stat-container > div span:first-child {
-				font-weight: bold;
-				padding-bottom: 8px;
-			}
+        .stat-container {
+            margin-bottom: var(--side-padding);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .stat-container > div {
+            flex: 1 1;
+            padding: 8px 16px;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-container > div span:first-child {
+            font-weight: bold;
+            padding-bottom: 8px;
+            color: var(--tc-secondary-low);
+        }
 
-		</style>
-	</head>
-	<body class="secondary-cont secondary-scroll">
-		<label id="welcomeLabel" class="fs-xl" style="font-weight: bold;">Welcome </label>
-		<div class="welcome-box">
-			<form id="statForm" class="stat-search__base">
-				<input id="statInput" class="i-input__secondary secondary-placeholder fs-md" type="text" autocomplete="off" placeholder="Search user">
-				<button class="i-btn__accent accent-hover fs-md" type="submit">Search</button>
-			</form>
-			<div id="statContainer" class="stat-container">
-				<div>
-					<span id="rollbackSpan" class="fs-xl" style="color: #c8b40e;">0</span>
-					<span class="fs-lg">Rollback</span>
-				</div>
-				<div>
-					<span id="undosSpan" class="fs-xl" style="color: #db24b0;">0</span>
-					<span class="fs-lg">Undo</span>
-				</div>
-				<div>
-					<span id="delSpan" class="fs-xl" style="color: #672dd2;">0</span>
-					<span class="fs-lg">Delete</span>
-				</div>
-				<div>
-					<span id="editsSpan" class="fs-xl" style="color: #2dd280;">0</span>
-					<span class="fs-lg">Edit</span>
-				</div>
-				<div>
-					<span id="warnSpan" class="fs-xl" style="color: #d92c26;">0</span>
-					<span class="fs-lg">Warn</span>
-				</div>
-				<div>
-					<span id="reportSpan" class="fs-xl" style="color: #e3791c;">0</span>
-					<span class="fs-lg">Report</span>
-				</div>
-				<div>
-					<span id="protectSpan" class="fs-xl" style="color: #1cb3e3">0</span>
-					<span class="fs-lg">Protect</span>
-				</div>
-			</div>
-			
-			<div class="list-container">
-				<label class="fs-md">Reminder</label>
-				<ul class="i-ul fs-sm">
-					<li class="i-ul__imp">IMPORTANT: If app is not working properly, please re-login and clear cache.</li>
-					<li>Responsibility for edits rests with the owner of the account with which they are made.</li>
-					<li class="i-ul__imp">Please DO NOT sends warns if you don’t know the language (except in case of pure vandalism).</li>
-					<li>If you find a bug, please <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/Talk:SWViewer">report</a> it! Also attach screenshots or/and data from the browser console.</li>
-				</ul>
-			</div>
-			<div class="list-container">
-				<label class="fs-md">Tips</label>
-				<ul class="i-ul fs-sm">
-					<li>If you use Chrome browser, you can install SWViewer as an WebApp on desktop as well as mobile, see <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Install_PWA">instructions</a>.</li>
-				</ul>
-			</div>
-			<div class="list-container">
-				<label class="fs-md">What's new </label>
-				<ul class="i-ul fs-sm">
-					<label class="i-ul__subheader fs-sm">11 August 2020</label>
-					<li class="i-ul__imp">Added a button to report deletions to GSR (only for GS wikis).</li>
-					<li class="i-ul__imp">Rollbacks are super fast now with all new notifications panel.</li>
-					<li class="i-ul__imp">Tag for deletion has been moved to main panel and edit source in more options.</li>
-					<li class="i-ul__imp">Swipe gesture to open side panel on mobile.</li>
-					<li class="i-ul__imp">Performance improvements.</li>
-					<li class="i-ul__imp">Bugs fixed!</li>
-				</ul>
-				<ul id="moreWN" class="i-ul fs-sm" style="overflow: hidden; height: 0px;">
-					<label class="i-ul__subheader fs-sm">4 June 2020</label>
-					<li>Loading time improved.</li>
-					<li>Queue: Added ORES edit prediction system, New page indicator, Username/IP in edit.</li>
-					<li>Presets: Now you can create separate settings for different wikis.</li>
-					<li>Terminate stream (optional On/off) when edit in queue reaches queue limit.</li>
-					<li>Links of report pages are moved in more options and links to CA, GUC and history can be copied.</li>
-					<li>Layout improvement for mobile.</li>
-					<li>Bugs fixed!</li>
-					<label class="i-ul__subheader fs-sm">21 October 2019</label>
-					<li>UI & UX improvments.</li>
-					<li>Global mode and undo for non-GRs.</li>
-					<li>New sounds, RH mode, Anonymous edits and Only new pages features added into settings.</li>
-					<li>Advanced menu for difference viewer.</li>
-					<li>Total statistics on welcome page.</li>
-					<li>Bug fixed!</li>
-					<label class="i-ul__subheader fs-sm">14 June 2019</label>
-					<li>We now support themes, and a new logo again but this is last.. swear :P</li>
-					<li>Also we now have customizable templates and edit summaries for each wikis, add for yours <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/config.json">here</a>.</li>
-					<label class="i-ul__subheader fs-sm">24 March 2019</label>
-					<li>Fully implimented new design along with new logo :)</li>
-					<li>New design for desktop and mobile.</li>
-					<li>Single login for all users (GR as well as local rollback).</li>
-					<label class="i-ul__subheader fs-sm">Older</label>
-					<li>50 new small projects have been added to the <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer/wikis">SW list</a>.</li>
-					<li>Added option to select an additional list of projects with less than 300 active users. Which includes about 30 projects, including the best of the bests sebwiki. Check app's settings.</li>
-					<li>Added <a rel='noopener noreferrer' target="_blank" href="https://meta.wikimedia.org/wiki/SWViewer#Hotkeys">hotkeys</a>.</li>
-					<li>Synchronization: If you doing rollback, edits of that page will be removed from queue of all users online in app.</li>
-				</ul>
-				<button class="i-btn__secondary-outlined secondary-hover fs-md" onclick="toggleMoreWN(this);">Show more</button>
-			</div>
-		</div>
-		<script async>
-			function setTheme(THEME) {
-				let root = document.documentElement;
-				Object.keys(THEME).forEach((item) => root.style.setProperty(item, THEME[item]));
-			};
+    </style>
+</head>
 
-			function getMessage(event) {
-				if (event.origin !== 'https://swviewer.toolforge.org') return;
-				setTheme(event.data.THEME);
-				if (!(document.getElementById('welcomeLabel').childNodes.length < 2)) return;
-				let userTag = document.createElement('span');
-				userTag.textContent = event.data.user;
-				userTag.style.cursor = 'pointer';
-				userTag.addEventListener('click', () =>{
-					document.getElementById('statInput').value = event.data.user;
-					searchStat();
-				});
-				document.getElementById('welcomeLabel').append(userTag);
-			};
-			window.addEventListener("message", getMessage, false);
+<body class="secondary-cont secondary-scroll">
+<label id="welcomeLabel" class="fs-xl" style="font-weight: bold;"><span class="custom-lang">[welcome-frame-title]</span>&nbsp;<span id="welcome-title-user"></span></label>
+<div class="welcome-box">
+    <form id="statForm" class="stat-search__base">
+        <input id="statInput" class="i-input__secondary secondary-placeholder fs-md custom-lang" type="text" autocomplete="off" placeholder="[welcome-frame-placeholder]">
+        <button class="i-btn__accent accent-hover fs-md custom-lang" type="submit">[welcome-frame-button]</button>
+    </form>
+    <div id="statContainer" class="stat-container">
+        <div>
+            <span id="rollbackSpan" class="fs-xl" style="color: #c8b40e;">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-rollback]</span>
+        </div>
+        <div>
+            <span id="undosSpan" class="fs-xl" style="color: #db24b0;">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-undo]</span>
+        </div>
+        <div>
+            <span id="delSpan" class="fs-xl" style="color: #672dd2;">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-del]</span>
+        </div>
+        <div>
+            <span id="editsSpan" class="fs-xl" style="color: #2dd280;">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-edit]</span>
+        </div>
+        <div>
+            <span id="warnSpan" class="fs-xl" style="color: #d92c26;">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-warn]</span>
+        </div>
+        <div>
+            <span id="reportSpan" class="fs-xl" style="color: #e3791c;">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-report]</span>
+        </div>
+        <div>
+            <span id="protectSpan" class="fs-xl" style="color: #1cb3e3">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-protect]</span>
+        </div>
+        <div>
+            <span id="totalSpan" class="fs-xl">0</span>
+            <span class="fs-lg custom-lang">[welcome-frame-total]</span>
+        </div>
+    </div>
 
-		</script>
-		<script async>
-			document.getElementById('statForm').addEventListener('submit', (e) => searchStat(e), false);
-			function searchStat (e) {
-				if (e !== undefined) e.preventDefault();
-				document.getElementById('statContainer').classList.add('disabled');
-				var stats = ['rollback', 'del', 'undos', 'edits', 'report', 'warn', 'protect'];
-				stats.forEach((action) => document.getElementById(action + 'Span').textContent = '0');
-				var stateSearchPhrase = document.getElementById('statInput').value;
-				fetch('./../php/welcome-stats.php', {
-					method: 'post',
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({ user: stateSearchPhrase })
-				}).then((response) => response.json())
-				.then((statsObj) => {
-					stats.forEach((action) => document.getElementById(action + 'Span').textContent = statsObj[action]);
-					document.getElementById('statContainer').classList.remove('disabled');
-				}).catch((error) => console.error(error));
-			}
-			searchStat();
+    <div class="list-container">
+        <label class="fs-md custom-lang">[welcome-frame-reminder]</label>
+        <ul class="i-ul fs-sm">
+            <li class="i-ul__imp custom-lang">[welcome-frame-reminder-cache]</li>
+            <li class="custom-lang">[welcome-frame-reminder-respons]</li>
+            <li class="i-ul__imp custom-lang">[welcome-frame-reminder-warns]</li>
+            <li><span id="welcome-bugs" class="custom-lang">[welcome-frame-reminder-bugs]</span>&nbsp;<span class="custom-lang">[welcome-frame-reminder-screens]</span></li>
+        </ul>
+    </div>
+    <div class="list-container">
+        <label class="fs-md custom-lang">[welcome-frame-tips]</label>
+        <ul class="i-ul fs-sm">
+            <li><span id="welcome-pwa" class="custom-lang">[welcome-frame-tips-pwa]</span></li>
+        </ul>
+    </div>
+    <div class="list-container">
+        <label class="fs-md custom-lang">[welcome-frame-links]</label>
+        <ul class="i-ul fs-sm">
+            <li class="i-ul__imp">
+                <span id="changelog" class="custom-lang">[welcome-frame-changelog]</span>
+            </li>
+            <li>
+                <span id="welcome-contact" class="custom-lang">[welcome-frame-irc]</span>
+            </li>
 
-			function toggleMoreWN (button) {
-				if (document.getElementById('moreWN').style.height == '0px') {
-					document.getElementById('moreWN').style.height = 'unset';
-					button.textContent = 'Show less';
-				} else {
-					document.getElementById('moreWN').style.height = '0px';
-					button.textContent = 'Show more';
-				}
-			}
-		</script>
-	</body>
+            <li>
+                <span id="tagger" class="fs-sm custom-lang">[welcome-frame-tagger]</span>
+            </li>
+            <li>
+                <span id="changelog" class="custom-lang">[welcome-frame-translation]</span>
+                <a class="fs-sm" href='https://translate.google.com/#auto/en/' rel='noopener noreferrer' target='_blank'>Google</a>,
+                <a class="fs-sm" href='https://translate.yandex.com/' rel='noopener noreferrer' target='_blank'>Yandex</a>,
+                <a class="fs-sm" href='http://www.online-translator.com' rel='noopener noreferrer' target='_blank'>Promt</a>,
+                <a class="fs-sm" href='https://www.bing.com/translator' rel='noopener noreferrer' target='_blank'>Bing</a>,
+                <a class="fs-sm" href='https://www.deepl.com/en/translator' rel='noopener noreferrer' target='_blank'>DeepL</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script async>
+    function setTheme(THEME) {
+        let root = document.documentElement;
+        Object.keys(THEME).forEach((item) => root.style.setProperty(item, THEME[item]));
+    }
+
+    function getMessage(event) {
+        if (event.origin !== 'https://swviewer.toolforge.org') return;
+        if (event.data.THEME && event.data.user) {
+            setTheme(event.data.THEME);
+            if (!(document.getElementById('welcome-title-user').childNodes.length < 1)) return;
+            let userTag = document.createElement('span');
+            userTag.textContent = event.data.user;
+            userTag.style.cursor = 'pointer';
+            userTag.addEventListener('click', () =>{
+                document.getElementById('statInput').value = event.data.user;
+                searchStat();
+            });
+            document.getElementById('welcome-title-user').append(userTag);
+        }
+        if (event.data.lang && event.data.orient && event.data.messages) {
+
+            var els = document.getElementsByClassName("custom-lang");
+
+            document.getElementById("parentHTML").setAttribute("dir", event.data.orient);
+            document.getElementById("parentHTML").setAttribute("lang", event.data.lang);
+
+            for (el in els) {
+                if (els.hasOwnProperty(el)) {
+                    var attrs = els[el].attributes;
+                    for (l in attrs) {
+                        if (attrs.hasOwnProperty(l)) {
+                            if (typeof attrs[l].value !== "undefined" && attrs[l].value !== 0 && attrs[l].value !== null)
+                                if (event.data.messages.hasOwnProperty(attrs[l].value.replace("[", "").replace("]", "")))
+                                    els[el].setAttribute(attrs[l].name, event.data.messages[attrs[l].value.replace("[", "").replace("]", "")]);
+                        }
+                    }
+
+                    if (typeof els[el].value !== "undefined" && els[el].value !== 0 && els[el].value !== null)
+                        if (event.data.messages.hasOwnProperty(els[el].value.replace("[", "").replace("]", "")))
+                            els[el].value = event.data.messages[els[el].value.replace("[", "").replace("]", "")];
+
+                    if (typeof els[el].textContent !== "undefined" && els[el].textContent !== 0 && els[el].textContent !== null)
+                        if (event.data.messages.hasOwnProperty(els[el].textContent.replace("[", "").replace("]", "")))
+                            els[el].textContent = event.data.messages[els[el].textContent.replace("[", "").replace("]", "")];
+                }
+            }
+
+            sandwichLocalisationWelcome(document, event.data.orient, document.getElementById("welcome-bugs").textContent, document.getElementById('welcome-bugs'), "$1", 4, "inline", "B", "https://meta.wikimedia.org/wiki/Talk:SWViewer");
+            sandwichLocalisationWelcome(document, event.data.orient, document.getElementById("welcome-pwa").textContent, document.getElementById('welcome-pwa'), "$1", 4, "inline", "Pwa", "https://meta.wikimedia.org/wiki/Special:MyLanguage/SWViewer#Install_PWA");
+            sandwichLocalisationWelcome(document, event.data.orient, document.getElementById("changelog").textContent, document.getElementById('changelog'), "$1", 4, "inline", "Ch", "https://meta.wikimedia.org/wiki/SWViewer/changelog");
+
+            var baseContent = document.getElementById('tagger'); const localMessage = baseContent.textContent;
+            const parsedMessage = (event.data.orient === 'ltr') ? localMessage.match(/^(.*?)\[\$1\|(.*?)\](.*?)\[\$2\|(.*?)\](.*)$/) : localMessage.match(/^(.*?)\[\$\s?1\s?\|\s?(.*?)\](.*?)\[\$\s?2\s?\|\s?(.*?)\](.*)$/);
+            if (parsedMessage !== null && parsedMessage.length === 6) {
+                document.getElementById('tagger').textContent = '';
+                var preLocalised1 = document.createElement('div'); var preLocalised2 = document.createElement('div'); var preLocalised3 = document.createElement('div');
+                preLocalised1.id = 'tagger1'; preLocalised2.id = 'tagger2'; preLocalised3.id = 'tagger3'; preLocalised1.style.display = preLocalised2.style.display = preLocalised3.style.display = 'inline';
+                var preLocalisedLink1 = document.createElement('a'); var preLocalisedLink2 = document.createElement('a');
+                preLocalisedLink1.id = 'taggerLink1'; preLocalisedLink2.id = 'taggerLink2'; preLocalisedLink1.style.display = preLocalisedLink2.style.display = 'inline';
+                preLocalisedLink1.href = 'https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Tagger'; preLocalisedLink1.rel = 'noopener noreferrer'; preLocalisedLink1.target = '_blank';
+                preLocalisedLink2.href = 'https://meta.wikimedia.org/wiki/Special:MyLanguage/User:Syum90/Warning_templates'; preLocalisedLink2.rel = 'noopener noreferrer'; preLocalisedLink2.target = '_blank';
+                baseContent.appendChild(preLocalised1); baseContent.appendChild(preLocalisedLink1); baseContent.appendChild(preLocalised2); baseContent.appendChild(preLocalisedLink2); baseContent.appendChild(preLocalised3);
+                document.getElementById('tagger1').textContent = parsedMessage[1]; document.getElementById('taggerLink1').textContent = parsedMessage[2]; document.getElementById('tagger2').textContent = parsedMessage[3]; document.getElementById('taggerLink2').textContent = parsedMessage[4]; document.getElementById('tagger3').textContent = parsedMessage[5];
+            }
+
+            var baseContent2 = document.getElementById('welcome-contact'); const localMessage2 = baseContent2.textContent;
+            const parsedMessage2 = (event.data.orient === 'ltr') ? localMessage2.match(/^(.*?)\[\$1\|(.*?)\](.*?)\[\$2\|(.*?)\](.*)$/) : localMessage2.match(/^(.*?)\[\$\s?1\s?\|\s?(.*?)\](.*?)\[\$\s?2\s?\|\s?(.*?)\](.*)$/);
+            if (parsedMessage2 !== null && parsedMessage2.length === 6) {
+                document.getElementById('welcome-contact').textContent = '';
+                var preLocalised12 = document.createElement('div'); var preLocalised22 = document.createElement('div'); var preLocalised32 = document.createElement('div');
+                preLocalised12.id = 'contact1'; preLocalised22.id = 'contact2'; preLocalised32.id = 'contact3'; preLocalised12.style.display = preLocalised22.style.display = preLocalised32.style.display = 'inline';
+                var preLocalisedLink12 = document.createElement('a'); var preLocalisedLink22 = document.createElement('a');
+                preLocalisedLink12.id = 'contactLink1'; preLocalisedLink22.id = 'contactLink2'; preLocalisedLink12.style.display = preLocalisedLink22.style.display = 'inline';
+                preLocalisedLink12.href = 'http://ircredirect.toolforge.org/?server=irc.freenode.net&channel=swviewer&consent=yes'; preLocalisedLink12.rel = 'noopener noreferrer'; preLocalisedLink12.target = '_blank';
+                preLocalisedLink22.href = 'https://discord.gg/UTScYTR'; preLocalisedLink22.rel = 'noopener noreferrer'; preLocalisedLink22.target = '_blank';
+                baseContent2.appendChild(preLocalised12); baseContent2.appendChild(preLocalisedLink12); baseContent2.appendChild(preLocalised22); baseContent2.appendChild(preLocalisedLink22); baseContent2.appendChild(preLocalised32);
+                document.getElementById('contact1').textContent = parsedMessage2[1]; document.getElementById('contactLink1').textContent = parsedMessage2[2]; document.getElementById('contact2').textContent = parsedMessage2[3]; document.getElementById('contactLink2').textContent = parsedMessage2[4]; document.getElementById('contact3').textContent = parsedMessage2[5];
+            }
+        }
+        // window.parent.document.getElementById("page-welcome").style.display = "block";
+    }
+
+    window.addEventListener("message", getMessage, false);
+    function sandwichLocalisationWelcome(baseContent, dirLocal, localMessage, targetEl, patternType, parsedLen, styleEl, uniqId, linkLocalisation, baseAdd = false) {
+        var parsedMessage;
+        if (patternType === "link")
+            parsedMessage = (dirLocal === 'ltr') ? localMessage.match(/^(.*?)\[\$link\|(.*?)\](.*)$/) : localMessage.match(/^(.*?)\[\$\s?link\s?\|\s?(.*?)\](.*)$/);
+        else {
+            if (patternType === "name")
+                parsedMessage = (dirLocal === 'ltr') ? localMessage.match(/^(.*?)\$1(.*)/) : localMessage.match(/^(.*?)\$\s?1(.*)/);
+            else
+                parsedMessage = (dirLocal === 'ltr') ? localMessage.match(/^(.*?)\[\$1\|(.*?)\](.*)$/) : localMessage.match(/^(.*?)\[\$\s?1\s?\|\s?(.*?)\](.*)$/);
+        }
+        if (parsedMessage !== null && parsedMessage.length === parsedLen) {
+            targetEl.textContent = '';
+            var preLocalisedEl1 = baseContent.createElement('div');
+            var preLocalisedEl2 = (linkLocalisation === false) ? baseContent.createElement('div') : baseContent.createElement('a');
+            var preLocalisedEl3 = baseContent.createElement('div');
+            preLocalisedEl1.id = 'localisedEl' + uniqId + '1';
+            preLocalisedEl2.id = 'localisedEl' + uniqId + '2';
+            preLocalisedEl3.id = 'localisedEl' + uniqId + '3';
+            preLocalisedEl1.style.display = preLocalisedEl2.style.display = preLocalisedEl3.style.display = styleEl;
+            if (linkLocalisation !== false) {
+                preLocalisedEl2.href = linkLocalisation;
+                preLocalisedEl2.rel = 'noopener noreferrer';
+                preLocalisedEl2.target = '_blank';
+            }
+
+            targetEl.appendChild(preLocalisedEl1); targetEl.appendChild(preLocalisedEl2); targetEl.appendChild(preLocalisedEl3);
+            if (baseAdd !== false)
+                baseContent = baseAdd;
+            baseContent.getElementById('localisedEl' + uniqId + '1').textContent = parsedMessage[1];
+            if (parsedLen === 3) {
+                baseContent.getElementById('localisedEl' + uniqId + '2').textContent = 'SWViewer';
+                baseContent.getElementById('localisedEl' + uniqId + '3').textContent = parsedMessage[2];
+            } else {
+                baseContent.getElementById('localisedEl' + uniqId + '2').textContent = parsedMessage[2];
+                baseContent.getElementById('localisedEl' + uniqId + '3').textContent = parsedMessage[3];
+            }
+        }
+    }
+
+</script>
+<script async>
+    document.getElementById('statForm').addEventListener('submit', (e) => searchStat(e), false);
+    function searchStat (e) {
+        if (e !== undefined) e.preventDefault();
+        document.getElementById('statContainer').classList.add('disabled');
+        var stats = ['rollback', 'del', 'undos', 'edits', 'report', 'warn', 'protect'];
+        stats.forEach((action) => document.getElementById(action + 'Span').textContent = '0');
+        document.getElementById('totalSpan').textContent = '0';
+        var stateSearchPhrase = document.getElementById('statInput').value;
+        fetch('./../php/welcome-stats.php', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user: stateSearchPhrase })
+        }).then((response) => response.json())
+            .then((statsObj) => {
+                let totalStats = 0;
+                stats.forEach((action) => {
+                    totalStats += parseInt(statsObj[action]);
+                    document.getElementById(action + 'Span').textContent = statsObj[action]
+                });
+                document.getElementById('totalSpan').textContent = totalStats;
+                document.getElementById('statContainer').classList.remove('disabled');
+            }).catch((error) => console.error(error));
+    }
+    searchStat();
+</script>
+</body>
 
 </html>

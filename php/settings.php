@@ -29,7 +29,7 @@ if (!isset($_POST["action"])) {
         $q->execute(array(':userName' => $userName));
         $result = $q->fetchAll();
 
-        $response = ["checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
+        $response = ["checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "lang" => $result[0]['lang'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
         echo json_encode($response);
         $db = null;
         exit();
@@ -70,6 +70,13 @@ if ($_POST["action"] == "set") {
                 $q = $db->prepare('UPDATE user SET checkmode=:checkmode WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':checkmode' => $_POST['checkmode']));
             }
+        }
+    }
+
+    if (isset($_POST['lang'])) {
+        if ($_POST['lang'] == null || preg_match('/^[a-zA-Z_\-]+$/', $_POST['lang'])) {
+            $q = $db->prepare('UPDATE user SET lang=:lang WHERE name =:userName');
+            $q->execute(array(':userName' => $userName, ':lang' => $_POST['lang']));
         }
     }
 

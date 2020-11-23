@@ -1,6 +1,4 @@
-// ===> suspect "i"
 var i = 0;
-
 angular.module("swv", ["ui.directives", "ui.filters"])
 .controller("Queue", function ($scope, $compile, $timeout) {
 
@@ -45,12 +43,10 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         homeBtn(false);
         if (document.getElementById('eqBody').classList.contains('eq__body__active')) toggleMDrawer();
 
-        // ===> suspect "i"
         if ($scope.selectedEdit !== null && i === 0) {
             if (edits_history.length === 6) edits_history.splice(5, 1);
             edits_history.unshift($scope.getSelectedEdit());
         }
-        // ===> suspect "i"
         i = 0;
         $scope.setSelectedEdit(edit);
         enableLoadingDiffUI();
@@ -63,32 +59,40 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         if (edits_history.length > 0 && edits_history.length - 1 >= i) disableNewUI();
         else return;
         homeBtn(false);
-        // ===> suspect "i"
         if (i === 0) {
             if (edits_history.length === 6) edits_history.splice(5, 1);
             edits_history.unshift($scope.getSelectedEdit());
-            // ===> suspect "i"
             i = i + 1;
         }
 
         $scope.setSelectedEdit(edits_history[i]);
         loadDiff($scope.selectedEdit);
-        // ===> suspect "i"
         i = i + 1;
     }
 
     $scope.editColor = function (edit) {
-        if (vandals.indexOf(edit.user) !== -1 || (vandals.indexOf(edit.user) !== -1 && suspects.indexOf(edit.user) !== -1))
-            return {color: "red"};
-        else if (suspects.indexOf(edit.user) !== -1)
-            return {color: "pink"};
+        if (vandals.indexOf(edit.user) !== -1 || (vandals.indexOf(edit.user) !== -1 && suspects.indexOf(edit.user) !== -1)) {
+            if (dirLang === "rtl") {
+                return {color: "red", display: "flex", 'align-items': 'center'}
+            } else {
+                return {color: "red"};
+            }
+        } else if (suspects.indexOf(edit.user) !== -1) {
+            if (dirLang === "rtl") {
+                return {color: "pink", display: "flex", 'align-items': 'center'}
+            } else
+                return {color: "pink"};
+
+        }
+        if (dirLang === "rtl")
+            return {display: "flex", 'align-items': 'center'}
     };
     $scope.byteCountColor = function (byteCount) {
-        if (byteCount == 0) return {opacity: "0.6"};
-        if (byteCount > 0) if (byteCount < 500) return {color: "var(--tc-positive)"};
-            else return {color: "var(--tc-positive)", fontWeight: "bold"};
-        if (byteCount > -500) return {color: "hsl(0, 50%, 56%)"};
-        return {color: "hsl(0, 50%, 56%)", fontWeight: "bold"};
+        if (byteCount == 0) return {opacity: "0.6", paddingRight: '4px'};
+        if (byteCount > 0) if (byteCount < 500) return {color: "var(--tc-positive)", paddingRight: '4px'};
+            else return {color: "var(--tc-positive)", fontWeight: "bold", paddingRight: '4px'};
+        if (byteCount > -500) return {color: "hsl(0, 50%, 56%)", paddingRight: '4px'};
+        return {color: "hsl(0, 50%, 56%)", fontWeight: "bold", paddingRight: '4px'};
     }
     $scope.descriptionColor = function (description) {
         if ($scope.selectedEdit.settings.checkWarn === true && description.warn !== null && typeof description.warn !== "undefined" && description.warn !== "")
@@ -112,8 +116,8 @@ angular.module("swv", ["ui.directives", "ui.filters"])
     $scope.browser = function () {
         if (typeof $scope.selectedEdit.new === "undefined") return;
         var url;
-        if ($scope.selectedEdit.old !== null) url = $scope.selectedEdit.server_url + $scope.selectedEdit.script_path + "/index.php?diff=" + $scope.selectedEdit.new + "&oldid=" + $scope.selectedEdit.old + "&uselang=en&redirect=no&mobileaction=toggle_view_desktop";
-        else url = $scope.selectedEdit.server_url + "?uselang=en&redirect=no&mobileaction=toggle_view_desktop";
+        if ($scope.selectedEdit.old !== null) url = $scope.selectedEdit.server_url + $scope.selectedEdit.script_path + "/index.php?diff=" + $scope.selectedEdit.new + "&oldid=" + $scope.selectedEdit.old + "&uselang=" + languageIndex + "&redirect=no&mobileaction=toggle_view_desktop";
+        else url = $scope.selectedEdit.server_url + "?uselang=" + languageIndex + "&redirect=no&mobileaction=toggle_view_desktop";
         var diffWindow = window.open(url, "_blank");
         diffWindow.location;
         diffWindow.focus();
@@ -165,7 +169,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                         loadDiffDesc($scope.selectedEdit);
                         document.getElementById('page').srcdoc = diff;
                         
-                        throw "Can't perform this action, this is not latest revision. Loaded new revision.";
+                        throw useLang["error-cant-perform"];
                     }).catch(err => ESOpeningError(err));
                 }).catch(err => ESOpeningError(err));
             }
@@ -175,12 +179,12 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             closePW();
             createDialog({
                 parentId: 'angularapp', id: 'editSourceErrorDialog',
-                title: 'Loading failed', removable: true,
+                title: useLang["error-loading-title"], removable: true,
                 alert: {
                     emoji: '⚠️',
                     message: err
                 },
-                buttons: [{ type: 'accent', title: 'Alright', remove: true }]
+                buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
             });
         }
 
@@ -213,7 +217,6 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         document.getElementById('addToGSR').classList.remove('i-checkbox__active');
         const GSR_description = document.getElementById('addToGSR-description');
         GSR_description.textContent = "";
-
         if (Object.keys(activeSysops).find(key => key === $scope.selectedEdit.wiki)) {
             const createGSRDesc = (color, text) => bakeEl({
                 type: 'span', child:[
@@ -222,15 +225,18 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 ]
             });
             if (activeSysops[$scope.selectedEdit.wiki][1] === 0) {
-                GSR_description.append(createGSRDesc('var(--bc-positive)', `This wiki have ${activeSysops[$scope.selectedEdit.wiki][3]} active sysop (total ${activeSysops[$scope.selectedEdit.wiki][2]}).`));
+                GSR_description.append(createGSRDesc('var(--bc-positive)', useLang["sysops-active"].replace("$1", activeSysops[$scope.selectedEdit.wiki][3]).replace("$2", activeSysops[$scope.selectedEdit.wiki][2])));
                 document.getElementById('btn-group-addToGSR').classList.remove('disabled');
             } else if (activeSysops[$scope.selectedEdit.wiki][1] === 1) {
-                GSR_description.append(createGSRDesc('orange', `This wiki have ${activeSysops[$scope.selectedEdit.wiki][3]} active sysop (total ${activeSysops[$scope.selectedEdit.wiki][2]}).${ (userRole == "GS" || userRole == "S") ? "" : " Maybe it's better to wait for the reaction of local sysop." }`));
+                GSR_description.append(createGSRDesc('orange', useLang["sysops-active"].replace("$1", activeSysops[$scope.selectedEdit.wiki][3]).replace("$2", activeSysops[$scope.selectedEdit.wiki][2]) + ((userRole == "GS" || userRole == "S") ? "" : (" " + useLang["sysops-wait"]))));
                 document.getElementById('btn-group-addToGSR').classList.remove('disabled');
             } else {
-                GSR_description.append(createGSRDesc('var(--bc-negative)', `This wiki have ${ (activeSysops[$scope.selectedEdit.wiki][3] == "3+") ? "more than 3" : activeSysops[$scope.selectedEdit.wiki][3].replace("?", "unknown") } active sysop (total ${activeSysops[$scope.selectedEdit.wiki][2]}).`));
+                if (activeSysops[$scope.selectedEdit.wiki][3] == "3+")
+                    GSR_description.append(createGSRDesc('var(--bc-negative)', useLang["sysops-more-than-3"].replace("$1", activeSysops[$scope.selectedEdit.wiki][2])));
+                else
+                    GSR_description.append(createGSRDesc('var(--bc-negative)', useLang["sysops-unknown"].replace("$1", activeSysops[$scope.selectedEdit.wiki][3].replace("?", "unknown")).replace("$2", activeSysops[$scope.selectedEdit.wiki][2])));
             }
-        } else GSR_description.append('It is not a global sysop wiki.');
+        } else GSR_description.append(useLang["sysops-not-gs"]);
         openPO('tagPanel');
     }
 
@@ -254,7 +260,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         })
         .catch(err => createNotify({
             img: '/img/warning-filled.svg',
-            title: 'Speedy deletion failed',
+            title: useLang["error-speedy-title"],
             content: err,
             removable: true
         }));
@@ -323,12 +329,12 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     await reportGSR(SEdit.server_url, SEdit.wiki, SEdit.title, speedyLabel)
                     .then(() => createNotify({
                         img: '/img/warning-filled.svg',
-                        title: 'GSR report successfull',
-                        content: `${SEdit.title} has been successfully reported to GSR for deletion`,
+                        title: useLang["gsr-success-title"],
+                        content: useLang["gsr-success-content"].replace("$1", SEdit.title),
                         removable: true
                     })).catch(err => createNotify({
                         img: '/img/warning-filled.svg',
-                        title: 'GSR report failed',
+                        title: useLang["gsr-fail-title"],
                         content: "Error 3.1: " + err,
                         removable: true
                     }));
@@ -348,13 +354,13 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                         if (typeof isNotifyed === 'undefined') return
                         createNotify({
                             img: '/img/warning-filled.svg',
-                            title: 'Warned successfully',
-                            content: `${SEdit.user} has been warned for edit on ${SEdit.title}.`,
+                            title: useLang["warn-success-title"],
+                            content: useLang["warn-success-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
                             removable: true
                         });
                     }).catch(err => createNotify({
                         img: '/img/warning-filled.svg',
-                        title: 'Warned failed',
+                        title: useLang["warn-fail-title"],
                         content: 'Error: 3.2' + err,
                         removable: true
                     }));
@@ -362,7 +368,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 $scope.reqSuccessNotify(editData, SEdit, 'edit');
             }).catch(err => createNotify({
                 img: '/img/warning-filled.svg',
-                title: 'Edit failed',
+                title: useLang["edit-fail-title"],
                 content: "Error 2: " + err,
                 removable: true
             }));
@@ -371,18 +377,18 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             if (typeof latestEdit === 'undefined') return;
             createNotify({
                 img: '/img/edit-filled.svg',
-                title: 'Edit failed',
-                content: `Can't perform this action, this is not latest revision. Loaded new revision.`,
+                title: useLang["edit-fail-title"],
+                content: useLang["error-cant-perform"],
                 removable: true,
                 buttons: [{
-                    title: 'View latest',
+                    title: useLang["view-latest"],
                     remove: true, type: 'positive',
                     onClick: () => { closePO(); $scope.select(latestEdit); }
-                }, { title: "Cancel", remove: true }]
+                }, { title: useLang["cancel"], remove: true }]
             })
         }).catch(error => createNotify({
             img: '/img/warning-filled.svg',
-            title: 'Edit failed',
+            title: useLang["edit-fail-title"],
             content: "Error 1: " + error,
             removable: true
         }));
@@ -412,8 +418,8 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     const lastUserRevId = await getLastUserRevId(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.user, SEdit.new);
                     if (lastUserRevId !== SEdit.old) return lastUserRevId;
                 }
-                var RBMode = "rollback";
-                if (isGlobalModeAccess === true && local_wikis.indexOf(SEdit.wiki) === -1) RBMode = 'undo';
+                var RBMode = document.getElementById("treatUndo").classList.contains("i-checkbox__active")? "undo": "rollback";
+                if (isGlobalModeAccess === true && local_wikis.includes(SEdit.wiki) === false) RBMode = 'undo';
     
                 const revertData = {
                     rbmode: RBMode,
@@ -466,7 +472,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     $scope.doWarn(rollbackData, SEdit, description);
                 }).catch(err => createNotify({
                     img: '/img/warning-filled.svg',
-                    title: 'Rollback failed!',
+                    title: useLang["rollback-fail-title"],
                     content: err,
                     removable: true
                 }));
@@ -475,18 +481,18 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 SEdit.old = revId;
                 createNotify({
                     img: "/img/rollback-filled.svg",
-                    title: 'Rollback failed!',
-                    content: `${SEdit.user} has multiple edits on "${SEdit.title}". Please check artical history first.`,
+                    title: useLang["rollback-fail-title"],
+                    content: useLang["rollback-fail-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
                     removable: true,
                     buttons: [{
-                        title: 'Load history',
+                        title: useLang["load-history"],
                         type: 'positive', remove: true,
                         onClick: () => { closePO(); $scope.select(SEdit); }
-                    }, {title: 'Cancel', remove: true }]
+                    }, {title: useLang["cancel"], remove: true }]
                 });
             }).catch(err => createNotify({
                 img: '/img/warning-filled.svg',
-                title: 'Rollback failed!',
+                title: useLang["rollback-fail-title"],
                 content: err,
                 removable: true
             }));
@@ -494,18 +500,18 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             if (typeof latestEdit === 'undefined') return;
             createNotify({
                 img: "/img/rollback-filled.svg", 
-                title: 'Rollback failed',
-                content: `Can't perform this action, "${latestEdit.title}" is not latest revision. Loaded new revision.`,
+                title: useLang["rollback-fail-title"],
+                content: useLang["rollback-fail-not-latest"].replace("$1", latestEdit.title),
                 removable: true,
                 buttons: [{
-                    title: 'View latest',
+                    title: useLang["view-latest"],
                     remove: true, type: 'positive',
                     onClick: () => { closePO(); $scope.select(latestEdit); }
-                }, { title: "Cancel", remove: true }]
+                }, { title: useLang["cancel"], remove: true }]
             })
         }).catch(err => createNotify({
             img: '/img/warning-filled.svg',
-            title: 'Rollback failed!',
+            title: useLang["rollback-fail-title"],
             content: err,
             removable: true
         }));
@@ -548,18 +554,18 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         .then(async warnCount => {
             if (warnCount === -1 || (warnCount !== -1 && warnCount < maxWarnCount)) {
                 warnCount = warnCount + 1;
-                if (templates[warnCount] === "undefined") throw `Warn for ${SEdit.title} is not being send. Maybe config are not define correctly`;
+                if (templates[warnCount] === "undefined") throw useLang["warn-perform-fail"].replace("$1", SEdit.title);
                 await sendWarning(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.new, SEdit.old, SEdit.title, SEdit.user, warnCount, templates, warnMonth, SEdit.config.warn['summaryWarn'], SEdit.config.warn['sectionWarn'], (description.withoutSection || false));
                 createNotify({
                     img: '/img/warning-filled.svg',
-                    title: 'Warning performed',
-                    content: `${SEdit.user} has been successfully warned for edit on ${SEdit.title}.`,
+                    title: useLang["warn-performed-title"],
+                    content: useLang["warn-performed-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
                     removable: true
                 });
             } else if (warnCount === maxWarnCount) $scope.doReport(SEdit);
         }).catch(err => createNotify({
             img: '/img/warning-filled.svg',
-            title: 'Warn failed',
+            title: useLang["warn-fail-title"],
             content: err,
             removable: true
         }));
@@ -574,8 +580,8 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             checkKey('textReport', SEdit.config.report))
         ) return createNotify({
             img: '/img/warning-filled.svg',
-            title: 'Report failed!',
-            content: `Report for ${SEdit.title} is not being send. Maybe config are not define correctly`,
+            title: useLang["report-fail-title"],
+            content: useLang["report-fail-content"].replace("$1", SEdit.title),
             removable: true
         });
 
@@ -596,31 +602,31 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         
         checkIfAlreadyReported(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.user, pageReport, textReport, regexReport, regexReport2, summaryReport)
         .then(isAreadyReported => {
-            if (isAreadyReported) throw "The user has already Reported";
+            if (isAreadyReported) throw useLang["report-already-reported"];
             var isTop = false;
             var preamb = false;
             if (SEdit.config.report['reportTop'] === true) isTop = true;
             if (SEdit.config.report['reportPreamb'] === true) preamb = true;
             createNotify({
                 img: '/img/warning-filled.svg',
-                title: 'Auto report', 
-                content: `${SEdit.user} has been warned muliple times. Do you want to report them to adminstators?`,
+                title: useLang["autoreport-title"], 
+                content: useLang["autoreport-content"].replace("$1", SEdit.user),
                 removable: true,
                 buttons: [{
                     type: 'negative',
-                    title: 'Report',
+                    title: useLang["report-title"],
                     remove: true, 
                     onClick: () => {
                         closePO();
                         performReport(SEdit.server_url, SEdit.script_path, SEdit.wiki, withoutSectionReport, isTop, preamb, pageReport, textReport, sectionReport, summaryReport)
                         .then(() => createNotify({
                             img: '/img/warning-filled.svg',
-                            title: 'Report performed',
-                            content: `${SEdit.user} has been successfully reported for edit on ${SEdit.title}.`,
+                            title: useLang["warn-performed-title"],
+                            content: useLang["report-performed-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
                             removable: true
                         })).catch(err => createNotify({
                             img: '/img/warning-filled.svg',
-                            title: 'Report failed',
+                            title: useLang["report-fail-title"],
                             content: err,
                             removable: true
                         }));
@@ -632,7 +638,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             });
         }).catch(err => createNotify({
             img: '/img/warning-filled.svg',
-            title: 'Report failed',
+            title: useLang["report-fail-title"],
             content: err,
             removable: true
         }));
@@ -813,7 +819,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
     }
     
     if (typeof (EventSource) == "undefined") {
-        alert("Sorry, your browser does not support server-sent events.");
+        alert(useLang["browser-sse"]);
         return;
     }
     $scope.recentChange = {
@@ -839,11 +845,10 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 if (editData.namespace >= 0 && editData.namespace <= 15) namespaceTemp = ns[editData.namespace];
                 else namespaceTemp = "<font color='brown'>Non-canon (" + editData.namespace + ")</font>";
     
-                if (editData.user !== userSelf && (editData.type === newPages || editData.type === onlyNewPages) && editData.bot === false && (presets[selectedPreset]["namespaces"].indexOf(editData.namespace.toString()) >= 0 || presets[selectedPreset]["namespaces"].length === 0) && editData.patrolled !== true && ((presets[selectedPreset]["blprojects"].indexOf(editData.wiki) >= 0) || (local_wikis.indexOf(editData.wiki) >= 0 && isGlobal === false) || (wikis.indexOf(editData.wiki) >= 0 && swmt === true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.indexOf(editData.wiki) >= 0 && lt300 === true && (isGlobal === true || isGlobalModeAccess === true)))) 
+                if (editData.user !== userSelf && (editData.type === newPages || editData.type === onlyNewPages) && editData.bot === false && (presets[selectedPreset]["namespaces"].split(',').includes(editData.namespace.toString()) || presets[selectedPreset]["namespaces"].length === 0) && editData.patrolled !== true && ((presets[selectedPreset]["blprojects"].split(',').includes(editData.wiki)) || (local_wikis.includes(editData.wiki) && isGlobal === false) || (wikis.includes(editData.wiki) && swmt === true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.includes(editData.wiki) && lt300 === true && (isGlobal === true || isGlobalModeAccess === true)))) 
                 {} else return;
-    
                 if (typeof sandboxlist[editData.wiki] !== "undefined" && sandboxlist[editData.wiki] === editData.title) return;
-                if (global.indexOf(editData.user) !== -1 || presets[selectedPreset]["wlusers"].indexOf(editData.user) !== -1 || presets[selectedPreset]["wlprojects"].indexOf(editData.wiki) !== -1) return;
+                if (global.includes(editData.user) || presets[selectedPreset]["wlusers"].split(',').includes(editData.user) || presets[selectedPreset]["wlprojects"].split(',').includes(editData.wiki)) return;
                 
                 // ==> IP user.
                 if (/^\d*?\.\d*?\.\d*?\.\d*?$/.test(editData.user) || editData.user.indexOf(":") !== -1) {
@@ -939,15 +944,51 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             type: 'POST',
             url: 'php/getOfflineUsers.php',
             dataType: 'text',
-            success: result =>{ 
+            success: result => { 
                 offlineUsers = JSON.parse(result);
                 $scope.offlineUsers = offlineUsers;
                 startEsenServices();
             }
         });
+        $.ajax({
+            type: 'POST',
+            url: 'php/getSandbox.php',
+            dataType: 'text',
+            success: sandbox => {
+                sandbox = JSON.parse(sandbox);
+                for(var sb in sandbox["entities"]["Q3938"]["sitelinks"]) {
+                    if (sandbox["entities"]["Q3938"]["sitelinks"].hasOwnProperty(sb)) {
+                        window.sandboxlist[sandbox["entities"]["Q3938"]["sitelinks"][sb]["site"]] = sandbox["entities"]["Q3938"]["sitelinks"][sb]["title"];
+                    }
+                }
+                function addSandbox(sbList, wiki, page) {
+                    if (sbList.hasOwnProperty(wiki))
+                        sbList[wiki] = sbList[wiki] + ", " + page;
+                }
+                addSandbox(window.sandboxlist, "simplewiki", "Wikipedia:Introduction");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q4115189");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q13406268");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q15397819");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P368");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P369");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P370");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P578");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P626");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P855");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P1106");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P1450");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P2368");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P2535");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P2536");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P4047");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P5188");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P5189");
+                startEsenServices();
+            }
+        })
     }
     var esenServicesCount = 0;
-    const totalEsenServicesCount = 4;
+    const totalEsenServicesCount = 5;
     function startEsenServices() {
         ++esenServicesCount;
         if (esenServicesCount < totalEsenServicesCount) return;
@@ -1020,14 +1061,14 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         oldEdit.isIp = 'registered';
         createNotify({
             img: `/img/${type}-filled.svg`,
-            title: 'Request performed',
-            content: `Request for ${oldEdit.title} to ${extra} is performed successfully.`,
+            title: useLang["request-performed-title"],
+            content: useLang["request-performed-content"].replace('$1', extra).replace('$2', oldEdit.title),
             removable: true,
             buttons: [{
-                title: 'View latest',
+                title: useLang["view-latest"],
                 remove: true, type: 'accent',
                 onClick: () => { closePO(); $scope.select(oldEdit); }
-            }, { title: "Cancel", remove: true }]
+            }, { title: useLang["cancel"], remove: true }]
         });
     }
 
@@ -1160,23 +1201,23 @@ angular.module("swv", ["ui.directives", "ui.filters"])
 
         if (checktimeout === false && isNotModal()) return;
 
-        if (keyCode === 82 && isNotModal()) {
+        if (keyCode === 82 && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             document.getElementById('revert').click();
             return false;
         }
-        if (keyCode === 89 && isNotModal()) {
+        if (keyCode === 89 && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             document.getElementById('customRevertBtn').click();
             return false;
         }
-        if ((keyCode === 219 || keyCode === 80) && isNotModal()) {
+        if ((keyCode === 219 || keyCode === 80) && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             document.getElementById('back').click();
             return false;
         }
-        if (keyCode === 68 && isNotModal()) {
+        if (keyCode === 68 && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             document.getElementById('tagBtn').click();
             return false;
         }
-        if (keyCode === 69 && isNotModal()) {
+        if (keyCode === 69 && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             document.getElementById('editBtn').click();
             return false;
         }
@@ -1188,7 +1229,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             document.getElementById('btn-notification').click();
             return false;
         }
-        if (keyCode === 79 && isNotModal()) {
+        if (keyCode === 79 && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             document.getElementById('browser').click();
             return false;
         }
@@ -1204,11 +1245,11 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             document.getElementById('btn-unlogin').click();
             return false;
         }
-        if (keyCode === 191 && isNotModal()) {
+        if (keyCode === 191 && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             document.getElementById('luxo').click();
             return false;
         }
-        if (keyCode === 65 && isNotModal()) {
+        if (keyCode === 65 && isNotModal() && document.getElementById('page-welcome').style.display === 'none') {
             if (document.getElementById('userLinkSpec').style.display !== "none") {
                 document.getElementById('userLinkSpec').click();
                 return false;
@@ -1244,7 +1285,6 @@ async function loadDiff(edit, showAll) {
 
         await getLastUserRevId(edit.server_url, edit.script_path, edit.title, edit.user, edit.new)
         .then(revId => {
-            // ===> suspect "i"
             if (i > 0) edit_history[i - 1]["old"] = old
             edit.old = revId;
         }).catch(err => {});
@@ -1255,11 +1295,12 @@ async function loadDiff(edit, showAll) {
     .then(diff => document.getElementById('page').srcdoc = diff)
     .catch(err => createDialog({
         parentId: 'angularapp', id: 'diffLoadingErrorDialog',
-        title: 'Loading failed',
+        title: useLang["error-loading-title"],
         alert: { message: err },
-        buttons: [{ type: 'accent', title: 'Alright', remove: true }]
+        buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
     }));
     disableLoadingDiffUI();
+    homeBtn(false);
 }
 
 // => load diff description container
@@ -1270,7 +1311,7 @@ function loadDiffDesc(edit) {
     if (edit.isIp === "ip") document.getElementById('CAUTH').classList.add('disabled');
     else document.getElementById('CAUTH').classList.remove('disabled');
     document.getElementById("userLinkSpec").textContent = edit.user;
-    document.getElementById('com').textContent = "Comment: " + edit.comment;
+    document.getElementById('com').textContent = edit.comment;
 
     var tempNs = edit.namespace;
     if (edit.wiki === "wikidatawiki") {
@@ -1294,10 +1335,10 @@ function loadDiffDesc(edit) {
     }
     document.getElementById('pageLinkSpec').textContent = edit.title;
     if ((edit.title === "testwiki") || (edit.title === "test2wiki") || (edit.title === "testwikidata") || (edit.title === "testwikidatawiki"))
-        document.getElementById('wiki').innerHTML = "Wiki: <font color='tomato'>" + edit.wiki + "</font>";
+        document.getElementById('wiki').innerHTML = "<font color='tomato'>" + edit.wiki + "</font>";
     else
-        document.getElementById('wiki').innerHTML = "Wiki: " + edit.wiki;
-    document.getElementById('ns').innerHTML = "Namespace: " + tempNs;
+        document.getElementById('wiki').innerHTML = edit.wiki;
+    document.getElementById('ns').innerHTML = tempNs;
 }
 
 // => perform edit on page.
@@ -1320,8 +1361,8 @@ function performEdit(serverUrl, scriptPath, wiki, title, timestamp, editSource, 
             success: editData => {
                 editData = JSON.parse(editData);
                 if (editData['result'] === 'Success') resolve(editData);
-                if (editData['result'] == null || editData['code'] === "alreadydone") reject(`Such changes has already been made.`);
-                reject(`Edit error: ${escapeXSS(editData['result'])}`);
+                if (editData['result'] == null || editData['code'] === "alreadydone") reject(useLang["already-done"]);
+                reject(useLang["error-edit"].replace("$1", escapeXSS(editData['result'])));
             }, error: (error, e2) => reject(`Failed... dev code: 007; error code: ${escapeXSS(error.status)}${escapeXSS(e2)}`)
         });
     });
@@ -1366,7 +1407,7 @@ function notifyEditor(serverUrl, scriptPath, wiki, text, summary, speedySection,
                 summary: summary
             },
             success: () => resolve(true),
-            error: () => reject('Network error.')
+            error: () => reject(useLang["error-network"])
         });
     });
 }
@@ -1381,9 +1422,8 @@ function performRollback(revertData) {
             dataType: 'json',
             success: rollbackData => {
                 if (rollbackData['result'] === "Success") resolve(rollbackData);
-                reject(`Rollback error: ${rollbackData['result']}`);
-            }, error: err => reject(`Rollback error. Please open page in the new tab. Error code: ${escapeXSS(err.status)}`)
-    
+                reject(useLang["error-rollback"].replace("$1", rollbackData['result']));
+            }, error: err => reject(useLang["error-rollback-browser"].replace("$1", escapeXSS(err.status)))
         });
     });
 }
@@ -1452,7 +1492,7 @@ function performReport(serverUrl, scriptPath, wiki, withoutSectionReport, isTop,
 // get diff html from wikipedia
 function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
     return new Promise((resolve, reject) => {
-        const url = `${serverUrl}${scriptPath}/api.php?action=compare&format=json&uselang=en&fromrev=${(typeof oldId === 'undefined')? newId + "&torelative=prev": oldId + "&torev=" + newId }&utf8=1&prop=diff`;
+        const url = `${serverUrl}${scriptPath}/api.php?action=compare&format=json&uselang=${languageIndex}&fromrev=${(typeof oldId === 'undefined')? newId + "&torelative=prev": oldId + "&torev=" + newId }&utf8=1&prop=diff`;
         $.ajax({
             url: url,
             type: 'GET',
@@ -1463,16 +1503,17 @@ function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
             dataType: 'jsonp',
             success: data => {
                 if (typeof data.error !== "undefined") {
-                    if (data.error.code === "nosuchrevid") reject("Opening error. This page has been deleted.");
-                    reject(`Opening error. Maybe page has been deleted. Server error info: ${escapeXSS(data.error.info)}`);
+                    if (data.error.code === "nosuchrevid") reject(useLang["error-del"]);
+                    reject(useLang["error-opening-del-spec"].replace("$1", escapeXSS(data.error.info)));
                 }
                 if (data.compare['*'] === "" || data.compare['*'].indexOf("<tr>") === -1) {
-                    if (typeof oldId !== 'undefined') reject("This edit has already been reverted.");
+                    if (typeof oldId !== 'undefined') reject(useLang["error-already-reverted"]);
                     var newPageDiff = startstring + data.compare['*'] + endstring;
+                    newstart = newstart.replace('[new-page-frame-not-exist]', useLang['new-page-frame-not-exist']).replace('[new-page-frame-new]', useLang['new-page-frame-new']);
                     resolve(newstart + newPageDiff + newend);
                 }
                 var diffTextToFrame = data.compare['*'];
-                if (typeof oldId === 'undefined') diffTextToFrame = diffTextToFrame.replace(/(<td colspan="2" class="diff-lineno">)Line 1:(<\/td>)/, ($0, $1, $2) => $1 + "Not exist" + $2);
+                if (typeof oldId === 'undefined') diffTextToFrame = '<tr><td colspan="2" class="diff-lineno">' + useLang['new-page-frame-not-exist'] + diffTextToFrame.substring(diffTextToFrame.indexOf("</td>"), diffTextToFrame.length);
                 if (wiki !== "commonswiki" && wiki !== "wikidatawiki") diffTextToFrame = escapeXSSDiff(diffTextToFrame);
                 else diffTextToFrame = structuredData(diffTextToFrame.replace(/<a class="mw-diff-movedpara-left".*?<\/a>/g, '-').replace(/<a class="mw-diff-movedpara-right".*?<\/a>/g, '+').replace(/<a name="movedpara_.*?<\/a>/g, ''), serverUrl);
                 resolve(diffstart + diffTextToFrame + diffend);
@@ -1481,6 +1522,13 @@ function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
         });
     });
 }
+
+
+// $("#page").on("load", function() {
+//     if (typeof document.getElementById("page").srcdoc !== "undefined" && document.getElementById("page").srcdoc !== "")
+//         document.getElementById("page").contentWindow.postMessage({ lang: languageIndex, orient: dirLang, messages: generateMinMessages(useLang, /^new-page-frame-/) }, window.origin);
+// });
+
 
 // get last user revision id to show all edits.
 function getLastUserRevId(serverUrl, scriptPath, title, user, newId) {
@@ -1498,8 +1546,7 @@ function getLastUserRevId(serverUrl, scriptPath, title, user, newId) {
                     pageFData = fdata["query"]["pages"][k];
                 if (pageFData !== null && typeof pageFData["revisions"] !== "undefined" && typeof pageFData["revisions"][0] !== "undefined" && typeof pageFData["revisions"][0]["revid"] !== "undefined" && pageFData["revisions"][0]["revid"] !== 0)
                     resolve(pageFData["revisions"][0]["revid"]);
-                reject('Unable to get last user revision id.');
-                    
+                reject(useLang["error-get-last"]);
             }, error: error => reject(error)
 
         });
@@ -1571,12 +1618,12 @@ function isLatestRevision(serverUrl, scriptPath, title, newId) {
             crossDomain: true,
             dataType: 'jsonp',
             success: data => {
-                if (typeof data.error !== "undefined") reject(`Opening error; server error info:${escapeXSS(data.error.info)}`);
+                if (typeof data.error !== "undefined") reject(useLang["error-opening"].replace("$1", escapeXSS(data.error.info)));
                 var pageId = "";
                 if (typeof data['query']['pages'] !== 'undefined') for (let k in data['query']['pages']) pageId = k;
                 if (typeof data['query']['pages'] === 'undefined' || data['query']['pages'] === '-1' || typeof data['query']['pages'][pageId]['revisions'][0]['revid'] === 'undefined') {
-                    if (typeof data.error !== 'undefined') reject(`Opening error. Maybe page was deleted. Server error info: ${escapeXSS(data.error.info)}`);
-                    else reject(`Opening error. Maybe page was deleted.`);
+                    if (typeof data.error !== 'undefined') reject(useLang["error-opening-del-spec"].replace("$1", escapeXSS(data.error.info)));
+                    else reject(useLang["error-opening-del"]);
                 }
 
                 if (newId === data["query"]["pages"][pageId]["revisions"][0]["revid"]) resolve({ isLatest: true, revision: data["query"]["pages"][pageId]["revisions"][0] });
@@ -1634,7 +1681,7 @@ function getEditSource(serverUrl, scriptPath, newId) {
                 server: serverUrl + scriptPath,
                 oldid: newId
             }, success: pageData => {
-                if (pageData === "Error! Loading page is not success") reject('Failed... dev code: 004.1. Failed http-request. Maybe page was delete or server is down.');
+                if (pageData === "Error! Loading page is not success") reject(useLang["error-get-source"] + " (Dev code: 004.1)");
                 resolve(pageData);
             }, error: err => reject(`Failed... dev code: 004; error code: ${err.status}.`)
         });
@@ -1658,12 +1705,12 @@ function getFirstEditor(serverUrl, scriptPath, wiki, title, user) {
                 user: user, summary: "1"
             },
             success: firstEditorData => {
-                if (firstEditorData === null || firstEditorData === "") reject('Unable to get first editor.');
+                if (firstEditorData === null || firstEditorData === "") reject(useLang["error-first-editor"]);
                 firstEditorData = JSON.parse(firstEditorData);
-                if (firstEditorData['result'] !== "sucess") reject('Unable to get first editor.');
+                if (firstEditorData['result'] !== "sucess") reject(useLang["error-first-editor"]);
                 resolve(firstEditorData['user']);
             },
-            error: () => reject('Network error: Unable to get first editor.')
+            error: () => reject(useLang["error-network-first-editor"])
         });
     });
 }
@@ -1681,7 +1728,7 @@ function getUrlToCountWarn(serverUrl, scriptPath, username, timeWarn) {
             dataType: 'jsonp',
             success: idsWarns => {
                 if (typeof idsWarns['query'] === 'undefined' || typeof idsWarns['query']['pages'] === 'undefined')
-                    reject('Unable to get url to count warn');
+                    reject(useLang["error-get-url"]);
                 var pageIds = null;
                 for (let key in idsWarns['query']['pages'])
                     if (idsWarns['query']['pages'].hasOwnProperty(key))
@@ -1840,21 +1887,11 @@ function disableControl() {
 
 
 function isNotModal() {
-    return !document.getElementById('customRevert').classList.contains("po__active") &&
-        document.getElementById('textpage') !== document.activeElement &&
-        document.getElementById('summaryedit') !== document.activeElement &&
-        document.getElementById('phrase-send-talk') !== document.activeElement &&
-        document.getElementById('logsSearch-input') !== document.activeElement &&
-        document.getElementById('max-queue') !== document.activeElement &&
-        document.getElementById('max-edits') !== document.activeElement &&
-        document.getElementById('max-days') !== document.activeElement &&
-        document.getElementById('ns-input') !== document.activeElement &&
-        document.getElementById('bl-p') !== document.activeElement &&
-        document.getElementById('wladdu') !== document.activeElement &&
-        document.getElementById('wladdp') !== document.activeElement &&
-        document.getElementById('statInput') !== document.activeElement &&
-        Object.keys(dialogStack).length === 0 &&
-        document.getElementById('page-welcome').style.display !== "block";
+    let allInputs = document.getElementsByTagName('input');
+    let allTextarea = document.getElementsByTagName('textarea');
+    for (let i = 0; i < allInputs.length; i++) if (allInputs[i] === document.activeElement) return false;
+    for (let i = 0; i < allTextarea.length; i++) if (allTextarea[i] === document.activeElement) return false;
+    return !document.getElementsByClassName("po__active").length && Object.keys(dialogStack).length === 0;
 }
 
 function selectTalkUsers(selectedUser) {

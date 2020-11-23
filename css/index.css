@@ -363,6 +363,7 @@ html, body, .full-screen, #loading {
     box-shadow: var(--floatbar-shadow);
     background-color: var(--bc-accent);
     transition: transform 200ms ease-in-out;
+    direction: ltr;
 }
 .drawer-fab > div:first-child,
 .drawer-fab > div:last-child {
@@ -380,6 +381,7 @@ html, body, .full-screen, #loading {
 .drawer-fab > span:nth-child(2) {
     display: inline-block;
     width: 1px;
+    height: 24px;
     color: var(--tc-accent);
     transition: width 200ms ease-in-out;
     overflow: hidden;
