@@ -68,7 +68,7 @@ const deletePreset = (index) => {
                 if (presetTitle === "Default") {
                     createDialog({ parentId: 'angularapp', id: 'removeDefaultPresetAlert',
                         title: 'Warning!', removable: true,
-                        alert: {emoji: 'вљ пёЏ', message: useLang["presets-default-q"]},
+                        alert: {emoji: '⚠️', message: useLang["presets-default-q"]},
                         buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
                     } );
                     return;
