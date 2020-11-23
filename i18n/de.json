@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Blablubbs",
+			"Kareyac",
 			"ManuelFranz",
 			"WikiBayer"
 		]
@@ -58,6 +59,7 @@
 	"presets-wikis-wl": "Wiki-whitelist",
 	"presets-users-wl": "Benutzer whitelist",
 	"presets-save": "Speichern",
+	"presets-restore": "Wiederherstellen",
 	"presets-invalid-title": "Ungültiger Titel",
 	"diff-info-user": "Benutzer:",
 	"diff-info-title": "Titel:",

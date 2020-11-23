@@ -4,6 +4,7 @@
 			"1997kB",
 			"Ajbura",
 			"Iluvatar",
+			"Kareyac",
 			"MuratTheTurkish",
 			"Robby"
 		]
@@ -86,7 +87,7 @@
 	"presets-users-wl": "'Users whitelist' text in 'Queue settings'.",
 	"presets-users-wl-desc": "Description text below 'Users whitelist' option in 'Queue settings'.",
 	"presets-save": "'Save' button text in 'Queue settings'.",
-	"presets-restore": "'Restore' button text in 'Queue settings'.",
+	"presets-restore": "'Restore' button text in 'Queue settings'.\n{{identical|Restore}}",
 	"presets-delete-q": "Text appears on delete dialog after clicking 'Delete' button inside dropdown list of presets. Parameters:\n* $1 - the name of the preset user is deleting",
 	"presets-default-q": "Text message when someone try to delete Default preset forcefully.",
 	"presets-create": "'Create preset' text appears above 'Title' in create preset dialog.",
@@ -101,7 +102,7 @@
 	"diff-info-wiki": "'Wiki:' text in edit info on diff page.",
 	"diff-info-comment": "'Comment:' text in edit info on diff page.",
 	"diff-info-namespace": "'Namespace:' text in edit info on diff page.\n{{identical|Namespace}}",
-	"diff-mo-fetching": "'Fetching' text on expanded 'Next diff' button on mobile device.",
+	"diff-mo-fetching": "'Fetching' text on expanded 'Next diff' button on mobile device. 'Next diff' button will expand when queue will be empty.",
 	"diff-mo-rfh": "'WM:RFH' text in 'More options' on control bar.",
 	"diff-mo-srm": "'SRM' text in 'More options' on control bar.",
 	"diff-mo-srg": "'SRG' text in 'More options' on control bar.",
