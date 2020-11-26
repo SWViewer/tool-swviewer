@@ -403,8 +403,7 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                 "AMOLED": { '--bc-primary': '#000000', '--bc-primary-low': '#050505', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
                     '--bc-secondary': '#000000', '--bc-secondary-low': '#111111', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
                     ...ICP_ON_DARK, ...ICS_ON_DARK, ...BCA_DARK, ...TCP_ON_DARK, ...TCS_ON_DARK, ...THEME_FIX },
-                "Slack": { '--bc-primary': '#3F0E40', '--bc-primary-low': '#4f1150', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
-                    ...BC_LIGHT, ...ICP_ON_DARK, ...ICS_ON_LIGHT, ...BCA_LIGHT, ...TCP_ON_DARK, ...TCS_ON_LIGHT, ...THEME_FIX },
+                "System default": { },
             }
             function setTheme(THEME) {
                 let root = document.documentElement;
@@ -424,7 +423,16 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             const urlParams = new URLSearchParams(queryString);
             const themeIndex = urlParams.get('themeIndex');
             
-            if(themeIndex !== null) setTheme(THEME[Object.keys(THEME)[themeIndex]]);
+            if(themeIndex !== null) if (themeIndex === "4") {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme(THEME[Object.keys(THEME)[2]]);
+                else setTheme(THEME[Object.keys(THEME)[0]]);
+            } else setTheme(THEME[Object.keys(THEME)[themeIndex]]);
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                const newColorScheme = e.matches ? "dark" : "light";
+                if (themeIndex !== "4") return;
+                if (newColorScheme === "dark") setTheme(THEME[Object.keys(THEME)[2]]);
+                else setTheme(THEME[Object.keys(THEME)[0]]);
+            });
         </script>
     </body>
     </html>

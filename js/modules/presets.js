@@ -119,7 +119,7 @@ const restoreDefaultPreset = () => {
     toggleBtn('onlyanons-btn', true);
     toggleBtn('new-pages-btn', true);
     toggleBtn('onlynew-pages-btn', false);
-    toggleBtn('small-wikis-btn', false);
+    toggleBtn('small-wikis-btn', (isGlobal == true)? true: false);
     toggleBtn('lt-300-btn', false);
     document.getElementById('max-edits').value = 100;
     document.getElementById('max-days').value = 5;

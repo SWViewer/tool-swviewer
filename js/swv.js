@@ -1,4 +1,5 @@
 var i = 0;
+var loadingEdits = 0;
 angular.module("swv", ["ui.directives", "ui.filters"])
 .controller("Queue", function ($scope, $compile, $timeout) {
 
@@ -49,6 +50,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         }
         i = 0;
         $scope.setSelectedEdit(edit);
+        loadingEdits++;
         enableLoadingDiffUI();
         loadDiff($scope.selectedEdit);
         $scope.edits.splice($scope.edits.indexOf(edit), 1);
@@ -1299,7 +1301,8 @@ async function loadDiff(edit, showAll) {
         alert: { message: err },
         buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
     }));
-    disableLoadingDiffUI();
+    if (loadingEdits !== 0) loadingEdits--;
+    if (loadingEdits === 0) disableLoadingDiffUI();
     homeBtn(false);
 }
 

@@ -191,7 +191,11 @@ function closeSettingsSend() {
 };
 
 document.getElementById('themeSelector').onchange = function() {
-    changeTheme(document.getElementById('themeSelector').selectedIndex);
+    window.themeIndex = document.getElementById("themeSelector").selectedIndex;
+    if (window.themeIndex === 4) {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) changeTheme(2);
+        else changeTheme(0);
+    } else changeTheme(window.themeIndex);
 
     $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
         action: 'set',

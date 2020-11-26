@@ -17,7 +17,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 
 
 ?>
-<html id="parentHTML" lang="">
+<html id="parentHTML" class="notranslate" lang="">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>SWViewer</title>
@@ -943,11 +943,6 @@ var preSettings = {};
 var presets = [{ title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", blprojects: ""}];
 var selectedPreset = 0;
 var themeIndex = undefined;
-const R_HSL = {
-    h: (Math.floor(Math.random() * 361)),
-    s: (Math.floor(Math.random() * 30) + 0),
-    l: (Math.floor(Math.random() * 12) + 0)
-};
 const THEME_FIX = { '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)', '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)', '--tc-accent': 'rgba(255, 255, 255, 1)', '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)', '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px', '--lh-xl': '1.5', '--lh-lg': '1.5', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5', };
 const BC_LIGHT = { '--bc-secondary': '#ffffff', '--bc-secondary-low': '#f4f4f4', '--bc-secondary-hover': 'rgba(0, 0, 0, .1)', };
 const TCP_ON_DARK = { '--tc-primary': 'rgba(255, 255, 255, 1)', '--tc-primary-low': 'rgba(255, 255, 255, .8)', };
@@ -971,9 +966,7 @@ const THEME = {
     "AMOLED": { '--bc-primary': '#000000', '--bc-primary-low': '#050505', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
         '--bc-secondary': '#000000', '--bc-secondary-low': '#111111', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
         ...ICP_ON_DARK, ...ICS_ON_DARK, ...BCA_DARK, ...TCP_ON_DARK, ...TCS_ON_DARK, ...THEME_FIX },
-    "Random": { '--bc-primary': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l}%)`, '--bc-primary-low': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l + 5}%)`, '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
-        '--bc-secondary': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l + 8}%)`, '--bc-secondary-low': `hsl(${R_HSL.h}, ${R_HSL.s}%, ${R_HSL.l + 10}%)`, '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
-        ...ICP_ON_DARK, ...ICS_ON_DARK, ...BCA_DARK, ...TCP_ON_DARK, ...TCS_ON_DARK, ...THEME_FIX },
+    "System default": { },
 };
 
 document.getElementById("mainapp-body").onclick = function() {
@@ -1160,8 +1153,15 @@ function setTheme(THEME) {
 function changeTheme(select) {
     if (select === undefined) select = 0;
     setTheme(THEME[Object.keys(THEME)[select]]);
-    if (document.getElementById('cpLink') !==  null) document.getElementById('cpLink').href = "https://swviewer.toolforge.org/php/control.php?themeIndex=" + select;
+    if (document.getElementById('cpLink') !==  null) document.getElementById('cpLink').href = "https://swviewer.toolforge.org/php/control.php?themeIndex=" + window.themeIndex;
 }
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    const newColorScheme = e.matches ? "dark" : "light";
+    if (themeIndex !== 4) return;
+    if (newColorScheme === "dark") changeTheme(2);
+    else changeTheme(0);
+});
 
 /*------Lang------*/
 function loadLanguageList() {
@@ -1241,6 +1241,7 @@ async function changeLanguage(select, isLoad, language) {
                 });
             }
 
+            document.getElementById("soundSelector").selectedIndex = sound;
             $.getScript('https://swviewer.toolforge.org/js/modules/talk2.js', () => removeTabNotice('btn-talk'));
             $.getScript('https://swviewer.toolforge.org/js/modules/logs2.js', () => removeTabNotice('btn-logs'));
             $.getScript('https://swviewer.toolforge.org/js/modules/about2.js', () => removeTabNotice('btn-about'));
@@ -1418,7 +1419,10 @@ window.onload = function() {
     loadThemeList();
     if (window.themeIndex) {
         document.getElementById('themeSelector').selectedIndex = window.themeIndex;
-        changeTheme(window.themeIndex);
+        if (window.themeIndex === 4) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) changeTheme(2);
+            else changeTheme(0);
+        } else changeTheme(window.themeIndex);
     } else changeTheme(0);
     loadLanguageList();
 
