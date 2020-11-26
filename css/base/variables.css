@@ -47,13 +47,13 @@
     --lh-xs: 1.5;
 
     /*----others------*/
-    --drawer-width: 200px;
+    --drawer-width: 250px;
     --sidebar-width: 56px;
     --statusbar-height: 0px;
 
     --action-header-height: 56px;
     --pw-header-height: var(--action-header-height);
-    --pw-drawer-width: 225px;
+    --pw-drawer-width: 200px;
     --floatbar-height: 48px;
     --floatbar-shadow: 0 0 2px 0 rgba(125, 125, 125, .5);
     --side-padding: 16px;
@@ -64,7 +64,7 @@
 ########################*/
 @media screen and (min-width: 750px) and (max-width: 1024px) {
     :root {
-        --drawer-width: 140px;
+        --drawer-width: 180px;
         --pw-drawer-width: 150px;
     }
 }

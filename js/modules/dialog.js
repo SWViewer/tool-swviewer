@@ -56,7 +56,7 @@ const createDialog = (dialog) => {
             var DCloseIC = document.createElement('img');
             DCloseIC.className = "touch-ic secondary-icon";
             DCloseIC.src = "./img/cross-filled.svg"
-            DCloseIC.alt = "Close";
+            DCloseIC.alt = useLang["dialog-img-close"];
             DBackground.addEventListener('click', (e) => { e.stopPropagation(); removeDialog(dialog.id); });
             DClose.addEventListener('click', (e) => { e.stopPropagation(); removeDialog(dialog.id); });
             DClose.append(DCloseIC);

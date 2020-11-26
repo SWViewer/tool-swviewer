@@ -450,49 +450,50 @@ function onlyAnonsBtn(button) {
 };
 
 if (isGlobal == true || isGlobalModeAccess === true) {
-function smallWikisBtn (button) {
-        var sqlswmt = 0;
-        if (button.classList.contains('t-btn__active')) {
-            sqlswmt = 1;
-            if (isGlobalModeAccess === true)
-                sqlswmt = 2;
-        }
-        preSettings['swmt'] = sqlswmt;
-};
+    function smallWikisBtn (button) {
+            var sqlswmt = 0;
+            if (button.classList.contains('t-btn__active')) {
+                sqlswmt = 1;
+                if (isGlobalModeAccess === true)
+                    sqlswmt = 2;
+            }
+            preSettings['swmt'] = sqlswmt;
+    };
 
-function lt300Btn (button) {
-        var sqlusers = 0;
-        if (button.classList.contains('t-btn__active')) {
-            sqlusers = 1;
-            if (isGlobalModeAccess === true)
-                sqlusers = 2;
-        }
-        preSettings['users'] = sqlusers;
-}
+    function lt300Btn (button) {
+            var sqlusers = 0;
+            if (button.classList.contains('t-btn__active')) {
+                sqlusers = 1;
+                if (isGlobalModeAccess === true)
+                    sqlusers = 2;
+            }
+            preSettings['users'] = sqlusers;
+    }
 }
 /*---logout---*/
 function logout() {
-    createDialog({ parentId: "angularapp", id: "unloginDialog", title: "Logout", removable: true,
-        alert: { emoji: "👋", message: "Are you sure?" },
+    createDialog({ parentId: "angularapp", id: "unloginDialog", title: useLang["nc-unlogin-title"], removable: true,
+        alert: { emoji: "👋", message: useLang["nc-unlogin-q"] },
         buttons: [{
             type: 'negative',
-            title: 'Logout',
+            title:  useLang["nc-unlogin-title"],
             onClick: () => {
                 removeDialog("unloginDialog");
-                createDialog({ parentId: "angularapp", id: "unloginProgressDialog", alert: { emoji: "🤖", message: "Logout in progress..." } });
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', "php/oauth.php?action=unlogin", false);
-                xhr.send();
-                if ( xhr.responseText == "Unlogin is done") window.open("https://swviewer.toolforge.org/", "_self");
-                else {
-                    removeDialog("unloginProgressDialog");
-                    createDialog({ parentId: "angularapp", id: "unloginFailedDialog",
-                        alert: { emoji: "⚠️", message: "Something happens wrong! Please check network connection." },
-                        button: [{ type: 'positive',  title: 'Alright', remove: true }]
-                    });
-                }
-                    
+                createDialog({ parentId: "angularapp", id: "unloginProgressDialog", alert: { emoji: "🤖", message: useLang["nc-unlogin-progress"] } });
+                $.ajax({url: 'php/oauth.php?action=unlogin', crossDomain: true, dataType: 'text',
+                    success: function(unloginResp) {
+                        if (unloginResp === "Unlogin is done")
+                            window.open("https://swviewer.toolforge.org/", "_self");
+                        else {
+                            removeDialog("unloginProgressDialog");
+                            createDialog({ parentId: "angularapp", id: "unloginFailedDialog",
+                                alert: { emoji: "⚠️", message: useLang["nc-unlogin-error"] },
+                                button: [{ type: 'positive',  title: useLang["alright"], remove: true }]
+                            });
+                        }
+                    }
+                });
             }
-        }, { title: 'Cancel', remove: true }]
+        }, { title: useLang["cancel"], remove: true }]
     });
 };

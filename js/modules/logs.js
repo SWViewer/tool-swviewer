@@ -48,14 +48,14 @@ const initLogs = () => {
         }
         if(document.getElementById('logsTable').childElementCount <= logsLimit) {
             NEXT_LOGS.style.display = "none";
-            LOGS_BOX.append(bakeEl({ type: 'div', child: 'No more Logs', att: { id: 'noMoreLogs', style: 'padding: 8px 0; text-align: center; color: var(--tc-secondary-low);' } }));
+            LOGS_BOX.append(bakeEl({ type: 'div', child: useLang["logs-no-more"], att: { id: 'noMoreLogs', style: 'padding: 8px 0; text-align: center; color: var(--tc-secondary-low);' } }));
         } else {
             NEXT_LOGS.style.display = "unset";
         }
     }
     const displayLogs = (logs) => {
         const logsCols = ['lt__sno', 'lt__user', 'lt__action', 'lt__wiki', 'lt__title', 'lt__date'];
-        const logsColsName = ['SNo', 'User', 'Action', 'Wiki', 'Title', 'Date'];
+        const logsColsName = [useLang["logs-cols-n"], useLang["logs-cols-user"], useLang["logs-cols-action"], useLang["logs-cols-wiki"], useLang["logs-cols-title"], useLang["logs-cols-date"]];
         var sno = logsOffset;
 
         var logsTable = bakeEl({ type: 'div', att: { id: 'logsTable', class: 'logs-table' } });
@@ -67,6 +67,10 @@ const initLogs = () => {
         }
         logsTable.append(headerRow);
 
+        var locale_user = "en-us";
+        var locuser = (navigator.userLanguage) ? navigator.userLanguage : navigator.language;
+        locale_user = (typeof locuser === "object") ? locuser[0] : locuser;
+
         logs.forEach((log) => {
             sno++;
             var columns = {};
@@ -75,7 +79,7 @@ const initLogs = () => {
                 var column = bakeEl({ type: 'div', att: { class: col } });
                 columns[col] = column;
             })
-            columns['lt__sno'].textContent = sno;
+            columns['lt__sno'].textContent = sno.toLocaleString("en-us");
             var link = document.createElement('a');
             link.href = log['diff'].substring(0, (log['diff'].indexOf('.org/')) + 5) + "wiki/user:" + log['user'];
             link.textContent = log['user']; link.target = '_blank'; link.rel = "noopener noreferrer";
@@ -132,12 +136,12 @@ const createLogsPW = (p) => {
         p.append(createPW({
             id: "logs",
             header: {
-                title: "Logs",
+                title: useLang["logs-title"],
                 buttons: [{
-                        id: 'btnRefresh', toolTip: 'Refresh',
-                        img: { src: './img/reload-filled.svg', alt: 'Reload Image' }
+                        id: 'btnRefresh', toolTip: useLang["tooltip-logs-refresh"],
+                        img: { src: './img/reload-filled.svg', alt: useLang["logs-img-reload"] }
                     }, {
-                        class: 'mobile-only', onClick: 'closePW()', toolTip: 'Close[ese]',
+                        class: 'mobile-only', onClick: 'closePW()', toolTip: useLang["tooltip-po-close"],
                         img: { src: './img/cross-filled.svg', alt: 'Cross Image' }
                     }
                 ]
@@ -150,34 +154,34 @@ const createLogsPW = (p) => {
                     bakeEl({ type: 'div', att: { id: 'logsBox' } }),
                     bakeEl({ type: 'div', att: { class: 'logBox-control' },
                         child: [
-                            bakeEl({ type: 'button', child: 'Previous', att: { id: 'prevLogs', class: 'i-btn__secondary-outlined secondary-hover fs-md', style: 'display: none;' } }),
-                            bakeEl({ type: 'button', child: 'Next', att: { id: 'nextLogs', class: 'i-btn__secondary-outlined secondary-hover fs-md', style: 'display: none;' } })
+                            bakeEl({ type: 'button', child: useLang["logs-prev"], att: { id: 'prevLogs', class: 'i-btn__secondary-outlined secondary-hover fs-md', style: 'display: none;' } }),
+                            bakeEl({ type: 'button', child: useLang["logs-next"], att: { id: 'nextLogs', class: 'i-btn__secondary-outlined secondary-hover fs-md', style: 'display: none;' } })
                         ]
                     })
                 ],
                 floatbar: {
                     id: 'form-searchLogs',
-                    input: { id: 'logsSearch-input', maxLength: '600', placeholder: 'Search for user or wiki.' },
+                    input: { id: 'logsSearch-input', maxLength: '600', placeholder: useLang["logs-search-placeholder"] },
                     buttons: [{
                             style: 'width: unset;',
-                            toolTip: 'Action filters',
+                            toolTip: useLang["tooltip-logs-filter"],
                             child: bakeEl({
                                 type: 'select', att: { id: 'actionSelector', class: 'i-select__secondary fs-md' },
                                 child: [
-                                    bakeEl({ type: 'option', child: 'All actions', att: { value: '' } }),
-                                    bakeEl({ type: 'option', child: 'Rollback', att: { value: 'rollback' } }),
-                                    bakeEl({ type: 'option', child: 'Undo', att: { value: 'undo' } }),
-                                    bakeEl({ type: 'option', child: 'Delete', att: { value: 'delete' } }),
-                                    bakeEl({ type: 'option', child: 'Edit', att: { value: 'edit' } }),
-                                    bakeEl({ type: 'option', child: 'Warn', att: { value: 'warn' } }),
-                                    bakeEl({ type: 'option', child: 'Report', att: { value: 'report' } }),
-                                    bakeEl({ type: 'option', child: 'Protect', att: { value: 'protect' } })
+                                    bakeEl({ type: 'option', child: useLang["logs-action-all"], att: { value: '' } }),
+                                    bakeEl({ type: 'option', child: useLang["logs-action-rollback"], att: { value: 'rollback' } }),
+                                    bakeEl({ type: 'option', child: useLang["logs-action-undo"], att: { value: 'undo' } }),
+                                    bakeEl({ type: 'option', child: useLang["delete"], att: { value: 'delete' } }),
+                                    bakeEl({ type: 'option', child: useLang["logs-action-edit"], att: { value: 'edit' } }),
+                                    bakeEl({ type: 'option', child: useLang["logs-action-warn"], att: { value: 'warn' } }),
+                                    bakeEl({ type: 'option', child: useLang["logs-action-report"], att: { value: 'report' } }),
+                                    bakeEl({ type: 'option', child: useLang["logs-action-protect"], att: { value: 'protect' } })
                                 ]
                             })
                         }, {
                             id: 'btn-searchLogs',
-                            toolTip: 'Search',
-                            img: { src: './img/search-filled.svg', alt: 'Search Image' }
+                            toolTip: useLang["tooltip-logs-search"],
+                            img: { src: './img/search-filled.svg', alt: useLang["logs-img-search"] }
                         }
                     ]
                 }

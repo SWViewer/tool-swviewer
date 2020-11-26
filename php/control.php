@@ -46,6 +46,20 @@ if (isset($_POST["action"])) {
             $q->execute(array(':name' => $_POST['user']));
         }
 
+    if ($_POST["action"] == "addBetaTester")
+        if (isset($_POST["user"])) {
+            $q = $db->prepare('UPDATE user SET betaTester=1 WHERE name=:name');
+            $q->execute(array(':name' => $_POST['user']));
+        }
+
+
+    if ($_POST["action"] == "removeBetaTester")
+        if (isset($_POST["user"])) {
+            $q = $db->prepare('UPDATE user SET betaTester=0 WHERE name=:name');
+            $q->execute(array(':name' => $_POST['user']));
+        }
+
+
     $db = null;
     exit();
 }
@@ -293,6 +307,68 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                                 data: {
                                     action: 'unlock',
                                     user: lockedUser
+                                },
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+                </script>
+            </div>
+
+            <div>
+                <div class="i__base">
+                    <div class="i__title fs-lg">Beta Tester</div>
+                    <div class="i__description fs-sm">Add users to beta tester list.</div>
+                    <div class="i__content fs-sm">
+                        <div id="removeBetaTester-btn" class="i-minus fs-sm">-</div>
+                        <input id="addTester" class="i-input__secondary secondary-placeholder fs-sm" type="text"
+                            name="addTester" placeholder="User">
+                        <div id="addBetaTester-btn" class="i-plus fs-sm">+</div>
+                    </div>
+                    <div class="i__extra">
+                        <ul class="i-chip-list fs-sm">
+                            <?php $q = $db->query('SELECT name FROM user WHERE betaTester=1');
+                            while ($row = $q->fetch()) {
+                                echo "<li style='padding-left: 8px;'>" . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . "</li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById('addBetaTester-btn').onclick = function () {
+
+                        var betaUser = document.getElementById('addTester').value;
+                        if (betaUser !== null && betaUser !== "") {
+                            $.ajax({
+                                url: 'control.php',
+                                type: 'POST',
+                                crossDomain: true,
+                                data: {
+                                    action: 'addBetaTester',
+                                    user: betaUser
+                                },
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+
+                    document.getElementById('removeBetaTester-btn').onclick = function () {
+
+                        var betaUser = document.getElementById('addTester').value;
+                        if (betaUser !== null && betaUser !== "") {
+                            $.ajax({
+                                url: 'control.php',
+                                type: 'POST',
+                                crossDomain: true,
+                                data: {
+                                    action: 'removeBetaTester',
+                                    user: betaUser
                                 },
                                 success: function () {
                                     location.reload();

@@ -12,11 +12,11 @@ const createPW = (pw) => {
                      child: ((header) => {
                         // Childrens of header
                         let hChilds = [ 
-                            bakeEl({ type: 'div', child: bakeEl({ type: 'img', att: { class: "touch-ic secondary-icon", src: './img/drawer-filled.svg', alt: 'Drawer Image' } }), att: { class: 'mobile-only secondary-hover', onclick: 'openSidebar();', 'aria-label': 'Sidebar', 'i-tooltip': 'bottom-left' } }), 
+                            bakeEl({ type: 'div', child: bakeEl({ type: 'img', att: { class: "touch-ic secondary-icon", src: './img/drawer-filled.svg', alt: useLang["pw-img-drawer"] } }), att: { class: 'mobile-only secondary-hover', onclick: 'openSidebar();', 'aria-label': 'Sidebar', 'i-tooltip': `bottom${(dirLang === 'rtl')? 'right': 'left'}` } }), 
                             bakeEl({ type: 'span', child: header.title, att: {class: 'action-header__title fs-xl'} }) 
                         ];
                         header.buttons.forEach((btn) => hChilds.push(bakeEl({ 
-                            type: 'div', att: { id: btn.id, class: btn.class + " secondary-hover", onclick: btn.onClick, 'aria-label': btn.toolTip, 'i-tooltip': 'bottom-right' }, 
+                            type: 'div', att: { id: btn.id, class: btn.class + " secondary-hover", onclick: btn.onClick, 'aria-label': btn.toolTip, 'i-tooltip': `bottom-${(dirLang === 'rtl')? 'left': 'right'}` }, 
                             child: bakeEl({ type: 'img', att: { class: "touch-ic secondary-icon " + btn.img.class, src: btn.img.src, alt: btn.img.alt } }) 
                         })));
                         hChilds.push(bakeEl({ type: 'span', child: 'esc', att: { class: 'desktop-only pw__esc secondary-hover fs-md', onclick: 'closePW();' } }));
@@ -42,7 +42,7 @@ const createPW = (pw) => {
                                     floatbar.buttons.forEach((btn) => {
                                         fChilds.push(bakeEl({ type: 'span', att: { 'vr-line': '' } }));
                                         fChilds.push(bakeEl({ 
-                                            type: 'div', att: { id:  btn.id, class: 'secondary-hover', style: btn.style, onclick: btn.onClick, 'aria-label': btn.toolTip, 'i-tooltip': 'top-right'}, 
+                                            type: 'div', att: { id:  btn.id, class: 'secondary-hover', style: btn.style, onclick: btn.onClick, 'aria-label': btn.toolTip, 'i-tooltip': `top-${(dirLang === 'rtl')? 'left': 'right'}`}, 
                                             child: ((btn) => {
                                                 if (btn.child !== undefined) return btn.child;
                                                 if (btn.img !== undefined) return bakeEl({ type: 'img', att: { class: 'touch-ic secondary-icon ' + btn.img.class, src: btn.img.src, alt: btn.img.alt } });

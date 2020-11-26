@@ -121,24 +121,29 @@ $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
 $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
 unset($ts_mycnf, $ts_pw);
 
-$q = $db->prepare('SELECT name, token FROM user WHERE name=:name');
+$q = $db->prepare('SELECT name, token, lang FROM user WHERE name=:name');
 $q->execute(array(':name' => $ident->username));
 $resToken = $q->fetchAll();
+$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2); if ($lang === null) $lang = "en";
 if (($q->rowCount() <= 0) || ($q->rowCount() > 0 && ($resToken[0]["token"] == null || $resToken[0]["token"] == "" || !isset($resToken[0]["token"])))) {
     $salt = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["salt"];
     $_SESSION['talkToken'] = md5(uniqid($ident->username, true) . rand() . md5($salt));
-
     if ($q->rowCount() <= 0) {
-        $q = $db->prepare('INSERT INTO user (name, token) VALUES (:name, :token)');
-        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken']));
+        $q = $db->prepare('INSERT INTO user (name, token, lang) VALUES (:name, :token, :lang)');
+        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':lang' => $lang));
         $q = $db->prepare('INSERT INTO stats (user) VALUES (:user)');
         $q->execute(array(':user' => $ident->username));
     } else {
         $q = $db->prepare('UPDATE user SET token=:token WHERE name=:name');
         $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken']));
     }
-} else
+} else {
     $_SESSION['talkToken'] = $resToken[0]["token"];
+    if ($resToken[0]["lang"] === null || $resToken[0]["lang"] === "") {
+        $q = $db->prepare('UPDATE user SET lang=:lang WHERE name=:name');
+        $q->execute(array(':name' => $ident->username, ':lang' => $lang));
+    }
+}
 $q = $db->prepare('SELECT name FROM presets WHERE name=:name');
 $q->execute(array(':name' => $ident->username));
 if ($q->rowCount() <= 0) {

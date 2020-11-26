@@ -1,28 +1,27 @@
 const getPresetIndex = title => presets.findIndex(preset => preset['title'] === title);
 
-// To save preset.
 const savePreset = (index) => {
     const invalidAlert = (title, msg) => createDialog({
         parentId: 'angularapp', id: 'invalidPresetTitleDialog',
         title: title, removable: true,
         alert: { message: msg },
-        buttons: [{ type: 'accent', title: 'Alright', remove: true }]
+        buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
     });
 
     if (document.getElementById("presetTitleInput") !== null) {
         var presetTitle = document.getElementById("presetTitleInput").value;
         let titlePosition = presets.findIndex(item => item['title'] === presetTitle);
         if ((titlePosition !== -1 && titlePosition !== index) || !/^(\s|\w|\d|\-|\(|\)|\[|\]|\{|\})*?$/.test(presetTitle) || presetTitle === "" || presetTitle === null || presetTitle === undefined) {
-            invalidAlert('Invalid Title', 'This preset title is not valid. Please try using "A-Z, a-b, 0-9, (), [], {}, -, _".');
+            invalidAlert(useLang["presets-invalid-title"], useLang["presets-invalid-title-desc"]);
             return;
         }
     } else { var presetTitle = presets[index]['title']; }
     const maxEdits = document.getElementById('max-edits').value;
     if (maxEdits !== '' && !isNaN(maxEdits) && maxEdits !== null) preSettings['editscount'] = maxEdits;
-    else { invalidAlert('invalid Edits limit', 'Edit limit should be numeric and non-empty'); return; }
+    else { invalidAlert(useLang["presets-invalid-edits-limit-title"], useLang["presets-invalid-edits-limit-desc"]); return; }
     const maxDays = document.getElementById('max-days').value;
     if (maxDays !== '' && !isNaN(maxDays) && maxDays !== null) preSettings['regdays'] = maxDays;
-    else { invalidAlert('invalid Days limit', 'Days limit should be numeric and non-empty'); return; }
+    else { invalidAlert(useLang["presets-invalid-days-limit"], useLang["presets-invalid-days-limit-desc"]); return; }
     preSettings['title'] = presetTitle;
     if (index === undefined) {
         removeDialog("CREATEPresetDialog");
@@ -59,9 +58,9 @@ const deletePreset = (index) => {
     createDialog({
         parentId: 'angularapp', id: 'removePresetDiaog',
         removable: true,
-        alert: { emoji: '🗑️', message: `Delete  "${presets[index].title}" preset?` },
+        alert: { emoji: '🗑️', message: useLang["presets-delete-q"].replace("$1", presets[index].title) },
         buttons: [{
-            type: 'negative', title: 'Delete',
+            type: 'negative', title: useLang["delete"],
             onClick: () => {
                 var presetHolder = document.getElementById(presets[index].title + "PresetHolder");
                 var presetTitle = presets[index].title;
@@ -69,8 +68,8 @@ const deletePreset = (index) => {
                 if (presetTitle === "Default") {
                     createDialog({ parentId: 'angularapp', id: 'removeDefaultPresetAlert',
                         title: 'Warning!', removable: true,
-                        alert: {emoji: '⚠️', message: "We don't recommend you to delete default preset! Alright?"},
-                        buttons: [{ type: 'accent', title: 'Alright', remove: true }]
+                        alert: {emoji: '⚠️', message: useLang["presets-default-q"]},
+                        buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
                     } );
                     return;
                 }
@@ -85,7 +84,7 @@ const deletePreset = (index) => {
                     selectPreset(presets.findIndex((item) => item['title'] === 'Default'));
                 }
             }, remove: true
-        }, { title: 'Cancel', remove: true } ]
+        }, { title: useLang["cancel"], remove: true } ]
     });
 }
 
@@ -109,6 +108,39 @@ const selectPreset = (index, whildEntry = false, req = true) => {
     }
 }
 
+const restoreDefaultPreset = () => {
+    const toggleBtn = (id, type) => {
+        const btn = document.getElementById(id);
+        if (btn == null) return;
+        if (btn.classList.contains('t-btn__active') && type === false) btn.click();
+        if (!btn.classList.contains('t-btn__active') && type === true) btn.click();
+    }
+    toggleBtn('registered-btn', true);
+    toggleBtn('onlyanons-btn', true);
+    toggleBtn('new-pages-btn', true);
+    toggleBtn('onlynew-pages-btn', false);
+    toggleBtn('small-wikis-btn', false);
+    toggleBtn('lt-300-btn', false);
+    document.getElementById('max-edits').value = 100;
+    document.getElementById('max-days').value = 5;
+
+    const refillChips = (removeBtn, input, addBtn, removeList = [""], addList = [""]) => {
+        if (document.getElementById(input) == null) return;
+        removeList.forEach(item => {
+            document.getElementById(input).value = item;
+            document.getElementById(removeBtn).click()
+        });
+        addList.forEach(item => {
+            document.getElementById(input).value = item;
+            document.getElementById(addBtn).click();
+        });
+    }
+    refillChips('btn-delete-ns', 'ns-input', 'btn-add-ns', [...preSettings.namespaces], [""])
+    refillChips('btn-bl-p-delete', 'bl-p', 'btn-bl-p-add', [...preSettings.blprojects], [""])
+    refillChips('btn-wl-p-delete', 'wladdp', 'btn-wl-p-add', [...preSettings.wlprojects], [""])
+    refillChips('btn-wl-u-delete', 'wladdu', 'btn-wl-u-add', [...preSettings.wlusers], [""])
+}
+
 // To edit specific preset
 // if used without parameter create new preset
 const editPreset = (index) => {
@@ -122,16 +154,18 @@ const editPreset = (index) => {
     var editPTemp = document.getElementById('editPresetTemplate');
     if (PTitle !== 'Default') editBody.append(editPTitleTemp.content.cloneNode(true));
     editBody.append(editPTemp.content.cloneNode(true));
+    let dialogButtons = [
+        { type: 'accent', title: useLang["presets-save"], onClick: () => savePreset(index), remove: false },
+        { title: useLang["cancel"], remove: true },
+    ];
+    if (PTitle === 'Default') dialogButtons.push({ type: 'negative', title: useLang['presets-restore'], onClick: () => restoreDefaultPreset(), remove: false});
     createDialog({
         parentId: 'angularapp',
         id: PDialogId || 'CREATEPresetDialog',
-        title: PTitle || 'Create Preset',
+        title: PTitle || useLang["presets-create"],
         removable: true,
         custom: { insertElement: editBody },
-        buttons: [
-            { type: 'accent', title: 'Save', onClick: () => savePreset(index), remove: false },
-            { title: 'Cancel', remove: true }
-        ]
+        buttons: dialogButtons
     });
     if (index === undefined) preSettings = { title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", blprojects: ""};
     else preSettings = {...presets[index]};
@@ -139,17 +173,13 @@ const editPreset = (index) => {
     if (true) {
         if (typeof document.getElementById("small-wikis-btn") !== 'undefined' && document.getElementById("small-wikis-btn") !== null)
             if (typeof preSettings['swmt'] !== 'undefined') {
-                if ((preSettings['swmt'] === '1' || preSettings['swmt'] === '2') && isGlobal === true)
-                    toggleTButton(document.getElementById('small-wikis-btn'));
-                if (preSettings['swmt'] === '2' && isGlobalModeAccess === true)
+                if ((preSettings['swmt'] === '1' || preSettings['swmt'] === '2') && (isGlobal === true || isGlobalModeAccess === true))
                     toggleTButton(document.getElementById('small-wikis-btn'));
             }
 
         if (typeof document.getElementById("lt-300-btn") !== 'undefined' && document.getElementById("lt-300-btn") !== null)
             if (typeof preSettings['users'] !== 'undefined') {
-                if ((preSettings['users'] === '1' || preSettings['users'] === '2') && isGlobal === true)
-                    toggleTButton(document.getElementById('lt-300-btn'));
-                if (preSettings['users'] == '2' && isGlobalModeAccess === true)
+                if ((preSettings['users'] === '1' || preSettings['users'] === '2') && (isGlobal === true || isGlobalModeAccess === true))
                     toggleTButton(document.getElementById('lt-300-btn'));
             }
 
@@ -185,6 +215,14 @@ const editPreset = (index) => {
                 });
             }
         }
+
+        local_wikis.forEach((val) => {
+            if (val === "") return;
+            var ul = document.getElementById("blareap");
+            var li = document.createElement('li');
+            li.appendChild(document.createTextNode(val));
+            ul.appendChild(li);
+        });
         initFilters('wlareap', 'wladdp', 'wlprojects');
         initFilters('wlareau', 'wladdu', 'wlusers');
         if (document.getElementById("blareap") !== null) initFilters('blareap', 'bl-p', 'blprojects');
@@ -245,11 +283,11 @@ const initPresets = (req = true) => {
     while(containers[0]) {
         PBase.removeChild(containers[0]);
     }
-    if (req) getPresets(settingslist);
-
-    for (let index in presets) PBase.append(createPresetHolder(index));
-    selectPreset(selectedPreset, true, false)
-    return PBase;
+    if (req) getPresets(settingslist, function() {
+        for (let index in presets) PBase.append(createPresetHolder(index));
+        selectPreset(selectedPreset, true, false)
+        return PBase;
+    });
 }
-
 initPresets();
+
