@@ -51,6 +51,7 @@
 	"settings-control-panel": "Pannello di controllo",
 	"settings-beta": "Beta",
 	"settings-beta-tester": "Apri la versione beta",
+	"queue-empty-msg": "La coda è vuota",
 	"presets-default-title": "Predefinito",
 	"presets-enter-placeholder": "Inserisci",
 	"presets-button-create": "Crea",

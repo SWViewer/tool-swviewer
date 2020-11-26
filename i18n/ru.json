@@ -3,7 +3,8 @@
 		"authors": [
 			"1997kB",
 			"Helpau",
-			"Iluvatar"
+			"Iluvatar",
+			"Okras"
 		]
 	},
 	"tooltip-edit-preset": "Настройки очереди",
@@ -52,6 +53,7 @@
 	"settings-control-panel": "Панель управления",
 	"settings-beta": "Бета",
 	"settings-beta-tester": "Открытая бета-версия",
+	"queue-empty-msg": "Очередь пуста",
 	"presets-default-title": "По умолчанию",
 	"presets-enter-placeholder": "Ввод",
 	"presets-button-create": "Создать",

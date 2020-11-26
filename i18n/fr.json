@@ -53,6 +53,7 @@
 	"settings-control-panel": "Panneau de contrôle",
 	"settings-beta": "Bêta",
 	"settings-beta-tester": "Ouvrir la version bêta",
+	"queue-empty-msg": "La file est vide",
 	"presets-default-title": "Par défaut",
 	"presets-enter-placeholder": "Entrer",
 	"presets-button-create": "Créer",
