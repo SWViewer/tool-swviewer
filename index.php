@@ -1156,11 +1156,15 @@ function changeTheme(select) {
     if (document.getElementById('cpLink') !==  null) document.getElementById('cpLink').href = "https://swviewer.toolforge.org/php/control.php?themeIndex=" + window.themeIndex;
 }
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    const newColorScheme = e.matches ? "dark" : "light";
-    if (themeIndex !== 4) return;
-    if (newColorScheme === "dark") changeTheme(2);
+function setSystemDefaultTheme() {
+    let systemTheme = window.getComputedStyle(document.documentElement).getPropertyValue('--system-theme');
+    if (systemTheme == 'dark') changeTheme(2);
     else changeTheme(0);
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (themeIndex !== 4) return;
+    setSystemDefaultTheme();
 });
 
 /*------Lang------*/
@@ -1419,10 +1423,8 @@ window.onload = function() {
     loadThemeList();
     if (window.themeIndex) {
         document.getElementById('themeSelector').selectedIndex = window.themeIndex;
-        if (window.themeIndex === 4) {
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) changeTheme(2);
-            else changeTheme(0);
-        } else changeTheme(window.themeIndex);
+        if (window.themeIndex === 4) setSystemDefaultTheme();
+        else changeTheme(window.themeIndex);
     } else changeTheme(0);
     loadLanguageList();
 

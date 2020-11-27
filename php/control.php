@@ -421,18 +421,23 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             }
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            const themeIndex = urlParams.get('themeIndex');
+            const themeIndex = parseInt(urlParams.get('themeIndex'));
             
-            if(themeIndex !== null) if (themeIndex === "4") {
-                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme(THEME[Object.keys(THEME)[2]]);
+            function setSystemDefaultTheme() {
+                let systemTheme = window.getComputedStyle(document.documentElement).getPropertyValue('--system-theme');
+                if (systemTheme == 'dark') setTheme(THEME[Object.keys(THEME)[2]]);
                 else setTheme(THEME[Object.keys(THEME)[0]]);
-            } else setTheme(THEME[Object.keys(THEME)[themeIndex]]);
+            }
+            
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                const newColorScheme = e.matches ? "dark" : "light";
-                if (themeIndex !== "4") return;
-                if (newColorScheme === "dark") setTheme(THEME[Object.keys(THEME)[2]]);
-                else setTheme(THEME[Object.keys(THEME)[0]]);
+                if (themeIndex !== 4) return;
+                setSystemDefaultTheme();
             });
+
+            if(themeIndex !== null && !isNaN(themeIndex)) {
+                if (themeIndex === 4) setSystemDefaultTheme();
+                else setTheme(THEME[Object.keys(THEME)[themeIndex]]);
+            }
         </script>
     </body>
     </html>
