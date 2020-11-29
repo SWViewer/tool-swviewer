@@ -251,14 +251,15 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         var speedySection = null;
         if (typeof speedy.warn !== 'undefined' && speedy.warn !== null && speedy.warn !== '') warnDelete = speedy.warn;
         if (typeof speedy.sectionWarn !== 'undefined' && speedy.sectionWarn !== null && speedy.sectionWarn !== '') speedySection = speedy.sectionWarn.replace(/\$1/gi, $scope.selectedEdit.title);
-
-        getEditSource($scope.selectedEdit.server_url, $scope.selectedEdit.script_path, $scope.selectedEdit.new)
+        
+        const SEdit = {...$scope.selectedEdit};
+        getEditSource(SEdit.server_url, SEdit.script_path, SEdit.new)
         .then(editSourceData => {
             const editSource = speedy.template.replace(/\$1/gi, userSelf) + editSourceData;
-            const editSummary = $scope.selectedEdit.config.speedySummary;
+            const editSummary = SEdit.config.speedySummary;
             const speedyLabel = speedy.name;
 
-            $scope.doEdit(editSource, editSummary, speedyLabel, speedySection, warnDelete, true);
+            $scope.doEdit(SEdit, editSource, editSummary, speedyLabel, speedySection, warnDelete, true);
         })
         .catch(err => createNotify({
             img: '/img/warning-filled.svg',
@@ -267,6 +268,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             removable: true
         }));
         closePO();
+        $scope.selectTop();
     }
 
     $scope.openCustomRevertPanel = function () {
@@ -309,15 +311,15 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         const ESElement = document.getElementById('summaryedit');
         if (ESElement.value !== '' && ESElement.value !== null && typeof ESElement !== 'undefined') editSummary = ESElement.value;
 
-        $scope.doEdit(editSource, editSummary);
+        $scope.doEdit({...$scope.selectedEdit}, editSource, editSummary);
         closePW();
+        $scope.selectTop();
     }
 
     // ===> do the edit.
-    $scope.doEdit = function(editSource, editSummary, speedyLabel, speedySection, warnDelete, isDelete = false) {
+    $scope.doEdit = function(SEdit, editSource, editSummary, speedyLabel, speedySection, warnDelete, isDelete = false) {
         document.getElementById('textpage').value = "";
         document.getElementById('summaryedit').value = "";
-        const SEdit = {...$scope.selectedEdit};
 
         isLatestRevision(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.new)
         .then(edit => {
@@ -394,7 +396,6 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             content: "Error 1: " + error,
             removable: true
         }));
-        $scope.selectTop();
     }
 
     $scope.doRevert = function (description = {}) {
@@ -797,26 +798,25 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         dataType: 'text json',
         success: result => $scope.oresWikiList = result
     });
-    $scope.genORES = (wiki, revId, refObj) => {
-        if (Object.keys($scope.oresWikiList).length === 0) return;
-        if (Object.keys($scope.oresWikiList).find(oresWiki => oresWiki === wiki) === undefined) return;
+    $scope.genORES = (wiki, revId, callback) => {
+        if (Object.keys($scope.oresWikiList).length === 0) return callback(undefined);
+        if (Object.keys($scope.oresWikiList).find(oresWiki => oresWiki === wiki) === undefined) return callback(undefined);
         var oresModel;
         if ($scope.oresWikiList[wiki]['models']['damaging'] !== undefined) oresModel = 'damaging';
         else if ($scope.oresWikiList[wiki]['models']['reverted'] !== undefined) oresModel = 'reverted';
-        else return;
+        else return callback(undefined);
         $.ajax({
             type: 'GET',
             url: `https://ores.wikimedia.org/v3/scores/${wiki}/${revId}/${oresModel}`,
             dataType: 'text',
             success: res => {
                 let oresData = JSON.parse(res);
-                if (oresData[wiki]['scores'][revId][oresModel]['score'] === undefined) return;
+                if (oresData[wiki]['scores'][revId][oresModel]['score'] === undefined) return callback(undefined);
                 const damage = oresData[wiki]['scores'][revId][oresModel]['score']['probability']['true'];
                 const damagePer = parseInt(damage * 100);
-                refObj.ores = { score: damagePer, color: `hsl(0, ${damagePer}%, 56%)` };
-                $scope.$apply();
+                callback({ score: damagePer, color: `hsl(0, ${damagePer}%, 56%)` });
             },
-            error: e => { console.error(e); return; }
+            error: e => { console.error(e); callback(undefined); }
         });
     }
     
@@ -1046,9 +1046,25 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     return byteCount;
                 })(editData.length.new, editData.length.old)
             };
-            $scope.genORES(editData.wiki, editData['revision']['new'], editTemp);
-            $scope.edits.unshift(editTemp);
-            if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined") playSound(newSound, false);
+            const oresFilter = presets[selectedPreset]['oresFilter'];
+            const unshiftEdit = () => {
+                $scope.edits.unshift(editTemp);
+                if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined") playSound(newSound, false);
+            }
+            if (oresFilter !== undefined && oresFilter !== 0) {
+                return $scope.genORES(editData.wiki, editData['revision']['new'], (ores) => {
+                    if (ores === undefined) return unshiftEdit()
+                    if (ores.score < oresFilter) return;
+                    editTemp.ores = ores;
+                    unshiftEdit();
+                });
+            }
+            $scope.genORES(editData.wiki, editData['revision']['new'], (ores) => {
+                if (ores === undefined) return
+                editTemp.ores = ores;
+                $scope.$apply();
+            });
+            unshiftEdit();
         });
     }
 
@@ -1525,13 +1541,6 @@ function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
         });
     });
 }
-
-
-// $("#page").on("load", function() {
-//     if (typeof document.getElementById("page").srcdoc !== "undefined" && document.getElementById("page").srcdoc !== "")
-//         document.getElementById("page").contentWindow.postMessage({ lang: languageIndex, orient: dirLang, messages: generateMinMessages(useLang, /^new-page-frame-/) }, window.origin);
-// });
-
 
 // get last user revision id to show all edits.
 function getLastUserRevId(serverUrl, scriptPath, title, user, newId) {

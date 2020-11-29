@@ -847,6 +847,13 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
             <ul id="nsList" class="i-chip-list fs-sm"></ul>
         </div>
     </div>
+    <div class="i__base">
+        <div class="i__title fs-md custom-lang">ORES filter</div>
+        <div class="i__description fs-xs custom-lang">filter ores</div>
+        <div class="i__content fs-sm">
+            <input id="ores-filter" class="i-input__secondary secondary-placeholder fs-sm custom-lang" name="ores-filter" placeholder="0-100">
+        </div>
+    </div>
 
     <?php if ($isGlobal == true || $isGlobalModeAccess === true) { echo '
         <div class="i__base">
@@ -1081,7 +1088,7 @@ loadDiffTemp('templates/newStringStart.html', text => startstring = text );
 loadDiffTemp('templates/newStringEnd.html', text => endstring = text );
 
 function getPresets(setList, callback) {
-    $.ajax({url: 'php/presets.php?action=get_presets', type: 'POST', crossDomain: true, dataType: 'json',
+    $.ajax({url: 'php/presets2.php?action=get_presets', type: 'POST', crossDomain: true, dataType: 'json',
         success: function(presetsResp) {
             presets = presetsResp;
             presets.forEach(function(el, index) {

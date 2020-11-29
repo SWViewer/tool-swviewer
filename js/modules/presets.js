@@ -16,32 +16,37 @@ const savePreset = (index) => {
             return;
         }
     } else { var presetTitle = presets[index]['title']; }
-    const maxEdits = document.getElementById('max-edits').value;
-    if (maxEdits !== '' && !isNaN(maxEdits) && maxEdits !== null) preSettings['editscount'] = maxEdits;
-    else { invalidAlert(useLang["presets-invalid-edits-limit-title"], useLang["presets-invalid-edits-limit-desc"]); return; }
-    const maxDays = document.getElementById('max-days').value;
-    if (maxDays !== '' && !isNaN(maxDays) && maxDays !== null) preSettings['regdays'] = maxDays;
-    else { invalidAlert(useLang["presets-invalid-days-limit"], useLang["presets-invalid-days-limit-desc"]); return; }
+    function assignInputPreset(value, preKey) {
+        if (value === '' || isNaN(value) || value === null || (preKey == 'oresFilter' && (value < 0 || value > 100))) {
+            invalidAlert(useLang["presets-invalid-days-limit"], useLang["presets-invalid-days-limit-desc"]);
+            return;
+        }
+        preSettings[preKey] = value;
+    }
+    assignInputPreset(document.getElementById('max-edits').value, 'editscount');
+    assignInputPreset(document.getElementById('max-days').value, 'regdays');
+    assignInputPreset(document.getElementById('ores-filter').value, 'oresFilter');
+    
     preSettings['title'] = presetTitle;
     if (index === undefined) {
         removeDialog("CREATEPresetDialog");
         $.ajax({
-            url: 'php/presets.php', type: 'GET', crossDomain: true, 
-            data: { 'action': 'create_preset', 'preset_name': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
+            url: 'php/presets2.php', type: 'GET', crossDomain: true, 
+            data: { 'action': 'create_preset', 'preset_name': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
             dataType: 'json'
         });
-        presets.push({ 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() });
+        presets.push({ 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() });
         document.getElementById('presetsBase').append(createPresetHolder(presets.length-1));
         }
     else {
         var oldPresetName = presets[index]["title"];
         $.ajax({
-            url: 'php/presets.php', type: 'GET', crossDomain: true,
-            data: { 'action': 'edit_preset', 'preset_name': oldPresetName, 'preset_name_new': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'regdays': preSettings['regdays'].toString(), 'anons': preSettings['anons'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
+            url: 'php/presets2.php', type: 'GET', crossDomain: true,
+            data: { 'action': 'edit_preset', 'preset_name': oldPresetName, 'preset_name_new': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'anons': preSettings['anons'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
             dataType: 'json',
             success: function() {
                 removeDialog(oldPresetName + "PresetDialog");
-                presets[index] = { 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() };
+                presets[index] = { 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() };
                 if (oldPresetName !== presetTitle) {
                     if (selectedPreset === index)
                         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'preset', preset: presetTitle }, dataType: 'json',
@@ -77,7 +82,7 @@ const deletePreset = (index) => {
             
                 presets.splice(index, 1);
                 
-                $.ajax({url: 'php/presets.php', type: 'GET', crossDomain: true, data: { 'action': 'delete_preset', 'preset_name': presetTitle }, dataType: 'json'});
+                $.ajax({url: 'php/presets2.php', type: 'GET', crossDomain: true, data: { 'action': 'delete_preset', 'preset_name': presetTitle }, dataType: 'json'});
             
                 if (index === selectedPreset) {
                     selectedPreset = undefined;
@@ -123,6 +128,7 @@ const restoreDefaultPreset = () => {
     toggleBtn('lt-300-btn', false);
     document.getElementById('max-edits').value = 100;
     document.getElementById('max-days').value = 5;
+    document.getElementById('ores-filter').value = 0;
 
     const refillChips = (removeBtn, input, addBtn, removeList = [""], addList = [""]) => {
         if (document.getElementById(input) == null) return;
@@ -167,7 +173,7 @@ const editPreset = (index) => {
         custom: { insertElement: editBody },
         buttons: dialogButtons
     });
-    if (index === undefined) preSettings = { title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", blprojects: ""};
+    if (index === undefined) preSettings = { title: "", regdays: "5", oresFilter: "0", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", blprojects: ""};
     else preSettings = {...presets[index]};
 
     if (true) {
@@ -189,6 +195,7 @@ const editPreset = (index) => {
         }
         initIValue(preSettings['editscount'], 'max-edits');
         initIValue(preSettings['regdays'], 'max-days');
+        initIValue(preSettings['oresFilter'], 'ores-filter');
 
         function initTBtn (value, btn) {
             if (typeof value !== "undefined" && value === "1") toggleTButton(document.getElementById(btn));
