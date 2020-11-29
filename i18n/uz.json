@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Jamshiduralovofficial",
 			"Malikxan"
 		]
 	},
@@ -29,6 +30,7 @@
 	"settings-control-panel": "Kontrol panel",
 	"settings-beta": "Beta",
 	"settings-beta-tester": "Beta versiyani ochish",
+	"queue-empty-msg": "Navbat bo'sh",
 	"presets-enter-placeholder": "Bosish",
 	"presets-button-create": "Yaratish",
 	"presets-title": "Sarlavha",
@@ -83,5 +85,7 @@
 	"talk-people": "Odam",
 	"talk-send-placeholder": "Nima haqida oʻylayabsiz?",
 	"talk-img-send": "Yuborish",
-	"nc-unlogin-title": "Chiqish"
+	"nc-unlogin-title": "Chiqish",
+	"autoreport-content": "$1 haqida bir necha bor ogohlantirildi. Siz ularni Admin Bildirishnomalariga xabar qilmoqchimisiz?",
+	"already-done": "Bunday o'zgarishlar allaqachon qilingan."
 }
