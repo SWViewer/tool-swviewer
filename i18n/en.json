@@ -73,6 +73,8 @@
   "presets-days-limit-placeholder": "Max days",
   "presets-ns": "Namespace filter",
   "presets-ns-desc": "Add [$1|namespace] to filter edits in queue. Example: 0 for Main",
+  "presets-ores-filter": "ORES filter",
+  "presets-ores-filter-desc": "Filter edits by ORES score.",
   "presets-sw": "Small wikis",
   "presets-sw-desc": "Enable edits from small wikis.",
   "presets-additional": "Additional wikis",
