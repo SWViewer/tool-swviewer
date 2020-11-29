@@ -243,14 +243,15 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         var speedySection = null;
         if (typeof speedy.warn !== 'undefined' && speedy.warn !== null && speedy.warn !== '') warnDelete = speedy.warn;
         if (typeof speedy.sectionWarn !== 'undefined' && speedy.sectionWarn !== null && speedy.sectionWarn !== '') speedySection = speedy.sectionWarn.replace(/\$1/gi, $scope.selectedEdit.title);
-
-        getEditSource($scope.selectedEdit.server_url, $scope.selectedEdit.script_path, $scope.selectedEdit.new)
+        
+        const SEdit = {...$scope.selectedEdit};
+        getEditSource(SEdit.server_url, SEdit.script_path, SEdit.new)
         .then(editSourceData => {
             const editSource = speedy.template.replace(/\$1/gi, userSelf) + editSourceData;
-            const editSummary = $scope.selectedEdit.config.speedySummary;
+            const editSummary = SEdit.config.speedySummary;
             const speedyLabel = speedy.name;
 
-            $scope.doEdit(editSource, editSummary, speedyLabel, speedySection, warnDelete, true);
+            $scope.doEdit(SEdit, editSource, editSummary, speedyLabel, speedySection, warnDelete, true);
         })
         .catch(err => createNotify({
             img: '/img/warning-filled.svg',
@@ -259,6 +260,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             removable: true
         }));
         closePO();
+        $scope.selectTop();
     }
 
     $scope.openCustomRevertPanel = function () {
@@ -301,15 +303,15 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         const ESElement = document.getElementById('summaryedit');
         if (ESElement.value !== '' && ESElement.value !== null && typeof ESElement !== 'undefined') editSummary = ESElement.value;
 
-        $scope.doEdit(editSource, editSummary);
+        $scope.doEdit({...$scope.selectedEdit}, editSource, editSummary);
         closePW();
+        $scope.selectTop();
     }
 
     // ===> do the edit.
-    $scope.doEdit = function(editSource, editSummary, speedyLabel, speedySection, warnDelete, isDelete = false) {
+    $scope.doEdit = function(SEdit, editSource, editSummary, speedyLabel, speedySection, warnDelete, isDelete = false) {
         document.getElementById('textpage').value = "";
         document.getElementById('summaryedit').value = "";
-        const SEdit = {...$scope.selectedEdit};
 
         isLatestRevision(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.new)
         .then(edit => {
@@ -386,7 +388,6 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             content: "Error 1: " + error,
             removable: true
         }));
-        $scope.selectTop();
     }
 
     $scope.doRevert = function (description = {}) {
