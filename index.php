@@ -848,8 +848,8 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         </div>
     </div>
     <div class="i__base">
-        <div class="i__title fs-md custom-lang">[preset-ores-filter]</div>
-        <div class="i__description fs-xs custom-lang">[preset-ores-filter-desc]</div>
+        <div class="i__title fs-md custom-lang">[presets-ores-filter]</div>
+        <div class="i__description fs-xs custom-lang">[presets-ores-filter-desc]</div>
         <div class="i__content fs-sm">
             <input id="ores-filter" class="i-input__secondary secondary-placeholder fs-sm custom-lang" name="ores-filter" placeholder="0-100">
         </div>
