@@ -73,6 +73,8 @@
 	"presets-days-limit-placeholder": "Máximo de dias",
 	"presets-ns": "Filtro de domínio",
 	"presets-ns-desc": "Adicione o [$1|domínio] para filtrar edições na fila. Exemplo: 0 para o Principal",
+	"presets-ores-filter": "Filtro ORES",
+	"presets-ores-filter-desc": "Filtrar edições por ORES score.",
 	"presets-sw": "Wikis pequenas",
 	"presets-sw-desc": "Ativar edições de wikis pequenas.",
 	"presets-additional": "Wikis adicionais",

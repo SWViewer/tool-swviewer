@@ -74,6 +74,8 @@
 	"presets-days-limit-placeholder": "Maximum de jours",
 	"presets-ns": "Filtre d’espace de noms",
 	"presets-ns-desc": "Ajouter [$1|l’espace de noms] pour filtrer les modifications dans la file. Exemple : 0 pour Principal",
+	"presets-ores-filter": "Filtre ORES",
+	"presets-ores-filter-desc": "Filtrer les modifications par leur note ORES.",
 	"presets-sw": "Petits wikis",
 	"presets-sw-desc": "Activer les modifications pour les petits wikis.",
 	"presets-additional": "Wikis supplémentaires",

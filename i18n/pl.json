@@ -71,6 +71,8 @@
 	"presets-days-limit-placeholder": "Maksymalna liczba dni",
 	"presets-ns": "Filtr przestrzeni nazw",
 	"presets-ns-desc": "Dodaj[$1|przestrzeń nazw] do filtra edycji w kolejce. Przykład: 0 dla głównej.",
+	"presets-ores-filter": "Filtr ORES",
+	"presets-ores-filter-desc": "Filtruj edycje według oceny ORES.",
 	"presets-sw": "Małe wiki",
 	"presets-sw-desc": "Zezwól na edycje z małych wiki.",
 	"presets-additional": "Dodatkowe wiki.",
