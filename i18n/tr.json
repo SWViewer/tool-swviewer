@@ -72,6 +72,8 @@
 	"presets-days-limit-placeholder": "Maksimum günler",
 	"presets-ns": "Ad alanı filtresi",
 	"presets-ns-desc": "Sıradaki düzenlemeleri filtrelemek için [$1|ad alanı] ekleyin. Örnek: Ana için 0",
+	"presets-ores-filter": "ORES filtresi",
+	"presets-ores-filter-desc": "Düzenlemeleri ORES puanına göre filtreleyin.",
 	"presets-sw": "Küçük vikiler",
 	"presets-sw-desc": "Küçük vikilerden düzenlemeleri etkinleştirin.",
 	"presets-additional": "Ek vikiler",
