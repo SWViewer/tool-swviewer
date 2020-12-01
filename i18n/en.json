@@ -242,7 +242,7 @@
   "welcome-frame-reminder": "Reminder",
   "welcome-frame-reminder-cache": "IMPORTANT: If app is not working properly, please re-login and clear cache.",
   "welcome-frame-reminder-respons": "Responsibility for edits rests with the owner of the account with which they are made.",
-  "welcome-frame-reminder-warns": "Please DO NOT sends warns if you don't know the language (except in case of pure vandalism).",
+  "welcome-frame-reminder-warns": "Please DO NOT revert if you don't know the language (except in case of pure vandalism).",
   "welcome-frame-reminder-bugs": "If you find a bug, please [$1|report] it!",
   "welcome-frame-reminder-screens": "Also attach screenshots or/and data from the browser console.",
   "welcome-frame-tips": "Tips",

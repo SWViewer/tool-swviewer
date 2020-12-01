@@ -46,6 +46,20 @@ if (isset($_POST["action"])) {
             $q->execute(array(':name' => $_POST['user']));
         }
 
+    if ($_POST["action"] == "addBetaTester")
+        if (isset($_POST["user"])) {
+            $q = $db->prepare('UPDATE user SET betaTester=1 WHERE name=:name');
+            $q->execute(array(':name' => $_POST['user']));
+        }
+
+
+    if ($_POST["action"] == "removeBetaTester")
+        if (isset($_POST["user"])) {
+            $q = $db->prepare('UPDATE user SET betaTester=0 WHERE name=:name');
+            $q->execute(array(':name' => $_POST['user']));
+        }
+
+
     $db = null;
     exit();
 }
@@ -302,6 +316,68 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                     }
                 </script>
             </div>
+
+            <div>
+                <div class="i__base">
+                    <div class="i__title fs-lg">Beta Tester</div>
+                    <div class="i__description fs-sm">Add users to beta tester list.</div>
+                    <div class="i__content fs-sm">
+                        <div id="removeBetaTester-btn" class="i-minus fs-sm">-</div>
+                        <input id="addTester" class="i-input__secondary secondary-placeholder fs-sm" type="text"
+                            name="addTester" placeholder="User">
+                        <div id="addBetaTester-btn" class="i-plus fs-sm">+</div>
+                    </div>
+                    <div class="i__extra">
+                        <ul class="i-chip-list fs-sm">
+                            <?php $q = $db->query('SELECT name FROM user WHERE betaTester=1');
+                            while ($row = $q->fetch()) {
+                                echo "<li style='padding-left: 8px;'>" . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . "</li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById('addBetaTester-btn').onclick = function () {
+
+                        var betaUser = document.getElementById('addTester').value;
+                        if (betaUser !== null && betaUser !== "") {
+                            $.ajax({
+                                url: 'control.php',
+                                type: 'POST',
+                                crossDomain: true,
+                                data: {
+                                    action: 'addBetaTester',
+                                    user: betaUser
+                                },
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+
+                    document.getElementById('removeBetaTester-btn').onclick = function () {
+
+                        var betaUser = document.getElementById('addTester').value;
+                        if (betaUser !== null && betaUser !== "") {
+                            $.ajax({
+                                url: 'control.php',
+                                type: 'POST',
+                                crossDomain: true,
+                                data: {
+                                    action: 'removeBetaTester',
+                                    user: betaUser
+                                },
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+                </script>
+            </div>
         </div>
         <script>
             const THEME_FIX = { '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)', '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)', '--tc-accent': 'rgba(255, 255, 255, 1)', '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)', '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px', '--lh-xl': '1.125', '--lh-lg': '1.25', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5', };
@@ -327,8 +403,7 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                 "AMOLED": { '--bc-primary': '#000000', '--bc-primary-low': '#050505', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
                     '--bc-secondary': '#000000', '--bc-secondary-low': '#111111', '--bc-secondary-hover': 'rgba(255, 255, 255, .05)',
                     ...ICP_ON_DARK, ...ICS_ON_DARK, ...BCA_DARK, ...TCP_ON_DARK, ...TCS_ON_DARK, ...THEME_FIX },
-                "Slack": { '--bc-primary': '#3F0E40', '--bc-primary-low': '#4f1150', '--bc-primary-hover': 'rgba(255, 255, 255, .05)',
-                    ...BC_LIGHT, ...ICP_ON_DARK, ...ICS_ON_LIGHT, ...BCA_LIGHT, ...TCP_ON_DARK, ...TCS_ON_LIGHT, ...THEME_FIX },
+                "System default": { },
             }
             function setTheme(THEME) {
                 let root = document.documentElement;
@@ -346,9 +421,23 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             }
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            const themeIndex = urlParams.get('themeIndex');
+            const themeIndex = parseInt(urlParams.get('themeIndex'));
             
-            if(themeIndex !== null) setTheme(THEME[Object.keys(THEME)[themeIndex]]);
+            function setSystemDefaultTheme() {
+                let systemTheme = window.getComputedStyle(document.documentElement).getPropertyValue('--system-theme');
+                if (systemTheme == 'dark') setTheme(THEME[Object.keys(THEME)[2]]);
+                else setTheme(THEME[Object.keys(THEME)[0]]);
+            }
+            
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (themeIndex !== 4) return;
+                setSystemDefaultTheme();
+            });
+
+            if(themeIndex !== null && !isNaN(themeIndex)) {
+                if (themeIndex === 4) setSystemDefaultTheme();
+                else setTheme(THEME[Object.keys(THEME)[themeIndex]]);
+            }
         </script>
     </body>
     </html>

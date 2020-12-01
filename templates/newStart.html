@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="parentHTML">
   <head>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src https://swviewer.toolforge.org/js/frame/frameKeys.js; font-src https://swviewer.toolforge.org/fonts/; style-src 'unsafe-inline' https://swviewer.toolforge.org/css/base/fonts.css; base-uri 'none'; form-action 'none'; " />
@@ -15,8 +15,9 @@
             -webkit-overflow-scrolling: touch;
             font-family: 'Roboto', sans-serif;
             color: var(--tc-secondary);
-            letter-spacing: .6px;
-            word-spacing: 1px;
+            /* letter-spacing: .6px;
+            word-spacing: 1px; */
+            line-height: 24px;
         }
         b { font-weight: normal; }
         a { color: var(--link-color); }
@@ -112,6 +113,7 @@
             background: #ffe49c;
         }
     </style>
+
   </head>
   <body>
 <!-- Diff which was parsed from mediawiki begins here -->
@@ -123,6 +125,6 @@
     </colgroup>
     <tbody>
         <tr>
-            <td colspan="2" class="diff-lineno">Not exist</td>
-            <td colspan="2" class="diff-lineno">New page:</td>
+            <td colspan="2" class="diff-lineno custom-lang">[new-page-frame-not-exist]</td>
+            <td colspan="2" class="diff-lineno custom-lang">[new-page-frame-new]</td>
         </tr>

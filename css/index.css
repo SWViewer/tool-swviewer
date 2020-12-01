@@ -328,7 +328,7 @@ html, body, .full-screen, #loading {
 .desc-c { grid-area: c; }
 
 .description-container > div > div,
-#us > div, #tit > div {
+.description-container > div > div > div {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -336,7 +336,8 @@ html, body, .full-screen, #loading {
 }
 .description-container > div > div[i-tooltip]::after,
 #us > div[i-tooltip]::after { white-space: normal; word-break: break-all; }
-#us,#tit {
+
+.description-container > div > div {
     display: flex;
     white-space: pre;
 }
@@ -363,6 +364,7 @@ html, body, .full-screen, #loading {
     box-shadow: var(--floatbar-shadow);
     background-color: var(--bc-accent);
     transition: transform 200ms ease-in-out;
+    direction: ltr;
 }
 .drawer-fab > div:first-child,
 .drawer-fab > div:last-child {
@@ -380,6 +382,7 @@ html, body, .full-screen, #loading {
 .drawer-fab > span:nth-child(2) {
     display: inline-block;
     width: 1px;
+    height: 24px;
     color: var(--tc-accent);
     transition: width 200ms ease-in-out;
     overflow: hidden;
