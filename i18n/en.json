@@ -96,6 +96,8 @@
   "presets-invalid-edits-limit-desc": "Edit limit should be numeric and non-empty.",
   "presets-invalid-days-limit": "Invalid Days limit",
   "presets-invalid-days-limit-desc": "Days limit should be numeric and non-empty.",
+  "presets-invalid-ores-limit": "Invalid ORES score limit",
+  "presets-invalid-ores-limit-desc": "ORES score limit should be numeric and non-empty.",
   "diff-info-user": "User:",
   "diff-info-title": "Title:",
   "diff-info-wiki": "Wiki:",
