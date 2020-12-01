@@ -73,8 +73,8 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 
 
     <script type="text/javascript" src="./js/modules/bakeEl.min.js" defer></script>
-    <script type="text/javascript" src="./js/modules/pw2.js" defer></script>
-    <script type="text/javascript" src="./js/modules/po2.js" defer></script>
+    <script type="text/javascript" src="./js/modules/pw.js" defer></script>
+    <script type="text/javascript" src="./js/modules/po.js" defer></script>
 
     <!-- Fonts, stylesheet-->
     <link rel="stylesheet" href="css/base/fonts.css">
@@ -279,7 +279,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 
                 window.useLang = useLang; window.dirLang = dirLang; window.languageIndex = languageIndex;
                 var lastOpenedPO = undefined;
-                $.getScript('https://swviewer.toolforge.org/js/modules/about2.js');
+                $.getScript('https://swviewer.toolforge.org/js/modules/about.js');
                 document.getElementById('login-page-base').style.display = 'block';
                 })();
 
@@ -303,7 +303,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                     }
 
                     if (document.getElementById(po) === null) {
-                        if (po === 'about') $.getScript('https://swviewer.toolforge.org/js/modules/about2.js');
+                        if (po === 'about') $.getScript('https://swviewer.toolforge.org/js/modules/about.js');
 
                         if (document.getElementById(po) !== null) openPOLocal();
                     } else openPOLocal();
@@ -342,12 +342,12 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
     }
 
     # User is not beta tester
-    if ($isBetaTester === 0) {
-        echo "Access denied. Please add yourself at <a href='https://meta.wikimedia.org/wiki/SWViewer/members' rel='noopener noreferrer' target='_blank'>beta tester list</a>, and let us know in <a href='http://ircredirect.toolforge.org/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC channel</a> or <a href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord server</a>.";
-        $_SESSION = array();
-        session_write_close();
-        exit();
-    }
+    #if ($isBetaTester === 0) {
+    #    echo "Access denied. Please add yourself at <a href='https://meta.wikimedia.org/wiki/SWViewer/members' rel='noopener noreferrer' target='_blank'>beta tester list</a>, and let us know in <a href='http://ircredirect.toolforge.org/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC channel</a> or <a href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord server</a>.";
+    #    $_SESSION = array();
+    #    session_write_close();
+    #    exit();
+    #}
 
     # Get dir writing to php var
     $rtl = Array ("dv", "nqo", "syc", "arc", "yi", "ydd", "tmr", "lad-hebr", "he", "ur", "ug-arab", "skr-arab", "sdh", "sd", "ps", "prs", "pnb", "ota", "mzn", "ms-arab", "lrc", "luz", "lki", "ku-arab", "ks-arab", "kk-arab", "khw", "ha-arab", "glk", "fa", "ckb", "bqi", "bgn", "bft", "bcc", "azb", "az-arab", "arz", "ary", "arq", "ar", "aeb-arab");
@@ -481,14 +481,14 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                     <div id="description-container" class="description-container fs-md" style="display: none; margin-top: 0;">
                         <div class="desc-un">
                             <div id="us" class="fs-sm custom-lang"><span class="custom-lang">[diff-info-user]</span>&nbsp;<div id="userLinkSpec" ng-click="openLink('diff');"></div></div>
-                            <div class="fs-sm" style="overflow: unset"><span class="custom-lang">[diff-info-namespace]</span>&nbsp;<div id="ns" style="display: inline-block" class="fs-sm"></div></div>
+                            <div class="fs-sm"><span class="custom-lang">[diff-info-namespace]</span>&nbsp;<div id="ns" style="display: inline-block" class="fs-sm"></div></div>
                         </div>
                         <div class="desc-wt">
-                            <div class="fs-sm" style="overflow: unset"><span class="custom-lang">[diff-info-wiki]</span>&nbsp;<div id="wiki" style="display: inline-block" class="fs-sm"></div></div>
-                            <div id="tit" class="fs-sm" style="overflow: unset"><span class="custom-lang">[diff-info-title]</span>&nbsp;<div id="pageLinkSpec" style="cursor: pointer; display: inline-block; color: var(--link-color);" ng-click="openLink('page');"></div></div>
+                            <div class="fs-sm"><span class="custom-lang">[diff-info-wiki]</span>&nbsp;<div id="wiki" style="display: inline-block" class="fs-sm"></div></div>
+                            <div id="tit" class="fs-sm"><span class="custom-lang">[diff-info-title]</span>&nbsp;<div id="pageLinkSpec" style="cursor: pointer; display: inline-block; color: var(--link-color);" ng-click="openLink('page');"></div></div>
                         </div>
                         <div class="desc-c">
-                            <div class="fs-sm" style="overflow: unset"><span class="custom-lang">[diff-info-comment]</span>&nbsp;<div id="com" style="display: inline-block" class="fs-sm"></div></div>
+                            <div class="fs-sm"><span class="custom-lang">[diff-info-comment]</span>&nbsp;<div id="com" style="display: inline-block" class="fs-sm"></div></div>
                         </div>
                     </div>
                     <!-- Mobile next diff button -->
@@ -565,7 +565,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                     </div>
                     <!-- Welcome page and Difference viewer -->
                     <div class="diff-container frame-diff">
-                        <iframe id='page-welcome' class='full-screen custom-lang' style='display: block;' title='[welcome-page-title]' src='templates/welcome2.html'></iframe>
+                        <iframe id='page-welcome' class='full-screen custom-lang' style='display: block;' title='[welcome-page-title]' src='templates/welcome.html'></iframe>
                         <iframe id='page' class='full-screen custom-lang' style='display: none;' title='[page-title]' sandbox='allow-same-origin allow-scripts'></iframe>
                     </div>
 
@@ -914,9 +914,9 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 
 </div>
 
-<script src="js/index-noncritical2.js" defer></script>
-<script src="js/modules/dialog2.js" defer></script>
-<script src="js/modules/presets2.js" defer></script>
+<script src="js/index-noncritical.js" defer></script>
+<script src="js/modules/dialog.js" defer></script>
+<script src="js/modules/presets.js" defer></script>
 <script src="js/modules/swipe.js" defer></script>
 
 <!-- Scripts -->
@@ -1080,15 +1080,15 @@ function loadDiffTemp(url, callback) {
         success: text => callback(text)
     })
 }
-loadDiffTemp('templates/diffStart2.html', (text) =>  diffstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
+loadDiffTemp('templates/diffStart.html', (text) =>  diffstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
 loadDiffTemp('templates/diffEnd.html', text => diffend = text );
-loadDiffTemp('templates/newStart2.html', text => newstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
+loadDiffTemp('templates/newStart.html', text => newstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
 loadDiffTemp('templates/newEnd.html', text => newend = text );
 loadDiffTemp('templates/newStringStart.html', text => startstring = text );
 loadDiffTemp('templates/newStringEnd.html', text => endstring = text );
 
 function getPresets(setList, callback) {
-    $.ajax({url: 'php/presets2.php?action=get_presets', type: 'POST', crossDomain: true, dataType: 'json',
+    $.ajax({url: 'php/presets.php?action=get_presets', type: 'POST', crossDomain: true, dataType: 'json',
         success: function(presetsResp) {
             presets = presetsResp;
             presets.forEach(function(el, index) {
@@ -1253,10 +1253,10 @@ async function changeLanguage(select, isLoad, language) {
             }
 
             document.getElementById("soundSelector").selectedIndex = sound;
-            $.getScript('https://swviewer.toolforge.org/js/modules/talk2.js', () => removeTabNotice('btn-talk'));
-            $.getScript('https://swviewer.toolforge.org/js/modules/logs2.js', () => removeTabNotice('btn-logs'));
-            $.getScript('https://swviewer.toolforge.org/js/modules/about2.js', () => removeTabNotice('btn-about'));
-            $.getScript('https://swviewer.toolforge.org/js/modules/notification2.js', () => removeTabNotice('btn-notification'));
+            $.getScript('https://swviewer.toolforge.org/js/modules/talk.js', () => removeTabNotice('btn-talk'));
+            $.getScript('https://swviewer.toolforge.org/js/modules/logs.js', () => removeTabNotice('btn-logs'));
+            $.getScript('https://swviewer.toolforge.org/js/modules/about.js', () => removeTabNotice('btn-about'));
+            $.getScript('https://swviewer.toolforge.org/js/modules/notification.js', () => removeTabNotice('btn-notification'));
 
         }
     });
@@ -1418,7 +1418,7 @@ function setLanguageSelector(l) {
 function toggleTButton (button) { classToggler(button, 't-btn__active'); }
 function toggleICheckBox (checkbox) { classToggler(checkbox, 'i-checkbox__active'); }
 </script>
-<script src="js/swv2.js?v=4"></script>
+<script src="js/swv.js?v=4"></script>
 <script>
 
 /*#########################

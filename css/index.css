@@ -328,7 +328,7 @@ html, body, .full-screen, #loading {
 .desc-c { grid-area: c; }
 
 .description-container > div > div,
-#us > div, #tit > div {
+.description-container > div > div > div {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -336,7 +336,8 @@ html, body, .full-screen, #loading {
 }
 .description-container > div > div[i-tooltip]::after,
 #us > div[i-tooltip]::after { white-space: normal; word-break: break-all; }
-#us,#tit {
+
+.description-container > div > div {
     display: flex;
     white-space: pre;
 }

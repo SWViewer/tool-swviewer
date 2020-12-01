@@ -18,20 +18,24 @@ const savePreset = (index) => {
     } else { var presetTitle = presets[index]['title']; }
     function assignInputPreset(value, preKey) {
         if (value === '' || isNaN(value) || value === null || (preKey == 'oresFilter' && (value < 0 || value > 100))) {
-            invalidAlert(useLang["presets-invalid-days-limit"], useLang["presets-invalid-days-limit-desc"]);
-            return;
+            if (preKey == 'editscount') invalidAlert(useLang["presets-invalid-edits-limit-title"], useLang["presets-invalid-edits-limit-desc"]);
+            if (preKey == 'regdays') invalidAlert(useLang["presets-invalid-days-limit"], useLang["presets-invalid-days-limit-desc"]);
+            if (preKey == 'oresFilter') invalidAlert(useLang["presets-invalid-ores-limit"], useLang["presets-invalid-ores-limit-desc"]);
+            return false;
         }
         preSettings[preKey] = value;
+        return true;
     }
-    assignInputPreset(document.getElementById('max-edits').value, 'editscount');
-    assignInputPreset(document.getElementById('max-days').value, 'regdays');
-    assignInputPreset(document.getElementById('ores-filter').value, 'oresFilter');
+    if (!assignInputPreset(document.getElementById('max-edits').value, 'editscount')) return;
+    if (!assignInputPreset(document.getElementById('max-days').value, 'regdays')) return;
+    if (!assignInputPreset(document.getElementById('ores-filter').value, 'oresFilter')) return;
+
     
     preSettings['title'] = presetTitle;
     if (index === undefined) {
         removeDialog("CREATEPresetDialog");
         $.ajax({
-            url: 'php/presets2.php', type: 'GET', crossDomain: true, 
+            url: 'php/presets.php', type: 'GET', crossDomain: true, 
             data: { 'action': 'create_preset', 'preset_name': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
             dataType: 'json'
         });
@@ -41,7 +45,7 @@ const savePreset = (index) => {
     else {
         var oldPresetName = presets[index]["title"];
         $.ajax({
-            url: 'php/presets2.php', type: 'GET', crossDomain: true,
+            url: 'php/presets.php', type: 'GET', crossDomain: true,
             data: { 'action': 'edit_preset', 'preset_name': oldPresetName, 'preset_name_new': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'anons': preSettings['anons'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
             dataType: 'json',
             success: function() {
@@ -82,7 +86,7 @@ const deletePreset = (index) => {
             
                 presets.splice(index, 1);
                 
-                $.ajax({url: 'php/presets2.php', type: 'GET', crossDomain: true, data: { 'action': 'delete_preset', 'preset_name': presetTitle }, dataType: 'json'});
+                $.ajax({url: 'php/presets.php', type: 'GET', crossDomain: true, data: { 'action': 'delete_preset', 'preset_name': presetTitle }, dataType: 'json'});
             
                 if (index === selectedPreset) {
                     selectedPreset = undefined;
