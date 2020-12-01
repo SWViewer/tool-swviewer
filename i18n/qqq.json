@@ -100,6 +100,8 @@
 	"presets-invalid-edits-limit-desc": "Description text appears on dialog when invalid data is entered in 'Edit limit' inside create preset dialog.",
 	"presets-invalid-days-limit": "'Invalid Days limit' text appears on dialog when invalid data is entered in 'Days limit' inside create preset dialog.",
 	"presets-invalid-days-limit-desc": "Description text appears on dialog when invalid data is entered in 'Days limit' inside create preset dialog.",
+	"presets-invalid-ores-limit": "'Invalid ORES score' text appears on dialog when invalid data is entered in 'ORES score' inside create preset dialog.",
+	"presets-invalid-ores-limit-desc": "Description text appears on dialog when invalid data is entered in 'ORES score' inside create preset dialog.",
 	"diff-info-user": "'User:' text in edit info on diff page.",
 	"diff-info-title": "'Title:' text in edit info on diff page.",
 	"diff-info-wiki": "'Wiki:' text in edit info on diff page.",
