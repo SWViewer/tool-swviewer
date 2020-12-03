@@ -3,6 +3,7 @@
 		"authors": [
 			"1997kB",
 			"Ajbura",
+			"Eihel",
 			"Iluvatar",
 			"Kareyac",
 			"MarcoAurelio",
@@ -170,7 +171,7 @@
 	"settings-sound-edits": "Option in 'Sound' selector in 'General settings'.",
 	"settings-sound-only-edits": "Option in 'Sound' selector in 'General settings'.",
 	"error-cant-perform": "Error text in 'Notifications' when rollback fails.",
-	"error-loading-title": "Error text when loading diff fails.",
+	"error-loading-title": "Error text when loading diff fails.\nEn français, moins de 20 caratères.",
 	"error-speedy-title": "Error text in 'Notifications' when deletion tagging fails.",
 	"gsr-success-title": "Title text in 'Notifications' when GSR report is successfull.",
 	"gsr-success-content": "Description text in 'Notifications' when GSR report is successfull. Parameters:\n* $1 - the name of the page user is tagging for deletion",
