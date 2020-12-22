@@ -142,6 +142,7 @@
 	"welcome-frame-del": "삭제",
 	"welcome-frame-protect": "보호",
 	"welcome-frame-report": "보고",
+	"welcome-frame-reminder-warns": "언어를 모르시는 경우 되돌리지 말아 주십시오. (순수 문서 훼손은 예외)",
 	"welcome-frame-reminder-bugs": "버그를 발견하시면 [$1|보고]해 주십시오!",
 	"welcome-frame-tips": "팁",
 	"welcome-frame-links": "외부 링크",
