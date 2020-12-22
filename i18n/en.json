@@ -140,6 +140,7 @@
   "logs-action-undo": "Undo",
   "logs-action-edit": "Edit",
   "logs-action-warn": "Warn",
+  "logs-action-delete": "Delete",
   "logs-action-report": "Report",
   "logs-action-protect": "Protect",
   "pw-img-drawer": "Drawer",
