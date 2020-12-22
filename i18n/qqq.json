@@ -145,6 +145,7 @@
 	"logs-action-undo": "'Undo' text in filtering options in 'Logs'.",
 	"logs-action-edit": "'Edit' text in filtering options in 'Logs'.",
 	"logs-action-warn": "'Warn' text in filtering options in 'Logs'.",
+	"logs-action-delete": "'Delete' text in filtering options in 'Logs'.",
 	"logs-action-report": "'Report' text in filtering options in 'Logs'.",
 	"logs-action-protect": "'Protect' text in filtering options in 'Logs'.",
 	"pw-img-drawer": "'Drawer' alt text used on drawer image in 'Sidebar' on mobile device.",
