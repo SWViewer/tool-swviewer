@@ -91,6 +91,7 @@
 	"logs-action-rollback": "일괄 되돌리기",
 	"logs-action-edit": "편집",
 	"logs-action-warn": "경고",
+	"logs-action-delete": "삭제",
 	"logs-action-protect": "보호",
 	"talk-today": "오늘",
 	"talk-yesterday": "어제",

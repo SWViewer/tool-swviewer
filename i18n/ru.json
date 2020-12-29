@@ -141,6 +141,7 @@
 	"logs-action-undo": "Отмена",
 	"logs-action-edit": "Правка",
 	"logs-action-warn": "Предупреждение",
+	"logs-action-delete": "КБУ",
 	"logs-action-report": "Запрос блокировки",
 	"logs-action-protect": "Запрос защиты",
 	"pw-img-drawer": "Ящик",
