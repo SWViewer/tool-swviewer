@@ -74,6 +74,7 @@
 	"presets-days-limit-placeholder": "Máximo de días",
 	"presets-ns": "Filtro de espacio de nombres",
 	"presets-ns-desc": "Añade [$1|espacio de nombres] para filtrar ediciones de la cola. Ejemplo: 0 para el espacio principal",
+	"presets-ores-filter": "Filtro ORES",
 	"presets-sw": "Wikis pequeñas",
 	"presets-sw-desc": "Activar ediciones en wikis pequeñas.",
 	"presets-additional": "Wikis adicionales",

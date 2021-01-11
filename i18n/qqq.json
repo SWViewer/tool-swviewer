@@ -316,7 +316,7 @@
 	"img-box": "'Sidear' alt text used on Sidear image on mobile device",
 	"img-save": "'Save' text used in 'Queue settings'.\n{{identical|Save}}",
 	"cancel": "'Cancel' text used in 'Queue settings'.\n{{identical|Cancel}}",
-	"alright": "'Alright' text used 'Queue settings'.",
+	"alright": "'Alright' text used in the pop-up that appears when the wrong value is entered in 'Queue settings'.",
 	"about": "'About' text used on login, about etc.\n{{identical|About}}",
 	"delete": "'Delete' text used in presets, welcome page etc.\n{{identical|Delete}}"
 }
