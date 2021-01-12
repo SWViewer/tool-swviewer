@@ -33,7 +33,7 @@
   "settings-language": "Language",
   "settings-language-descr": "Change tool interface language.",
   "settings-sound": "Sound",
-  "settings-sound-descr": "Change sound mode for incomming edits and messages in talk.",
+  "settings-sound-descr": "Change sound mode for incoming edits and messages in talk.",
   "settings-revisions": "Multiple diff",
   "settings-revisions-descr": "Set alert or open all consecutive edits by same user at once.",
   "settings-revisions-onlylast": "Only last",
