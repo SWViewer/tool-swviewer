@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Colathewikian",
 			"KirkLU",
 			"Tiger",
 			"Yfdyh000",
@@ -34,7 +35,7 @@
 	"settings-language": "语言",
 	"settings-language-descr": "更改工具界面语言。",
 	"settings-sound": "提示音",
-	"settings-sound-descr": "更改出现新编辑和讨论区新消息时的提示音。",
+	"settings-sound-descr": "更换出现新编辑和讨论区新消息时的提示音。",
 	"settings-revisions": "多个差异",
 	"settings-revisions-descr": "设置当出现一连串同一用户的编辑时，是发出警告还是显示所有更改。",
 	"settings-revisions-onlylast": "只显示最后版本",
@@ -281,7 +282,7 @@
 	"about-frame-data-logs": "通过工具进行的在维基上的操作日志（例如编辑差异、时间）",
 	"about-frame-data-ref-1": "这些数据可能会向维基媒体基金会及基金会的志愿者和维基云服务的用户公开。",
 	"about-frame-data-ref-2": "这些数据是公开数据。",
-	"about-frame-data-ref-3": "这些数据将在最后一次使用后的两周内被删除。",
+	"about-frame-data-ref-3": "这些数据将在最后一次使用后的两周后被删除。",
 	"page-title": "差异",
 	"welcome-page-title": "欢迎页面",
 	"login-welcome": "欢迎！",
