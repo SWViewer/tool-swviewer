@@ -44,7 +44,7 @@
 	"settings-terminate-stream": "Termină cursul",
 	"settings-terminate-stream-descr": "Termină cursul de schimbări recente când este ajunsă limita cozii.",
 	"settings-limit": "Limita cozii",
-	"settings-limit-descr": "Numărul maxim de modificări permis să fie încărcat în coadă.",
+	"settings-limit-descr": "Numărul maxim de modificări care este permis să fie încărcat în coadă.",
 	"settings-limit-placeholder": "Fără limită",
 	"settings-control": "Unelte de dezvoltatori",
 	"settings-control-panel": "Panoul de control",
