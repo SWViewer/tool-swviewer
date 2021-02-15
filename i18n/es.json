@@ -4,6 +4,7 @@
 			"Fitoschido",
 			"Hasley",
 			"MarcoAurelio",
+			"Rodney Araujo",
 			"Savh"
 		]
 	},
@@ -75,6 +76,7 @@
 	"presets-ns": "Filtro de espacio de nombres",
 	"presets-ns-desc": "Añade [$1|espacio de nombres] para filtrar ediciones de la cola. Ejemplo: 0 para el espacio principal",
 	"presets-ores-filter": "Filtro ORES",
+	"presets-ores-filter-desc": "Filtrar ediciones por calificación ORES.",
 	"presets-sw": "Wikis pequeñas",
 	"presets-sw-desc": "Activar ediciones en wikis pequeñas.",
 	"presets-additional": "Wikis adicionales",
@@ -136,6 +138,7 @@
 	"logs-action-undo": "Deshacer",
 	"logs-action-edit": "Edición",
 	"logs-action-warn": "Advertir",
+	"logs-action-delete": "Borrar",
 	"logs-action-report": "Denunciar",
 	"logs-action-protect": "Proteger",
 	"pw-img-drawer": "Cajón",
@@ -174,7 +177,7 @@
 	"view-latest": "Ver última",
 	"request-performed-title": "Solicitud realizada",
 	"request-performed-content": "Solicitud para $1 en $2 ha sido realizada con éxito.",
-	"rollback-fail-title": "Reversión fallida!",
+	"rollback-fail-title": "¡Reversión fallida!",
 	"rollback-fail-content": "$1 ha realizado múltiples ediciones en $2. Por favor, revisa el historial de la página.",
 	"load-history": "Cargar historial",
 	"rollback-fail-not-latest": "No se pudo realizar esta acción, esta edición en $1 no es la última revisión.",
