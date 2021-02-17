@@ -81,6 +81,7 @@
 	"logs-action-rollback": "Rulla tillbaka",
 	"logs-action-undo": "Ångra",
 	"logs-action-edit": "Redigera",
+	"logs-action-delete": "Radera",
 	"logs-action-report": "Rapportera",
 	"logs-action-protect": "Skydda",
 	"talk-today": "Idag",

@@ -3,6 +3,7 @@
 		"authors": [
 			"1997kB",
 			"Ajbura",
+			"Eihel",
 			"Iluvatar",
 			"Kareyac",
 			"MarcoAurelio",
@@ -100,7 +101,7 @@
 	"presets-invalid-edits-limit-desc": "Description text appears on dialog when invalid data is entered in 'Edit limit' inside create preset dialog.",
 	"presets-invalid-days-limit": "'Invalid Days limit' text appears on dialog when invalid data is entered in 'Days limit' inside create preset dialog.",
 	"presets-invalid-days-limit-desc": "Description text appears on dialog when invalid data is entered in 'Days limit' inside create preset dialog.",
-	"presets-invalid-ores-limit": "'Invalid ORES score' text appears on dialog when invalid data is entered in 'ORES score' inside create preset dialog.",
+	"presets-invalid-ores-limit": "'Invalid ORES score' text appears on dialog when invalid data is entered in 'ORES score' inside create preset dialog. Less than 20 characters.",
 	"presets-invalid-ores-limit-desc": "Description text appears on dialog when invalid data is entered in 'ORES score' inside create preset dialog.",
 	"diff-info-user": "'User:' text in edit info on diff page.",
 	"diff-info-title": "'Title:' text in edit info on diff page.",
@@ -144,6 +145,7 @@
 	"logs-action-undo": "'Undo' text in filtering options in 'Logs'.",
 	"logs-action-edit": "'Edit' text in filtering options in 'Logs'.",
 	"logs-action-warn": "'Warn' text in filtering options in 'Logs'.",
+	"logs-action-delete": "'Delete' text in filtering options in 'Logs'.",
 	"logs-action-report": "'Report' text in filtering options in 'Logs'.",
 	"logs-action-protect": "'Protect' text in filtering options in 'Logs'.",
 	"pw-img-drawer": "'Drawer' alt text used on drawer image in 'Sidebar' on mobile device.",
@@ -170,7 +172,7 @@
 	"settings-sound-edits": "Option in 'Sound' selector in 'General settings'.",
 	"settings-sound-only-edits": "Option in 'Sound' selector in 'General settings'.",
 	"error-cant-perform": "Error text in 'Notifications' when rollback fails.",
-	"error-loading-title": "Error text when loading diff fails.",
+	"error-loading-title": "Error text when loading diff fails.\nEn français, moins de 20 caratères.",
 	"error-speedy-title": "Error text in 'Notifications' when deletion tagging fails.",
 	"gsr-success-title": "Title text in 'Notifications' when GSR report is successfull.",
 	"gsr-success-content": "Description text in 'Notifications' when GSR report is successfull. Parameters:\n* $1 - the name of the page user is tagging for deletion",
@@ -314,7 +316,7 @@
 	"img-box": "'Sidear' alt text used on Sidear image on mobile device",
 	"img-save": "'Save' text used in 'Queue settings'.\n{{identical|Save}}",
 	"cancel": "'Cancel' text used in 'Queue settings'.\n{{identical|Cancel}}",
-	"alright": "'Alright' text used 'Queue settings'.",
+	"alright": "'Alright' text used in the pop-up that appears when the wrong value is entered in 'Queue settings'.",
 	"about": "'About' text used on login, about etc.\n{{identical|About}}",
 	"delete": "'Delete' text used in presets, welcome page etc.\n{{identical|Delete}}"
 }
