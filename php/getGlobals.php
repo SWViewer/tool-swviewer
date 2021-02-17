@@ -15,6 +15,7 @@ $usersList = [];
 getUsers("all");
 getUsers("global-ipblock-exempt");
 getUsers("oathauth-tester");
+getCommonsUsers();
 
 $output = "";
 forEach ($usersList as $user) {
@@ -49,4 +50,34 @@ function getUsers($groups)
         }
     }
 }
+
+function getCommonsUsers()
+{
+    $options = array('https' => array('method' => "POST", "User-Agent: SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) PHP / getGlobals.php"));
+    $context = stream_context_create($options);
+
+    $groups = "sysop|filemover";
+    $check = true;
+    $aufrom = "";
+    $cont = "";
+
+    while ($check === true) {
+        $url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&list=allusers&formatversion=2&utf8=1&augroup=" . $groups . "&aulimit=100" . $aufrom . $cont;
+        $content = file_get_contents($url, false, $context);
+        $json = json_decode($content, true);
+        if (!isset($json["continue"]) || !isset($json["continue"]["aufrom"]) || !isset($json["continue"]["continue"]))
+            $check = false;
+        else {
+            $aufrom = "&aufrom=" . urlencode($json["continue"]["aufrom"]);
+            $cont = "&continue=" . $json["continue"]["continue"];
+        }
+        foreach ($json["query"]["allusers"] as $user) {
+            if (!in_array($user['name'], $GLOBALS['usersList']))
+                array_push($GLOBALS['usersList'], $user['name']);
+        }
+    }
+}
+
+
+
 ?>

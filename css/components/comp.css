@@ -117,7 +117,7 @@
 .i-select__primary,
 .i-select__secondary {
     padding: 0 8px;
-    width: 100px;
+    width: 106px;
     height: 25px;
     border-radius: 4px;
     border: none;
@@ -186,7 +186,7 @@
 .i-btn__positive,
 .o-btn__positive { background-color: var(--bc-positive); color: white !important; }
 .i-btn__negative,
-.o-btn__negative { background-color: var(--bc-negative); color: white !important; }
+.o-btn__negative { border: 1px solid rgb(251, 47, 47, 20%); color: var(--tc-negative) !important; }
 .o-btn__primary { background-color: var(--bc-primary-low); color: var(--tc-primary); }
 .o-btn__secondary { background-color: var(--bc-secondary-low); color: var(--tc-secondary); }
 

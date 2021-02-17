@@ -36,9 +36,31 @@ const createNotify = (notify) => {
             if (typeof notify.title === 'string') notiChilds.push(bakeEl({
                 type: 'div', child: notify.title, att: { class: 'noti-title fs-lg' }
             }));
-            if (notify.content) notiChilds.push(bakeEl({
-                type: 'div', child: notify.content, att: { class: 'noti-content fs-sm' }
-            }));
+            if (typeof notify.content === 'string') {
+                let msg = notify.content;
+                const content = [];
+
+                while (msg !== "") {
+                    if (msg.match(/\[\[[^\|\|]+\|\|[^\]\]]+\]\]/g) === null) {
+                        content.push(msg);
+                        break;
+                    }
+                    content.push(msg.slice(0, msg.indexOf("[[")));
+                    msg = msg.slice(msg.indexOf("[[") + 2);
+                    const linkName = msg.slice(0, msg.indexOf("||"));
+                    msg = msg.slice(msg.indexOf('||') + 2)
+                    const linkUrl = msg.slice(0, msg.indexOf("]]"));
+                    msg = msg.slice(msg.indexOf(']]') + 2)
+                    content.push(bakeEl({
+                        type: 'a', att: { href: linkUrl, target: "_blank", rel: "noopener noreferrer" },
+                        child: linkName
+                    }));
+                }
+
+                notiChilds.push(bakeEl({
+                    type: 'div', child: content, att: { class: 'noti-content fs-sm' }
+                }));
+            }
             if (notify.buttons) notiChilds.push(bakeEl({
                 type: 'div', att: { class: 'noti-buttons' },
                 child: ((buttons) => {

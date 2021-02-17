@@ -73,6 +73,21 @@
 }
 
 /*----------usernames---------*/
+.user-count-header {
+    margin-top: 24px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+.user-count-header > .count-line {
+    flex: 1;
+    height: 1px;
+    background: var(--bc-secondary-hover);
+    margin-left: 8px;
+}
+.user-list > div {
+    margin-bottom: 4px;
+}
 .user-container {
 	display: flex;
 }

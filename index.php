@@ -485,7 +485,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                         </div>
                         <div class="desc-wt">
                             <div class="fs-sm"><span class="custom-lang">[diff-info-wiki]</span>&nbsp;<div id="wiki" style="display: inline-block" class="fs-sm"></div></div>
-                            <div id="tit" class="fs-sm"><span class="custom-lang">[diff-info-title]</span>&nbsp;<div id="pageLinkSpec" style="cursor: pointer; display: inline-block; color: var(--link-color);" ng-click="openLink('page');"></div></div>
+                            <div id="tit" class="fs-sm" style="overflow: unset;"><span class="custom-lang">[diff-info-title]</span>&nbsp;<div id="pageLinkSpec" style="cursor: pointer; display: inline-block; color: var(--link-color);" ng-click="openLink('page');"></div></div>
                         </div>
                         <div class="desc-c">
                             <div class="fs-sm"><span class="custom-lang">[diff-info-comment]</span>&nbsp;<div id="com" style="display: inline-block" class="fs-sm"></div></div>
@@ -617,7 +617,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <div class="po__content">
             <div class="po__content-body secondary-scroll">
                 <form id="summariesContainer" style="display: flex" ng-submit="doRevert();">
-                    <input class="i-input__secondary secondary-placeholder fs-md custom-lang" style="margin-right: 8px;" title="[tooltip-reason]" name="credit" id="credit" placeholder="[custom-revert-placeholder]"/>
+                    <input class="i-input__secondary secondary-placeholder fs-md custom-lang" style="margin-right: 8px; flex: 1;" title="[tooltip-reason]" name="credit" id="credit" placeholder="[custom-revert-placeholder]"/>
                     <button type="button" class="i-btn__accent accent-hover fs-md custom-lang" id="btn-cr-u-apply" ng-click="doRevert();">[custom-revert-button]</button>
                 </form>
                 <br>
@@ -922,7 +922,8 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 <!-- Scripts -->
 <script>
 document.getElementById('loadingBar').style.width = "50%";
-var diffstart, diffend, newstart, newend, startstring, endstring, config, dirLang, languageIndex;
+var diffstart, diffend, newstart, newend, startstring, endstring, startCb, endCb, config, dirLang, languageIndex;
+var callbackDiffNow = "";
 var global = [];
 var activeSysops = [];
 var vandals = [];
@@ -1084,6 +1085,8 @@ loadDiffTemp('templates/diffStart.html', (text) =>  diffstart = setStrTheme(text
 loadDiffTemp('templates/diffEnd.html', text => diffend = text );
 loadDiffTemp('templates/newStart.html', text => newstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
 loadDiffTemp('templates/newEnd.html', text => newend = text );
+loadDiffTemp('templates/cbStart.html', text => startCb = text );
+loadDiffTemp('templates/cbEnd.html', text => endCb = text );
 loadDiffTemp('templates/newStringStart.html', text => startstring = text );
 loadDiffTemp('templates/newStringEnd.html', text => endstring = text );
 
@@ -1210,6 +1213,15 @@ function changeLanguageSelector() {
     changeLanguage(document.getElementById('languageSelector').value, false);
     $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'lang', lang: document.getElementById("languageSelector").value }, dataType: 'json'});
 }
+
+function getMessage(event) {
+    if (event.origin !== 'https://swviewer.toolforge.org') return;
+        if (typeof event.data !== "undefined")
+	        if (typeof event.data.uniqueID !== "undefined")
+                if (event.data.uniqueID !== "")
+		            callbackDiffNow = event.data.uniqueID;
+}
+window.addEventListener("message", getMessage, false);
 
 async function changeLanguage(select, isLoad, language) {
     var langAsync;

@@ -253,6 +253,10 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         if (typeof speedy.sectionWarn !== 'undefined' && speedy.sectionWarn !== null && speedy.sectionWarn !== '') speedySection = speedy.sectionWarn.replace(/\$1/gi, $scope.selectedEdit.title);
         
         const SEdit = {...$scope.selectedEdit};
+        if (SEdit.wiki + SEdit.new !== callbackDiffNow) {
+            alert("Error: Non-sync. Please report the error to developers. Details: " + SEdit.wiki + SEdit.new + " " + callbackDiffNow)
+            return;
+        }
         getEditSource(SEdit.server_url, SEdit.script_path, SEdit.new)
         .then(editSourceData => {
             const editSource = speedy.template.replace(/\$1/gi, userSelf) + editSourceData;
@@ -304,13 +308,17 @@ angular.module("swv", ["ui.directives", "ui.filters"])
     }
 
 
-    // ===> on saving the edited artical
+    // ===> on saving the edited article
     $scope.saveEdit = function() {
         const editSource = document.getElementById('textpage').value;
         var editSummary = "";
         const ESElement = document.getElementById('summaryedit');
         if (ESElement.value !== '' && ESElement.value !== null && typeof ESElement !== 'undefined') editSummary = ESElement.value;
 
+        if ($scope.selectedEdit.wiki + $scope.selectedEdit.new !== callbackDiffNow) {
+            alert("Error: Non-sync. Please report the error to developers. Details: " + $scope.selectedEdit.wiki + $scope.selectedEdit.new + " " + callbackDiffNow)
+            return;
+        }
         $scope.doEdit({...$scope.selectedEdit}, editSource, editSummary);
         closePW();
         $scope.selectTop();
@@ -334,7 +342,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     .then(() => createNotify({
                         img: '/img/warning-filled.svg',
                         title: useLang["gsr-success-title"],
-                        content: useLang["gsr-success-content"].replace("$1", SEdit.title),
+                        content: useLang["gsr-success-content"].replace("$1", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
                         removable: true
                     })).catch(err => createNotify({
                         img: '/img/warning-filled.svg',
@@ -359,7 +367,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                         createNotify({
                             img: '/img/warning-filled.svg',
                             title: useLang["warn-success-title"],
-                            content: useLang["warn-success-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
+                            content: useLang["warn-success-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
                             removable: true
                         });
                     }).catch(err => createNotify({
@@ -401,7 +409,10 @@ angular.module("swv", ["ui.directives", "ui.filters"])
     $scope.doRevert = function (description = {}) {
         const SEdit = {...$scope.selectedEdit};
         if (SEdit.old == null || isNaN(SEdit.old) === true) return;
-    
+        if (SEdit.wiki + SEdit.new !== callbackDiffNow) {
+            alert("Error: Non-sync. Please, tell about that error to developers. Details: " + SEdit.wiki + SEdit.new + " " + callbackDiffNow + " " + synccheck )
+            return;
+        }
         var rollbackSummary = "";
         const RSInput = document.getElementById('credit');
         if (description.summary !== null && typeof description.summary !== "undefined") rollbackSummary = description.summary.replace(/\$7/gi, $scope.selectedEdit.title);
@@ -485,7 +496,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 createNotify({
                     img: "/img/rollback-filled.svg",
                     title: useLang["rollback-fail-title"],
-                    content: useLang["rollback-fail-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
+                    content: useLang["rollback-fail-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
                     removable: true,
                     buttons: [{
                         title: useLang["load-history"],
@@ -504,7 +515,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             createNotify({
                 img: "/img/rollback-filled.svg", 
                 title: useLang["rollback-fail-title"],
-                content: useLang["rollback-fail-not-latest"].replace("$1", latestEdit.title),
+                content: useLang["rollback-fail-not-latest"].replace("$1", `[[${latestEdit.title}||${latestEdit.server_url}${latestEdit.script_path}/index.php?title=${latestEdit.title}&action=history]]`),
                 removable: true,
                 buttons: [{
                     title: useLang["view-latest"],
@@ -562,7 +573,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 createNotify({
                     img: '/img/warning-filled.svg',
                     title: useLang["warn-performed-title"],
-                    content: useLang["warn-performed-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
+                    content: useLang["warn-performed-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
                     removable: true
                 });
             } else if (warnCount === maxWarnCount) $scope.doReport(SEdit);
@@ -612,8 +623,8 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             if (SEdit.config.report['reportPreamb'] === true) preamb = true;
             createNotify({
                 img: '/img/warning-filled.svg',
-                title: useLang["autoreport-title"], 
-                content: useLang["autoreport-content"].replace("$1", SEdit.user),
+                title: useLang["autoreport-title"],
+                content: useLang["autoreport-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`),
                 removable: true,
                 buttons: [{
                     type: 'negative',
@@ -625,7 +636,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                         .then(() => createNotify({
                             img: '/img/warning-filled.svg',
                             title: useLang["warn-performed-title"],
-                            content: useLang["report-performed-content"].replace("$1", SEdit.user).replace("$2", SEdit.title),
+                            content: useLang["report-performed-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
                             removable: true
                         })).catch(err => createNotify({
                             img: '/img/warning-filled.svg',
@@ -849,7 +860,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
     
                 if (editData.user !== userSelf && (editData.type === newPages || editData.type === onlyNewPages) && editData.bot === false && (presets[selectedPreset]["namespaces"].split(',').includes(editData.namespace.toString()) || presets[selectedPreset]["namespaces"].length === 0) && editData.patrolled !== true && ((presets[selectedPreset]["blprojects"].split(',').includes(editData.wiki)) || (local_wikis.includes(editData.wiki) && isGlobal === false) || (wikis.includes(editData.wiki) && swmt === true && (isGlobal === true || isGlobalModeAccess === true)) || (active_users.includes(editData.wiki) && lt300 === true && (isGlobal === true || isGlobalModeAccess === true)))) 
                 {} else return;
-                if (typeof sandboxlist[editData.wiki] !== "undefined" && sandboxlist[editData.wiki] === editData.title) return;
+                if (typeof sandboxlist[editData.wiki] !== "undefined" && sandboxlist[editData.wiki].split(',').includes(editData.title)) return;
                 if (global.includes(editData.user) || presets[selectedPreset]["wlusers"].split(',').includes(editData.user) || presets[selectedPreset]["wlprojects"].split(',').includes(editData.wiki)) return;
                 
                 // ==> IP user.
@@ -967,7 +978,19 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     if (sbList.hasOwnProperty(wiki))
                         sbList[wiki] = sbList[wiki] + ", " + page;
                 }
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/1");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/2");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/3");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/4");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/5");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/6");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/7");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/8");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/9");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/10");
+                addSandbox(window.sandboxlist, "mediawikiwiki", "VisualEditor:Test");
                 addSandbox(window.sandboxlist, "simplewiki", "Wikipedia:Introduction");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Wikidata:Sandbox");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Q4115189");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Q13406268");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Q15397819");
@@ -985,6 +1008,19 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 addSandbox(window.sandboxlist, "wikidatawiki", "Property:P4047");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Property:P5188");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Property:P5189");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Property:P6604");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Lexeme:L123");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Lexeme:L1234");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q17339402");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q85408509");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q85409163");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q16943273");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q85409446");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q85409596");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q85409310");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q17566023");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q17578745");
+                addSandbox(window.sandboxlist, "wikidatawiki", "Q85408938");
                 startEsenServices();
             }
         })
@@ -1071,6 +1107,8 @@ angular.module("swv", ["ui.directives", "ui.filters"])
     // => Send notification to after request complition
     $scope.reqSuccessNotify = function(newEdit, oldEdit, type, extra) {
         extra = extra || type;
+        const action_translated = { 'rollback': useLang["logs-action-rollback"], 'undo': useLang["logs-action-undo"], 'delete': useLang["delete"], 'edit': useLang["logs-action-edit"], 'warn': useLang["logs-action-warn"], 'report': useLang["logs-action-report"], 'protect': useLang["logs-action-protect"] };
+        extra = action_translated[extra];
         oldEdit = {...oldEdit};
         oldEdit.user = newEdit.user;
         oldEdit.old = newEdit.oldrevid;
@@ -1080,7 +1118,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
         createNotify({
             img: `/img/${type}-filled.svg`,
             title: useLang["request-performed-title"],
-            content: useLang["request-performed-content"].replace('$1', extra).replace('$2', oldEdit.title),
+            content: useLang["request-performed-content"].replace('$1', extra).replace('$2', `[[${oldEdit.title}||${oldEdit.server_url}${oldEdit.script_path}/index.php?title=${oldEdit.title}&action=history]]`),
             removable: true,
             buttons: [{
                 title: useLang["view-latest"],
@@ -1181,7 +1219,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             }
         }
         function sendDefaultDeleteList() {
-            // send default-warn list (about soeedy deletion) to DB
+            // send default-warn list (about speedy deletion) to DB
             $.ajax({
                 url: 'php/settings.php',
                 type: 'POST',
@@ -1297,7 +1335,17 @@ async function loadDiff(edit, showAll) {
     disableControl(); closeMoreControl();
     closePW();
     loadDiffDesc(edit);
-    document.getElementById('page').srcdoc = "";
+    document.getElementById('page').srcdoc = `<html style="height: 100%;">
+            <head>
+                <link rel="stylesheet" href="css/base/variables.css">
+                <link rel="stylesheet" href="css/base/base.css">
+            </head>
+            <body style="margin: 0; height: 100%; background-color: transparent;">
+                <div style="height: 100%; display: flex; justify-content: center; align-items: center;">
+                    <img class="secondary-icon touch-ic" src="/img/swviewer-loading-anim.svg" style="opacity: 0.4; width: 100px; height: 100px; margin: auto;">
+                </div>
+            </body>
+        </html>`;
 
     if (typeof edit.old !== "undefined" && (checkMode === 2 || showAll === true)) {
 
@@ -1464,7 +1512,7 @@ function sendWarning(serverUrl, scriptPath, wiki, newId, oldId, title, user, war
                 wiki: wiki,
                 page: 'User_talk:' + user,
                 text: warnTemplates[warnLevel].replace(/\$1/gi, title).replace(/\$2/gi, oldId).replace(/\$3/gi, newId).replace(/\$4/gi, user).replace(/\$5/gi, "Special:Diff/" + oldId + "/" + newId).replace(/\$6/gi, serverUrl + scriptPath + "/index.php?oldid=" + oldId + "&diff=" + newId),
-                sectiontitle: warnSection.replace(/\$DD/gi, moment.utc().format('DD')).replace(/\$MMMM/gi, warnMonth).replace(/\$MM/gi, moment.utc().format('MM')).replace(/\$YYYY/gi, moment.utc().format('YYYY')),
+                sectiontitle: warnSection.replace(/\$DD/gi, moment.utc().format('DD')).replace(/\$MMMM/gi, warnMonth).replace(/\$MM/gi, moment.utc().format('MM')).replace(/\$M/gi, moment.utc().format('M')).replace(/\$YYYY/gi, moment.utc().format('YYYY')),
                 summary: warnSummary.replace(/\$1/gi, warnLevel + 1)
             },
             success: () => resolve(),
@@ -1529,17 +1577,21 @@ function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
                     if (typeof oldId !== 'undefined') reject(useLang["error-already-reverted"]);
                     var newPageDiff = startstring + data.compare['*'] + endstring;
                     newstart = newstart.replace('[new-page-frame-not-exist]', useLang['new-page-frame-not-exist']).replace('[new-page-frame-new]', useLang['new-page-frame-new']);
-                    resolve(newstart + newPageDiff + newend);
+                    resolve(newstart + newPageDiff + newend + getUniqID(wiki, newId));
                 }
                 var diffTextToFrame = data.compare['*'];
                 if (typeof oldId === 'undefined') diffTextToFrame = '<tr><td colspan="2" class="diff-lineno">' + useLang['new-page-frame-not-exist'] + diffTextToFrame.substring(diffTextToFrame.indexOf("</td>"), diffTextToFrame.length);
                 if (wiki !== "commonswiki" && wiki !== "wikidatawiki") diffTextToFrame = escapeXSSDiff(diffTextToFrame);
                 else diffTextToFrame = structuredData(diffTextToFrame.replace(/<a class="mw-diff-movedpara-left".*?<\/a>/g, '-').replace(/<a class="mw-diff-movedpara-right".*?<\/a>/g, '+').replace(/<a name="movedpara_.*?<\/a>/g, ''), serverUrl);
-                resolve(diffstart + diffTextToFrame + diffend);
+                resolve(diffstart + diffTextToFrame + diffend + getUniqID(wiki, newId));
             },
             error: error => reject(`Failed... dev code: 010; error code: ${error.status}.`)
         });
     });
+}
+
+function getUniqID(wiki, newId) {
+    return startCb + wiki + newId + endCb;
 }
 
 // get last user revision id to show all edits.
@@ -1650,6 +1702,7 @@ function bindLatestRevision(oldEdit, revision) {
     return new Promise(async (resolve, reject) => {
         if (oldEdit.old == null) oldEdit.old = oldEdit.new;
         oldEdit.user = revision.user;
+        oldEdit.old = oldEdit.new;
         oldEdit.new = revision.revid;
         oldEdit.comment = revision.comment;
         await getUserInfo(oldEdit.server_url, oldEdit.script_path, oldEdit.user)

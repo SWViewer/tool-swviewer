@@ -13,7 +13,7 @@
             width: 100%;
         }
         .welcome-box { max-width: 788px; }
-        .stat-search__base {margin: var(--side-padding) 0; display: flex; }
+        .stat-search__base { margin: var(--side-padding) 0; display: flex; }
         .stat-search__base > input { flex: 1; margin-right: var(--side-padding); }
         html[dir="rtl"] .stat-search__base > input { margin-right: 0; margin-left: var(--side-padding); }
 
@@ -24,18 +24,18 @@
             justify-content: space-between;
         }
         .stat-container > div {
-            flex: 1 1;
+            /*flex: 1 1;*/
             padding: 8px 16px;
             padding-left: 0;
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
         .stat-container > div span:first-child {
             font-weight: bold;
             padding-bottom: 8px;
             color: var(--tc-secondary-low);
         }
-
     </style>
 </head>
 
@@ -135,7 +135,8 @@
             userTag.textContent = event.data.user;
             userTag.style.cursor = 'pointer';
             userTag.addEventListener('click', () =>{
-                document.getElementById('statInput').value = event.data.user;
+                if (document.getElementById('statInput').value == event.data.user) document.getElementById('statInput').value = '';
+                else document.getElementById('statInput').value = event.data.user;
                 searchStat();
             });
             document.getElementById('welcome-title-user').append(userTag);
@@ -246,6 +247,9 @@
 </script>
 <script async>
     document.getElementById('statForm').addEventListener('submit', (e) => searchStat(e), false);
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     function searchStat (e) {
         if (e !== undefined) e.preventDefault();
         document.getElementById('statContainer').classList.add('disabled');
@@ -265,9 +269,9 @@
                 let totalStats = 0;
                 stats.forEach((action) => {
                     totalStats += parseInt(statsObj[action]);
-                    document.getElementById(action + 'Span').textContent = statsObj[action]
+                    document.getElementById(action + 'Span').textContent = numberWithCommas(statsObj[action]);
                 });
-                document.getElementById('totalSpan').textContent = totalStats;
+                document.getElementById('totalSpan').textContent = (isNaN(totalStats))? '': numberWithCommas(totalStats);
                 document.getElementById('statContainer').classList.remove('disabled');
             }).catch((error) => console.error(error));
     }

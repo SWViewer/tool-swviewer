@@ -9,7 +9,7 @@ const initLogs = () => {
     const BTN_SEARCH_LOGS = document.getElementById('btn-searchLogs');
 
     const ACTION_COLORS = { 'rollback': '#c8b40e', 'undo': '#db24b0', 'delete': '#672dd2', 'edit': '#2dd280', 'warn': '#d92c26', 'report': '#e3791c', 'protect': '#1cb3e3' };
-
+    const ACTION_TRANSLATED = { 'rollback': useLang["logs-action-rollback"], 'undo': useLang["logs-action-undo"], 'delete': useLang["delete"], 'edit': useLang["logs-action-edit"], 'warn': useLang["logs-action-warn"], 'report': useLang["logs-action-report"], 'protect': useLang["logs-action-protect"] };
     var logsSearchPhrase = "", action = "", logsLimit = 40, logsOffset = 0;
 
     ACTION_SELECTOR.onchange = () => action = ACTION_SELECTOR.value;
@@ -84,7 +84,7 @@ const initLogs = () => {
             link.href = log['diff'].substring(0, (log['diff'].indexOf('.org/')) + 5) + "wiki/user:" + log['user'];
             link.textContent = log['user']; link.target = '_blank'; link.rel = "noopener noreferrer";
             columns['lt__user'].append(link);
-            columns['lt__action'].textContent = log['type'];
+            columns['lt__action'].textContent = (typeof ACTION_TRANSLATED[log['type']] !== "undefined") ? ACTION_TRANSLATED[log['type']].toLocaleLowerCase() : ACTION_TRANSLATED[log['type']];
             columns['lt__action'].style.color = ACTION_COLORS[log['type']];
             columns['lt__wiki'].textContent = log['wiki'];
             var link = document.createElement('a');
@@ -171,7 +171,7 @@ const createLogsPW = (p) => {
                                     bakeEl({ type: 'option', child: useLang["logs-action-all"], att: { value: '' } }),
                                     bakeEl({ type: 'option', child: useLang["logs-action-rollback"], att: { value: 'rollback' } }),
                                     bakeEl({ type: 'option', child: useLang["logs-action-undo"], att: { value: 'undo' } }),
-                                    bakeEl({ type: 'option', child: useLang["delete"], att: { value: 'delete' } }),
+                                    bakeEl({ type: 'option', child: useLang["logs-action-delete"], att: { value: 'delete' } }),
                                     bakeEl({ type: 'option', child: useLang["logs-action-edit"], att: { value: 'edit' } }),
                                     bakeEl({ type: 'option', child: useLang["logs-action-warn"], att: { value: 'warn' } }),
                                     bakeEl({ type: 'option', child: useLang["logs-action-report"], att: { value: 'report' } }),

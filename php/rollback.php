@@ -25,7 +25,12 @@ $summary = $res2 = $rev = null;
 $params = ['action' => 'query', 'meta' => 'tokens', 'format' => 'json'];
 $params["type"] = ($mode === "undo") ? "csrf" : "rollback";
 $tokentype = $params["type"]."token";
-$token = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params))->query->tokens->$tokentype;
+
+$token_r = $client->makeOAuthCall($accessToken, $apiUrl, true, $params);
+$token = json_decode($token_r);
+if (!isset($token->query))
+    file_put_contents("error.txt", json_encode($token_r));
+$token = $token->query->tokens->$tokentype;
 
 // Now perform rollback or undo
 if ($mode === "rollback") {

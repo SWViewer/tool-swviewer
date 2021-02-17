@@ -5,7 +5,7 @@
 .noti-base {
     display: grid;
     grid-template-columns: auto 1fr auto;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: min-content min-content min-content;
     grid-template-areas:
         'n-img n-title n-cross'
         'n-img n-content n-content'
@@ -38,7 +38,7 @@
 .noti-cross {
     grid-area: n-cross;
     width: 32px;
-    height: 100%;
+    height: 32px;
     padding: 0 8px;
     cursor: pointer;
     border-radius: 8px;
