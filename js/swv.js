@@ -976,7 +976,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 }
                 function addSandbox(sbList, wiki, page) {
                     if (sbList.hasOwnProperty(wiki))
-                        sbList[wiki] = sbList[wiki] + ", " + page;
+                        sbList[wiki] = sbList[wiki] + "," + page;
                 }
                 addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/1");
                 addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/2");
@@ -990,7 +990,6 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/10");
                 addSandbox(window.sandboxlist, "mediawikiwiki", "VisualEditor:Test");
                 addSandbox(window.sandboxlist, "simplewiki", "Wikipedia:Introduction");
-                addSandbox(window.sandboxlist, "wikidatawiki", "Wikidata:Sandbox");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Q4115189");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Q13406268");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Q15397819");
@@ -1573,6 +1572,7 @@ function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
                     if (data.error.code === "nosuchrevid") reject(useLang["error-del"]);
                     reject(useLang["error-opening-del-spec"].replace("$1", escapeXSS(data.error.info)));
                 }
+                if (typeof data.compare === 'undefined') reject(`Please report this error to developer. ERROR: Unable to get difference. Info: ${url}`);
                 if (data.compare['*'] === "" || data.compare['*'].indexOf("<tr>") === -1) {
                     if (typeof oldId !== 'undefined') reject(useLang["error-already-reverted"]);
                     var newPageDiff = startstring + data.compare['*'] + endstring;
