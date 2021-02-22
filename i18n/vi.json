@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"1997kB",
 			"Nghiemtrongdai VN",
 			"Yosari101"
 		]
@@ -103,11 +104,11 @@
 	"diff-info-comment": "Tóm lược sửa đổi:",
 	"diff-info-namespace": "Không gian tên:",
 	"diff-mo-fetching": "Tìm nạp",
-	"diff-mo-rfh": "WM:RFH (Yêu cầu giúp đỡ từ bảo quản viên hay hành chính viên)",
-	"diff-mo-srm": "SRM (Steward requests/Miscellaneous)",
-	"diff-mo-srg": "SRG (Yêu cầu khóa toàn cục)",
-	"diff-mo-gsr": "GSR (Yêu cầu bảo quản viên toàn cục)",
-	"diff-mo-ca": "Thông tin tài khoản toàn cục",
+	"diff-mo-rfh": "WM:RFH",
+	"diff-mo-srm": "SRM",
+	"diff-mo-srg": "SRG",
+	"diff-mo-gsr": "GSR",
+	"diff-mo-ca": "Đăng nhập trung ương",
 	"diff-mo-guc": "Đóng góp toàn cục",
 	"diff-mo-vh": "Xem lịch sử",
 	"diff-mo-es": "Sửa mã nguồn",
@@ -268,7 +269,7 @@
 	"about-frame-privacy-title": "Quy định quyền riêng tư",
 	"about-frame-disc": "Phủ nhận chung",
 	"about-frame-disc-1": "Bằng cách sử dụng dự án này, bạn đồng ý rằng bất kỳ thông tin cá nhân nào bạn cung cấp cho dự án này là công khai và không được coi là riêng tư, và các quản trị viên của dự án này sẽ có quyền truy cập vào bất kỳ dữ liệu nào bạn gửi và bất kỳ thông tin nào bạn gửi. Các quản trị viên của dự án này bị ràng buộc bởi Điều khoản Sử dụng của Dịch vụ Đám mây Wikimedia (Wikimedia Cloud Services) và không được phép chia sẻ hoặc sử dụng thông tin này theo bất kỳ cách nào mà chưa được sự cho phép.",
-	"about-frame-disc-2": "Vì quyền truy cập vào thông tin này có thể là là bắt buộc đối với hoạt động của Dịch vụ đám mây Wikimedia (Wikimedia Cloud Services), các điều khoản này liên quan đến việc sử dụng dữ liệu của bạn đối với Chính sách quyền riêng tư của Wikimedia Foundation vì nó liên quan đến việc sử dụng và truy cập thông tin cá nhân của bạn.",
+	"about-frame-disc-2": "Vì quyền truy cập vào thông tin này có thể là bắt buộc đối với hoạt động của Dịch vụ đám mây Wikimedia (Wikimedia Cloud Services), các điều khoản này liên quan đến việc sử dụng dữ liệu của bạn đối với Chính sách quyền riêng tư của Wikimedia Foundation vì nó liên quan đến việc sử dụng và truy cập thông tin cá nhân của bạn.",
 	"about-frame-wmprivacy": "Quy định về quyền riêng tư của Wikimedia Foundation",
 	"about-frame-data": "Dự liệu đã tích lũy",
 	"about-frame-data-desc": "Ứng dụng thu thập và truy cập các dữ liệu sau:",
