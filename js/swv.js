@@ -1085,6 +1085,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             const unshiftEdit = () => {
                 $scope.edits.unshift(editTemp);
                 if ((sound === 1 || sound === 4 || sound === 5) && typeof newSound !== "undefined") playSound(newSound, false);
+                $scope.$apply();
             }
             if (oresFilter !== undefined && oresFilter !== 0) {
                 return $scope.genORES(editData.wiki, editData['revision']['new'], (ores) => {
@@ -1097,7 +1098,6 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             $scope.genORES(editData.wiki, editData['revision']['new'], (ores) => {
                 if (ores === undefined) return
                 editTemp.ores = ores;
-                $scope.$apply();
             });
             unshiftEdit();
         });
