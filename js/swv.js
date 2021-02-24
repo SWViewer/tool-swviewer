@@ -978,16 +978,16 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     if (sbList.hasOwnProperty(wiki))
                         sbList[wiki] = sbList[wiki] + "," + page;
                 }
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/1");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/2");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/3");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/4");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/5");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/6");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/7");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/8");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/9");
-                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona_de_pruebas/10");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/1");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/2");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/3");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/4");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/5");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/6");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/7");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/8");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/9");
+                addSandbox(window.sandboxlist, "eswiki", "Wikipedia:Zona de pruebas/10");
                 addSandbox(window.sandboxlist, "mediawikiwiki", "VisualEditor:Test");
                 addSandbox(window.sandboxlist, "simplewiki", "Wikipedia:Introduction");
                 addSandbox(window.sandboxlist, "wikidatawiki", "Q4115189");
