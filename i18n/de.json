@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Blablubbs",
+			"FF11",
 			"Johannnes89",
 			"Kareyac",
 			"ManuelFranz",
@@ -120,6 +121,8 @@
 	"talk-img-app": "SWViewer",
 	"talk-no-messages": "Keine Nachrichten",
 	"talk-people": "Benutzer",
+	"talk-people-online": "Online",
+	"talk-people-offline": "Offline",
 	"talk-send-placeholder": "Was geht ihnen durch den Kopf?",
 	"tooltip-talk-send": "Senden",
 	"talk-img-send": "Senden",

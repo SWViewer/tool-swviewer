@@ -152,6 +152,8 @@
 	"talk-img-app": "SWViewer",
 	"talk-no-messages": "Nessun messaggio",
 	"talk-people": "Utenti",
+	"talk-people-online": "Connesso",
+	"talk-people-offline": "Non connesso",
 	"talk-send-placeholder": "A cosa stai pensando?",
 	"tooltip-talk-send": "Invia",
 	"talk-img-send": "Invia",

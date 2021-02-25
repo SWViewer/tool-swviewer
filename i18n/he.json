@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"YaronSh",
 			"ישראל קלר"
 		]
@@ -216,7 +217,7 @@
 	"welcome-frame-protect": "הגנה",
 	"welcome-frame-report": "דיווח",
 	"welcome-frame-reminder": "תזכורת",
-	"welcome-frame-tips": "טיפים",
+	"welcome-frame-tips": "עצות",
 	"welcome-frame-links": "קישורים חיצוניים",
 	"welcome-frame-translation": "כלי תרגום:",
 	"new-page-frame-not-exist": "לא קיים",

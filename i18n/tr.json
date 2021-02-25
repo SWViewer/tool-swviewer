@@ -3,6 +3,7 @@
 		"authors": [
 			"1997kB",
 			"Hedda",
+			"Joseph",
 			"MuratTheTurkish"
 		]
 	},
@@ -246,7 +247,7 @@
 	"welcome-frame-reminder-warns": "Dili bilmiyorsanız lütfen geri GETİRMRYİN (saf vandalizm durumu hariç).",
 	"welcome-frame-reminder-bugs": "Hata bulduysanız, lütfen [$1|bildirin]!",
 	"welcome-frame-reminder-screens": "Ayrıca tarayıcı konsolundan ekran görüntüleri ve/veya veriler ekleyin.",
-	"welcome-frame-tips": "İpuçlar",
+	"welcome-frame-tips": "İpuçları",
 	"welcome-frame-tips-pwa": "Chrome tarayıcı kullanıyorsanız, SMWViewer'ı mobil cihazların yanı sıra masaüstüne de bir WebApp olarak yükleyebilirsiniz, [$1|talimatlara] bakın.",
 	"welcome-frame-links": "Dış bağlantılar",
 	"welcome-frame-changelog": "Araçta yapılan değişikliklerin listesi için [$1|Değişikliklere] bakın.",
