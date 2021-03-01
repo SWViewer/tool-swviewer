@@ -97,7 +97,7 @@
 	"presets-invalid-ores-limit": "अमान्य ORES स्कोर",
 	"presets-invalid-ores-limit-desc": "ORES स्कोर केवल संख्यात्मक हो तथा खाली ना हो।",
 	"statusbar-rc-connected": "बदलावों से संपर्क हुआ।",
-	"statusbar-rc-connecting": "बदलावों से संपर्क हो रहा है।",
+	"statusbar-rc-connecting": "बदलावों से संपर्क हो रहा है...",
 	"statusbar-rc-disconnected": "बदलावों से संपर्क टूटा।",
 	"diff-info-user": "सदस्य:",
 	"diff-info-title": "शीर्षक:",
