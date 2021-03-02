@@ -104,7 +104,7 @@ const createDialog = (dialog) => {
             switch (button.type) {
                 case "accent": btn.className = 'i-btn__accent accent-hover fs-md'; break;
                 case "positive": btn.className = 'i-btn__positive fs-md'; break;
-                case "negative": btn.className = 'i-btn__negative fs-md'; break;
+                case "negative": btn.className = 'i-btn__negative secondary-hover fs-md'; break;
                 default: btn.className = 'i-btn__secondary-outlined secondary-hover fs-md';
             }
             if (button.onClick !== undefined) btn.addEventListener('click', button.onClick);

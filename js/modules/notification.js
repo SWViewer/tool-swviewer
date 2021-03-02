@@ -8,8 +8,8 @@ const removeNotify = (notiID) => {
 
     const notifyIndicator = document.getElementById('notify-indicator');
     const notifyFabIndicator = document.getElementById('notify-fab-indicator');
-    notifyIndicator.textContent = notifyStack.length;
-    notifyFabIndicator.textContent = notifyStack.length;
+    notifyIndicator.textContent = notifyStack.length.toLocaleString(locale);
+    notifyFabIndicator.textContent = notifyStack.length.toLocaleString(locale);
     if (notifyStack.length <= 0) {
         notifyIndicator.classList.add('tab-notice-indicator__inactive');
         notifyFabIndicator.parentElement.parentElement.classList.add('notification-fab-base__inactive');
@@ -97,8 +97,8 @@ const createNotify = (notify) => {
         notifyFabIndicator.parentElement.parentElement.classList.remove('notification-fab-base__inactive');
     }
     notifyStack.push(notiID);
-    notifyIndicator.textContent = notifyStack.length;
-    notifyFabIndicator.textContent = notifyStack.length;
+    notifyIndicator.textContent = notifyStack.length.toLocaleString(locale);
+    notifyFabIndicator.textContent = notifyStack.length.toLocaleString(locale);
     document.getElementById('clearAllNotify-base').style.transform = 'translateX(0)';
     return notiID;
 }

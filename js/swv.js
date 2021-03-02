@@ -1358,12 +1358,15 @@ async function loadDiff(edit, showAll) {
     if (edit.isNew === "N") enableNewUI();
     await getDiff(edit.server_url, edit.script_path, edit.wiki, edit.new, edit.old)
     .then(diff => document.getElementById('page').srcdoc = diff)
-    .catch(err => createDialog({
-        parentId: 'angularapp', id: 'diffLoadingErrorDialog',
-        title: useLang["error-loading-title"],
-        alert: { message: err },
-        buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
-    }));
+    .catch(err => {
+        angular.element(document.getElementById('app')).scope().selectTop();
+        createDialog({
+            parentId: 'angularapp', id: 'diffLoadingErrorDialog',
+            title: useLang["error-loading-title"], removable: true,
+            alert: { message: err },
+            buttons: [{ type: 'accent', title: useLang["alright"], remove: true }]
+        })
+    });
     if (loadingEdits !== 0) loadingEdits--;
     if (loadingEdits === 0) disableLoadingDiffUI();
     homeBtn(false);

@@ -129,7 +129,6 @@ const downloadHistoryTalk = () => {
         url: 'php/talkHistory.php', type: 'POST', data: {action: 'get'}, crossDomain: true, dataType: 'json',
         success: function (talkHistory) {
             var options = {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timezone: 'UTC'};
-
             historyCount = 0;
             for (let i = 4; i !== -1; i--) {
                 var daysAgo = null;
@@ -142,11 +141,8 @@ const downloadHistoryTalk = () => {
                             if (i === 1)
                                 daysAgo = useLang["talk-yesterday"];
                             else {
-                                var locale_user = "en-us";
-                                var locuser = (navigator.userLanguage) ? navigator.userLanguage : navigator.language;
-                                locale_user = (typeof locuser === "object") ? locuser[0] : locuser;
                                 var dateHistory = new Date(Date.now() - (i * 1000 * 60 * 60 * 24));
-                                daysAgo = dateHistory.toLocaleString(locale_user, options);
+                                daysAgo = dateHistory.toLocaleString("en", options);
                             }
                         }
 

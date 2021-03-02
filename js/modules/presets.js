@@ -298,7 +298,10 @@ const initPresets = (req = true) => {
         for (let index in presets) PBase.append(createPresetHolder(index));
         selectPreset(selectedPreset, true, false)
         return PBase;
-    });
+    }); else {
+        for (let index in presets) PBase.append(createPresetHolder(index));
+        selectPreset(selectedPreset, true, false)
+    }
 }
 initPresets();
 

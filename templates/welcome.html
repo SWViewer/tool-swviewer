@@ -21,7 +21,7 @@
             margin-bottom: var(--side-padding);
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: space-around;
         }
         .stat-container > div {
             /*flex: 1 1;*/
@@ -48,36 +48,36 @@
     </form>
     <div id="statContainer" class="stat-container">
         <div>
-            <span id="rollbackSpan" class="fs-xl" style="color: #c8b40e;">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-rollback]</span>
+            <span id="rollbackSpan" class="fs-lg" style="color: #c8b40e;">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-rollback]</span>
         </div>
         <div>
-            <span id="undosSpan" class="fs-xl" style="color: #db24b0;">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-undo]</span>
+            <span id="undosSpan" class="fs-lg" style="color: #db24b0;">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-undo]</span>
         </div>
         <div>
-            <span id="delSpan" class="fs-xl" style="color: #672dd2;">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-del]</span>
+            <span id="delSpan" class="fs-lg" style="color: #672dd2;">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-del]</span>
         </div>
         <div>
-            <span id="editsSpan" class="fs-xl" style="color: #2dd280;">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-edit]</span>
+            <span id="editsSpan" class="fs-lg" style="color: #2dd280;">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-edit]</span>
         </div>
         <div>
-            <span id="warnSpan" class="fs-xl" style="color: #d92c26;">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-warn]</span>
+            <span id="warnSpan" class="fs-lg" style="color: #d92c26;">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-warn]</span>
         </div>
         <div>
-            <span id="reportSpan" class="fs-xl" style="color: #e3791c;">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-report]</span>
+            <span id="reportSpan" class="fs-lg" style="color: #e3791c;">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-report]</span>
         </div>
         <div>
-            <span id="protectSpan" class="fs-xl" style="color: #1cb3e3">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-protect]</span>
+            <span id="protectSpan" class="fs-lg" style="color: #1cb3e3">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-protect]</span>
         </div>
         <div>
-            <span id="totalSpan" class="fs-xl">0</span>
-            <span class="fs-lg custom-lang">[welcome-frame-total]</span>
+            <span id="totalSpan" class="fs-lg">0</span>
+            <span class="fs-sm custom-lang">[welcome-frame-total]</span>
         </div>
     </div>
 
@@ -94,6 +94,7 @@
         <label class="fs-md custom-lang">[welcome-frame-tips]</label>
         <ul class="i-ul fs-sm">
             <li><span id="welcome-pwa" class="custom-lang">[welcome-frame-tips-pwa]</span></li>
+            <li><span id="welcome-manual" class="custom-lang">[welcome-frame-tips-manual]</span></li>
         </ul>
     </div>
     <div class="list-container">
@@ -137,7 +138,7 @@
             userTag.addEventListener('click', () =>{
                 if (document.getElementById('statInput').value == event.data.user) document.getElementById('statInput').value = '';
                 else document.getElementById('statInput').value = event.data.user;
-                searchStat();
+                searchStat(null, window.parent.locale);
             });
             document.getElementById('welcome-title-user').append(userTag);
         }
@@ -171,6 +172,7 @@
 
             sandwichLocalisationWelcome(document, event.data.orient, document.getElementById("welcome-bugs").textContent, document.getElementById('welcome-bugs'), "$1", 4, "inline", "B", "https://meta.wikimedia.org/wiki/Talk:SWViewer");
             sandwichLocalisationWelcome(document, event.data.orient, document.getElementById("welcome-pwa").textContent, document.getElementById('welcome-pwa'), "$1", 4, "inline", "Pwa", "https://meta.wikimedia.org/wiki/Special:MyLanguage/SWViewer#Install_PWA");
+            sandwichLocalisationWelcome(document, event.data.orient, document.getElementById("welcome-manual").textContent, document.getElementById('welcome-manual'), "$1", 4, "inline", "Manual", "https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:SWViewer");
             sandwichLocalisationWelcome(document, event.data.orient, document.getElementById("changelog").textContent, document.getElementById('changelog'), "$1", 4, "inline", "Ch", "https://meta.wikimedia.org/wiki/SWViewer/changelog");
 
             var baseContent = document.getElementById('tagger'); const localMessage = baseContent.textContent;
@@ -246,12 +248,13 @@
 
 </script>
 <script async>
-    document.getElementById('statForm').addEventListener('submit', (e) => searchStat(e), false);
-    function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.getElementById('statForm').addEventListener('submit', (e) => searchStat(e, window.parent.locale), false);
+    function numberLocale(x, locale) {
+        return parseInt(x).toLocaleString(locale);
+        // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    function searchStat (e) {
-        if (e !== undefined) e.preventDefault();
+    function searchStat (e, locale) {
+        if (e !== undefined && e !== null) e.preventDefault();
         document.getElementById('statContainer').classList.add('disabled');
         var stats = ['rollback', 'del', 'undos', 'edits', 'report', 'warn', 'protect'];
         stats.forEach((action) => document.getElementById(action + 'Span').textContent = '0');
@@ -269,13 +272,13 @@
                 let totalStats = 0;
                 stats.forEach((action) => {
                     totalStats += parseInt(statsObj[action]);
-                    document.getElementById(action + 'Span').textContent = numberWithCommas(statsObj[action]);
+                    document.getElementById(action + 'Span').textContent = (isNaN(statsObj[action]) || statsObj[action] === null) ? '' : numberLocale(statsObj[action], locale);
                 });
-                document.getElementById('totalSpan').textContent = (isNaN(totalStats))? '': numberWithCommas(totalStats);
+                document.getElementById('totalSpan').textContent = (isNaN(totalStats)) ? '' : numberLocale(totalStats, locale);
                 document.getElementById('statContainer').classList.remove('disabled');
             }).catch((error) => console.error(error));
     }
-    searchStat();
+    searchStat(null, window.parent.locale);
 </script>
 </body>
 

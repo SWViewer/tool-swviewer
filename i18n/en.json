@@ -253,6 +253,7 @@
   "welcome-frame-reminder-screens": "Also attach screenshots or/and data from the browser console.",
   "welcome-frame-tips": "Tips",
   "welcome-frame-tips-pwa": "If you use Chrome browser, you can install SWViewer as an WebApp on desktop as well as mobile, see [$1|instructions].",
+  "welcome-frame-tips-manual": "Don't know how to patrol with SWViewer? See [$1|manual page].",
   "welcome-frame-links": "External links",
   "welcome-frame-changelog": "For list of changes to tool, see [$1|Changelog].",
   "welcome-frame-irc": "You can also join our [$1|IRC channel] or [$2|discord server].",

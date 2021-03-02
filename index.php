@@ -941,6 +941,7 @@ var checkMode = 0;
 var countedits = 100;
 var sound = 0;
 var newSound;
+var locale = "en";
 var terminateStream = 0;
 var messageSound;
 var privateMessageSound;

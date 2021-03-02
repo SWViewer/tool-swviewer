@@ -131,10 +131,14 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
         </div>
         <div class="left-align-container base-container secondary-cont">
             <div>
-                <label class="fs-lg">Status</label>
-                <span class="fs-sm">SSE stream:</span>
-                <span id="status-true" style="margin-left:2px; color:green; display:none">True</span>
-                <span id="status-false" style="margin-left:2px; color:red; display:none">False</span>
+                <div class="i__base">
+                    <div class="i__title fs-lg">Status</div>
+                    <div class="i__description fs-sm">
+                        <span>SSE stream:</span>
+                        <span id="status-true" style="margin-left:2px; color:green; display:none">True</span>
+                        <span id="status-false" style="margin-left:2px; color:red; display:none">False</span>
+                    </div>
+                </div>
             </div>
             <script>
                 var source = new EventSource('https://stream.wikimedia.org/v2/stream/recentchange');
@@ -150,16 +154,23 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             </script>
 
             <div>
-                <label class="fs-lg">The Talk</label>
-                <span class="fs-sm">The Talk contains
-                    <?php if ($rows_talk == null || $rows_talk == "") echo "0"; else echo $rows_talk; ?> message(s) from last
-                    <?php if ($days_talk == null || $days_talk == "") echo "0"; else echo $days_talk; ?> day(s).
-                    </span>
-                <span class="fs-sm"><span id="talk-btn" style="color: var(--link-color); cursor: pointer;">Click here</span> to remove message(s) of only latest 3 days.</span>
+                <div class="i__base">
+                    <div class="i__title fs-lg">The Talk</div>
+                    <div class="i__description fs-sm">
+                        <span>The Talk contains
+                            <?php if ($rows_talk == null || $rows_talk == "") echo "0"; else echo $rows_talk; ?> message(s) from last
+                            <?php if ($days_talk == null || $days_talk == "") echo "0"; else echo $days_talk; ?> day(s).
+                            You can remove message(s) of only last 3 days.
+                        </span>
+                    </div>
+                    <div class="i__extra" style="padding-top: 8px;">
+                        <button id="talk-btn" class='i-btn__accent accent-hover fs-md'>Remove messages</button>
+                    </div>
+                </div>
             </div>
             <script>
                 document.getElementById('talk-btn').onclick = function () {
-                    $.ajax({
+                    if (confirm('Delete latest messages. Are you sure?')) $.ajax({
                         url: 'control.php',
                         type: 'POST',
                         crossDomain: true,
@@ -174,41 +185,49 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             </script>
 
             <div>
-                <label class="fs-lg">Verify config</label>
+                <div class="i__base">
+                    <div class="i__title fs-lg">Verify config</div>
+                    <?php
+                        if ($ver_rev < $last_rev) {
+                            echo "<div class='i__description fs-sm'>
+                                    <span style='color: red;'>We have unverified revisions in the config.</span>
+                                    <span>Last user: </span><span style='color: green;'>" . htmlspecialchars($last_user, ENT_QUOTES, 'UTF-8') . "</span><br>
+                                    <span>If this revision is bad, then please fix errors/revert, reload this page and confirm your own revision.</span>
+                                </div>
+                                
+                                <div class='i__extra' style='padding-top: 8px; display: flex; flex-wrap: wrap;'>
+                                    <button id='verify-btn' class='i-btn__accent accent-hover fs-md' style='margin: 0 16px 16px 0;'>Confirm revisions</button>
+                                    <button onclick='window.open(\"https://meta.wikimedia.org/w/index.php?title=SWViewer/config.json&type=revision&diff=" . $last_rev . "&oldid=" . $ver_rev . "\")' class='i-btn__secondary-outlined secondary-hover fs-md'>Review revisions</button>
+                                </div>
+                                
 
-                <?php
-                if ($ver_rev < $last_rev) {
-                    echo "
-                        <span class='fs-sm' style='color: red;'>We have unverified revisions in the config.</span>
-                        <span class='fs-sm'>Last user: </span><span class='fs-sm' style='color: green;'>" . htmlspecialchars($last_user, ENT_QUOTES, 'UTF-8') . "</span><br><br>
-                        <span class='fs-sm'>Please open <a href='https://meta.wikimedia.org/w/index.php?title=SWViewer/config.json&type=revision&diff=" . $last_rev . "&oldid=" . $ver_rev . "' target='_blank'>this link</a> and confirm revisions.</span>
-                        <span class='fs-sm'>If this revision is bad, then please fix errors/revert, reload this page and confirm your own revision.</span><br><br>
-                        <button class='i-btn__accent accent-hover fs-md' id='verify-btn'>Confirm revisions</button>
-
-                        <script>
-                            document.getElementById('verify-btn').onclick = function() {
-                                $.ajax({
-                                    url: 'control.php',
-                                    type: 'POST',
-                                    crossDomain: true,
-                                    data: {
-                                        action: 'verify',
-                                        id: " . $last_rev . ",
-                                        user: '" . $userName . "'
-                                    },
-                                    success: function() {
-                                        location.reload();
+                                <script>
+                                    document.getElementById('verify-btn').onclick = function() {
+                                        if (confirm('Confirm revisions. Are you sure?')) $.ajax({
+                                            url: 'control.php',
+                                            type: 'POST',
+                                            crossDomain: true,
+                                            data: {
+                                                action: 'verify',
+                                                id: " . $last_rev . ",
+                                                user: '" . $userName . "'
+                                            },
+                                            success: function() {
+                                                location.reload();
+                                            }
+                                        });
                                     }
-                                });
-                            }
-                        </script>";
-                } else echo "<span class='fs-sm' style='color: green;'>We do not have unverified revisions in the config.</span>"
-                ?>
+                                </script>";
+                        } else echo "<div class='i__description fs-sm' style='color: green;'>We do not have unverified revisions in the config.</div>"
+                    ?>
+                </div>
             </div>
 
             <div>
-                <label class='fs-lg'>List of users from global groups</label>
-                <span id='globalFile' class="fs-sm"><span style='color: orange'>Loading...</span></span>
+                <div class="i__base">
+                    <div class="i__title fs-lg">List of users from global groups</div>
+                    <div id='globalFile'  class="i__description fs-sm"><span style='color: orange'>Loading...</span></div>
+                </div>
             </div>
 
             <script>
