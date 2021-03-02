@@ -3,6 +3,7 @@
 		"authors": [
 			"1997kB",
 			"Hedda",
+			"Joseph",
 			"MuratTheTurkish"
 		]
 	},
@@ -98,6 +99,9 @@
 	"presets-invalid-days-limit-desc": "Gün sınırı sayısal olmalı ve boş olmamalıdır.",
 	"presets-invalid-ores-limit": "Geçersiz ORES puanı",
 	"presets-invalid-ores-limit-desc": "ORES puanı sayısal olmalı ve boş olmamalıdır.",
+	"statusbar-rc-connected": "Yakınlardaki akışa bağlandı",
+	"statusbar-rc-connecting": "Yakınlardaki akışa bağlanıyor...",
+	"statusbar-rc-disconnected": "Yakınlardaki akıştan bağlantı kesildi",
 	"diff-info-user": "Kullanıcı:",
 	"diff-info-title": "Başlık:",
 	"diff-info-wiki": "Viki:",
@@ -153,6 +157,8 @@
 	"talk-img-app": "SWViewer",
 	"talk-no-messages": "Mesaj yok",
 	"talk-people": "İnsanlar",
+	"talk-people-online": "Çevrimiçi",
+	"talk-people-offline": "Çevrimdışı",
 	"talk-send-placeholder": "Aklınızdan ne geçiyor?",
 	"tooltip-talk-send": "Gönder",
 	"talk-img-send": "Gönder",
@@ -246,7 +252,7 @@
 	"welcome-frame-reminder-warns": "Dili bilmiyorsanız lütfen geri GETİRMRYİN (saf vandalizm durumu hariç).",
 	"welcome-frame-reminder-bugs": "Hata bulduysanız, lütfen [$1|bildirin]!",
 	"welcome-frame-reminder-screens": "Ayrıca tarayıcı konsolundan ekran görüntüleri ve/veya veriler ekleyin.",
-	"welcome-frame-tips": "İpuçlar",
+	"welcome-frame-tips": "İpuçları",
 	"welcome-frame-tips-pwa": "Chrome tarayıcı kullanıyorsanız, SMWViewer'ı mobil cihazların yanı sıra masaüstüne de bir WebApp olarak yükleyebilirsiniz, [$1|talimatlara] bakın.",
 	"welcome-frame-links": "Dış bağlantılar",
 	"welcome-frame-changelog": "Araçta yapılan değişikliklerin listesi için [$1|Değişikliklere] bakın.",

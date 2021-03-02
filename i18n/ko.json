@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Codenstory",
 			"Ykhwong"
 		]
 	},
@@ -54,6 +55,9 @@
 	"presets-create": "프리셋 만들기",
 	"presets-invalid-title": "유효하지 않은 제목",
 	"presets-invalid-edits-limit-title": "유효하지 않은 편집 제한",
+	"statusbar-rc-connected": "최근 스트림에 접속됨",
+	"statusbar-rc-connecting": "최근 스트림에 접속 중...",
+	"statusbar-rc-disconnected": "최근 스트림으로부터 접속 해제됨",
 	"diff-info-user": "사용자:",
 	"diff-info-title": "제목:",
 	"diff-info-wiki": "위키:",
@@ -98,6 +102,8 @@
 	"talk-title": "토론",
 	"talk-img-cross": "닫기",
 	"talk-no-messages": "메시지 없음",
+	"talk-people-online": "온라인",
+	"talk-people-offline": "오프라인",
 	"tooltip-talk-send": "보내기",
 	"talk-img-send": "보내기",
 	"nc-unlogin-progress": "로그아웃 진행 중...",
