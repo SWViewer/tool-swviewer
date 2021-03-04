@@ -254,6 +254,7 @@
 	"welcome-frame-reminder-screens": "Ayrıca tarayıcı konsolundan ekran görüntüleri ve/veya veriler ekleyin.",
 	"welcome-frame-tips": "İpuçları",
 	"welcome-frame-tips-pwa": "Chrome tarayıcı kullanıyorsanız, SMWViewer'ı mobil cihazların yanı sıra masaüstüne de bir WebApp olarak yükleyebilirsiniz, [$1|talimatlara] bakın.",
+	"welcome-frame-tips-manual": "SWViewer ile nasıl gözeteceğinizi bilmiyor musunuz? [$1|El kitabına] bakın.",
 	"welcome-frame-links": "Dış bağlantılar",
 	"welcome-frame-changelog": "Araçta yapılan değişikliklerin listesi için [$1|Değişikliklere] bakın.",
 	"welcome-frame-irc": "Ayrıca [$1|IRC kanalımıza] veya [$2|discord sunucumuza] da katılabilirsiniz.",

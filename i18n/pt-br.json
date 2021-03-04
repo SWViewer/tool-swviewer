@@ -249,6 +249,7 @@
 	"welcome-frame-reminder-screens": "Também anexe capturas de tela e/ou dados do console do navegador.",
 	"welcome-frame-tips": "Dicas",
 	"welcome-frame-tips-pwa": "Se você usa o navegador Chrome, você pode instalar o SWViewer como um WebApp tanto no computador como no celular, veja as [$1|instruções].",
+	"welcome-frame-tips-manual": "Não sabe como patrulhar com o SWViewer? Veja a [$1|página de manual].",
 	"welcome-frame-links": "Links externos",
 	"welcome-frame-changelog": "Para uma lista de mudanças na ferramenta, veja o [$1|registro de modificações].",
 	"welcome-frame-irc": "Você também pode acessar nosso [$1|canal no IRC] ou [$2|servidor do discord].",

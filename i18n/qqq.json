@@ -258,7 +258,7 @@
 	"welcome-frame-reminder-screens": "Text under 'Reminder' title on welcome page.",
 	"welcome-frame-tips": "'Tips' title text on welcome page.",
 	"welcome-frame-tips-pwa": "Text under 'Tips' title on welcome page. Parameters:\n* $1 - PWA installation instructions link",
-	"welcome-frame-tips-manual": "Text under 'Tips' title on welcome page. Parameters:\n* $1 - SWviewer manual link",
+	"welcome-frame-tips-manual": "Text under 'Tips' title on welcome page. Parameters:\n* $1 - SWViewer manual link",
 	"welcome-frame-links": "'External links' title text on welcome page.",
 	"welcome-frame-changelog": "Text under 'External links' title on welcome page. Parameters:\n* $1 - SWViewer/changelog link",
 	"welcome-frame-irc": "Text under 'External links' title on welcome page. Parameters:\n* $1 - IRC channel link\n* $2 - Discord server link",
