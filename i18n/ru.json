@@ -254,6 +254,7 @@
 	"welcome-frame-reminder-screens": "Прикрепите также скриншот и/или данные из консоли браузера.",
 	"welcome-frame-tips": "Советы",
 	"welcome-frame-tips-pwa": "Если вы используете браузер Chrome, вы можете установить SWViewer как веб-приложение на рабочий стол. См. [$1|инструкции].",
+	"welcome-frame-tips-manual": "Не знаете, как патрулировать с SWViewer? См. [$1|страницу руководства].",
 	"welcome-frame-links": "Внешние ссылки",
 	"welcome-frame-changelog": "Для просмотра списка изменений в приложении см.[$1|Changelog].",
 	"welcome-frame-irc": "Вы также можете присоединится к нам на [$1|IRC-канале] или в [$2|Discord].",
