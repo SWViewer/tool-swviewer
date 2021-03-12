@@ -102,7 +102,7 @@
 	"presets-invalid-ores-limit": "Score ORES non valide",
 	"presets-invalid-ores-limit-desc": "Le score ORES doit être numérique et non vide.",
 	"statusbar-rc-connected": "Connecté à un flux récent",
-	"statusbar-rc-connecting": "Connexion à un flux récent…",
+	"statusbar-rc-connecting": "Connexion à un flux récent...",
 	"statusbar-rc-disconnected": "Déconnecté d’un flux récent",
 	"diff-info-user": "Utilisateur :",
 	"diff-info-title": "Titre :",

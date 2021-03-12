@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"R4356th",
 			"SHEKH",
 			"YahyA",
 			"Yahya",
@@ -154,6 +155,8 @@
 	"talk-img-app": "এসডাব্লিউ ভিউয়ার",
 	"talk-no-messages": "কোনো বার্তা নেই",
 	"talk-people": "ব্যক্তি",
+	"talk-people-online": "অনলাইন",
+	"talk-people-offline": "অফলাইন",
 	"talk-send-placeholder": "আপনি কি ভাবছেন?",
 	"tooltip-talk-send": "পাঠান",
 	"talk-img-send": "পাঠান",
