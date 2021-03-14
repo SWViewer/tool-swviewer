@@ -233,7 +233,7 @@
 	"sysops-wait": "Description text below 'Add to GSR' in 'Tag for deletion panel'.",
 	"sysops-not-gs": "Description text below 'Add to GSR' in 'Tag for deletion panel'.",
 	"sysops-more-than-3": "Description text below 'Add to GSR' in 'Tag for deletion panel'. Parameters:\n* $1 - total number of sysop",
-	"sysops-unknown": "Description text below 'Add to GSR' in 'Tag for deletion panel'. Parameters:\n* $1 - number of active sysop\n* $2 - total number of sysop",
+	"sysops-more-than-10": "Description text below 'Add to GSR' in 'Tag for deletion panel'.",
 	"edit-source-title": "'Edit source' title in edit source page.",
 	"summary-title": "'Summary' text when hovered over summary input area in edit source page.\n{{identical|Summary}}",
 	"summary-placeholder": "Placeholder text in summary input area in edit source page.",
