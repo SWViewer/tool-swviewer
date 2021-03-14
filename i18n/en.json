@@ -228,7 +228,7 @@
   "sysops-wait": "Maybe it's better to wait for the reaction of the local sysop.",
   "sysops-not-gs": "It is not a global sysop wiki.",
   "sysops-more-than-3": "This wiki have more than 3 active sysop (total $1).",
-  "sysops-unknown": "This wiki have $1 active sysops (total $2).",
+  "sysops-more-than-10": "This wiki have more than 10 active sysop.",
   "edit-source-title": "Edit source",
   "summary-title": "Summary",
   "summary-placeholder": "Briefly describe your changes.",
