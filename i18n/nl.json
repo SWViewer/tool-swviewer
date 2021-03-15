@@ -227,7 +227,7 @@
 	"sysops-wait": "Misschien is het beter om de reactie van een locale mod af te wachten.",
 	"sysops-not-gs": "Dit is geen wiki met globale mods.",
 	"sysops-more-than-3": "Deze wiki heeft meer dan 3 active mods ($1 in totaal).",
-	"sysops-unknown": "Deze wiki heeft $1 active moderators ($2 in totaal).",
+	"sysops-more-than-10": "Deze wiki heeft $1 active moderators ($2 in totaal).",
 	"edit-source-title": "Bron bewerken",
 	"summary-title": "Samenvatting",
 	"summary-placeholder": "Omschrijf kort de veranderingen.",

@@ -222,7 +222,7 @@
 	"sysops-wait": "等候该维基的本地管理员对此作出反应也许更为恰当。",
 	"sysops-not-gs": "该维基并不由全域管理员管理。",
 	"sysops-more-than-3": "该维基有超过3位（总共有$1位）活跃的管理员。",
-	"sysops-unknown": "该维基有$1位活跃的管理员（总共有$2位管理员）。",
+	"sysops-more-than-10": "该维基有$1位活跃的管理员（总共有$2位管理员）。",
 	"edit-source-title": "编辑源代码",
 	"summary-title": "摘要",
 	"summary-placeholder": "简要描述您的修改。",

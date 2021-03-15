@@ -221,7 +221,7 @@
 	"sysops-wait": "Pot ser millor esperar la reacció del moderador local.",
 	"sysops-not-gs": "No es tracta d'una wiki d'administrador global.",
 	"sysops-more-than-3": "La wiki té més de tres moderadors actius ($1 en total).",
-	"sysops-unknown": "Aquest wiki té $1 moderadors actius (total $2).",
+	"sysops-more-than-10": "Aquest wiki té $1 moderadors actius (total $2).",
 	"edit-source-title": "Modifica el codi",
 	"summary-title": "Resum",
 	"summary-placeholder": "Descriu breument els canvis.",

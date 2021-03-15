@@ -221,7 +221,7 @@
 	"sysops-wait": "建議等待本地管理員的回應。",
 	"sysops-not-gs": "該維基項目並不由全域管理員管理。",
 	"sysops-more-than-3": "該維基項目有超過3位管理員活躍（共$1位）。",
-	"sysops-unknown": "此維基項目有$2位管理員，當中$1位活躍。",
+	"sysops-more-than-10": "此維基項目有$2位管理員，當中$1位活躍。",
 	"edit-source-title": "編輯原始碼",
 	"summary-title": "編輯摘要",
 	"summary-placeholder": "簡述您作出的變更。",

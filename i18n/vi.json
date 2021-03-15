@@ -222,7 +222,7 @@
 	"sysops-wait": "Có lẽ tốt hơn nếu đợi phản hồi của bảo quản viên địa phương.",
 	"sysops-not-gs": "Đây không phải là bảo quản viên toàn cục của wiki",
 	"sysops-more-than-3": "Wiki này có nhiều hơn 3 bảo quản viên (Tổng cộng: $1).",
-	"sysops-unknown": "Wiki này có $1 bảo quản viên (tổng cộng: $2).",
+	"sysops-more-than-10": "Wiki này có $1 bảo quản viên (tổng cộng: $2).",
 	"edit-source-title": "Sửa mã nguồn",
 	"summary-title": "Tóm lược",
 	"summary-placeholder": "Mô tả ngắn gọn những thay đổi của bạn.",

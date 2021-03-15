@@ -231,7 +231,7 @@
 	"sysops-wait": "Il vaut peut-être mieux attendre la réaction de l’administrateur local.",
 	"sysops-not-gs": "Ce n’est pas un wiki pour administrateur global.",
 	"sysops-more-than-3": "Ce wiki a plus de 3 administrateurs actifs ($1 au total).",
-	"sysops-unknown": "Ce wiki a $1 administrateurs actifs ($2 au total).",
+	"sysops-more-than-10": "Ce wiki a $1 administrateurs actifs ($2 au total).",
 	"edit-source-title": "Modifier la source",
 	"summary-title": "Résumé",
 	"summary-placeholder": "Décrivez brièvement vos changements.",

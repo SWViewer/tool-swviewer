@@ -229,7 +229,7 @@
 	"sysops-wait": "Belki de yerel hizmetlinin tepkisini beklemek daha iyidir.",
 	"sysops-not-gs": "Küresel bir hizmetli viki değildir.",
 	"sysops-more-than-3": "Bu vikide 3'ten fazla aktif hizmetli var (toplam $1).",
-	"sysops-unknown": "Bu vikide $1 aktif hizmetli var (toplam $2).",
+	"sysops-more-than-10": "Bu vikide $1 aktif hizmetli var (toplam $2).",
 	"edit-source-title": "Kaynağı düzenle",
 	"summary-title": "Özet",
 	"summary-placeholder": "Değişikliklerinizi kısaca açıklayın.",

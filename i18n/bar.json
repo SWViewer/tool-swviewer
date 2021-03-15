@@ -206,7 +206,7 @@
 	"sysops-wait": "Vuilloacht is bessa a Reaktion vo an lokala Administrator obzuawoatn",
 	"sysops-not-gs": "Des is a Wiki ohne globale Administratorn.",
 	"sysops-more-than-3": "Des wiki hod mehra ois 3 aktive Administratorn (insgesammt $1).",
-	"sysops-unknown": "Des wiki hod $1 aktive Administratorn (insgesammt $2).",
+	"sysops-more-than-10": "Des wiki hod $1 aktive Administratorn (insgesammt $2).",
 	"edit-source-title": "Beoawat Quäitext",
 	"summary-title": "Grund",
 	"summary-placeholder": "Beschreib nua deine Ändarunga",

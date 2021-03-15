@@ -227,7 +227,7 @@
 	"sysops-wait": "Forse è meglio attendere l'intervento degli amministratori locali.",
 	"sysops-not-gs": "Non è una wiki di competenza degli amministratori globali.",
 	"sysops-more-than-3": "Questa wiki ha più di 3 amministratori attivi (in totale $1).",
-	"sysops-unknown": "Questa wiki ha $1 amministratori attivi (in totale $2).",
+	"sysops-more-than-10": "Questa wiki ha $1 amministratori attivi (in totale $2).",
 	"edit-source-title": "Modifica wikitesto",
 	"summary-title": "Campo oggetto",
 	"summary-placeholder": "Descrivi brevemente le tue modifiche.",
