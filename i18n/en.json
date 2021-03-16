@@ -32,6 +32,8 @@
   "settings-theme-descr": "Change tool interface theme.",
   "settings-language": "Language",
   "settings-language-descr": "Change tool interface language.",
+  "settings-language-region": "Region",
+  "settings-language-region-descr": "Set region to show numbers and dates in local format.",
   "settings-sound": "Sound",
   "settings-sound-descr": "Change sound mode for incoming edits and messages in talk.",
   "settings-revisions": "Multiple diff",

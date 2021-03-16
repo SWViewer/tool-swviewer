@@ -37,6 +37,8 @@
 	"settings-theme-descr": "Description below the 'Theme' text.",
 	"settings-language": "The 'Language' text beside the dropdown language selector in 'General settings'.\n{{identical|Language}}",
 	"settings-language-descr": "Description below the 'Language' text.",
+	"settings-language-region": "The 'Region' text beside the dropdown region selector in 'General settings'.",
+	"settings-language-region-descr": "Description below the 'Region' text.",
 	"settings-sound": "The 'Sound' text beside the dropdown sound selector in 'General settings'.",
 	"settings-sound-descr": "Description below the 'Sound' text.",
 	"settings-revisions": "The 'Multiple diff' text beside the dropdown multiple diff selector in 'General settings'.",
