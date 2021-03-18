@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"20041027 tatsu"
+			"20041027 tatsu",
+			"Tamaki Wakita"
 		]
 	},
 	"tooltip-edit-preset": "キューの設定",
@@ -28,6 +29,8 @@
 	"settings-theme": "テーマ",
 	"settings-language": "言語",
 	"settings-language-descr": "インターフェース言語のツールを変更する。",
+	"settings-language-region": "地域",
+	"settings-language-region-descr": "地域形式の数値と日付を表示するために地域を設定してください。",
 	"settings-sound": "音",
 	"settings-revisions": "複数の差分",
 	"settings-revisions-onlylast": "最新版のみ",
@@ -184,7 +187,7 @@
 	"sysops-active": "このウィキには$1人のアクティブな管理者がいます。(総計は$2人)",
 	"sysops-not-gs": "グローバル管理者が対処するウィキではありません。",
 	"sysops-more-than-3": "このウィキには3人以上のアクティブな管理者がいます。 (総計は$1人)",
-	"sysops-more-than-10": "このウィキには$1人のアクティブな管理者がいます。(総計は$2人)",
+	"sysops-more-than-10": "この wiki には10人のアクティブなシステムオペレーターがいます。",
 	"edit-source-title": "ソースを編集",
 	"summary-title": "要約",
 	"summary-placeholder": "変更点を簡単に説明してください。",

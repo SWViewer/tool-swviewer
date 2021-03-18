@@ -5,6 +5,7 @@
 			"Hasley",
 			"MarcoAurelio",
 			"Rodney Araujo",
+			"Rossnyev",
 			"Savh"
 		]
 	},
@@ -34,6 +35,8 @@
 	"settings-theme-descr": "Cambiar el tema de la interfaz de la herramienta",
 	"settings-language": "Idioma",
 	"settings-language-descr": "Cambiar el idioma de la interfaz de la herramienta",
+	"settings-language-region": "Región",
+	"settings-language-region-descr": "colocar un arear para mostrar numeros y fechas en el formato local.",
 	"settings-sound": "Sonido",
 	"settings-sound-descr": "Cambiar el modo de sonido para ediciones entrantes y mensajes en la discusión.",
 	"settings-revisions": "Diferencias múltiples",
