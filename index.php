@@ -1312,7 +1312,7 @@ function setLanguage(messagesLanguage, dirLanguage) {
         }
     }
 
-    sandwichLocalisation(document, dirLang, useLang['presets-additional-desc'], document.getElementById('editPresetTemplate').content.getElementById("adw"), "$1", 4, "inline", "A", "https://meta.wikimedia.org/wiki/Special:MyLanguage/SWViewer/wikis", document.getElementById('editPresetTemplate').content);
+    if (isGlobal === true || isGlobalModeAccess === true) sandwichLocalisation(document, dirLang, useLang['presets-additional-desc'], document.getElementById('editPresetTemplate').content.getElementById("adw"), "$1", 4, "inline", "A", "https://meta.wikimedia.org/wiki/Special:MyLanguage/SWViewer/wikis", document.getElementById('editPresetTemplate').content);
     sandwichLocalisation(document, dirLang, useLang['presets-ns-desc'], document.getElementById('editPresetTemplate').content.getElementById("ns-desc"), "$1", 4, "inline", "Ns", "https://en.wikipedia.org/wiki/Help:MediaWiki_namespace", document.getElementById('editPresetTemplate').content);
 
     var welcomeIF = document.getElementById("page-welcome").contentWindow;
