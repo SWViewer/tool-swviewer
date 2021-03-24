@@ -67,7 +67,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 
     <!-- AngularJS, jQuery, Moment, pwacompat -->
     <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
     <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
 
@@ -342,12 +342,12 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
     }
 
     # User is not beta tester
-    #if ($isBetaTester === 0) {
-    #    echo "Access denied. Please add yourself at <a href='https://meta.wikimedia.org/wiki/SWViewer/members' rel='noopener noreferrer' target='_blank'>beta tester list</a>, and let us know in <a href='http://ircredirect.toolforge.org/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC channel</a> or <a href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord server</a>.";
-    #    $_SESSION = array();
-    #    session_write_close();
-    #    exit();
-    #}
+    # if ($isBetaTester === 0) {
+    #     echo "Access denied. Please add yourself at <a href='https://meta.wikimedia.org/wiki/SWViewer/members' rel='noopener noreferrer' target='_blank'>beta tester list</a>, and let us know in <a href='http://ircredirect.toolforge.org/?server=irc.freenode.net&channel=swviewer&consent=yes' rel='noopener noreferrer' target='_blank'>IRC channel</a> or <a href='https://discord.gg/UTScYTR' rel='noopener noreferrer' target='_blank'>Discord server</a>.";
+    #     $_SESSION = array();
+    #     session_write_close();
+    #     exit();
+    # }
 
     # Get dir writing to php var
     $rtl = Array ("dv", "nqo", "syc", "arc", "yi", "ydd", "tmr", "lad-hebr", "he", "ur", "ug-arab", "skr-arab", "sdh", "sd", "ps", "prs", "pnb", "ota", "mzn", "ms-arab", "lrc", "luz", "lki", "ku-arab", "ks-arab", "kk-arab", "khw", "ha-arab", "glk", "fa", "ckb", "bqi", "bgn", "bft", "bcc", "azb", "az-arab", "arz", "ary", "arq", "ar", "aeb-arab");
@@ -395,7 +395,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                     </div>
                     <div id="btn-talk" class="primary-hover disabled custom-lang" onclick="openPW('talkForm')" aria-label="[tooltip-talk]" i-tooltip="right">
                         <div class="tab-indicator"></div>
-                        <span id="badge-talk" class="tab-notice-indicator" style="background-color: var(--tc-primary);">{{users.length}}</span>
+                        <span id="badge-talk" class="tab-notice-indicator" style="display: none; background-color: var(--bc-positive);">{{numberLocale(users.length)}}</span>
                         <span class="loading-tab tab-notice-indicator">!</span>
                         <img class="touch-ic primary-icon custom-lang" src="./img/message-filled.svg" alt="[img-message]">
                     </div>
@@ -432,7 +432,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                             <span id="drawerPresetTitle" class="drawer-preset-title custom-lang">[presets-default-title]</span>
                         </span>
                         <div id="editCurrentPreset" class="primary-hover disabled custom-lang" aria-label="[tooltip-edit-preset]" i-tooltip="bottom-right">
-                            <img class="touch-ic primary-icon custom-lang" src="./img/pencil-filled.svg" alt="[img-edit]">
+                            <img class="touch-ic primary-icon custom-lang" src="./img/filter-bar-filled.svg" alt="[img-edit]">
                         </div>
                         <div id="moreOptionBtnMobile" class="mobile-only primary-hover disabled custom-lang" onclick="toggleMoreControl();" aria-label="[tooltip-more-options]" i-tooltip="bottom-right">
                             <img class="touch-ic primary-icon custom-lang" src="./img/v-dots-filled.svg" alt="[img-options]">
@@ -463,7 +463,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                                             {{edit.wiki}}&#x200E;
                                             <span class="fs-xs" ng-style="byteCountColor(edit.byteCount)">({{edit.byteCount}}&#x200E;)</span>
                                         </div>
-                                        <div class="queue-username fs-xs" style="opacity: 0.9;">{{edit.title}}</div>
+                                        <div class="queue-title fs-xs">{{edit.title}}</div>
                                         <div class="queue-username fs-xs">{{edit.user}}</div>
                                     </div>
                                 </div>
@@ -473,7 +473,49 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                 </div>
             </div>
             <!-- Status Bar -->
-            <div class="statusbar-base"></div>
+            <div id="statusbar" class="statusbar-base primary-cont">
+                <div class="statusbar-left-cont">
+                    <div ng-click="recentChange.toggle()" class="status__notify primary-hover">
+                        <div id="recentStreamIndicator" class="recentStream__indicator"></div>
+                        <span>{{recentChange.status}}</span>
+                    </div>
+                    <div class="status__notify primary-hover">
+                        <img class="touch-ic primary-icon" src="./img/eye-filled.svg">
+                        <span>{{numberLocale(sessionActions.diffViewed)}}</span>
+                    </div>
+                    <div class="status__notify primary-hover" style="padding-right: 4px;" onclick="searchMyLogs(1);">
+                        <img class="touch-ic primary-icon" src="./img/rollback-filled.svg">
+                        <span>{{numberLocale(sessionActions.rollback)}}</span>
+                    </div>
+                    <div class="status__notify" style="padding: 0;">
+                        <span style="font-weight: bold;">&#183;</span>
+                    </div>
+                    <div class="status__notify primary-hover" style="padding-left: 4px;" onclick="searchMyLogs(2);">
+                        <span>{{numberLocale(sessionActions.undo)}}</span>
+                    </div>
+                    <div class="status__notify primary-hover" onclick="searchMyLogs(3);">
+                        <img class="touch-ic primary-icon" src="./img/tag-filled.svg">
+                        <span>{{numberLocale(sessionActions.delete)}}</span>
+                    </div>
+                    <div class="status__notify primary-hover" onclick="searchMyLogs(4);">
+                        <img class="touch-ic primary-icon" src="./img/pencil-filled.svg">
+                        <span>{{numberLocale(sessionActions.edit)}}</span>
+                    </div>
+                    <div class="status__notify primary-hover" onclick="searchMyLogs(5);">
+                        <img class="touch-ic primary-icon" src="./img/warning-filled.svg">
+                        <span>{{numberLocale(sessionActions.warn)}}</span>
+                    </div>
+                    <div class="status__notify primary-hover" onclick="searchMyLogs(6);">
+                        <img class="touch-ic primary-icon" src="./img/report-filled.svg">
+                        <span>{{numberLocale(sessionActions.report)}}</span>
+                    </div>
+                </div>
+                <div class="statusbar-right-cont">
+                    <div class='status__notify primary-hover'>
+                        <span id="statusbarTime" onclick="changeTimeFormat(false);">Time</span>
+                    </div>
+                </div>
+            </div>
             <!-- Main Window -->
             <div class="window-base secondary-cont">
                 <div id="windowContent" class="window-content">
@@ -536,7 +578,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                             </div>
                             <div >
                                 <div id="editBtn" class="secondary-hover custom-lang" ng-click="openEditSource();" onclick="openPW('editForm'); closeMoreControl();" aria-label="[tooltip-edit-source]" i-tooltip="top-left">
-                                    <img class="touch-ic secondary-icon custom-lang" src="./img/edit-filled.svg" alt="[img-edit]">
+                                    <img class="touch-ic secondary-icon custom-lang" src="./img/pencil-filled.svg" alt="[img-edit]">
                                 </div>
                                 <a class="secondary-hover fs-md custom-lang" ng-click="openEditSource();" onclick="openPW('editForm'); closeMoreControl();"><span style="color: var(--tc-secondary);">[diff-mo-es]</span></a>
                             </div>
@@ -585,7 +627,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                         <!--pw Content-->
                         <div id="editFormBody" class="pw__content">
                             <img id="editSourceLoadingAnim" class="secondary-icon touch-ic" src="/img/swviewer-droping-anim.svg" style="opacity: .4; width: 100px; height: 100px; margin: auto;">
-                            <textarea id="textpage" class="pw__content-body secondary-scroll editForm__textarea fs-md custom-lang" style="padding-bottom: 40px;" title="[tooltip-edit-form]"></textarea>
+                            <textarea id="textpage" class="pw__content-body secondary-scroll editForm__textarea fs-md custom-lang" style="padding-bottom: 40px; color: var(--tc-secondary-low);" title="[tooltip-edit-form]"></textarea>
 
                             <div class="pw__floatbar">
                                 <form ng-submit="saveEdit()"><input id="summaryedit" class="secondary-placeholder fs-md custom-lang" title="[summary-title]" placeholder="[summary-placeholder]"></form>
@@ -701,6 +743,13 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
                     <div class="i__description fs-xs custom-lang">[settings-language-descr]</div>
                     <div class="i__content fs-sm">
                         <select id="languageSelector" class="i-select__secondary fs-md" onchange="changeLanguageSelector()"></select>
+                    </div>
+                </div>
+                <div class="i__base">
+                    <div class="i__title fs-md custom-lang">[settings-language-region]</div>
+                    <div class="i__description fs-xs custom-lang">[settings-language-region-descr]</div>
+                    <div class="i__content fs-sm">
+                        <select id="localeSelector" class="i-select__secondary fs-md" onchange="changeLocaleSelector()"></select>
                     </div>
                 </div>
                 <div class="i__base">
@@ -922,8 +971,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 <!-- Scripts -->
 <script>
 document.getElementById('loadingBar').style.width = "50%";
-var diffstart, diffend, newstart, newend, startstring, endstring, startCb, endCb, config, dirLang, languageIndex;
-var callbackDiffNow = "";
+var diffstart, diffend, newstart, newend, startstring, endstring, config, dirLang, languageIndex;
 var global = [];
 var activeSysops = [];
 var vandals = [];
@@ -941,7 +989,6 @@ var checkMode = 0;
 var countedits = 100;
 var sound = 0;
 var newSound;
-var locale = "en";
 var terminateStream = 0;
 var messageSound;
 var privateMessageSound;
@@ -983,7 +1030,7 @@ document.getElementById("mainapp-body").onclick = function() {
         firstClick = true;
         messageSound = new Audio("sounds/message.mp3");
         privateMessageSound = new Audio("sounds/privateMessage.mp3");
-        newSound = new Audio("sounds/bump.mp3");
+        newSound = new Audio("sounds/bump.wav");
         messageSound.load();
         privateMessageSound.load();
         newSound.load();
@@ -1046,6 +1093,23 @@ if (settingslist['lang'] !== null && settingslist['lang'] !== "" && (typeof sett
     languageIndex = settingslist['lang'];
 }
 
+function getLocale(locale) {
+    localeList = [];
+    if (locale)
+        localeList.push(locale);
+    let localeTmp = (navigator.userLanguage) ? navigator.userLanguage : navigator.language;
+    localeTmp = (typeof localeTmp === "object") ? localeTmp[0] : localeTmp;
+    localeList.push(Intl.getCanonicalLocales(localeTmp)[0]);
+    localeList.push("en-US");
+    return localeList;
+}
+
+var localeTmp = getLocale(false);
+if (settingslist['locale'] !== null && settingslist['locale'] !== "" && (typeof settingslist['locale'] !== "undefined") && settingslist['locale'] !== "") {
+    localeTmp = getLocale(settingslist['locale']);
+}
+var locale = localeTmp;
+
 if (settingslist['terminateStream'] !== null && (typeof settingslist['terminateStream'] !== "undefined") && settingslist['terminateStream'] !== "") {
     if (settingslist['terminateStream'] === "1") {
         toggleTButton(document.getElementById("terminate-stream-btn"));
@@ -1075,8 +1139,6 @@ if (settingslist['defaultwarn'] !== null && (typeof settingslist['defaultwarn'] 
     defaultWarnList = settingslist['defaultwarn'].split(',');
 }
 
-
-
 function loadDiffTemp(url, callback) {
     $.ajax({ type: 'POST', url: url, dataType: 'text',
         success: text => callback(text)
@@ -1086,8 +1148,6 @@ loadDiffTemp('templates/diffStart.html', (text) =>  diffstart = setStrTheme(text
 loadDiffTemp('templates/diffEnd.html', text => diffend = text );
 loadDiffTemp('templates/newStart.html', text => newstart = setStrTheme(text, getStrTheme(THEME[Object.keys(THEME)[themeIndex]])) );
 loadDiffTemp('templates/newEnd.html', text => newend = text );
-loadDiffTemp('templates/cbStart.html', text => startCb = text );
-loadDiffTemp('templates/cbEnd.html', text => endCb = text );
 loadDiffTemp('templates/newStringStart.html', text => startstring = text );
 loadDiffTemp('templates/newStringEnd.html', text => endstring = text );
 
@@ -1179,6 +1239,27 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 });
 
 /*------Lang------*/
+
+function loadLocaleList() {
+    $.ajax({type: 'POST', url: 'lists/locales.txt', dataType: 'json',
+        success: function(locales) {
+            for(locale_sel in locales) {
+                var option = document.createElement('option');
+                option.innerHTML = locales[locale_sel];
+                option.value = locale_sel;
+                document.getElementById('localeSelector').appendChild(option);
+            }
+            setLocaleSelector(locale[0]);
+        }
+    });
+}
+
+function changeLocaleSelector() {
+    // changeLanguage(document.getElementById('localeSelector').value, false);
+    $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'locales', locale: document.getElementById("localeSelector").value }, dataType: 'json'});
+    if (confirm(useLang["settings-confirm-lang"])) document.location.reload(true);
+}
+
 function loadLanguageList() {
     $.ajax({url: 'php/localisation.php?init', type: 'POST', crossDomain: true, dataType: 'json',
         success: function(language) {
@@ -1215,15 +1296,6 @@ function changeLanguageSelector() {
     $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'lang', lang: document.getElementById("languageSelector").value }, dataType: 'json'});
 }
 
-function getMessage(event) {
-    if (event.origin !== 'https://swviewer.toolforge.org') return;
-        if (typeof event.data !== "undefined")
-	        if (typeof event.data.uniqueID !== "undefined")
-                if (event.data.uniqueID !== "")
-		            callbackDiffNow = event.data.uniqueID;
-}
-window.addEventListener("message", getMessage, false);
-
 async function changeLanguage(select, isLoad, language) {
     var langAsync;
     if (language)
@@ -1256,7 +1328,8 @@ async function changeLanguage(select, isLoad, language) {
                             }
                         }
                         useLang["@metadata"]["authors"] = selectLang["@metadata"]["authors"];
-
+useLang["utc"] = "(UTC)";
+changeTimeFormat(true);
                         if (isLoad === false) {
                             if (confirm(useLang["settings-confirm-lang"])) document.location.reload(true);
                             return;
@@ -1404,6 +1477,10 @@ document.getElementById('loadingBar').style.width = "75%";
 ------- Common -------
 #####################*/
 
+function isMobile() {
+    return window.getComputedStyle(document.getElementById('statusbar'), null).getPropertyValue('display') === 'none';
+}
+
 function scrollToBottom(id){
     if (document.getElementById(id) !== null) {
         document.getElementById(id).scrollTop = document.getElementById(id).scrollHeight;
@@ -1428,8 +1505,44 @@ function setLanguageSelector(l) {
     }
 }
 
+function setLocaleSelector(l) {
+    var options = document.getElementById('localeSelector').options;
+    for(var i = 0; i < options.length; i++) {
+        if(options[i].value === l) {
+            options[i].selected = true;
+            break;
+        }
+    }
+}
+
+function getUTCtime(timeLocale, typeTime, utc) {
+    if (typeof utc === "undefined" ) utc = "";
+    let tFormat = (typeTime === "short") ? "LT" : "LLLL";
+    return moment.utc().locale(timeLocale).format(tFormat);
+}
 function toggleTButton (button) { classToggler(button, 't-btn__active'); }
 function toggleICheckBox (checkbox) { classToggler(checkbox, 'i-checkbox__active'); }
+statusbarTimeFormat = "long";
+var statusbarTimeFormat = "long";
+function changeTimeFormat(isLoad) {
+    if (statusbarTimeFormat !== "long") {
+        if (isLoad === false)
+            statusbarTimeFormat = "long";
+        document.getElementById('statusbarTime').textContent = getUTCtime(locale, statusbarTimeFormat, useLang["utc"]);
+        return;
+    }
+    if (isLoad === false)
+        statusbarTimeFormat = "short";
+    document.getElementById('statusbarTime').textContent = getUTCtime(locale, statusbarTimeFormat, useLang["utc"]);
+}
+function searchMyLogs(actionIndex) {
+    if (typeof actionIndex === 'undefined') document.getElementById('actionSelector').selectedIndex = 0;
+    else document.getElementById('actionSelector').selectedIndex = actionIndex;
+    document.getElementById('actionSelector').onchange();
+    document.getElementById('logsSearch-input').value = userSelf;
+    document.getElementById('btn-searchLogs').click();
+    openPW('logs');
+}
 </script>
 <script src="js/swv.js?v=4"></script>
 <script>
@@ -1447,6 +1560,12 @@ window.onload = function() {
         else changeTheme(window.themeIndex);
     } else changeTheme(0);
     loadLanguageList();
+    loadLocaleList();
+
+    document.getElementById('statusbarTime').textContent = getUTCtime(locale, statusbarTimeFormat, useLang["utc"]);
+    setInterval(() => {
+        document.getElementById('statusbarTime').textContent = getUTCtime(locale, statusbarTimeFormat, useLang["utc"]);
+    }, 30000);
 
     Guesture.onSwipe(document.getElementById('page-welcome').contentDocument.body, "rightSwipe", () => openSidebar());
 };

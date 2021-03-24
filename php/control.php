@@ -339,7 +339,7 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             <div>
                 <div class="i__base">
                     <div class="i__title fs-lg">Beta Tester</div>
-                    <div class="i__description fs-sm">Add users to beta tester list.</div>
+                    <div class="i__description fs-sm">Add users to <a href="https://meta.wikimedia.org/wiki/SWViewer/members" target="_blank">beta tester list</a>.</div>
                     <div class="i__content fs-sm">
                         <div id="removeBetaTester-btn" class="i-minus fs-sm">-</div>
                         <input id="addTester" class="i-input__secondary secondary-placeholder fs-sm" type="text"

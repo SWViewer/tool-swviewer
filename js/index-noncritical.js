@@ -141,7 +141,8 @@ function homeBtn(mod) {
 function onTalkOpen () {
     scrollToBottom("talk-content");
     if (document.getElementById('badge-talk').style.background !== "var(--bc-negative)") {
-        document.getElementById('badge-talk').style.background = "var(--tc-primary)";
+        document.getElementById('badge-talk').style.display = "none";
+        document.getElementById('badge-talk').textContent = "0";
     }
 }
 

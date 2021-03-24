@@ -49,7 +49,7 @@
     /*----others------*/
     --drawer-width: 250px;
     --sidebar-width: 56px;
-    --statusbar-height: 0px;
+    --statusbar-height: 26px;
 
     --action-header-height: 56px;
     --pw-header-height: var(--action-header-height);

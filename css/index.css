@@ -85,16 +85,16 @@ html, body, .full-screen, #loading {
 
     display: grid;
     grid-template-columns: var(--sidebar-width) var(--drawer-width) calc(100% - var(--sidebar-width) - var(--drawer-width));
-    grid-template-rows: var(--statusbar-height) calc(100% - var(--statusbar-height));
-    grid-template-areas: 
-      'sidebar drawer statusbar'
-      'sidebar drawer window';
+    grid-template-rows: calc(100% - var(--statusbar-height)) var(--statusbar-height);
+    grid-template-areas:
+      'sidebar drawer window' 
+      'statusbar statusbar statusbar';
 }
 .base-grid__RH-mode {
     grid-template-columns: calc(100% - var(--sidebar-width) - var(--drawer-width)) var(--drawer-width) var(--sidebar-width);
     grid-template-areas: 
-        'statusbar drawer sidebar'
-        'window drawer sidebar';
+        'window drawer sidebar'
+        'statusbar statusbar statusbar';
 }
 .base-grid > .drawer-base {
     grid-area: drawer;
@@ -104,7 +104,7 @@ html, body, .full-screen, #loading {
 }
 .base-grid > .statusbar-base {
     grid-area: statusbar;
-    background-color: var(--bc-secondary);
+    background-color: var(--bc-primary);
 }
 .base-grid > .window-base {
     grid-area: window;
@@ -113,6 +113,47 @@ html, body, .full-screen, #loading {
 .base-grid > .sidebar-base {
     grid-area: sidebar;
     background-color: var(--bc-primary);
+}
+
+/*####################
+--------statusbar-------
+#####################*/
+
+.statusbar-base {
+    font-size: 12px;
+    z-index: 999;
+
+    display: flex;
+    align-items: center;
+}
+.statusbar-base > div,
+.status__notify {
+    display: flex;
+    align-items: center;
+}
+.statusbar-left-cont {
+    flex: 1;
+}
+.status__notify {
+    padding: 0 8px;
+    height: var(--statusbar-height);
+    cursor: pointer;
+    color: var(--tc-primary-low);
+    direction: ltr;
+}
+.status__notify > .touch-ic {
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    opacity: 0.6;
+}
+
+.recentStream__indicator {
+    margin-right: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--bc-negative);
 }
 
 /*####################
@@ -260,6 +301,7 @@ html, body, .full-screen, #loading {
     cursor: pointer;
 }
 .queue-col { display: flex; flex-direction: column;}
+
 .queue-ores,
 .queue-new {
     margin-top: 2px;
@@ -273,14 +315,15 @@ html, body, .full-screen, #loading {
     justify-content: center;
     align-items: center;
 }
-.queue-new { background-color: rgb(109, 226, 109); }
+.queue-new { margin-top: 4px; background-color: rgb(109, 226, 109); }
 .queue-ores:empty,.queue-new:empty { height: 0; margin-top: 0; }
 .queue-row {
     width: calc(100% - 16px);
     padding: 0 4px;
 }
-.queue-wikiname, .queue-username {  text-overflow: ellipsis; overflow: hidden; word-break: keep-all; white-space: nowrap; }
-.queue-username { opacity: 0.6; }
+.queue-wikiname, .queue-username, .queue-title {  text-overflow: ellipsis; overflow: hidden; word-break: keep-all; white-space: nowrap; }
+.queue-title { opacity: 0.9; }
+.queue-username { opacity: 0.4; }
 
 /*####################
 --------Window-------
@@ -533,7 +576,7 @@ html, body, .full-screen, #loading {
 ----- non-Mobile view ----
 ########################*/
 
-@media screen and (min-width: 751px) {
+@media screen and (min-width: 750px) {
 
     /*----common----*/
     .mobile-only {

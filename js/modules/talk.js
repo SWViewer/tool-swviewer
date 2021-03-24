@@ -14,26 +14,14 @@ const parseDate = (date) => {
 }
 var lastMsg = {user: undefined, time: {hours: undefined, minuts: undefined}};
 const addToTalk = (timestamp, nickname, text) => {
-    var hours, minuts, seconds, now;
-    if (timestamp == null) {
-        now = new Date;
+    var hours, minuts, seconds;
 
-        hours = now.getUTCHours().toString();
-        minuts = now.getUTCMinutes().toString();
-        seconds = now.getUTCSeconds().toString();
-    } else {
-        now = new Date(parseDate(timestamp));
+    let timetexttmp = (timestamp == null) ? moment(moment().utc().format("YYYY-MM-DD hh:mm:ss")) : moment(timestamp, "YYYY-MM-DD hh:mm:ss");
+    hours = timetexttmp.hours().toString();
+    minuts = timetexttmp.minutes().toString();
+    seconds = timetexttmp.seconds().toString();
 
-        hours = now.getHours().toString();
-        minuts = now.getMinutes().toString();
-        seconds = now.getSeconds().toString();
-    }
-
-    if (hours.length === 1) hours = "0" + hours;
-    if (minuts.length === 1) minuts = "0" + minuts;
-    if (seconds.length === 1) seconds = "0" + seconds;
-
-    var textTime = hours + ':' + minuts;
+    var textTime = timetexttmp.locale(locale).format("LT");
     var textUser = nickname;
     var textMessage = text;
 
@@ -86,7 +74,7 @@ const addToTalk = (timestamp, nickname, text) => {
         blockPhrase.appendChild(blockCap);
         blockPhrase.appendChild(blockMessage);
         document.getElementById('form-talk').lastChild.style.paddingBottom = "0";
-        blockPhrase.style.padding = "0 0 8px";
+        blockPhrase.style.marginTop = "-16px";
     } else {
         const userColor = getUserColor(nickname);
 
@@ -107,7 +95,7 @@ const addToTalk = (timestamp, nickname, text) => {
 
 const addToTalkSection = (datatext) => {
     var blockMessage = document.createElement('div');
-    blockMessage.className = "days-ago-talk fs-md";
+    blockMessage.className = "days-ago-talk fs-xs";
     blockMessage.textContent = datatext;
 
     document.getElementById('form-talk').appendChild(blockMessage);
@@ -129,6 +117,7 @@ const downloadHistoryTalk = () => {
         url: 'php/talkHistory.php', type: 'POST', data: {action: 'get'}, crossDomain: true, dataType: 'json',
         success: function (talkHistory) {
             var options = {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timezone: 'UTC'};
+
             historyCount = 0;
             for (let i = 4; i !== -1; i--) {
                 var daysAgo = null;
@@ -142,7 +131,7 @@ const downloadHistoryTalk = () => {
                                 daysAgo = useLang["talk-yesterday"];
                             else {
                                 var dateHistory = new Date(Date.now() - (i * 1000 * 60 * 60 * 24));
-                                daysAgo = dateHistory.toLocaleString("en", options);
+                                daysAgo =  moment(Date.parse(dateHistory)).locale(locale).format("LL");
                             }
                         }
 

@@ -8,7 +8,7 @@
     opacity: .3;
 }
 .phrase-talk {
-    padding: 8px 0;
+    margin-bottom: 16px;
 	overflow: hidden;
     white-space: nowrap;
     
@@ -55,26 +55,27 @@
 	text-decoration: underline;
 }
 .days-ago-talk {
-    margin: var(--side-padding) 0;
+    margin: 0 0 var(--side-padding) 0;
     text-align: center;
     display: flex;
     align-items: center;
+    text-transform: uppercase;
 }
-.days-ago-talk::before,
+.days-ago-talk:not(:nth-child(2)) {
+    margin-top: 24px
+}
+
 .days-ago-talk::after {
     content: "";
     height: 1px;
     background-color: var(--bc-secondary-low);
     flex: 1;
-    margin-right: 8px
-}
-.days-ago-talk::after {
-    margin-left: 8px;
+    margin-left: 8px
 }
 
 /*----------usernames---------*/
 .user-count-header {
-    margin-top: 24px;
+    margin-top: 12px;
     margin-bottom: 8px;
     display: flex;
     align-items: center;

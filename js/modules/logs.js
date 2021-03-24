@@ -86,7 +86,9 @@ const initLogs = () => {
             var link = document.createElement('a');
             link.href = log['diff']; link.textContent = log['title']; link.target = '_blank'; link.rel = "noopener noreferrer";
             columns['lt__title'].append(link);
-            columns['lt__date'].textContent = log['date'];
+            var logTime = new Date(Date.parse(moment(log['date'], "YYYY-MM-DD hh:mm:ss").format("YYYY-MM-DD")));
+            var today = new Date(Date.parse(moment().utc().format("YYYY-MM-DD")));
+            columns['lt__date'].textContent = (today.getTime() > logTime.getTime() || today.getTime() < logTime.getTime()) ? moment(log['date'], "YYYY-MM-DD hh:mm:ss").locale(locale).format("L") : moment(log['date'], "YYYY-MM-DD hh:mm:ss").locale(locale).format("LT");
 
             for (let column in columns) row.append(columns[column]);
             

@@ -11,7 +11,7 @@
 
 .lt__sno { grid-area: lt__sno; }
 .lt__user { grid-area: lt__user; }
-.lt__action { grid-area: lt__action; }
+.lt__action { grid-area: lt__action; text-transform: lowercase; }
 .lt__wiki { grid-area: lt__wiki; }
 .lt__title { grid-area: lt__title; }
 .lt__date { grid-area: lt__date; text-align: right; }
