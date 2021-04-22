@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"20041027 tatsu",
+			"Sai10ukazuki",
 			"Tamaki Wakita"
 		]
 	},
@@ -25,8 +26,10 @@
 	"tooltip-rollback": "巻き戻し [r]",
 	"tooltip-last-diff": "前の差分 [左大括弧またはp]",
 	"tooltip-publish-changes": "変更を公開",
+	"settings-confirm-lang": "言語の変更を適用するには、アプリケーションをリロードする必要があります。",
 	"settings-title": "設定",
 	"settings-theme": "テーマ",
+	"settings-theme-descr": "ツールのインターフェースのテーマを変更する。",
 	"settings-language": "言語",
 	"settings-language-descr": "インターフェース言語のツールを変更する。",
 	"settings-language-region": "地域",
@@ -41,7 +44,9 @@
 	"settings-rh-mode": "キューの位置",
 	"settings-rh-mode-descr": "キューの位置を画面の右側に表示します。",
 	"settings-limit": "キューの制限",
+	"settings-limit-descr": "キューにロードできる編集の最大数。",
 	"settings-limit-placeholder": "制限なし",
+	"settings-control": "開発ツール",
 	"settings-control-panel": "コントロールパネル",
 	"settings-beta": "ベータ版",
 	"settings-beta-tester": "ベータ版を開く",
@@ -171,6 +176,7 @@
 	"autoreport-title": "自動報告",
 	"report-title": "報告",
 	"report-performed-content": "$1は、$2での編集について正常に報告されています。",
+	"browser-sse": "申し訳ありませんが、お使いのブラウザは Server-Sent Events をサポートしていません。",
 	"already-done": "そのような変更はすでに行われました。",
 	"error-network": "ネットワークエラー",
 	"error-rollback": "巻き戻しエラー:$1",
@@ -222,6 +228,7 @@
 	"welcome-frame-changelog": "ツールの変更の一覧は、[$1|SWViewer/changelog]を参照してください。",
 	"welcome-frame-irc": "また、あなたは私達の[$1|IRC channel]か[$2|discord server]に参加することが出来ます。",
 	"welcome-frame-translation": "翻訳ツール:",
+	"new-page-frame-not-exist": "存在しません",
 	"new-page-frame-new": "新しいページは空です",
 	"about-frame-app": "$1は、ウィキペディアの最近の変更をリアルタイムで監視するアプリです。",
 	"about-frame-doc": "[$1|documentation]を参照してください。",

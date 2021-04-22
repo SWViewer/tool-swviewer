@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"1997kB",
-			"Bas dehaan"
+			"Bas dehaan",
+			"Bdijkstra"
 		]
 	},
 	"tooltip-edit-preset": "Wachtrij instellingen",
@@ -31,6 +32,8 @@
 	"settings-theme-descr": "Verander het uiterlijk van de tool.",
 	"settings-language": "Taal",
 	"settings-language-descr": "Verander de taal van de tool.",
+	"settings-language-region": "Regio",
+	"settings-language-region-descr": "Regio instellen om getallen en datums in lokale notatie weer te geven.",
 	"settings-sound": "Geluid",
 	"settings-sound-descr": "Verander wanneer een geluid afgespeeld dient te worden.",
 	"settings-revisions": "Meerdere wijz",
@@ -227,7 +230,7 @@
 	"sysops-wait": "Misschien is het beter om de reactie van een locale mod af te wachten.",
 	"sysops-not-gs": "Dit is geen wiki met globale mods.",
 	"sysops-more-than-3": "Deze wiki heeft meer dan 3 active mods ($1 in totaal).",
-	"sysops-more-than-10": "Deze wiki heeft $1 active moderators ($2 in totaal).",
+	"sysops-more-than-10": "Deze wiki heeft meer dan 10 actieve moderators.",
 	"edit-source-title": "Bron bewerken",
 	"summary-title": "Samenvatting",
 	"summary-placeholder": "Omschrijf kort de veranderingen.",
