@@ -35,6 +35,7 @@
 	"settings-language-region": "地域",
 	"settings-language-region-descr": "地域形式の数値と日付を表示するために地域を設定してください。",
 	"settings-sound": "音",
+	"settings-sound-descr": "トーク中の編集やメッセージの着信時にサウンドモードを変更します。",
 	"settings-revisions": "複数の差分",
 	"settings-revisions-onlylast": "最新版のみ",
 	"settings-revisions-alert": "差し戻しの警告",
