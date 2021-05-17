@@ -213,7 +213,7 @@
 	"welcome-frame-tips-pwa": "Jeśli korzystasz z przeglądarki Chrome, możesz zainstalować SWViewer jako aplikację internetową na komputerze stacjonarnym i telefonie komórkowym, zobacz [$1|instrukcje].",
 	"welcome-frame-tips-manual": "Nie wiesz, jak patrolować za pomocą SWViewer? Zobacz [$1|stronę podręcznika].",
 	"welcome-frame-links": "Linki zewnętrzne",
-	"welcome-frame-changelog": "Aby zapoznać się z listą zmian w narzędziu, zobacz[$1|Rejestr logów].",
+	"welcome-frame-changelog": "Aby zapoznać się z listą zmian w narzędziu, zobacz [$1|rejestr logów].",
 	"welcome-frame-irc": "Możesz także dołączyć do [$1|kanału IRC] lub [$2|serwera discord].",
 	"welcome-frame-tagger": "Pomocne skrypty/szablony do patrolowania: [$1|Tagger], [$2|Szablony ostrzeżeń].",
 	"welcome-frame-translation": "Narzędzia tłumaczenia:",
