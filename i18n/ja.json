@@ -23,7 +23,7 @@
 	"tooltip-more-options": "より多くのオプション",
 	"tooltip-open-browser": "ブラウザウィンドウで開く[o]",
 	"tooltip-speedy-del": "タグパネル [d]",
-	"tooltip-custom-rollback": "要約付きの巻き戻し",
+	"tooltip-custom-rollback": "要約付きの巻き戻し [y]",
 	"tooltip-rollback": "巻き戻し [r]",
 	"tooltip-last-diff": "前の差分 [左大括弧またはp]",
 	"tooltip-publish-changes": "変更を公開",
