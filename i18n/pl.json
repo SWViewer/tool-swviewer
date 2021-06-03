@@ -149,6 +149,7 @@
 	"tooltip-talk-send": "Wyślij",
 	"talk-img-send": "Wyślij",
 	"nc-unlogin-error": "Coś się stało! Sprawdź połączenie internetowe.",
+	"nc-unlogin-progress": "Wylogowanie w toku...",
 	"nc-unlogin-title": "Wyloguj",
 	"nc-unlogin-q": "Na pewno?",
 	"settings-sound-none": "Brak",
