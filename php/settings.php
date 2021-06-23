@@ -29,7 +29,7 @@ if (!isset($_POST["action"])) {
         $q->execute(array(':userName' => $userName));
         $result = $q->fetchAll();
 
-        $response = ["checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "lang" => $result[0]['lang'], "locale" => $result[0]['locale'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
+        $response = ["userName" => $userName, "talkToken" => $result[0]['token'], "userRole" => $result[0]['userRole'], "isGlobalAccess" => $result[0]['isGlobalAccess'], "isGlobal" => $result[0]['isGlobal'], "local_wikis" => $result[0]['local_wikis'],   "checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "lang" => $result[0]['lang'], "locale" => $result[0]['locale'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
         echo json_encode($response);
         $db = null;
         exit();

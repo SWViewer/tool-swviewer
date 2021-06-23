@@ -183,6 +183,17 @@ button, select {
 .hidden-scroll { overflow: -moz-scrollbars-none; }
 .hidden-scroll { -ms-overflow-style: none; }
 
+.primary-scroll,
+.secondary-scroll {
+    scrollbar-width: thin;
+}
+.primary-scroll {
+    scrollbar-color: var(--bc-primary-hover) var(--bc-primary-low);
+}
+.secondary-scroll {
+    scrollbar-color: var(--bc-secondary-hover) var(--bc-secondary-low);
+}
+
 .primary-scroll::-webkit-scrollbar,
 .secondary-scroll::-webkit-scrollbar {
     width: 8px;

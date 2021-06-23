@@ -3,12 +3,19 @@ header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
 header('Content-Type: text/html; charset=utf-8');
 session_name('SWViewer');
 session_start();
-if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) {
+if ((!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) && (!isset($_GET['token_proxy']))) {
     echo "Invalid request";
     session_write_close();
     exit(0);
 }
 session_write_close();
+if (isset($_GET['token_proxy'])) {
+    $serverToken = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["serverTokenTalk"];
+    if ($serverToken !== $_GET["token_proxy"]) {
+        echo "Invalid request";
+        exit(0);
+    }
+}
 
 $usersList = [];
 
@@ -29,7 +36,7 @@ function getUsers($groups)
     $context = stream_context_create($options);
 
     if ($groups == "all")
-        $groups = "apihighlimits-requestor|captcha-exempt|wmf-researcher|wmf-ops-monitoring|sysadmin|recursive-export|otrs-member|new-wikis-importer|global-interface-editor|global-flow-create|global-deleter|global-bot|staff|steward|global-sysop|global-rollbacker|abusefilter-helper|founder|ombudsman";
+        $groups = "apihighlimits-requestor|captcha-exempt|wmf-researcher|wmf-ops-monitoring|sysadmin|recursive-export|vrt-permissions|new-wikis-importer|global-interface-editor|global-flow-create|global-deleter|global-bot|staff|steward|global-sysop|global-rollbacker|abusefilter-helper|founder|ombuds";
     $check = true;
     $agufrom = "";
     $cont = "";

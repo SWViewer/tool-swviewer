@@ -29,7 +29,6 @@ const savePreset = (index) => {
     if (!assignInputPreset(document.getElementById('max-edits').value, 'editscount')) return;
     if (!assignInputPreset(document.getElementById('max-days').value, 'regdays')) return;
     if (!assignInputPreset(document.getElementById('ores-filter').value, 'oresFilter')) return;
-
     
     preSettings['title'] = presetTitle;
     if (index === undefined) {
@@ -51,6 +50,7 @@ const savePreset = (index) => {
             success: function() {
                 removeDialog(oldPresetName + "PresetDialog");
                 presets[index] = { 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() };
+                angular.element(document.getElementById('app')).scope().externalClose();
                 if (oldPresetName !== presetTitle) {
                     if (selectedPreset === index)
                         $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'preset', preset: presetTitle }, dataType: 'json',
@@ -112,8 +112,13 @@ const selectPreset = (index, whildEntry = false, req = true) => {
         ecpNew.addEventListener('click', () => editPreset(index) );
         ecp.parentElement.replaceChild(ecpNew, ecp);
 
-        if (req)
-            $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'preset', preset: presets[index].title }, dataType: 'json'});
+        if (req) {
+            $.ajax({url: 'php/settings.php', type: 'POST', crossDomain: true, data: { 'action': 'set', query: 'preset', preset: presets[index].title }, dataType: 'json',
+                success: function() {
+                    angular.element(document.getElementById('app')).scope().externalClose();
+                }
+           });
+        }
     }
 }
 
@@ -163,6 +168,11 @@ const editPreset = (index) => {
     var editPTitleTemp = document.getElementById('editPTitleTemplate');
     var editPTemp = document.getElementById('editPresetTemplate');
     if (PTitle !== 'Default') editBody.append(editPTitleTemp.content.cloneNode(true));
+    if (isGlobal === true || isGlobalModeAccess === true) {
+        editPTemp.content.getElementById("sw-set").style.display = "grid";
+        editPTemp.content.getElementById("ad-set").style.display = "grid";
+        editPTemp.content.getElementById("custom-set").style.display = "grid";
+    }
     editBody.append(editPTemp.content.cloneNode(true));
     let dialogButtons = [
         { type: 'accent', title: useLang["presets-save"], onClick: () => savePreset(index), remove: false },

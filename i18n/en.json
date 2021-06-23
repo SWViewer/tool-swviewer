@@ -52,6 +52,7 @@
   "settings-limit-placeholder": "No limit",
   "settings-control": "Dev tools",
   "settings-control-panel": "Control panel",
+  "settings-service": "Service",
   "settings-beta": "Beta",
   "settings-beta-tester": "Open beta version",
   "queue-empty-msg": "Queue is empty",

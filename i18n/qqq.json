@@ -57,6 +57,7 @@
 	"settings-limit-placeholder": "Placeholder in 'Queue limit' input area in 'General settings'.",
 	"settings-control": "Heading 'Dev tools' in 'General settings'.",
 	"settings-control-panel": "Link below 'Dev tools' heading in 'General settings'.",
+	"settings-service": "Link below 'Dev tools' heading in 'General settings'.",
 	"settings-beta": "Heading 'Beta' in 'General settings'.",
 	"settings-beta-tester": "Link below 'Beta' heading in 'General settings'.",
 	"queue-empty-msg": "'Queue is empty' text appear in empty queue.",

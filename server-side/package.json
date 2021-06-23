@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "eventsource": "^1.1.0",
+    "fs": "0.0.1-security",
+    "moment": "^2.29.1",
+    "node-cache": "^5.1.2",
+    "reconnecting-eventsource": "^1.1.0",
+    "request": "^2.88.2",
+    "ws": "^7.4.5"
+  },
+  "name": "swviewer-service",
+  "version": "2.0.0",
+  "description": "Backend of SWViewer tool",
+  "main": "server.js",
+  "devDependencies": {},
+  "keywords": [
+    "swviewer"
+  ],
+  "author": "Iluvatar, Ajbura, 1997kB",
+  "license": "MIT"
+}

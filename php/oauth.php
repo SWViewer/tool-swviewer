@@ -67,6 +67,7 @@ forEach ($globalInfo['query']['globaluserinfo']['groups'] as $globalGroup) {
             $userRole = "GS";
     }
 }
+$_SESSION['projects'] = "";
 if ($global == true || $ident->username == "Ajbura" || $ident->username == "Exoped")
     $_SESSION['mode'] = 'global';
 else {
@@ -88,7 +89,7 @@ else {
         if (array_key_exists('groups', $localGroups))
             forEach ($localGroups['groups'] as $localGroup) {
                 if (($localGroup == 'rollbacker' || ($localGroup == 'sysop' && !in_array($localGroups['wiki'], $wrongsysop)) || ($localGroup == 'editor' && in_array($localGroups['wiki'], $editorGroup)) || ($localGroup == 'patroller' && in_array($localGroups['wiki'], $patrollerGroup)) || ($localGroup == 'eliminator' && in_array($localGroups['wiki'], $eliminatorGroup)) || ($localGroup == 'botadmin' && in_array($localGroups['wiki'], $botAdminGroup)) || ($localGroup == 'test-sysop' && in_array($localGroups['wiki'], $testSysopGroup)) || ($localGroup == 'wikidata-staff' && in_array($localGroups['wiki'], $wikidataStaffGroup)) || ($localGroup == 'curator' && in_array($localGroups['wiki'], $curatorGroup))) && (!in_array($localGroups['wiki'], $testWikis))) {
-                    if (isset($_SESSION['projects']))
+                    if (isset($_SESSION['projects']) && $_SESSION['projects'] !== "")
                         $_SESSION['projects'] .= $localGroups['wiki'] . ',';
                     else
                         $_SESSION['projects'] = $localGroups['wiki'] . ',';
@@ -124,25 +125,37 @@ unset($ts_mycnf, $ts_pw);
 $q = $db->prepare('SELECT name, token, lang FROM user WHERE name=:name');
 $q->execute(array(':name' => $ident->username));
 $resToken = $q->fetchAll();
+$accessGlobal = null;
+$accessGlobalSQL = 0;
+if (isset($_SESSION['accessGlobal'])) {
+    $accessGlobal = $_SESSION['accessGlobal'];
+    $accessGlobalSQL = 1;
+}
+$isGlobal = 0;
+if ($_SESSION['mode'] == 'global')
+    $isGlobal = 1;
 $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2); if ($lang === null) $lang = "en";
 if (($q->rowCount() <= 0) || ($q->rowCount() > 0 && ($resToken[0]["token"] == null || $resToken[0]["token"] == "" || !isset($resToken[0]["token"])))) {
     $salt = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["salt"];
     $_SESSION['talkToken'] = md5(uniqid($ident->username, true) . rand() . md5($salt));
     if ($q->rowCount() <= 0) {
-        $q = $db->prepare('INSERT INTO user (name, token, lang) VALUES (:name, :token, :lang)');
-        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':lang' => $lang));
+        $q = $db->prepare('INSERT INTO user (name, token, lang, local_wikis, isGlobalAccess, isGlobal, userRole) VALUES (:name, :token, :lang, :local_wikis, :isGlobalAccess, :isGlobal, :userRole)');
+        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':lang' => $lang, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
         $q = $db->prepare('INSERT INTO stats (user) VALUES (:user)');
         $q->execute(array(':user' => $ident->username));
     } else {
-        $q = $db->prepare('UPDATE user SET token=:token WHERE name=:name');
-        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken']));
+        $q = $db->prepare('UPDATE user SET token=:token, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal WHERE name=:name');
+        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
     }
 } else {
     $_SESSION['talkToken'] = $resToken[0]["token"];
     if ($resToken[0]["lang"] === null || $resToken[0]["lang"] === "") {
-        $q = $db->prepare('UPDATE user SET lang=:lang WHERE name=:name');
-        $q->execute(array(':name' => $ident->username, ':lang' => $lang));
-    }
+        $q = $db->prepare('UPDATE user SET lang=:lang, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal WHERE name=:name');
+        $q->execute(array(':name' => $ident->username, ':lang' => $lang, ':userRole' => $userRole, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
+    } else {
+        $q = $db->prepare('UPDATE user SET local_wikis=:local_wikis, userRole=:userRole, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal WHERE name=:name');
+        $q->execute(array(':name' => $ident->username, ':local_wikis' => $_SESSION['projects'], ':userRole' => $userRole, ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
+   }
 }
 $q = $db->prepare('SELECT name FROM presets WHERE name=:name');
 $q->execute(array(':name' => $ident->username));
@@ -152,11 +165,8 @@ if ($q->rowCount() <= 0) {
 }
 $db = null;
 
-$accessGlobal = null;
 $projects = null;
-if (isset($_SESSION['accessGlobal']))
-    $accessGlobal = $_SESSION['accessGlobal'];
-if (isset($_SESSION['projects']))
+if (isset($_SESSION['projects']) && $_SESSION['projects'] !== "")
     $projects = $_SESSION['projects'];
 $_SESSION['userRole'] = $userRole;
 

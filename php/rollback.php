@@ -29,7 +29,7 @@ $tokentype = $params["type"]."token";
 $token_r = $client->makeOAuthCall($accessToken, $apiUrl, true, $params);
 $token = json_decode($token_r);
 if (!isset($token->query))
-    file_put_contents("error.txt", json_encode($token_r));
+    file_put_contents("error.txt", $userName . json_encode($token_r), FILE_APPEND);
 $token = $token->query->tokens->$tokentype;
 
 // Now perform rollback or undo

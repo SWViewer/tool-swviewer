@@ -3,7 +3,7 @@ header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
 header('Content-Type: application/json; charset=utf-8');
 session_name('SWViewer');
 session_start();
-if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) {
+if ((!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName']))) {
     echo json_encode(["result" => "error", "info" => "Invalid request"]);
     session_write_close();
     exit();
