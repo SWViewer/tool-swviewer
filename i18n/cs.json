@@ -6,6 +6,7 @@
 			"Ján Kepler",
 			"Matěj Suchánek",
 			"MrJaroslavik",
+			"Patrik L.",
 			"Robins7"
 		]
 	},
@@ -35,6 +36,7 @@
 	"settings-theme-descr": "Změnit téma rozhraní nástroje.",
 	"settings-language": "Jazyk",
 	"settings-language-descr": "Změnit jazyk rozhraní nástroje.",
+	"settings-language-region": "Region",
 	"settings-sound": "Zvuk",
 	"settings-sound-descr": "Změnit režim zvuku pro příchozí editace a zprávy v chatu.",
 	"settings-revisions": "Vícenásobný rozdíl",
