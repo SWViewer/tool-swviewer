@@ -7,6 +7,7 @@
 			"Tahmid02016",
 			"YahyA",
 			"Yahya",
+			"ZI Jony",
 			"আফতাবুজ্জামান"
 		]
 	},
@@ -56,6 +57,7 @@
 	"settings-limit-placeholder": "অনির্দিষ্ট",
 	"settings-control": "Dev সরঞ্জামসমূহ",
 	"settings-control-panel": "নিয়ন্ত্রণ প্যানেল",
+	"settings-service": "পরিষেবা",
 	"settings-beta": "বেটা",
 	"settings-beta-tester": "বেটা সংস্করণ খুলুন",
 	"queue-empty-msg": "খালি সারি",
@@ -117,7 +119,7 @@
 	"diff-mo-srm": "SRM",
 	"diff-mo-srg": "SRG",
 	"diff-mo-gsr": "GSR",
-	"diff-mo-ca": "সেন্ট্রাল আউথ",
+	"diff-mo-ca": "কেন্দ্রীয় প্রমাণী",
 	"diff-mo-guc": "বৈশ্বিক অবদান",
 	"diff-mo-vh": "ইতিহাস দেখুন",
 	"diff-mo-es": "উৎস সম্পাদনা",
@@ -150,7 +152,7 @@
 	"logs-action-edit": "সম্পাদনা",
 	"logs-action-warn": "সতর্ক করুন",
 	"logs-action-delete": "মুছুন",
-	"logs-action-report": "রিপোর্ট",
+	"logs-action-report": "প্রতিবেদন",
 	"logs-action-protect": "সুরক্ষা",
 	"pw-img-drawer": "ড্রয়ার",
 	"talk-today": "আজ",
