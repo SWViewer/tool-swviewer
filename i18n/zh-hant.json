@@ -51,6 +51,7 @@
 	"settings-limit-placeholder": "沒有限制",
 	"settings-control": "開發工具",
 	"settings-control-panel": "控制面板",
+	"settings-service": "服務",
 	"settings-beta": "測試",
 	"settings-beta-tester": "開啟測試版本",
 	"queue-empty-msg": "佇列為空。",

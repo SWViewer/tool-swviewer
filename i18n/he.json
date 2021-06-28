@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
+			"Leononon",
 			"YaronSh",
 			"ישראל קלר"
 		]
@@ -49,6 +50,7 @@
 	"settings-limit-placeholder": "אין הגבלה",
 	"settings-control": "כלי פיתוח",
 	"settings-control-panel": "לוח בקרה",
+	"settings-service": "שירות",
 	"settings-beta": "בטא",
 	"settings-beta-tester": "גרסת ניסוי פתוחה",
 	"queue-empty-msg": "התור ריק",
