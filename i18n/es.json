@@ -3,6 +3,7 @@
 		"authors": [
 			"Fitoschido",
 			"Hasley",
+			"Jackiezelaya",
 			"MarcoAurelio",
 			"Rodney Araujo",
 			"Rossnyev",
@@ -55,6 +56,7 @@
 	"settings-limit-placeholder": "Sín límite.",
 	"settings-control": "Herramientas de desarrollo",
 	"settings-control-panel": "Panel de control",
+	"settings-service": "Servicio",
 	"settings-beta": "Beta",
 	"settings-beta-tester": "Abrir versión beta",
 	"queue-empty-msg": "La cola está vacía",
