@@ -177,7 +177,7 @@
   "error-cant-perform": "Can't perform this action, this edit is not the latest revision.",
   "error-loading-title": "Loading failed!",
   "error-speedy-title": "Speedy deletion failed!",
-  "gsr-success-title": "GSR report successfull",
+  "gsr-success-title": "GSR report successful",
   "gsr-success-content": "$1 has been successfully reported to GSR for deletion.",
   "gsr-fail-title": "GSR report failed!",
   "warn-success-title": "Warned successfully",
