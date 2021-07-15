@@ -53,6 +53,8 @@
 	"settings-rh-mode-descr": "Description below the 'Queue location' text.",
 	"settings-terminate-stream": "The 'Terminate stream' text beside the button to terminate changes in 'General settings'.",
 	"settings-terminate-stream-descr": "Description below the 'Terminate stream' text.",
+	"settings-hotkeys": "The 'Hotkeys' text beside the button to enable hotkeys in 'General settings'.",
+	"settings-hotkeys-descr": "Description below the 'Hotkeys' text.",
 	"settings-limit": "The 'Queue limit' text beside the input to change queue limit in 'General settings'.",
 	"settings-limit-descr": "Description below the 'Queue limit' text.",
 	"settings-limit-placeholder": "Placeholder in 'Queue limit' input area in 'General settings'.",
