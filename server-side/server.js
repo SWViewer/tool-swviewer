@@ -4,10 +4,28 @@ const url = require('url');
 const ejs = require('ejs');
 const http = require('http');
 const WebSocket = require('ws');
+const log4js = require("log4js");
 const moment = require('moment');
 const NodeCache = require('node-cache');
 EventSource = require('eventsource');
 const ReconnectingEventSource = require('reconnecting-eventsource').default;
+
+// Logging configure
+log4js.configure({
+  appenders: { everything: { type: 'file', filename: 'server.log' } },
+  categories: { default: { appenders: [ 'everything' ], level: 'debug' } }
+});
+const logger = log4js.getLogger();
+
+process.on('uncaughtException', (err, origin) => {
+  logger.error(err);
+  logger.error(origin);
+});
+
+console.log = function(cm) {
+    logger.debug(cm);
+};
+
 
 const exp = require('./service/storage');
 
@@ -47,7 +65,8 @@ const server = http.createServer((req, res) => {
     var upTimeWSSend = new Date((moment().unix() - upTimeWS) * 1000).toISOString().substr(11, 8);
     var upTimeSSESend = new Date((moment().unix() - upTimeSSE) * 1000).toISOString().substr(11, 8);
     res.end(compiled({clients: streamClients, garbage: garbage, cache: cached, memory: memory, errors: errors,
-        upTimeWS: upTimeWSSend, upTimeSSE: upTimeSSESend, eventPerMin: eventPerMin, wikis: generalList.length}));
+        upTimeWS: upTimeWSSend, upTimeSSE: upTimeSSESend, eventPerMin: eventPerMin, wikis: generalList.length,
+        globals: globals.length}));
 });
 server.listen(port, () => 'Server up');
 
@@ -90,7 +109,7 @@ const wss = new WebSocket.Server({ noServer: true, verifyClient(info, done) {
             });
         }
         catch (e) {
-            return done(false, 403, "Error of auth; no connect");
+            return done(false, 403, "Error of auth; Maybe no connect");
         }
     }
 });
@@ -108,10 +127,14 @@ wss.on('connection', function(ws, req) {
     ws.pause = false;
     users.push(ws);
     getParams(ws).then(function(res) {
-        if (res === false) { ws.terminate(); return; }
+        if (res === false || res === undefined) { ws.terminate(); return; }
         ws.filt = res;
         getGeneralList();
         if (wss.clients.size === 1) SSEStart();
+        wss.clients.forEach(function(client) {
+            if (client.readyState === WebSocket.OPEN && client !== ws)
+                client.send(JSON.stringify({"type": "connected", "nickname": ws.nickName}));
+        });
         if (ws.readyState === WebSocket.OPEN)
             ws.send(JSON.stringify({"type": "hello", "clients": usersName(users)}));
 
@@ -193,8 +216,12 @@ getSandboxes();
 getGlobals();
 
 setInterval(function() {
-    getSandboxes();
-    getGlobals();
+    try {
+        getSandboxes();
+        getGlobals();
+    } catch(err) {
+        logger.debug("Updating lists error: " + err);
+    }
 }, 86400000); // 24 h
 
 function getSandboxes() {
@@ -208,8 +235,8 @@ function getSandboxes() {
         }
         Object.keys(customSandBoxes).forEach(element => {
             customSandBoxes[element].forEach(element2 => {
-                sandboxlist[element] = (sandboxlist.hasOwnProperty(element)) ? sandboxlist[element] + "," + element2 : element2
-            })
+                sandboxlist[element] = (sandboxlist.hasOwnProperty(element)) ? sandboxlist[element] + "," + element2 : element2;
+            });
         });
     });
 }
@@ -224,41 +251,47 @@ function getGlobals() {
 function SSEStart() {
     source = new ReconnectingEventSource('https://stream.wikimedia.org/v2/stream/recentchange,revision-create');
     source.onmessage = function(e) {
-        if (wss.clients.size === 0) { source.close(); return; }
-        if (e.type !== "message") return;
-        e = JSON.parse(e.data);
-        if (!streamFilter(e)) return;
-        e.time = Date.now();
-        var uniqWiki = (e.hasOwnProperty("wiki")) ? e.wiki : e.database;
-        var uniqRev = (e.hasOwnProperty("rev_id")) ? e.rev_id : e.revision.new;
-        var uniqID = String(e.meta.request_id) + String(uniqWiki) + String(uniqRev);
-        if (!storage[uniqID]) { storage[uniqID] = [e]; return; }
-        if (checkStreamExist(storage[uniqID], e.meta.stream)) return;
-        storage[uniqID].push(e);
-        var result;
-        result = mergeList(normalizeArray(storage[uniqID][0]), normalizeArray(storage[uniqID][1]));
-        if (!result.performer.hasOwnProperty("user_text")) { errors++; return; }
-        checkCVN(result.performer.user_text, result.performer.user_is_anon).then(function(res) {
-            if (res === false) { delete storage[uniqID]; return false; }
-            getWikidataTitle(result).then(function(res) {
-                result.wikidata_title = res;
-                eventPerMinPrepare++;
-                getORES(result.wiki, result.new_id, getModel(ORESList, result.wiki)).then(function(res) {
-                    if (res === false) res = null;
-                    result.ORES = res;
-                    wss.clients.forEach(function (ws) {
-                        if (ws.readyState === WebSocket.OPEN && ws.pause !== true)
-                            if (customFilter(result, ws.filt, ws.nickName))
-                                ws.send(JSON.stringify({"type": "edit", "data": result}));
+        try {
+            if (wss.clients.size === 0) { source.close(); return; }
+            if (e.type !== "message") return;
+            e = JSON.parse(e.data);
+            if (!streamFilter(e)) return;
+            e.time = Date.now();
+            var uniqWiki = (e.hasOwnProperty("wiki")) ? e.wiki : e.database;
+            var uniqRev = (e.hasOwnProperty("rev_id")) ? e.rev_id : e.revision.new;
+            var uniqID = String(e.meta.request_id) + String(uniqWiki) + String(uniqRev);
+            if (!storage[uniqID]) { storage[uniqID] = [e]; return; }
+            if (checkStreamExist(storage[uniqID], e.meta.stream)) return;
+            storage[uniqID].push(e);
+            var result;
+            result = mergeList(normalizeArray(storage[uniqID][0]), normalizeArray(storage[uniqID][1]));
+            if (!result.performer.hasOwnProperty("user_text")) { errors++; return; }
+            checkCVN(result.performer.user_text, result.performer.user_is_anon).then(function(res) {
+                if (res === undefined) res = true;
+                if (res === false) { delete storage[uniqID]; return false; }
+                getWikidataTitle(result).then(function(res) {
+                    if (res === undefined) res = null;
+                    result.wikidata_title = res;
+                    eventPerMinPrepare++;
+                    getORES(result.wiki, result.new_id, getModel(ORESList, result.wiki)).then(function(res) {
+                        if (res === undefined || res === false) res = null;
+                        result.ORES = res;
+                        wss.clients.forEach(function (ws) {
+                            if (ws.readyState === WebSocket.OPEN && ws.pause !== true)
+                                if (customFilter(result, ws.filt, ws.nickName))
+                                    ws.send(JSON.stringify({"type": "edit", "data": result}));
+                        });
                     });
+                    delete storage[uniqID];
                 });
-                delete storage[uniqID];
             });
-        });
+        } catch(err) {
+            logger.debug("global error: " + err);
+        }
     };
     source.onopen = function () {
         upTimeSSE = moment().unix();
-    }
+    };
 }
 
 function getModel(olist, wiki){
@@ -270,29 +303,27 @@ function getModel(olist, wiki){
     else { return false; }
 }
 
-
 async function getORES(wiki, new_id, model) {
     return new Promise(resolve => {
-        if (model === false) resolve(false); else {
-            request("https://ores.wikimedia.org/v3/scores/" + String(wiki) + "/" + String(new_id) + "/" + String(model), {
-                json: true,
-                headers: {"User-Agent": userAgent}
-            }, (err, res) => {
-                if (err) resolve(false); else {
-                    if (res.body.hasOwnProperty("error")) resolve(false); else {
-                        if (res.body[wiki].scores[new_id][model] === undefined) resolve(false); else {
-                            if (res.body[wiki].scores[new_id][model].error !== undefined) resolve(false); else {
-                                if (res.body[wiki].scores[new_id][model].score === undefined) resolve(false); else {
-                                    const damage = res.body[wiki].scores[new_id][model].score.probability.true;
-                                    const damagePer = parseInt(damage * 100);
-                                    resolve({score: damagePer, color: `hsl(0, ${damagePer}%, 56%)`});
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
+        if (model === false) resolve(false);
+        request("https://ores.wikimedia.org/v3/scores/" + String(wiki) + "/" + String(new_id) + "/" + String(model), {
+            json: true,
+            headers: {"User-Agent": userAgent}
+        }, (err, res) => {
+            if (err) { resolve(false); return; }
+            if (res.body.hasOwnProperty("error")) { resolve(false); return; }
+            if (res.body[wiki] === undefined) { resolve(false); return; }
+            if (!res.body[wiki].hasOwnProperty("scores")) { resolve(false); return; }
+            if (res.body[wiki].scores[new_id] === undefined) { resolve(false); return; }
+            if (res.body[wiki].scores[new_id][model] === undefined) { resolve(false); return; }
+            if (res.body[wiki].scores[new_id][model].error !== undefined) { resolve(false); return; }
+            if (res.body[wiki].scores[new_id][model].score === undefined) { resolve(false); return; }
+            const damage = res.body[wiki].scores[new_id][model].score.probability.true;
+            const damagePer = parseInt(damage * 100);
+            resolve({score: damagePer, color: `hsl(0, ${damagePer}%, 56%)`});
+        });
+    }).catch(function(err) {
+        logger.debug("getORES promise error: " + err);
     });
 }
 
@@ -370,6 +401,8 @@ async function checkCVN(username, is_anon) {
                     (cvn.hasOwnProperty("users") && cvn.users.hasOwnProperty(username) && cvn.users[username].hasOwnProperty("type") && cvn.users[username].type === "whitelist") ? cacheCVN.set(String(username), false) : cacheCVN.set(String(username), true);
                 }
             });
+    }).catch(function(err) {
+        logger.debug("checkCVN promise error: " + err);
     });
 }
 
@@ -391,10 +424,12 @@ function getWikidataTitle (e) {
                 }
             });
         } else resolve(null);
+    }).catch(function(err) {
+        logger.debug("getWikidataTitle promise error: " + err);
     });
 }
 
-function normalizeArray(e, model = null) {
+function normalizeArray(e) {
     var normArray = {
         "wiki": "", "domain": "", "uri": "", "title": "", "wikidata_title": null, "id": "", "namespace": "",
         "namespace_name": null, "new_id": "",  "old_id": null, "new_len": "", "old_len": null, "is_new": false,
@@ -465,6 +500,8 @@ function getParams(w) {
 
             resolve(filt);
         });
+    }).catch(function(err) {
+        logger.debug("getParams promise error: " + err);
     });
 }
 
