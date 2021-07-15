@@ -47,6 +47,8 @@
   "settings-rh-mode-descr": "Show queue location on the right side of screen.",
   "settings-terminate-stream": "Terminate stream",
   "settings-terminate-stream-descr": "Terminate recent changes stream when queue limit reaches.",
+  "settings-hotkeys": "Hotkeys",
+  "settings-hotkeys-descr": "Enable hotkeys to operate SWViewer with keyboard.",
   "settings-limit": "Queue limit",
   "settings-limit-descr": "Max count of edits allowed to load in queue.",
   "settings-limit-placeholder": "No limit",
