@@ -48,6 +48,8 @@
 	"settings-rh-mode-descr": "Размещать очередь на экране справа.",
 	"settings-terminate-stream": "Остановка потока",
 	"settings-terminate-stream-descr": "Останавливать поток новых правок по достижению лимита очереди.",
+	"settings-hotkeys": "Сочетания клавиш",
+	"settings-hotkeys-descr": "Задействовать [$1|сочетания клавиш] для управления SWViewer с клавиатуры.",
 	"settings-limit": "Лимит очереди",
 	"settings-limit-descr": "Максимальное количество правок в очереди.",
 	"settings-limit-placeholder": "Нет",
