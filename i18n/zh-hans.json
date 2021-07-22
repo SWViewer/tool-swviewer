@@ -51,6 +51,8 @@
 	"settings-rh-mode-descr": "在屏幕右侧显示队列。",
 	"settings-terminate-stream": "终止队列更新",
 	"settings-terminate-stream-descr": "当队列中待检查的编辑数量达到上限时停止接收新的编辑。",
+	"settings-hotkeys": "快捷键",
+	"settings-hotkeys-descr": "启用[$1|快捷键]以使用键盘操作SWViewer。",
 	"settings-limit": "队列限制",
 	"settings-limit-descr": "队列中可以储存的最大编辑数量。",
 	"settings-limit-placeholder": "没有限制",

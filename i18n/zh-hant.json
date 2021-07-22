@@ -46,6 +46,8 @@
 	"settings-rh-mode-descr": "在屏幕右側顯示佇列。",
 	"settings-terminate-stream": "終端串流",
 	"settings-terminate-stream-descr": "當佇列中待檢查的編輯數量達上限時停止接收新的編輯。",
+	"settings-hotkeys": "熱鍵",
+	"settings-hotkeys-descr": "啟用[$1|熱鍵]來使用鍵盤操作 SWViewer。",
 	"settings-limit": "佇列限制",
 	"settings-limit-descr": "佇列中可以儲存的最大編輯數量。",
 	"settings-limit-placeholder": "沒有限制",

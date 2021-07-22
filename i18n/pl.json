@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Chrumps",
 			"Kareyac",
 			"Nadzik",
 			"Rail",
@@ -45,6 +46,7 @@
 	"settings-rh-mode-descr": "Pokaż kolejkę po prawej stronie ekranu",
 	"settings-terminate-stream": "Zakończ kolejkę",
 	"settings-terminate-stream-descr": "Zakończ kolejkę gdy przekroczy limit.",
+	"settings-hotkeys": "Skróty klawiszowe",
 	"settings-limit": "Limit kolejki",
 	"settings-limit-descr": "Maksymalna liczba edycji dozwolona w kolejce.",
 	"settings-limit-placeholder": "Bez limitu",
