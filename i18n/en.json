@@ -226,6 +226,8 @@
   "warn-user-desc": "Turning this on will left a warning on the user talk page after clicking common summaries (green only).",
   "treat-undo-title": "Use undo",
   "treat-undo-desc": "Enable checkbox if you want to use undo instead of rollback.",
+  "max-warn-title": "Final warning",
+  "max-warn-desc": "Enable checkbox to send maximum level of warning.",
   "common-summaries": "Common Summaries:",
   "tag-deletion-title": "Tag for deletion",
   "gsr-add": "Add to GSR",

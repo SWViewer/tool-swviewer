@@ -232,6 +232,8 @@
 	"warn-user-desc": "Description text below 'Warn user' button in 'Custom revert' panel.",
 	"treat-undo-title": "'Use undo' text in 'Custom revert' panel.",
 	"treat-undo-desc": "Description text below 'Use undo' checkbox in 'Custom revert' panel.",
+	"max-warn-title": "'Final warning' text in 'Custom revert' panel.",
+	"max-warn-desc": "Description text below 'Final warning' checkbox in 'Custom revert' panel.",
 	"common-summaries": "'Common Summaries' text below 'Warn user' button description in 'Custom revert' panel.",
 	"tag-deletion-title": "'Tag for deletion' title in 'Tag panel'.",
 	"gsr-add": "'Add to GSR' text in 'Tag for deletion' panel.",
