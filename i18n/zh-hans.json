@@ -230,6 +230,8 @@
 	"warn-user-desc": "若打开此选项，则在点击以下常见删除理由后会向该用户的讨论页发送一则警告（仅限绿色的选项）。",
 	"treat-undo-title": "使用撤销",
 	"treat-undo-desc": "勾选此选项以使用撤销而非回退。",
+	"max-warn-title": "最后警告",
+	"max-warn-desc": "启用复选框以发送最高级别的警告。",
 	"common-summaries": "常用摘要：",
 	"tag-deletion-title": "请求删除",
 	"gsr-add": "添加到GSR",

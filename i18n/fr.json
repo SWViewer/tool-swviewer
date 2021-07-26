@@ -229,6 +229,8 @@
 	"warn-user-desc": "L’activation de ceci laissera un avertissement sur la page de discussion de l’utilisateur après avoir cliqué des résumés courants (en vert seulement).",
 	"treat-undo-title": "Utiliser l’annulation",
 	"treat-undo-desc": "Cochez la case si vous voulez annuler plutôt que révoquer.",
+	"max-warn-title": "Avertissement final",
+	"max-warn-desc": "Cocher la case pour envoyer le niveau maximal d’avertissement.",
 	"common-summaries": "Résumés courants :",
 	"tag-deletion-title": "Balise pour la suppression",
 	"gsr-add": "Ajouter à GSR",

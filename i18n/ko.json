@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Apzp79",
 			"Codenstory",
 			"Ykhwong"
 		]
@@ -138,6 +139,7 @@
 	"custom-revert-button": "되돌리기",
 	"treat-undo-title": "편집 취소 사용",
 	"treat-undo-desc": "일괄 되돌리기 대신 편집 취소를 하려면 체크 상자를 사용하십시오.",
+	"max-warn-title": "마지막 경고",
 	"gsr-add": "GSR에 추가",
 	"sysops-more-than-10": "이 위키는 10명이 넘는 활동 관리자가 있습니다.",
 	"edit-source-title": "원본 편집",

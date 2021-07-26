@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Jonathan5566",
 			"Kly",
 			"LuciferianThomas"
 		]
@@ -225,6 +226,8 @@
 	"warn-user-desc": "在選用常用回退摘要（僅限綠色選項）時自動警告用戶。",
 	"treat-undo-title": "使用撤銷",
 	"treat-undo-desc": "選用撤銷功能而非回退功能。",
+	"max-warn-title": "最後警告",
+	"max-warn-desc": "啓用複選框以發送最高級別之警告",
 	"common-summaries": "常用摘要：",
 	"tag-deletion-title": "標記為刪除",
 	"gsr-add": "新增到 GSR",

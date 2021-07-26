@@ -227,6 +227,8 @@
 	"warn-user-desc": "Bunu açmak, genel özetleri tıkladıktan sonra kullanıcı mesaj sayfasında bir uyarı bırakacaktır (yalnızca yeşil).",
 	"treat-undo-title": "Geri almayı kullan",
 	"treat-undo-desc": "Geri döndürme yerine geri almayı kullanmak istiyorsanız onay kutusunu etkinleştirin.",
+	"max-warn-title": "Son uyarı",
+	"max-warn-desc": "Maksimum düzeyde uyarı göndermek için onay kutusunu etkinleştirin.",
 	"common-summaries": "Genel Özetler:",
 	"tag-deletion-title": "Silinme etiketi",
 	"gsr-add": "GSR olarak ekle",

@@ -226,6 +226,8 @@
 	"warn-user-desc": "Ativar isso irá deixar um aviso na página de discussão do usuário após clicar em resumos comuns (apenas verdes).",
 	"treat-undo-title": "Usar \"desfazer\"",
 	"treat-undo-desc": "Ative a caixa de seleção se desejar usar desfazer em vez de reversão.",
+	"max-warn-title": "Aviso final",
+	"max-warn-desc": "Ative a caixa de seleção para enviar o nível máximo de aviso.",
 	"common-summaries": "Resumos comuns:",
 	"tag-deletion-title": "Marcar para eliminação",
 	"gsr-add": "Adicionar ao GSR",
