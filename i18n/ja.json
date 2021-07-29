@@ -3,6 +3,7 @@
 		"authors": [
 			"20041027 tatsu",
 			"Kokoko-H",
+			"MathXplore",
 			"Sai10ukazuki",
 			"Tamaki Wakita",
 			"Tmv"
@@ -49,6 +50,7 @@
 	"settings-rh-mode-descr": "キューの位置を画面の右側に表示します。",
 	"settings-terminate-stream": "ストリームを終了する",
 	"settings-terminate-stream-descr": "キューの上限に達したときに、最近の変更のストリームは終了します。",
+	"settings-hotkeys": "ホットキー",
 	"settings-limit": "キューの制限",
 	"settings-limit-descr": "キューにロードできる編集の最大数。",
 	"settings-limit-placeholder": "制限なし",
@@ -223,6 +225,8 @@
 	"custom-revert-button": "差し戻し",
 	"warn-user-title": "利用者に警告する",
 	"treat-undo-title": "取り消しを使う",
+	"max-warn-title": "最終警告",
+	"max-warn-desc": "チェックボックスを有効にすると、最大レベルの警告が送信できます。",
 	"common-summaries": "一般的な要約:",
 	"tag-deletion-title": "削除のためのタグ",
 	"gsr-add": "GSRに追加する",

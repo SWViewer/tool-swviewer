@@ -273,7 +273,7 @@
 	"new-page-frame-not-exist": "不存在",
 	"new-page-frame-new": "新页面为空",
 	"about-frame-app": "$1 是一个用来实时监视维基最近更改的应用程序。",
-	"about-frame-doc": "参见[$1|文档]",
+	"about-frame-doc": "参见[$1|文档]。",
 	"about-frame-q": "如您有任何问题，请至元维基的[$1|SWViewer讨论页]上询问。",
 	"about-frame-traffic": "请注意，本应用程序会使用大量互联网流量！",
 	"about-frame-attrib": "原文件的许可协议 / 作者",
