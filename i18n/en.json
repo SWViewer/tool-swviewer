@@ -47,6 +47,8 @@
   "settings-rh-mode-descr": "Show queue location on the right side of screen.",
   "settings-terminate-stream": "Terminate stream",
   "settings-terminate-stream-descr": "Terminate recent changes stream when queue limit reaches.",
+  "settings-jumps": "Jump to change",
+  "settings-jumps-descr": "If enabled, SWViewer focus will jump directly to change when opening diff from queue.",
   "settings-hotkeys": "Hotkeys",
   "settings-hotkeys-descr": "Enable [$1|hotkeys] to operate SWViewer with keyboard.",
   "settings-limit": "Queue limit",

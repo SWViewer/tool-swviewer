@@ -53,6 +53,8 @@
 	"settings-rh-mode-descr": "Description below the 'Queue location' text.",
 	"settings-terminate-stream": "The 'Terminate stream' text beside the button to terminate changes in 'General settings'.",
 	"settings-terminate-stream-descr": "Description below the 'Terminate stream' text.",
+	"settings-jumps": "The 'Jump to change' text beside the button for jumping to change in 'General settings'.",
+	"settings-jumps-descr": "Description below the 'Jump to change' text.",
 	"settings-hotkeys": "The 'Hotkeys' text beside the button to enable hotkeys in 'General settings'.",
 	"settings-hotkeys-descr": "Description below the 'Hotkeys' text. Parameters:\n* $1 - Manual:SWViewer/Keyboard_shortcuts link.",
 	"settings-limit": "The 'Queue limit' text beside the input to change queue limit in 'General settings'.",
