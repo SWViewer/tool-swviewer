@@ -3,6 +3,7 @@
 		"authors": [
 			"1997kB",
 			"Hedda",
+			"Jelican9",
 			"Joseph",
 			"MuratTheTurkish"
 		]
@@ -48,6 +49,7 @@
 	"settings-rh-mode-descr": "Kuyruk konumunu ekranın sağ tarafında gösterin.",
 	"settings-terminate-stream": "Akışı sonlandır",
 	"settings-terminate-stream-descr": "Kuyruk sınırına ulaştığında son değişiklikler akışını sonlandırın.",
+	"settings-jumps": "Değiştirmek için atla",
 	"settings-hotkeys": "Kısayol Tuşları",
 	"settings-hotkeys-descr": "SWViewer'ı klavye ile kullanmak için [$1|kısayol tuşlarını] etkinleştirin.",
 	"settings-limit": "Kuyruk sınırı",

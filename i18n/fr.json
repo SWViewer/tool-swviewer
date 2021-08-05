@@ -50,6 +50,8 @@
 	"settings-rh-mode-descr": "Afficher l’emplacement de la file d’attente sur le côté droit de l’écran.",
 	"settings-terminate-stream": "Terminer le flux",
 	"settings-terminate-stream-descr": "Terminer le flux des modifications récentes quand la limite de la file est atteinte.",
+	"settings-jumps": "Sauter à la modification",
+	"settings-jumps-descr": "Si activé, la focalisation de SWViewer sautera directement à la modification lors de l’ouverture du diff pour la queue.",
 	"settings-hotkeys": "Raccourcis clavier",
 	"settings-hotkeys-descr": "Activer les [$1|raccourcis clavier] pour utiliser SWViewer avec le clavier.",
 	"settings-limit": "Limite de la file d’attente",
