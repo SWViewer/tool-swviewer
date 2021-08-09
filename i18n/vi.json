@@ -47,6 +47,8 @@
 	"settings-rh-mode-descr": "Hiển thị vị trí hàng đợi ở bên phải màn hình.",
 	"settings-terminate-stream": "Kết thúc luồng",
 	"settings-terminate-stream-descr": "Kết thúc luồng thay đổi gần đây khi đạt đến giới hạn hàng đợi.",
+	"settings-jumps": "Nhảy để thay đổi",
+	"settings-jumps-descr": "Nếu được bật, tiêu điểm SWViewer sẽ trực tiếp thay đổi khi mở khác với hàng đợi.",
 	"settings-hotkeys": "Phím tắt",
 	"settings-hotkeys-descr": "Bật [$1|phím tắt] để sử dụng SWViewer bằng bàn phím.",
 	"settings-limit": "Giới hạn hàng đợi",
