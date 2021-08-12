@@ -5,7 +5,8 @@
 			"Hedda",
 			"Jelican9",
 			"Joseph",
-			"MuratTheTurkish"
+			"MuratTheTurkish",
+			"SaldırganSincap"
 		]
 	},
 	"tooltip-edit-preset": "Kuyruk ayarları",
@@ -50,6 +51,7 @@
 	"settings-terminate-stream": "Akışı sonlandır",
 	"settings-terminate-stream-descr": "Kuyruk sınırına ulaştığında son değişiklikler akışını sonlandırın.",
 	"settings-jumps": "Değiştirmek için atla",
+	"settings-jumps-descr": "Etkinleştirilirse, SWViewer odağı, fark sıradan açılırken doğrudan değişime atlayacaktır.",
 	"settings-hotkeys": "Kısayol Tuşları",
 	"settings-hotkeys-descr": "SWViewer'ı klavye ile kullanmak için [$1|kısayol tuşlarını] etkinleştirin.",
 	"settings-limit": "Kuyruk sınırı",
