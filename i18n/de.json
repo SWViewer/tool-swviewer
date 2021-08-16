@@ -10,7 +10,8 @@
 			"ManuelFranz",
 			"Mustermaster",
 			"RacoonyRE",
-			"WikiBayer"
+			"WikiBayer",
+			"Zabe"
 		]
 	},
 	"tooltip-edit-preset": "Warteschlangen-Einstellungen",
@@ -231,6 +232,7 @@
 	"warn-user-desc": "Wenn du dies einschaltest, wird auf der Diskussionsseite nach dem Anklicken von allgemeinen Zusammenfassungen eine Warnung hinterlassen (nur grün).",
 	"treat-undo-title": "Verwende Rückgängig machen",
 	"treat-undo-desc": "Aktiviere das Kontrollkästchen, wenn du Rückgängig anstelle von Rollback verwenden möchten.",
+	"max-warn-title": "Letzte Warnung",
 	"common-summaries": "Allgemeine Zusammenfassungen:",
 	"tag-deletion-title": "Zum Löschen markieren",
 	"gsr-add": "Zum GSR hinzufügen",

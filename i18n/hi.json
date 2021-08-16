@@ -45,6 +45,8 @@
 	"settings-rh-mode-descr": "कतार को स्क्रीन के दायी ओर लगाएं।",
 	"settings-terminate-stream": "बदलाव बंद करें",
 	"settings-terminate-stream-descr": "कतार की सीमा पहुंचने पर बदलाव बंद करें।",
+	"settings-jumps": "बदलाव पर जाएँ",
+	"settings-jumps-descr": "ऑन करने के बाद कतार के बदलावों को खोलने पर SWViewer का फ़ोकस सीधे बदलाव पर होगा।",
 	"settings-hotkeys": "हॉटकी",
 	"settings-hotkeys-descr": "कीबोर्ड के साथ SWViewer संचालित करने के लिए [[$1|हॉटकी]] सक्षम करें।",
 	"settings-limit": "कतार सीमा",
