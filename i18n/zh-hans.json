@@ -7,6 +7,7 @@
 			"KirkLU",
 			"Tiger",
 			"Yfdyh000",
+			"Zhang8569",
 			"轻语者"
 		]
 	},
@@ -51,6 +52,8 @@
 	"settings-rh-mode-descr": "在屏幕右侧显示队列。",
 	"settings-terminate-stream": "终止队列更新",
 	"settings-terminate-stream-descr": "当队列中待检查的编辑数量达到上限时停止接收新的编辑。",
+	"settings-jumps": "跳转到改变",
+	"settings-jumps-descr": "如果开启了，SWViewer关注将在从队伍中打开差异时直接跳转到改变。",
 	"settings-hotkeys": "快捷键",
 	"settings-hotkeys-descr": "启用[$1|快捷键]以使用键盘操作SWViewer。",
 	"settings-limit": "队列限制",

@@ -45,6 +45,8 @@
 	"settings-rh-mode-descr": "Прикажи каде е редицата десно на екранот.",
 	"settings-terminate-stream": "Прекини довод",
 	"settings-terminate-stream-descr": "Прекини го доводот на скорешни промени кога ќе се достигне границата на редицата.",
+	"settings-jumps": "Прејди на промена",
+	"settings-jumps-descr": "Ако е овозможено, SWViewer ќе прејде право на промената кога се отвораат разликите од редица.",
 	"settings-hotkeys": "Кратенки",
 	"settings-hotkeys-descr": "Овозможи [$1|кратенки] за ракување со SWViewer преку тастатура.",
 	"settings-limit": "Граница на редицата",
