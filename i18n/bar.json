@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"MeritedElm63160",
 			"WikiBayer"
 		]
 	},
@@ -31,6 +32,7 @@
 	"settings-language": "Sproch",
 	"settings-language-descr": "Tool Sproch ändan",
 	"settings-language-region": "Region",
+	"settings-language-region-descr": "Region so oastejn, dass Zoin und Datn im lokoin Format ozoagt wern.",
 	"settings-sound": "Ton",
 	"settings-sound-descr": "Ända den Ton-modus fia kemmande Beoawatunga und Nochrichtn im Chat.",
 	"settings-revisions": "Mehrfoch Diff",
@@ -42,6 +44,10 @@
 	"settings-direction-descr": "Beoawatunga i d Woateschlaang vo untn noch om ozoang.",
 	"settings-rh-mode": "Position vo d Woateschlaang",
 	"settings-rh-mode-descr": "Zoag de Woateschlaang af d rechtn Seitn vom Buidschiam.",
+	"settings-terminate-stream": "Stream beendn",
+	"settings-terminate-stream-descr": "Beendt den Stream da letzdn Endarunga, wenn des Limit da Watschlang eareicht is.",
+	"settings-jumps": "Da Text \"Zum Endan springan\" nebn da Schoidfläche zum Springan zum Endan in \"Oigmoa Oastejunga\".",
+	"settings-jumps-descr": "Bschreibung untahoib vom Textes \"Zum Endan springan\".",
 	"settings-limit": "Woateschlaang Limit",
 	"settings-limit-descr": "Maximale Ozoi vo Beoawatunga de in d Woateschlaang glond wern deafan.",
 	"settings-limit-placeholder": "Koa Limit",
