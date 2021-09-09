@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Akmaie Ajam",
 			"Hidayatsrf",
 			"Silencemen21",
 			"Sonic Speedy",
@@ -48,11 +49,16 @@
 	"settings-rh-mode-descr": "Tampilkan letak antrean di sisi kanan layar.",
 	"settings-terminate-stream": "Hentikan saluran",
 	"settings-terminate-stream-descr": "Hentikan saluran perubahan terbaru ketika batas antrean tercapai.",
+	"settings-jumps": "Lompat untuk menyunting",
+	"settings-jumps-descr": "Jika diaktifkan, fokus SWViewer akan langsung melompat untuk menyunting saat membuka diff dari antrian.",
+	"settings-hotkeys": "Tombol pintas",
+	"settings-hotkeys-descr": "Aktifkan [$1|tombol pintas] untuk mengoperasikan SWViewer dengan keyboard.",
 	"settings-limit": "Batas suntingan",
 	"settings-limit-descr": "Maks jumlah suntingan yang diperbolehkan untuk memuat di antrean.",
 	"settings-limit-placeholder": "Tidak ada batasan",
 	"settings-control": "Perkakas dev",
 	"settings-control-panel": "Panel pengaturan",
+	"settings-service": "Layanan",
 	"settings-beta": "Beta",
 	"settings-beta-tester": "Buka versi beta",
 	"queue-empty-msg": "Antrean kosong",
@@ -224,6 +230,8 @@
 	"warn-user-desc": "Mengaktifkan ini akan meninggalkan peringatan di halaman pembicaraan pengguna setelah mengklik ringkasan umum (hanya yang berwarna hijau).",
 	"treat-undo-title": "Gunakan pengembalian manual",
 	"treat-undo-desc": "Aktifkan kotak centang jika Anda ingin menggunakan pengembalian secara manual dan bukan pengembalian.",
+	"max-warn-title": "Peringatan akhir",
+	"max-warn-desc": "Aktifkan kotak centang untuk mengirim peringatan tingkat maksimum.",
 	"common-summaries": "Ringkasan Umum:",
 	"tag-deletion-title": "Tag untuk penghapusan",
 	"gsr-add": "Tambahkan ke GSR",
