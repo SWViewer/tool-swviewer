@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Beta16",
+			"Kocgs",
 			"Superpes15"
 		]
 	},
@@ -46,6 +47,10 @@
 	"settings-rh-mode-descr": "Mostra la coda sul lato destro dello schermo.",
 	"settings-terminate-stream": "Interrompi il flusso",
 	"settings-terminate-stream-descr": "Interrompi il flusso delle ultime modifiche quando la coda raggiunge il limite.",
+	"settings-jumps": "Salta per cambiare",
+	"settings-jumps-descr": "Se abilitato, il focus di SWViewer passerà direttamente alla modifica quando si apre diff dalla coda.",
+	"settings-hotkeys": "Tasti di scelta rapida",
+	"settings-hotkeys-descr": "Abilita [$1|Tasti di scelta rapida] per far funzionare SWViewer con la tastiera.",
 	"settings-limit": "Limite della coda",
 	"settings-limit-descr": "Massimo numero di modifiche da visualizzare nella coda.",
 	"settings-limit-placeholder": "Nessun limite",
@@ -223,6 +228,8 @@
 	"warn-user-desc": "Seleziona questa casella per lasciare un avviso nella pagina di discussione dell'utente dopo avere cliccato su una delle motivazioni comuni (in verde).",
 	"treat-undo-title": "Fai un annullamento normale",
 	"treat-undo-desc": "Spunta la casella se vuoi fare un annullamento normale, senza usare il rollback.",
+	"max-warn-title": "Avviso finale",
+	"max-warn-desc": "Abilita la casella di controllo per inviare il livello massimo di avviso.",
 	"common-summaries": "Motivazioni comuni:",
 	"tag-deletion-title": "Segna per la cancellazione",
 	"gsr-add": "Aggiungi alle GSR",

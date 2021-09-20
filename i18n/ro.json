@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Kocgs",
 			"NGC 54"
 		]
 	},
@@ -45,11 +46,16 @@
 	"settings-rh-mode-descr": "Arată locația cozii pe partea dreaptă a ecranului.",
 	"settings-terminate-stream": "Termină cursul",
 	"settings-terminate-stream-descr": "Termină cursul de schimbări recente când este ajunsă limita cozii.",
+	"settings-jumps": "Salt la schimbare",
+	"settings-jumps-descr": "Dacă este activată, focalizarea SWViewer va trece direct la modificare atunci când se deschide o diferență din coada de așteptare.",
+	"settings-hotkeys": "Tastele de acces rapid",
+	"settings-hotkeys-descr": "Activați [$1|Tastele de acces rapid] pentru a opera SWViewer cu ajutorul tastaturii.",
 	"settings-limit": "Limita cozii",
 	"settings-limit-descr": "Numărul maxim de modificări care este permis să fie încărcat în coadă.",
 	"settings-limit-placeholder": "Fără limită",
 	"settings-control": "Unelte de dezvoltatori",
 	"settings-control-panel": "Panoul de control",
+	"settings-service": "Serviciul",
 	"settings-beta": "Beta",
 	"settings-beta-tester": "Deschide versiunea beta",
 	"queue-empty-msg": "Coada este goală",
@@ -221,6 +227,8 @@
 	"warn-user-desc": "Activând asta va lăsa o un avertisment pe pagina de discuție a utilizatorului după apăsarea rezumatelor comune (verde numai).",
 	"treat-undo-title": "Utilizați anularea",
 	"treat-undo-desc": "Bifați căsuța dacă doriți să utilizați anularea în loc de revenire.",
+	"max-warn-title": "Avertisment final",
+	"max-warn-desc": "Activați caseta de selectare pentru a trimite nivelul maxim de avertizare.",
 	"common-summaries": "Rezumate comune:",
 	"tag-deletion-title": "Etichetați pentru ștergere",
 	"gsr-add": "Adăugați la GSR",

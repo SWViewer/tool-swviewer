@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Kocgs",
 			"Sabelöga",
 			"WikiPhoenix"
 		]
@@ -36,9 +37,17 @@
 	"settings-sound": "Ljud",
 	"settings-sound-descr": "Ändra ljudläge för inkommande redigeringar och meddelanden i diskussioner.",
 	"settings-revisions": "Flera skillnader",
+	"settings-revisions-descr": "Ställ in en varning eller öppna alla på varandra följande redigeringar av samma användare på en gång.",
 	"settings-revisions-onlylast": "Bara senaste",
+	"settings-revisions-alert": "Varna vid återställning",
 	"settings-revisions-all": "Visa alla",
 	"settings-direction": "Upp och ner",
+	"settings-direction-descr": "Visa redigeringar från botten till toppen i kön.",
+	"settings-rh-mode": "Placering i kön",
+	"settings-rh-mode-descr": "Visa köplatsen till höger på skärmen.",
+	"settings-terminate-stream": "Avsluta strömningen",
+	"settings-terminate-stream-descr": "Avsluta strömningen av senaste ändringar när kögränsen är uppnådd.",
+	"settings-jumps-descr": "Om den är aktiverad kommer SWViewer-fokus att hoppa direkt till ändringen när du öppnar skillnaden från kön.",
 	"settings-limit-placeholder": "Ingen gräns",
 	"settings-control": "Utvecklarverktyg",
 	"settings-control-panel": "Kontrollpanel",
@@ -138,7 +147,10 @@
 	"about-frame-translating": "Översättning",
 	"about-frame-translators-list": "Lista över översättare:",
 	"about-frame-privacy-title": "Integritet",
+	"about-frame-disc-1": "Genom att använda detta projekt samtycker du till att all privat information som du lämnar till detta projekt kan göras tillgänglig för allmänheten och inte behandlas konfidentiellt. Genom att använda detta projekt godkänner du att projektets frivilliga administratörer har tillgång till alla uppgifter som du skickar in och all information som du skickar. De frivilliga administratörerna av detta projekt är bundna av Wikimedia Cloud Services användarvillkor och får inte dela denna information eller använda den på något icke godkänt sätt.",
+	"about-frame-disc-2": "Eftersom tillgången till denna information är grundläggande för driften av Wikimedias molntjänster, åsidosätter dessa villkor för användning av dina uppgifter uttryckligen Wikimedia Foundations sekretesspolicy när det gäller användning av och tillgång till din personliga information.",
 	"about-frame-data-username": "Användarnamn",
+	"about-frame-data-ref-1": "Denna data kan vara tillgänglig för Wikimedia Foundation, dess volontärer och användare av Wikimedia Cloud Services.",
 	"welcome-page-title": "Välkomstsida",
 	"login-welcome": "Välkommen!",
 	"img-message": "Meddelande",
