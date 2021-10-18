@@ -234,7 +234,7 @@
 	"gsr-add": "Adăugați la GSR",
 	"sysops-active": "Acest wiki are $1 sysop(i) activ(i) (total $2).",
 	"sysops-wait": "Poate este mai bine să așteptați reacția sysop-ului local.",
-	"sysops-not-gs": "Nu este un wiki care permite utilizează funcția de sysop global.",
+	"sysops-not-gs": "Nu este un wiki care permite utilizarea funcției de sysop global.",
 	"sysops-more-than-3": "Acest wiki are mai mult de 3 sysopi activi (total $1).",
 	"sysops-more-than-10": "Acest wiki are mai mult de 10 sysopi activi.",
 	"edit-source-title": "Editare sursă",
