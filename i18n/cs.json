@@ -237,7 +237,7 @@
 	"sysops-wait": "Možná je lepší počkat na smazání lokálním správcem.",
 	"sysops-not-gs": "Toto není wiki s povolenými globálními správci.",
 	"sysops-more-than-3": "Tato wiki má více než 3 aktivní správce (celkem $1).",
-	"sysops-more-than-10": "Tato wiki má více, než 10 aktivních správců.",
+	"sysops-more-than-10": "Tato wiki má více než 10 aktivních správců.",
 	"edit-source-title": "Editovat zdroj",
 	"summary-title": "Shrnutí",
 	"summary-placeholder": "Stručně popište vaše změny.",
