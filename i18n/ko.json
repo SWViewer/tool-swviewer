@@ -161,6 +161,7 @@
 	"welcome-frame-translation": "번역 도구:",
 	"new-page-frame-not-exist": "존재하지 않음",
 	"new-page-frame-new": "새 문서가 비어있습니다",
+	"about-frame-app": "$1 앱은 실시간으로 위키의 최근 바뀜을 모니터링하는 앱입니다.",
 	"about-frame-doc": "[$1|설명문서]를 보십시오.",
 	"about-frame-traffic": "인터넷 트래픽이 많으므로 주의하십시오!",
 	"about-frame-attrib": "라이선스 / 원 파일의 저자",
