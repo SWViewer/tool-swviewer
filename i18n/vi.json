@@ -304,7 +304,7 @@
 	"login-welcome": "Hoan nghênh!",
 	"login-oauth": "Đăng nhập qua OAuth",
 	"login-rights": "Để sử dụng ứng dụng này, cần quyền lùi sửa [$1|địa phương] hoặc lùi sửa [$2|toàn cục].",
-	"login-disclaimer": "Bằng việc nhấp vào nút \"Đăng nhập OAuth\", bạn đồng ý với [$1|Quy định về cookie và quyền riêng tư] của chúng tôi.",
+	"login-disclaimer": "Bằng việc nhấp vào nút \"Đăng nhập OAuth\", bạn đồng ý với [$1|chính sách về cookie và quyền riêng tư] của chúng tôi.",
 	"img-message": "Tin nhắn",
 	"img-logos": "Nhật trình",
 	"img-logout": "Đăng xuất",
