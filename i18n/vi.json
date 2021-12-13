@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"1997kB",
+			"Keo010122",
 			"Nghiemtrongdai VN",
 			"NguoiDungKhongDinhDanh",
 			"Yosari101"
@@ -154,6 +155,7 @@
 	"logs-action-delete": "Xóa",
 	"logs-action-report": "Báo cáo",
 	"logs-action-protect": "Khóa",
+	"pw-img-drawer": "Viết",
 	"talk-today": "Hôm nay",
 	"talk-yesterday": "Hôm qua",
 	"talk-title": "Thảo luận",
