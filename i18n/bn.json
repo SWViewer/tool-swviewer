@@ -53,6 +53,7 @@
 	"settings-rh-mode-descr": "সারির অবস্থান স্ক্রিনের ডান পাশে দেখান।",
 	"settings-terminate-stream": "প্রবাহ বন্ধ করুন",
 	"settings-terminate-stream-descr": "যখন সারির সীমায় পৌঁছাবে তখন সাম্প্রতিক পরিবর্তন বন্ধ করুন।",
+	"settings-jumps": "পরিবর্তনে যান",
 	"settings-limit": "সারির সীমা",
 	"settings-limit-descr": "সারিতে লোড হওয়ার জন্য সম্পাদনার সর্বোচ্চ সংখ্যা অনুমোদিত।",
 	"settings-limit-placeholder": "অনির্দিষ্ট",
