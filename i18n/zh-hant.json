@@ -3,6 +3,7 @@
 		"authors": [
 			"Jonathan5566",
 			"Kly",
+			"LNDDYL",
 			"LuciferianThomas",
 			"Winston Sung"
 		]
@@ -56,7 +57,7 @@
 	"settings-limit-descr": "佇列中可以儲存的最大編輯數量。",
 	"settings-limit-placeholder": "沒有限制",
 	"settings-control": "開發工具",
-	"settings-control-panel": "控制面板",
+	"settings-control-panel": "控制台",
 	"settings-service": "服務",
 	"settings-beta": "測試",
 	"settings-beta-tester": "開啟測試版本",
