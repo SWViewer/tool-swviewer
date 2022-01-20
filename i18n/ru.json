@@ -27,7 +27,7 @@
 	"tooltip-custom-rollback": "Откат с комментарием [y]",
 	"tooltip-rollback": "Быстрый откат [r]",
 	"tooltip-last-diff": "Предыдущий дифф [Левая квадратная скобка или p]",
-	"tooltip-publish-changes": "Записать страницу",
+	"tooltip-publish-changes": "Опубликовать изменения",
 	"settings-confirm-lang": "Для вступления в силу языковых настроек необходимо перезагрузить страницу.",
 	"settings-title": "Настройки",
 	"settings-theme": "Тема",
