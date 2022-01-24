@@ -50,6 +50,7 @@
 	"settings-terminate-stream": "הפסק את הזרם",
 	"settings-terminate-stream-descr": "הפסק את זרם השינויים האחרונים כאשר מגבלת התור מגיעה.",
 	"settings-jumps": "קפיצה למקום השינוי",
+	"settings-jumps-descr": "אם האפשרות מופעלת, המיקוד של SWViewer יועבר ישירות לשינוי בעת פתיחת הבדלים מהתור.",
 	"settings-hotkeys": "מקשים חמים",
 	"settings-hotkeys-descr": "ניתן להפעיל [$1|מקשים חמים] כדי להפעיל את SWViewer עם מקלדת.",
 	"settings-limit": "מגבלת תור",
@@ -314,6 +315,7 @@
 	"img-box": "סרגל הצד",
 	"img-save": "שמירה",
 	"cancel": "ביטול",
+	"alright": "בסדר",
 	"about": "אודות",
 	"delete": "מחיקה"
 }

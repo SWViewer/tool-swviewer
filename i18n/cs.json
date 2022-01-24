@@ -106,7 +106,7 @@
 	"presets-invalid-ores-limit": "Neplatné skóre ORES",
 	"presets-invalid-ores-limit-desc": "Skóre ORES musí být číslo a nesmí být prázdné.",
 	"statusbar-rc-connected": "Připojeno ke streamu",
-	"statusbar-rc-connecting": "Připojování ke streamu...",
+	"statusbar-rc-connecting": "Připojování ke streamu…",
 	"statusbar-rc-disconnected": "Odpojeno od streamu",
 	"diff-info-user": "Uživatel:",
 	"diff-info-title": "Název:",
