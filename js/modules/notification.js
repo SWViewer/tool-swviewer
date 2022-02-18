@@ -1,20 +1,21 @@
 const notifyStack = [];
+var notifyCount = 0;
+
+function notifyOpen() {
+    notifyCount = 0;
+    const notifyIndicator = document.getElementById('notify-indicator');
+    const notifyFabIndicator = document.getElementById('notify-fab-indicator');
+    notifyIndicator.classList.add('tab-notice-indicator__inactive');
+    notifyFabIndicator.parentElement.parentElement.classList.add('notification-fab-base__inactive');
+    // document.getElementById('clearAllNotify-base').style.transform = 'translateX(100%)';
+}
+
 const removeNotify = (notiID) => {
     const notifyIndex = notifyStack.indexOf(notiID);
     if (notifyIndex === -1) return console.error(`${notiID} is not valid`);
     notifyStack.splice(notifyIndex, 1);
     const noti = document.getElementById(notiID);
     noti.parentElement.removeChild(noti);
-
-    const notifyIndicator = document.getElementById('notify-indicator');
-    const notifyFabIndicator = document.getElementById('notify-fab-indicator');
-    notifyIndicator.textContent = notifyStack.length.toLocaleString(locale);
-    notifyFabIndicator.textContent = notifyStack.length.toLocaleString(locale);
-    if (notifyStack.length <= 0) {
-        notifyIndicator.classList.add('tab-notice-indicator__inactive');
-        notifyFabIndicator.parentElement.parentElement.classList.add('notification-fab-base__inactive');
-        document.getElementById('clearAllNotify-base').style.transform = 'translateX(100%)';
-    }
 }
 
 const removeAllNotify = () => [...notifyStack].forEach(id => removeNotify(id));
@@ -97,8 +98,9 @@ const createNotify = (notify) => {
         notifyFabIndicator.parentElement.parentElement.classList.remove('notification-fab-base__inactive');
     }
     notifyStack.push(notiID);
-    notifyIndicator.textContent = notifyStack.length.toLocaleString(locale);
-    notifyFabIndicator.textContent = notifyStack.length.toLocaleString(locale);
+    notifyCount++;
+    notifyIndicator.textContent = notifyCount.toLocaleString(locale);
+    notifyFabIndicator.textContent = notifyCount.toLocaleString(locale);
     document.getElementById('clearAllNotify-base').style.transform = 'translateX(0)';
     return notiID;
 }

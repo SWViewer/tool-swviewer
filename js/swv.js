@@ -1,5 +1,6 @@
 var i = 0;
 var loadingEdits = 0;
+diffTextRaw = "";
 var isPause = false;
 angular.module("swv", ["ui.directives", "ui.filters"])
     .controller("Queue", function ($scope, $compile, $timeout) {
@@ -32,16 +33,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 checkWarnDelete: (defaultDeleteList.indexOf(edit.wiki) !== -1)? true: false,
                 checkWarn: (defaultWarnList.indexOf(edit.wiki) !== -1)? true: false
             };
-// console.log($scope.selectedEdit.config.warn);
-var tagstest = {};
-for (let o in $scope.selectedEdit.config.warn) {
-    if (typeof $scope.selectedEdit.config.warn[o] === "object" && o !== "months") {
-        // console.log(o);
-        // console.log($scope.selectedEdit.config.warn[o]);
-        tagstest[o] = $scope.selectedEdit.config.warn[o][0]["tags"][0];
-    }
-}
-console.log(tagstest);
+
         };
 
         $scope.selectTop = function() {
@@ -290,9 +282,13 @@ console.log(tagstest);
             if ($scope.selectedEdit.old === null || isNaN($scope.selectedEdit.old) === true) return;
             document.getElementById('credit').value = "";
             openPO('customRevert');
+            if (document.getElementById("max").classList.contains("i-checkbox__active"))
+                toggleICheckBox(document.getElementById("max"));
 
             const warnBtn = document.getElementById('warn-box');
+            const lastWarn = document.getElementById('last-warn-box');
             if ($scope.selectedEdit.config.warn !== null && typeof $scope.selectedEdit.config.warn !== "undefined") {
+                lastWarn.classList.remove('disabled');
                 warnBtn.parentElement.parentElement.classList.remove('disabled');
                 if (defaultWarnList.indexOf($scope.selectedEdit.wiki) !== -1) {
                     warnBtn.classList.add('t-btn__active');
@@ -302,6 +298,7 @@ console.log(tagstest);
                     $scope.selectedEdit.settings.checkWarn = false;
                 }
             } else {
+                lastWarn.classList.add('disabled');
                 warnBtn.parentElement.parentElement.classList.add('disabled');
             }
         }
@@ -421,6 +418,8 @@ console.log(tagstest);
             else if (RSInput.value !== "" && RSInput.value !== null && document.getElementById('customRevert').classList.contains('po__active')) {
                 rollbackSummary = RSInput.value;
             }
+            var isMax = document.getElementById("max").classList.contains("i-checkbox__active") ? true : false;
+
             RSInput.value = "";
             closePO();
 
@@ -483,7 +482,7 @@ console.log(tagstest);
 
                                     $scope.reqSuccessNotify(rollbackData, SEdit, 'rollback', RBMode);
                                     if (description.warn === null || typeof description.warn === 'undefined') return;
-                                    $scope.doWarn(rollbackData, SEdit, description);
+                                    $scope.doWarn(rollbackData, SEdit, description, isMax);
                                 }).catch(err => createNotify({
                                 img: '/img/warning-filled.svg',
                                 title: useLang["rollback-fail-title"],
@@ -532,7 +531,7 @@ console.log(tagstest);
             $scope.selectTop();
         }
 
-        $scope.doWarn = function (rollbackData, SEdit, description) {
+        $scope.doWarn = function (rollbackData, SEdit, description, max = false) {
 
             if (SEdit.config.warn === null ||
                 typeof SEdit.config.warn['summaryWarn'] === 'undefined' || SEdit.config.warn['summaryWarn'] === null || SEdit.config.warn['summaryWarn'] === "" ||
@@ -557,17 +556,20 @@ console.log(tagstest);
                     if (SEdit.config.warn['months'][0][parseInt(moment.utc().format('MM'))] !== null)
                         warnMonth = SEdit.config.warn['months'][0][parseInt(moment.utc().format('MM'))];
 
-            const tags = [];
-            const templates = [];
-
-            for (let tagKey in SEdit.config.warn[description.warn][0]['tags'][0]) tags.push(SEdit.config.warn[description.warn][0]['tags'][0][tagKey]);
-            for (let templateKey in SEdit.config.warn[description.warn][0]['templates'][0]) templates.push(SEdit.config.warn[description.warn][0]['templates'][0][templateKey]);
+            var alltags = {};
+            for (let o in SEdit.config.warn)
+                if (typeof SEdit.config.warn[o] === "object" && o !== "months")
+                    alltags[o] = SEdit.config.warn[o][0]["tags"][0];
+            const templates = SEdit.config.warn[description.warn][0]['templates'][0];
 
             getUrlToCountWarn(SEdit.server_url, SEdit.script_path, SEdit.user, timeWarn)
-                .then(url => getExistingWarnCount(url, tags))
+                .then(url => getExistingWarnCount(url, alltags))
                 .then(async warnCount => {
+                    warnCount = Number(warnCount);
                     if (warnCount === -1 || (warnCount !== -1 && warnCount < maxWarnCount)) {
+                        if (warnCount === -1) warnCount = 0;
                         warnCount = warnCount + 1;
+                        if (max === true && (Object.keys(templates).length >= warnCount && Object.keys(templates).length <= maxWarnCount + 1)) warnCount = Object.keys(templates).length; // if need max level
                         if (templates[warnCount] === "undefined") throw useLang["warn-perform-fail"].replace("$1", SEdit.title);
                         await sendWarning(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.new, SEdit.old, SEdit.title, SEdit.user, warnCount, templates, warnMonth, SEdit.config.warn['summaryWarn'], SEdit.config.warn['sectionWarn'], (description.withoutSection || false));
                         $scope.sessionActions.warn++;
@@ -665,7 +667,6 @@ console.log(tagstest);
         function connectTalk() {
             var sc = new WebSocket("wss://swviewer-service.toolforge.org/:9030?name=" + encodeURIComponent(userSelf).replace(/'/g, '%27')
                 + "&token=" + talktoken + "&preset=" + encodeURIComponent(presets[selectedPreset].title).replace(/'/g, '%27'));
-
             sc.onclose = function () {
                 $scope.recentChangeStatus.disconnected();
                 setTimeout(function () {
@@ -792,6 +793,13 @@ console.log(tagstest);
                     }
                 }
 
+                if (msg.type === "command") {
+                    if (msg.text === "/kik")
+                        window.location.href = 'https://swviewer.toolforge.org/php/oauth.php?action=unlogin&kik=1';
+                    if (msg.text === "/cache")
+                        location.reload(true);
+                }
+
                 if (msg.type === "synch") {
                     $scope.edits.map(function (e, index) {
                         if (e.wiki === msg.wiki && e.title === msg.page)
@@ -880,7 +888,7 @@ console.log(tagstest);
                 "namespace_name": editData.namespace_name,
                 "user": editData.performer.user_text,
                 "title": editData.title.replace(/_/g, ' '),
-                "comment": editData.comment,
+                "comment": (editData.comment === null) ? "" : editData.comment,
                 "old": editData.old_id,
                 "new": editData.new_id,
                 "isIp": (editData.performer.user_is_anon === true) ? "ip" : "registered",
@@ -1132,7 +1140,8 @@ console.log(tagstest);
         document.onkeydown = function (e) {
             if (!e) e = window.event;
             var keyCode = e.which || e.keyCode || e.key;
-            $scope.keyDownFunct(keyCode);
+            if (hotkeys === 1 || keyCode === 27)
+                $scope.keyDownFunct(keyCode);
         };
 
         $scope.keyDownFunct = function (keyCode) {
@@ -1407,7 +1416,7 @@ function sendWarning(serverUrl, scriptPath, wiki, newId, oldId, title, user, war
                 page: 'User_talk:' + user,
                 text: warnTemplates[warnLevel].replace(/\$1/gi, title).replace(/\$2/gi, oldId).replace(/\$3/gi, newId).replace(/\$4/gi, user).replace(/\$5/gi, "Special:Diff/" + oldId + "/" + newId).replace(/\$6/gi, serverUrl + scriptPath + "/index.php?oldid=" + oldId + "&diff=" + newId),
                 sectiontitle: warnSection.replace(/\$DD/gi, moment.utc().format('DD')).replace(/\$MMMM/gi, warnMonth).replace(/\$MM/gi, moment.utc().format('MM')).replace(/\$M/gi, moment.utc().format('M')).replace(/\$YYYY/gi, moment.utc().format('YYYY')),
-                summary: warnSummary.replace(/\$1/gi, warnLevel + 1)
+                summary: warnSummary.replace(/\$1/gi, warnLevel)
             },
             success: () => resolve(),
             error: err => reject(err)
@@ -1471,6 +1480,7 @@ function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
                 if (data.compare['*'] === "" || data.compare['*'].indexOf("<tr>") === -1) {
                     if (oldId !== null) return reject(useLang["error-already-reverted"]);
                     var newPageDiff = startstring + data.compare['*'] + endstring;
+                    diffTextRaw = "";
                     newstart = newstart.replace('[new-page-frame-not-exist]', useLang['new-page-frame-not-exist']).replace('[new-page-frame-new]', useLang['new-page-frame-new']);
                     return resolve({ html: newstart + newPageDiff + newend, key: wiki + newId });
                 }
@@ -1478,6 +1488,7 @@ function getDiff(serverUrl, scriptPath, wiki, newId, oldId) {
                 if (oldId === null) diffTextToFrame = '<tr><td colspan="2" class="diff-lineno">' + useLang['new-page-frame-not-exist'] + diffTextToFrame.substring(diffTextToFrame.indexOf("</td>"), diffTextToFrame.length);
                 if (wiki !== "commonswiki" && wiki !== "wikidatawiki") diffTextToFrame = escapeXSSDiff(diffTextToFrame);
                 else diffTextToFrame = structuredData(diffTextToFrame.replace(/<a class="mw-diff-movedpara-left".*?<\/a>/g, '-').replace(/<a class="mw-diff-movedpara-right".*?<\/a>/g, '+').replace(/<a name="movedpara_.*?<\/a>/g, ''), serverUrl);
+                diffTextRaw = (oldId !== null) ? diffTextToFrame : "";
                 return resolve({ html: diffstart + diffTextToFrame + diffend, key: wiki + newId });
             },
             error: error => reject(`Failed... dev code: 010; error code: ${error.status}.`)
@@ -1586,23 +1597,44 @@ function checkMultipleEdits(serverUrl, scriptPath, user, newId) {
     });
 }
 
-// => to get source code of an edit
-function getEditSource(serverUrl, scriptPath, newId) {
+async function getAPI(url, data, type) {
+    data.origin = "*"; data.format = "json"; data.utf8 = 1;
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: "php/getPage.php",
-            type: 'POST',
-            dataType: 'text',
-            data: {
-                server: serverUrl + scriptPath,
-                oldid: newId
-            }, success: pageData => {
-                if (pageData === "Error! Loading page is not success") return reject(useLang["error-get-source"] + " (Dev code: 004.1)");
-                return resolve(pageData);
-            }, error: err => reject(`Failed... dev code: 004; error code: ${err.status}.`)
+            url: url, type: type,
+            data: data,
+            dataType: 'json',
+            success: res => {
+                if (res.hasOwnProperty("warnings")) console.log(res.warnings);
+                resolve(res)
+            },
+            error: err => reject(err)
+        })
+    }).catch(function (err) {
+        console.log("getAPI promise error");
+        console.log(err);
+    });
+}
+
+// => to get source code of an edit
+function getEditSource(serverUrl, scriptPath, newId) {
+    let data = {action: "query", prop: "revisions", revids: newId, rvslots: "*", rvprop: "content"};
+    return new Promise((resolve, reject) => {
+        getAPI(serverUrl + scriptPath + "/" + "api.php", data, "POST").then(function(res) {
+            let isPropExists = Boolean(res?.query?.pages?.[firstKey(res?.query?.pages ?? false)]?.revisions?.[0]?.slots?.main?.["*"] ?? false);
+            (isPropExists) ? resolve(res.query.pages[firstKey(res?.query?.pages ?? false)].revisions[0].slots.main["*"]) : reject(" (Dev code: 004.0)");
+        }).catch(function (err) {
+            console.log(err);
+            reject(useLang["error-get-source"] + " (Dev code: 004.1)");
         });
     });
 }
+
+function firstKey(json) {
+    if (!json) return undefined;
+    return (Object.keys(json).hasOwnProperty(0)) ? Object.keys(json)[0] : undefined;
+}
+
 
 // => get first editor of the page.
 function getFirstEditor(serverUrl, scriptPath, wiki, title, user) {
@@ -1684,7 +1716,11 @@ function getExistingWarnCount(url, tags) {
                     diffWarnContent = revisionsWarn["compare"]["*"];
                 }
                 diffWarnContent = getNewFromDiff(diffWarnContent);
-                for (let tagWarn in tags) if(diffWarnContent.indexOf(tags[tagWarn]) !== -1) if (level < tagWarn) level = Number(tagWarn);
+                for (let r in tags)
+                    for (let t in tags[r])
+                        if (diffWarnContent.indexOf(tags[r][t]) > -1)
+                            if (t > level)
+                                level = t;
                 return resolve(level);
             }, error: err => reject(err)
         });
@@ -1816,7 +1852,8 @@ function selectTalkUsers(selectedUser) {
     closePWDrawer('talkPWDrawer', 'talkPWOverlay');
 }
 function keyDownFunctOutside(keyCode) {
-    angular.element(document.getElementById('angularapp')).scope().keyDownFunct(keyCode);
+    if (hotkeys === 1 || keyCode === 27)
+        angular.element(document.getElementById('angularapp')).scope().keyDownFunct(keyCode);
 }
 
 function structuredData(str, server) {
