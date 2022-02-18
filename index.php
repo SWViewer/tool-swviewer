@@ -333,17 +333,25 @@ $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
 $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
 unset($ts_mycnf, $ts_pw);
 
-$q = $db->prepare('SELECT name, lang, locked, betaTester FROM user WHERE name=:name');
+$q = $db->prepare('SELECT name, lang, locked, rebind, betaTester FROM user WHERE name=:name');
 $q->execute(array(':name' => $_SESSION["userName"]));
 $result = $q->fetchAll();
 $isLocked = intval($result[0]["locked"]);
 $isBetaTester = intval($result[0]["betaTester"]);
+$isRebind = intval($result[0]["rebind"]);
 
-# User is banned
-if ($isLocked !== 0) {
-    echo "Access denied. You have been blocked.";
+# User is banned or need refesh parameters
+if ($isLocked !== 0 || $isRebind == 1) {
     $_SESSION = array();
     session_write_close();
+    if (isset($_COOKIE['SWViewer-auth'])) {
+       unset($_COOKIE['SWViewer-auth']);
+       setcookie('SWViewer-auth', '', time() - 3600, '/');
+    }
+    if ($isLocked !== 0)
+        echo "Access denied. You have been blocked.";
+    else
+        echo "<script>window.location.href = 'https://swviewer.toolforge.org/php/oauth.php?action=unlogin&kik=1';</script>";
     exit();
 }
 
@@ -420,7 +428,7 @@ session_write_close();
                         <span class="loading-tab tab-notice-indicator">!</span>
                         <img class="touch-ic primary-icon custom-lang" src="./img/about-filled.svg" alt="[img-about]">
                     </div>
-                    <div id="btn-notification" class="primary-hover custom-lang" onclick="openPO('notificationPanel'); closeSidebar();" aria-label="[tooltip-notification]" i-tooltip="right">
+                    <div id="btn-notification" class="primary-hover custom-lang" onclick="openPO('notificationPanel'); closeSidebar(); notifyOpen();" aria-label="[tooltip-notification]" i-tooltip="right">
                         <span id="notify-indicator" class="tab-notice-indicator tab-notice-indicator__inactive" style="background-color: var(--bc-negative);">0</span>
                         <span class="loading-tab tab-notice-indicator">!</span>
                         <img class="touch-ic primary-icon custom-lang" src="./img/bell-filled.svg" alt="[img-notification]">
@@ -554,7 +562,7 @@ session_write_close();
                         </div>
                     </div>
                     <div id="notificationFabBase" class="notification-fab-base notification-fab-base__inactive drawer-fab mobile-only">
-                        <div id="notificationFab" class="secondary-hover custom-lang" onclick="openPO('notificationPanel');" aria-label="[tooltip-m-notification]" i-tooltip="top-left">
+                        <div id="notificationFab" class="secondary-hover custom-lang" onclick="openPO('notificationPanel'); notifyOpen();" aria-label="[tooltip-m-notification]" i-tooltip="top-left">
                             <span id="notify-fab-indicator" class="tab-notice-indicator" style="background-color: var(--bc-negative);">0</span>
                             <img class="secondary-icon touch-ic custom-lang" src="/img/bell-filled.svg" alt="[img-bell]">
                         </div>
@@ -677,6 +685,13 @@ session_write_close();
                     <div class="i__description fs-xs custom-lang">[warn-user-desc]</div>
                     <div class="i__content fs-sm">
                         <div id="warn-box" class="t-btn__secondary"></div>
+                    </div>
+                </div>
+                <div class="i__base" id="last-warn-box">
+                    <div class="i__title fs-md custom-lang">[max-warn-title]</div>
+                    <div class="i__description fs-xs custom-lang">[max-warn-desc]</div>
+                    <div class="i__content fs-sm">
+                        <span id="max" class="i-checkbox" onclick="toggleICheckBox(this);"></span>
                     </div>
                 </div>
                 <div class="i__base">
@@ -805,6 +820,20 @@ session_write_close();
                             <div class="i__description fs-xs custom-lang">[settings-terminate-stream-descr]</div>
                             <div class="i__content fs-sm">
                                 <div id="terminate-stream-btn" class="t-btn__secondary" onclick="toggleTButton(this); terminateStreamBtn(this, false);"></div>
+                            </div>
+                        </div>
+                        <div class="i__base">
+                            <div class="i__title fs-md custom-lang">[settings-jumps]</div>
+                            <div class="i__description fs-xs custom-lang" id="jumps-descr">[settings-jumps-descr]</div>
+                            <div class="i__content fs-sm">
+                                <div id="jumps-btn" class="t-btn__secondary" onclick="toggleTButton(this); jumpsState(this, false);"></div>
+                            </div>
+                        </div>
+                        <div class="i__base">
+                            <div class="i__title fs-md custom-lang">[settings-hotkeys]</div>
+                            <div class="i__description fs-xs custom-lang" id="hotkeys-descr">[settings-hotkeys-descr]</div>
+                            <div class="i__content fs-sm">
+                                <div id="hotkeys-btn" class="t-btn__secondary" onclick="toggleTButton(this); hotkeysState(this, false);"></div>
                             </div>
                         </div>
                         <div class="i__base">
@@ -980,6 +1009,8 @@ session_write_close();
                 var defaultDeleteList = [];
                 var countqueue = 0;
                 var checkMode = 0;
+                var hotkeys = 0;
+                var jumps = 0;
                 var sound = 0;
                 var newSound;
                 var terminateStream = 0;
@@ -1039,8 +1070,8 @@ session_write_close();
 
                 var isGlobal = (settingslist['isGlobal'] !== null && settingslist['isGlobal'] !== "" && settingslist['isGlobal'] !== false && settingslist['isGlobal'] !== "0");
                 var isGlobalModeAccess = (settingslist['isGlobalAccess'] !== null && settingslist['isGlobalAccess'] !== "" && settingslist['isGlobalAccess'] !== false && settingslist['isGlobalAccess'] !== "0");
+
                 var userRole = (settingslist['userRole'] !== null && settingslist['userRole'] !== "") ? settingslist['userRole'] : "none";
-                if (settingslist['userName'] === "Iluvatar") userRole = "none";
                 var userSelf = settingslist['userName'];
                 // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
                 var talktoken = settingslist['talkToken'];
@@ -1048,10 +1079,14 @@ session_write_close();
 
                 if (userSelf === "Iluvatar" || userSelf === "Ajbura" || userSelf === "1997kB") // contrl-panel
                     document.getElementById("control-panel").style.display = "block";
-                if (userRole === "none")
+                if (userRole === "none") {
                     document.getElementById("GSRRole").style.display = "block";
-                if (userRole !== "none")
+                    document.getElementById("GSRRole2").style.display = "block";
+                }
+                if (userRole !== "none") {
+                    document.getElementById("GSRRole").style.display = "none";
                     document.getElementById("GSRRole2").style.display = "none";
+                }
 
                 if (settingslist['theme'] !== null && typeof settingslist['theme'] !== "undefined" && settingslist['theme'] !== "" && ( settingslist['theme'] >= 0 && settingslist['theme'] < (Object.keys(THEME)).length) )
                     themeIndex = parseInt(settingslist['theme']);
@@ -1102,6 +1137,20 @@ session_write_close();
                     }
                 }
 
+                if (settingslist['hotkeys'] !== null && (typeof settingslist['hotkeys'] !== "undefined") && settingslist['hotkeys'] !== "") {
+                    if (settingslist['hotkeys'] === "1" || settingslist['hotkeys'] === 1) {
+                        hotkeys = 1;
+                        toggleTButton(document.getElementById("hotkeys-btn"));
+                    }
+                }
+
+                if (settingslist['jumps'] !== null && (typeof settingslist['jumps'] !== "undefined") && settingslist['jumps'] !== "") {
+                    if (settingslist['jumps'] === "1" || settingslist['jumps'] === 1) {
+                        jumps = 1;
+                        toggleTButton(document.getElementById("jumps-btn"));
+                    }
+                }
+
                 if (settingslist['mobile'] !== null && (typeof settingslist['mobile'] !== "undefined") && settingslist['mobile'] !== "") {
                     if (settingslist['mobile'] === "1" || settingslist['mobile'] === "2" || settingslist['mobile'] === "3" || settingslist['mobile'] === "0")
                         resizeDrawer(Number(settingslist['mobile']), true);
@@ -1141,8 +1190,9 @@ session_write_close();
                     $.ajax({url: 'php/presets.php?action=get_presets', type: 'POST', crossDomain: true, dataType: 'json',
                         success: function(presetsResp) {
                             presets = presetsResp;
+                            let currentPresetNotNull = (setList["preset"] === null || setList["preset"] === "null") ? "Default" : setList["preset"];
                             presets.forEach(function(el, index) {
-                                if (el["title"] === setList["preset"])
+                                if (el["title"] === currentPresetNotNull)
                                     selectedPreset = index;
                                 if (el["namespaces"] === null) presets[index]["namespaces"] = "";
                                 if (el["blprojects"] === null) presets[index]["blprojects"] = "";
@@ -1385,6 +1435,7 @@ session_write_close();
 
                     if (isGlobal === true || isGlobalModeAccess === true) sandwichLocalisation(document, dirLang, useLang['presets-additional-desc'], document.getElementById('editPresetTemplate').content.getElementById("adw"), "$1", 4, "inline", "A", "https://meta.wikimedia.org/wiki/Special:MyLanguage/SWViewer/wikis", document.getElementById('editPresetTemplate').content);
                     sandwichLocalisation(document, dirLang, useLang['presets-ns-desc'], document.getElementById('editPresetTemplate').content.getElementById("ns-desc"), "$1", 4, "inline", "Ns", "https://en.wikipedia.org/wiki/Help:MediaWiki_namespace", document.getElementById('editPresetTemplate').content);
+                    sandwichLocalisation(document, dirLang, useLang['settings-hotkeys-descr'], document.getElementById("hotkeys-descr"), "$1", 4, "inline", "Hk", "https://www.mediawiki.org/wiki/Manual:SWViewer#Hotkeys");
 
                     var welcomeIF = document.getElementById("page-welcome").contentWindow;
                     var useLangWelcome = generateMinMessages(useLang, /^welcome-frame-/); useLangWelcome["delete"] = useLang["delete"];
@@ -1542,7 +1593,7 @@ session_write_close();
                     openPW('logs');
                 }
             </script>
-            <script src="js/swv.js?v=4"></script>
+            <script src="js/swv.js?v=6"></script>
             <script>
 
                 /*#########################

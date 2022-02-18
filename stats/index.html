@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWViewer | Stats</title>
+    <meta name="application-name" content="SWViewer">
+    <meta name="author" content="Iluvatar, Ajbura, 1997kB">
+    <meta name="description" content="App for viewing queue of edits on small wikis for SWMT">
+    <meta name="keywords" content="SWMT">
+    <meta name="msapplication-TileColor" content="#808d9f">
+    <!-- icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png">
+    <link rel="mask-icon" href="img/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#191919">
+    <meta name="apple-mobile-web-app-title" content="SWViewer">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png">
+</head>
+<body>
+    <img id="count" src="" />
+    <img id="type" src="" />
+    <img id="wikis" src="" />
+</body>
+<script language="javascript" type="text/javascript">
+    // prevent img caching
+    var d = new Date(); 
+    document.getElementById("count").src = "//swviewer.toolforge.org/stats/actions-count-10.png?ver=" + d.getTime();
+    document.getElementById("type").src = "//swviewer.toolforge.org/stats/actions-type-10.png?ver=" + d.getTime();
+    document.getElementById("wikis").src = "//swviewer.toolforge.org/stats/actions-wikis-10.png?ver=" + d.getTime();
+</script>
+</html>

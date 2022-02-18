@@ -46,6 +46,12 @@ if (isset($_POST["action"])) {
             $q->execute(array(':name' => $_POST['user']));
         }
 
+    if ($_POST["action"] == "rebind")
+        if (isset($_POST["user"])) {
+            $q = $db->prepare('UPDATE user SET rebind=1 WHERE name=:name');
+            $q->execute(array(':name' => $_POST['user']));
+        }
+
     if ($_POST["action"] == "addBetaTester")
         if (isset($_POST["user"])) {
             $q = $db->prepare('UPDATE user SET betaTester=1 WHERE name=:name');
@@ -274,7 +280,17 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                     document.getElementById("globalFile").innerHTML = "<span style='color: green'>Normal</span>";
             </script>
 
+
             <div>
+                <div class="i__base">
+                    <div class="i__title fs-lg">Rebind parameters for user</div>
+                    <div class="i__description fs-sm">Forced parameters ipdate after next open.</div>
+                    <div class="i__content fs-sm">
+                        <input id="addrebind" class="i-input__secondary secondary-placeholder fs-sm" type="text"
+                            name="addrebind" placeholder="User">
+                        <div id="rebind-btn" class="i-plus fs-sm">+</div>
+                    </div>
+                </div>
                 <div class="i__base">
                     <div class="i__title fs-lg">Block Users</div>
                     <div class="i__description fs-sm">Add users to block list.</div>
@@ -333,6 +349,27 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                             });
                         }
                     }
+
+                    document.getElementById('rebind-btn').onclick = function () {
+
+                        var rebindUser = document.getElementById('addrebind').value;
+                        if (rebindUser !== null && rebindUser !== "") {
+                            $.ajax({
+                                url: 'control.php',
+                                type: 'POST',
+                                crossDomain: true,
+                                data: {
+                                    action: 'rebind',
+                                    user: rebindUser
+                                },
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+
+
                 </script>
             </div>
 

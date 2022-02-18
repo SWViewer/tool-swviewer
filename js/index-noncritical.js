@@ -264,6 +264,28 @@ function RHModeBtn (button, start) {
 }
 RHModeBtn(document.getElementById('RH-mode-btn'), true);
 
+function hotkeysState(button, start) {
+    hotkeys = (button.classList.contains('t-btn__active')) ? 1 : 0;
+
+    if (start === false)
+        $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
+            action: 'set',
+            query: 'hotkeys',
+            hotkeys: hotkeys
+        }, dataType: 'json'});
+}
+
+function jumpsState(button, start) {
+    jumps = (button.classList.contains('t-btn__active')) ? 1 : 0;
+
+    if (start === false)
+        $.ajax({url: 'https://swviewer.toolforge.org/php/settings.php', type: 'POST', crossDomain: true, data: {
+            action: 'set',
+            query: 'jumps',
+            jumps: jumps
+        }, dataType: 'json'});
+}
+
 function terminateStreamBtn (button, start) {
     if (button.classList.contains('t-btn__active')) terminateStream = 1;
     else terminateStream = 0;

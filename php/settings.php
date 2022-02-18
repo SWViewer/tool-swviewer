@@ -29,7 +29,7 @@ if (!isset($_POST["action"])) {
         $q->execute(array(':userName' => $userName));
         $result = $q->fetchAll();
 
-        $response = ["userName" => $userName, "talkToken" => $result[0]['token'], "userRole" => $result[0]['userRole'], "isGlobalAccess" => $result[0]['isGlobalAccess'], "isGlobal" => $result[0]['isGlobal'], "local_wikis" => $result[0]['local_wikis'],   "checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "lang" => $result[0]['lang'], "locale" => $result[0]['locale'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
+        $response = ["userName" => $userName, "talkToken" => $result[0]['token'], "userRole" => $result[0]['userRole'], "isGlobalAccess" => $result[0]['isGlobalAccess'], "isGlobal" => $result[0]['isGlobal'], "local_wikis" => $result[0]['local_wikis'],   "checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "lang" => $result[0]['lang'], "locale" => $result[0]['locale'], "hotkeys" => $result[0]['hotkeys'], "jumps" => $result[0]['jumps'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
         echo json_encode($response);
         $db = null;
         exit();
@@ -145,7 +145,7 @@ if ($_POST["action"] == "set") {
     if ($_POST["query"] == "newbies") {
         if (isset($_POST['sqlnew'])) {
             if ($_POST['sqlnew'] == "0" || $_POST['sqlnew'] == "1") {
-                $q = $db->prepare('UPDATE user SET  new=:new WHERE name =:userName');
+                $q = $db->prepare('UPDATE user SET new=:new WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':new' => $_POST['sqlnew']));
             }
         }
@@ -168,7 +168,7 @@ if ($_POST["action"] == "set") {
     if ($_POST["query"] == "onlynew") {
         if (isset($_POST['onlynew'])) {
             if ($_POST['onlynew'] == "0" || $_POST['onlynew'] == "1") {
-                $q = $db->prepare('UPDATE user SET  onlynew=:onlynew WHERE name =:userName');
+                $q = $db->prepare('UPDATE user SET onlynew=:onlynew WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':onlynew' => $_POST['onlynew']));
             }
         }
@@ -188,6 +188,24 @@ if ($_POST["action"] == "set") {
             if ($_POST['sound'] == "0" || $_POST['sound'] == "1" || $_POST['sound'] == "2" || $_POST['sound'] == "4" || $_POST['sound'] == "4" || $_POST['sound'] == "5") {
                 $q = $db->prepare('UPDATE user SET sound=:sound WHERE name =:userName');
                 $q->execute(array(':userName' => $userName, ':sound' => $_POST['sound']));
+            }
+        }
+    }
+
+    if ($_POST["query"] == "hotkeys") {
+        if (isset($_POST['hotkeys'])) {
+            if ($_POST['hotkeys'] == "0" || $_POST['hotkeys'] == "1") {
+                $q = $db->prepare('UPDATE user SET hotkeys=:hotkeys WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':hotkeys' => $_POST['hotkeys']));
+            }
+        }
+    }
+
+    if ($_POST["query"] == "jumps") {
+        if (isset($_POST['jumps'])) {
+            if ($_POST['jumps'] == "0" || $_POST['jumps'] == "1") {
+                $q = $db->prepare('UPDATE user SET jumps=:jumps WHERE name =:userName');
+                $q->execute(array(':userName' => $userName, ':jumps' => $_POST['jumps']));
             }
         }
     }

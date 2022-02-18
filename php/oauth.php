@@ -29,7 +29,11 @@ if (isset($_GET["action"])) {
         $_SESSION = Array();
         session_write_close();
         setcookie("SWViewer-auth", null, time() - 1, "/", "swviewer.toolforge.org", TRUE, TRUE);
-        echo "Unlogin is done";
+        if (isset($_GET["kik"])) {
+            header("Location: https://swviewer.toolforge.org/");
+            exit();
+        } else
+            echo "Unlogin is done";
         exit();
     }
 }
@@ -139,21 +143,21 @@ if (($q->rowCount() <= 0) || ($q->rowCount() > 0 && ($resToken[0]["token"] == nu
     $salt = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["salt"];
     $_SESSION['talkToken'] = md5(uniqid($ident->username, true) . rand() . md5($salt));
     if ($q->rowCount() <= 0) {
-        $q = $db->prepare('INSERT INTO user (name, token, lang, local_wikis, isGlobalAccess, isGlobal, userRole) VALUES (:name, :token, :lang, :local_wikis, :isGlobalAccess, :isGlobal, :userRole)');
+        $q = $db->prepare('INSERT INTO user (name, token, lang, local_wikis, isGlobalAccess, isGlobal, userRole, rebind) VALUES (:name, :token, :lang, :local_wikis, :isGlobalAccess, :isGlobal, :userRole, 0)');
         $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':lang' => $lang, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
         $q = $db->prepare('INSERT INTO stats (user) VALUES (:user)');
         $q->execute(array(':user' => $ident->username));
     } else {
-        $q = $db->prepare('UPDATE user SET token=:token, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal WHERE name=:name');
+        $q = $db->prepare('UPDATE user SET token=:token, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
         $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
     }
 } else {
     $_SESSION['talkToken'] = $resToken[0]["token"];
     if ($resToken[0]["lang"] === null || $resToken[0]["lang"] === "") {
-        $q = $db->prepare('UPDATE user SET lang=:lang, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal WHERE name=:name');
+        $q = $db->prepare('UPDATE user SET lang=:lang, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
         $q->execute(array(':name' => $ident->username, ':lang' => $lang, ':userRole' => $userRole, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
     } else {
-        $q = $db->prepare('UPDATE user SET local_wikis=:local_wikis, userRole=:userRole, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal WHERE name=:name');
+        $q = $db->prepare('UPDATE user SET local_wikis=:local_wikis, userRole=:userRole, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
         $q->execute(array(':name' => $ident->username, ':local_wikis' => $_SESSION['projects'], ':userRole' => $userRole, ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
    }
 }
