@@ -95,6 +95,8 @@
 	"presets-additional-desc": "Description text below 'Additional wikis' option in 'Queue settings'. Parameters:\n* $1 - SWViewer/wikis link",
 	"presets-custom": "'Custom wikis' text in 'Queue settings'.",
 	"presets-custom-desc": "Description text below 'Custom wikis' option in 'Queue settings'.",
+	"presets-langset": "'Language set' text in 'Queue settings'.",
+	"presets-langset-desc": "Description text below 'Language set' option in 'Queue settings'.",
 	"presets-wikis-wl": "'Wikis whitelist' text in 'Queue settings'.",
 	"presets-wikis-wl-desc": "Description text below 'Wikis whitelist' option in 'Queue settings'.",
 	"presets-users-wl": "'Users whitelist' text in 'Queue settings'.",
