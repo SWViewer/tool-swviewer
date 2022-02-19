@@ -88,6 +88,8 @@
   "presets-additional-desc": "Enable edits from [$1|wikis] with less then 300 active users.",
   "presets-custom": "Custom wikis",
   "presets-custom-desc": "Add your home-wiki or wikis which are not in small wikis list. Example: enwiki",
+  "presets-langset": "Language set",
+  "presets-langset-desc": "Set language to get edits in specific language. Example: en",
   "presets-wikis-wl": "Wikis whitelist",
   "presets-wikis-wl-desc": "Add wikis to skip their edits from the queue. Example: enwiki",
   "presets-users-wl": "Users whitelist",
