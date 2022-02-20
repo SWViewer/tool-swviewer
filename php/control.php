@@ -209,7 +209,7 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                 };
 
                 document.getElementById('restart-btn').onclick = function () {
-                    $.ajax({url: 'control2.php?restart=1', type: 'GET', dataType: 'json'});
+                    $.ajax({url: 'control.php?restart=1', type: 'GET', dataType: 'json'});
                    document.getElementById('restart-btn').textContent = "restarting...";
                 };
             </script>
