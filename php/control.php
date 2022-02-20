@@ -197,8 +197,7 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             <script>
                 document.getElementById('talk-btn').onclick = function () {
                     if (confirm('Delete latest messages. Are you sure?')) $.ajax({
-                        url: 'control.php',
-                        type: 'POST',
+                        url: 'control.php', type: 'POST',
                         crossDomain: true,
                         data: {
                             action: 'talk',
