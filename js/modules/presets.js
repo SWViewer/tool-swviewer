@@ -35,21 +35,21 @@ const savePreset = (index) => {
         removeDialog("CREATEPresetDialog");
         $.ajax({
             url: 'php/presets.php', type: 'GET', crossDomain: true, 
-            data: { 'action': 'create_preset', 'preset_name': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
+            data: { 'action': 'create_preset', 'preset_name': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'wikilangs': preSettings['wikilangs'].toString(), 'blprojects': preSettings['blprojects'].toString() },
             dataType: 'json'
         });
-        presets.push({ 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() });
+        presets.push({ 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'wikilangs': preSettings['wikilangs'].toString(), 'blprojects': preSettings['blprojects'].toString() });
         document.getElementById('presetsBase').append(createPresetHolder(presets.length-1));
         }
     else {
         var oldPresetName = presets[index]["title"];
         $.ajax({
             url: 'php/presets.php', type: 'GET', crossDomain: true,
-            data: { 'action': 'edit_preset', 'preset_name': oldPresetName, 'preset_name_new': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'anons': preSettings['anons'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() },
+            data: { 'action': 'edit_preset', 'preset_name': oldPresetName, 'preset_name_new': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'anons': preSettings['anons'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'wikilangs': preSettings['wikilangs'].toString(), 'blprojects': preSettings['blprojects'].toString() },
             dataType: 'json',
             success: function() {
                 removeDialog(oldPresetName + "PresetDialog");
-                presets[index] = { 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'blprojects': preSettings['blprojects'].toString() };
+                presets[index] = { 'title': preSettings['title'], 'editscount': preSettings['editscount'].toString(), 'anons': preSettings['anons'].toString(), 'regdays': preSettings['regdays'].toString(), 'oresFilter': preSettings['oresFilter'].toString(), 'registered': preSettings['registered'].toString(), 'new': preSettings['new'].toString(), 'onlynew': preSettings['onlynew'].toString(), 'swmt': preSettings['swmt'].toString(), 'users': preSettings['users'].toString(), 'namespaces': preSettings['namespaces'].toString(), 'wlusers': preSettings['wlusers'].toString(), 'wlprojects': preSettings['wlprojects'].toString(), 'wikilangs': preSettings['wikilangs'].toString(), 'blprojects': preSettings['blprojects'].toString() };
                 angular.element(document.getElementById('app')).scope().externalClose();
                 if (oldPresetName !== presetTitle) {
                     if (selectedPreset === index)
@@ -151,6 +151,7 @@ const restoreDefaultPreset = () => {
         });
     }
     refillChips('btn-delete-ns', 'ns-input', 'btn-add-ns', [...preSettings.namespaces], [""])
+    refillChips('btn-l-p-delete', 'l-p', 'btn-l-p-add', [...preSettings.wikilangs], [""])
     refillChips('btn-bl-p-delete', 'bl-p', 'btn-bl-p-add', [...preSettings.blprojects], [""])
     refillChips('btn-wl-p-delete', 'wladdp', 'btn-wl-p-add', [...preSettings.wlprojects], [""])
     refillChips('btn-wl-u-delete', 'wladdu', 'btn-wl-u-add', [...preSettings.wlusers], [""])
@@ -172,6 +173,7 @@ const editPreset = (index) => {
         editPTemp.content.getElementById("sw-set").style.display = "grid";
         editPTemp.content.getElementById("ad-set").style.display = "grid";
         editPTemp.content.getElementById("custom-set").style.display = "grid";
+        editPTemp.content.getElementById("lang-set").style.display = "grid";
     }
     editBody.append(editPTemp.content.cloneNode(true));
     let dialogButtons = [
@@ -187,7 +189,7 @@ const editPreset = (index) => {
         custom: { insertElement: editBody },
         buttons: dialogButtons
     });
-    if (index === undefined) preSettings = { title: "", regdays: "5", oresFilter: "0", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", blprojects: ""};
+    if (index === undefined) preSettings = { title: "", regdays: "5", oresFilter: "0", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", wikilangs: "", blprojects: ""};
     else preSettings = {...presets[index]};
 
     if (true) {
@@ -247,6 +249,7 @@ const editPreset = (index) => {
         initFilters('wlareap', 'wladdp', 'wlprojects');
         initFilters('wlareau', 'wladdu', 'wlusers');
         if (document.getElementById("blareap") !== null) initFilters('blareap', 'bl-p', 'blprojects');
+        if (document.getElementById("lareap") !== null) initFilters('lareap', 'l-p', 'wikilangs');
         initFilters('nsList', 'ns-input', 'namespaces');
 
         if (PTitle !== "Default")

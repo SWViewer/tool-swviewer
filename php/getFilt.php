@@ -27,7 +27,7 @@ if (check($_GET["preset_name"])) {
     $q->execute(array(':userName' => $username, ':preset_name' => $_GET["preset_name"]));
     if ($q->rowCount() > 0) {
         $result = $q->fetchAll();
-        $raw_result = ["blprojects" => $result[0]['blprojects'], "swmt" => $result[0]['swmt'], "onlyanons" => $result[0]['anons'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "oresFilter" => $result[0]['oresFilter']];
+        $raw_result = ["blprojects" => $result[0]['blprojects'], "wikilangs" => $result[0]['wikilangs'], "swmt" => $result[0]['swmt'], "onlyanons" => $result[0]['anons'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "oresFilter" => $result[0]['oresFilter']];
         $q = $db->prepare('SELECT isGlobal, isGlobalAccess, local_wikis FROM user WHERE name = :userName');
         $q->execute(array(':userName' => $username));
         $result2 = $q->fetchAll();
