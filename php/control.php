@@ -15,6 +15,13 @@ if ($userName !== "Ajbura" && $userName !== "Iluvatar" && $userName !== "1997kB"
     exit();
 }
 
+if (isset($_GET["restart"])) {
+    $serverToken = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["serverTokenTalk"];
+    $context = stream_context_create(array('http' => array('method' => 'GET', 'header' => "auth: " . $serverToken . "\r\n" . "User-Agent: swviewer.toolforge\r\n")));
+    file_get_contents("https://swviewer-service.toolforge.org/restart", false, $context);
+    exit();
+}
+
 $ts_pw = posix_getpwuid(posix_getuid());
 $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
 $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -110,7 +117,6 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
         <link rel="apple-touch-icon" sizes="180x180" href="../img/favicons/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="../img/favicons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="../img/favicons/favicon-16x16.png">
-        <link rel="manifest" href="../site.webmanifest">
         <link rel="mask-icon" href="../img/favicons/safari-pinned-tab.svg" color="#5bbad5">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <meta name="apple-mobile-web-app-title" content="SWViewer">
@@ -174,6 +180,20 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                     </div>
                 </div>
             </div>
+            <div>
+                <div class="i__base">
+                    <div class="i__title fs-lg">Restart</div>
+                    <div class="i__description fs-sm">
+                        <span>
+                            You can restart server.
+                        </span>
+                    </div>
+                    <div class="i__extra" style="padding-top: 8px;">
+                        <button id="restart-btn" class='i-btn__accent accent-hover fs-md'>Restart server</button>
+                    </div>
+                </div>
+            </div>
+
             <script>
                 document.getElementById('talk-btn').onclick = function () {
                     if (confirm('Delete latest messages. Are you sure?')) $.ajax({
@@ -187,6 +207,11 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                             location.reload();
                         }
                     });
+                };
+
+                document.getElementById('restart-btn').onclick = function () {
+                    $.ajax({url: 'control2.php?restart=1', type: 'GET', dataType: 'json'});
+                   document.getElementById('restart-btn').textContent = "restarting...";
                 };
             </script>
 
