@@ -903,7 +903,6 @@ session_write_close();
                         <div id="onlynew-pages-btn" class="t-btn__secondary" onclick="toggleTButton(this); onlyNewPagesBtn(this);"></div>
                     </div>
                 </div>
-
                 <div class="i__base">
                     <div class="i__title fs-md custom-lang">[presets-edits-limit]</div>
                     <div class="i__description fs-xs custom-lang">[presets-edits-limit-desc]</div>
@@ -963,6 +962,18 @@ session_write_close();
                         <ul id="blareap" class="i-chip-list fs-sm"></ul>
                     </div>
                 </div>
+                <div id="lang-set" class="i__base" style="display:none;">
+                    <div class="i__title fs-md custom-lang">[presets-langset]</div>
+                    <div class="i__description fs-xs custom-lang">[presets-langset-desc]</div>
+                    <div class="i__content fs-sm">
+                        <div id="btn-l-p-delete" class="i-minus fs-sm" onclick="lDeleteFunct()">-</div>
+                        <input id="l-p" class="i-input__secondary secondary-placeholder fs-sm custom-lang" name="l-p" placeholder="[presets-enter-placeholder]">
+                        <div id="btn-l-p-add" class="i-plus fs-sm" onclick="lAddFunct()">+</div>
+                    </div>
+                    <div class="i__extra">
+                        <ul id="lareap" class="i-chip-list fs-sm"></ul>
+                    </div>
+                </div>
                 <div class="i__base">
                     <div class="i__title fs-md custom-lang">[presets-wikis-wl]</div>
                     <div class="i__description fs-xs custom-lang">[presets-wikis-wl-desc]</div>
@@ -1020,7 +1031,7 @@ session_write_close();
                 var firstClickEdit = false;
                 var preSettings = {};
                 // presets value here is temp until we refill it from database.
-                var presets = [{ title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", blprojects: ""}];
+                var presets = [{ title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", wikilangs: "", blprojects: ""}];
                 var selectedPreset = 0;
                 var themeIndex = undefined;
                 const THEME_FIX = { '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)', '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)', '--tc-accent': 'rgba(255, 255, 255, 1)', '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)', '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px', '--lh-xl': '1.5', '--lh-lg': '1.5', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5', };
@@ -1196,6 +1207,7 @@ session_write_close();
                                     selectedPreset = index;
                                 if (el["namespaces"] === null) presets[index]["namespaces"] = "";
                                 if (el["blprojects"] === null) presets[index]["blprojects"] = "";
+                                if (el["wikilangs"] === null) presets[index]["wikilangs"] = "";
                                 if (el["wlprojects"] === null) presets[index]["wlprojects"] = "";
                                 if (el["wlusers"] === null) presets[index]["wlusers"] = "";
                             });

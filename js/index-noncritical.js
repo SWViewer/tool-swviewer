@@ -361,6 +361,11 @@ if (isGlobal == true || isGlobalModeAccess === true) {
     function blpAddFunct() { addFilter('blareap', 'bl-p', 'blprojects'); }
     function blpDeleteFunct() { removeFilter('blareap', 'bl-p', 'blprojects'); }
 }
+/*---langset wikis---*/
+if (isGlobal == true || isGlobalModeAccess === true) {
+    function lAddFunct() { addFilter('lareap', 'l-p', 'wikilangs'); }
+    function lDeleteFunct() { removeFilter('lareap', 'l-p', 'wikilangs'); }
+}
 /*---namespaces---*/
 function nsAddFunct() { addFilter('nsList', 'ns-input', 'namespaces');}
 function nsDeleteFunct() { removeFilter('nsList', 'ns-input', 'namespaces'); }
