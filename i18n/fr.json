@@ -91,6 +91,8 @@
 	"presets-additional-desc": "Activer les modifications pour les [$1|wikis] avec moins de 300 utilisateurs actifs.",
 	"presets-custom": "Wikis personnalisés",
 	"presets-custom-desc": "Ajoutez votre wiki principal ou des wikis qui ne sont pas dans la liste des petits wikis. Exemple : frwiki",
+	"presets-langset": "Ensemble de langues",
+	"presets-langset-desc": "Définit la langue pour obtenir des modifications dans une langue spécifique. Par exemple : « fr » pour le français.",
 	"presets-wikis-wl": "Liste blanche de wikis",
 	"presets-wikis-wl-desc": "Ajouter des wikis pour omettre leurs modifications dans la file d’attente. Exemple : frwiki",
 	"presets-users-wl": "Liste d’acceptation d’utilisateurs",

@@ -88,6 +88,8 @@
 	"presets-additional-desc": "Visualizza le modifiche sulle [$1|wiki] con meno di 300 utenti attivi.",
 	"presets-custom": "Wiki personalizzati",
 	"presets-custom-desc": "Aggiungi la tua wiki principale o le wiki che non sono nella lista delle wiki minori. Esempio: enwiki",
+	"presets-langset": "Imposta lingua",
+	"presets-langset-desc": "Imposta le lingue per ricevere le modifiche in lingue specifiche. \nEsempio: en",
 	"presets-wikis-wl": "Wiki in whitelist",
 	"presets-wikis-wl-desc": "Aggiungi i wiki di cui non vuoi visualizzare le modifiche nella coda. Esempio: enwiki",
 	"presets-users-wl": "Utenti in whitelist",
