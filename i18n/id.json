@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Akmaie Ajam",
+			"Daud I.F. Argana",
 			"Hidayatsrf",
 			"Silencemen21",
 			"Sonic Speedy",
@@ -90,6 +91,8 @@
 	"presets-additional-desc": "Aktifkan suntingan dari [$1|wikis] dengan pengguna aktifnya kurang dari 300.",
 	"presets-custom": "Wiki kustom",
 	"presets-custom-desc": "Tambahkan home-wiki atau wiki yang tidak ada dalam daftar wiki kecil. Contoh: enwiki",
+	"presets-langset": "Setelan bahasa",
+	"presets-langset-desc": "Mengatur bahasa untuk mendapatkan suntingan dalam bahasa tertentu. Contoh: en",
 	"presets-wikis-wl": "Daftar putih wiki",
 	"presets-wikis-wl-desc": "Menambah wiki untuk melewati suntingan mereka dari antrean. Contoh: enwiki",
 	"presets-users-wl": "Daftar putih pengguna",

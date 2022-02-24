@@ -3,6 +3,7 @@
 		"authors": [
 			"Base",
 			"DDPAT",
+			"Ice bulldog",
 			"Renvoy"
 		]
 	},
@@ -88,6 +89,8 @@
 	"presets-additional-desc": "Увімкнути редагування з [$1|вікі] в яких менше 300 активних користувачів.",
 	"presets-custom": "Свої вікі",
 	"presets-custom-desc": "Додати Вашу домашню вікі або ж вікі, що не входять до списку малих. Наприклад: ukwiki",
+	"presets-langset": "Набір мов",
+	"presets-langset-desc": "Встановіть мови, щоб отримувати зміни певними мовами. Приклад: en",
 	"presets-wikis-wl": "Білий список вікі",
 	"presets-wikis-wl-desc": "Додати вікі, редагування з яких пропускати в черзі. Наприклад: ukwiki",
 	"presets-users-wl": "Білий список користувачів",
