@@ -188,7 +188,7 @@
   "gsr-fail-title": "GSR report failed!",
   "warn-success-title": "Warned successfully",
   "warn-success-content": "$1 has been warned for edit on $2.",
-  "warn-fail-title": "Warned failed!",
+  "warn-fail-title": "Warning failed!",
   "edit-fail-title": "Edit failed!",
   "view-latest": "View latest",
   "request-performed-title": "Request performed",
