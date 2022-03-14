@@ -548,7 +548,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             });
 
             const timeWarn = moment.utc().subtract('10', 'days').format('YYYY-MM-DDTHH:mm:ss') + "Z";
-            var maxWarnCount = Number(SEdit.config.warn['countWarn']) - 1;
+            var maxWarnCount = Number(SEdit.config.warn['countWarn']);
             var warnMonth = moment.utc().format('MMMM');
 
             if (typeof SEdit.config.warn['months'] !== 'undefined')
@@ -569,7 +569,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     if (warnCount === -1 || (warnCount !== -1 && warnCount < maxWarnCount)) {
                         if (warnCount === -1) warnCount = 0;
                         warnCount = warnCount + 1;
-                        if (max === true && (Object.keys(templates).length >= warnCount && Object.keys(templates).length <= maxWarnCount + 1)) warnCount = Object.keys(templates).length; // if need max level
+                        if (max === true && (Object.keys(templates).length >= warnCount && Object.keys(templates).length <= maxWarnCount)) warnCount = Object.keys(templates).length; // if need max level
                         if (templates[warnCount] === "undefined") throw useLang["warn-perform-fail"].replace("$1", SEdit.title);
                         await sendWarning(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.new, SEdit.old, SEdit.title, SEdit.user, warnCount, templates, warnMonth, SEdit.config.warn['summaryWarn'], SEdit.config.warn['sectionWarn'], (description.withoutSection || false));
                         $scope.sessionActions.warn++;
@@ -579,7 +579,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                             content: useLang["warn-performed-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
                             removable: true
                         });
-                    } else if (warnCount === maxWarnCount) $scope.doReport(SEdit);
+                    } else if (warnCount >= maxWarnCount) $scope.doReport(SEdit);
                 }).catch(err => createNotify({
                 img: '/img/warning-filled.svg',
                 title: useLang["warn-fail-title"],
