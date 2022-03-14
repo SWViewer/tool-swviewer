@@ -569,7 +569,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     if (warnCount === -1 || (warnCount !== -1 && warnCount < maxWarnCount)) {
                         if (warnCount === -1) warnCount = 0;
                         warnCount = warnCount + 1;
-                        if (max === true && (Object.keys(templates).length >= warnCount && Object.keys(templates).length <= maxWarnCount)) warnCount = Object.keys(templates).length; // if need max level
+                        if (max === true && Object.keys(templates).length >= warnCount) warnCount = Object.keys(templates).length; // if need max level
                         if (templates[warnCount] === "undefined") throw useLang["warn-perform-fail"].replace("$1", SEdit.title);
                         await sendWarning(SEdit.server_url, SEdit.script_path, SEdit.wiki, SEdit.new, SEdit.old, SEdit.title, SEdit.user, warnCount, templates, warnMonth, SEdit.config.warn['summaryWarn'], SEdit.config.warn['sectionWarn'], (description.withoutSection || false));
                         $scope.sessionActions.warn++;
