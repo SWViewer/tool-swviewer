@@ -1759,9 +1759,9 @@ function checkIfAlreadyReported(serverUrl, scriptPath, wiki, user, pageReport, t
 
 function getNewFromDiff(diffContent) {
     return diffContent.replace(/<tr>([^]*?)<\/tr>/g, function ($0, $1) {
-        if ($1.search(/<td class="deletedline"/g) === -1 &&
+        if ($1.search(/<td class="deletedline/g) === -1 &&
             $1.search(/<td class="diff-marker">-<\/td>/g) === -1 &&
-            $1.search(/<td class="diff-context"/g) === -1 &&
+            $1.search(/<td class="diff-context/g) === -1 &&
             $1.search(/<ins/g) === -1 &&
             $1.search(/<del/g) === -1)
             return $1;
