@@ -543,7 +543,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             ) return createNotify({
                 img: '/img/warning-filled.svg',
                 title: 'Warn failed!',
-                content: `Warn for ${SEdit.title} is not being send. Maybe config are not define correctly`,
+                content: `Warn for ${SEdit.title} is not being send. Maybe config are not defined correctly`,
                 removable: true
             });
 
