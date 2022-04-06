@@ -227,7 +227,7 @@
   "custom-revert-placeholder": "Provide a reason.",
   "custom-revert-button": "Revert",
   "warn-user-title": "Warn user",
-  "warn-user-desc": "Turning this on will left a warning on the user talk page after clicking common summaries (green only).",
+  "warn-user-desc": "Turning this on will put a warning on the user talk page after clicking common summaries (green only).",
   "treat-undo-title": "Use undo",
   "treat-undo-desc": "Enable checkbox if you want to use undo instead of rollback.",
   "max-warn-title": "Final warning",
