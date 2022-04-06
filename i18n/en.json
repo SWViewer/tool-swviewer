@@ -201,7 +201,7 @@
   "warn-performed-title": "Warning performed",
   "warn-performed-content": "$1 has been successfully warned for edit on $2.",
   "report-fail-title": "Report failed!",
-  "report-fail-content": "Report for edit on $1 has failed. Looks like config is not define correctly.",
+  "report-fail-content": "Report for edit on $1 has failed. Looks like config is not defined correctly.",
   "report-already-reported": "The user has been already reported.",
   "autoreport-title": "Auto report",
   "autoreport-content": "$1 has been warned multiple times. Do you want to report them to the Admin Noticeboard?",

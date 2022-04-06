@@ -542,8 +542,8 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 typeof SEdit.config.warn[description.warn][0]['templates'] === 'undefined' || SEdit.config.warn[description.warn][0]['templates'] === null || SEdit.config.warn[description.warn][0]['templates'] === ""
             ) return createNotify({
                 img: '/img/warning-filled.svg',
-                title: 'Warn failed!',
-                content: `Warn for ${SEdit.title} is not being send. Maybe config are not define correctly`,
+                title: useLang["warn-fail-title"],
+                content: useLang["warn-perform-fail"].replace("$1", SEdit.title),
                 removable: true
             });
 
