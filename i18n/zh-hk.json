@@ -1,7 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"LuciferianThomas"
+			"LuciferianThomas",
+			"StarrySky",
+			"Tranve"
 		]
 	},
 	"tooltip-edit-preset": "佇列設定",
@@ -63,7 +65,7 @@
 	"presets-button-create": "建立",
 	"presets-title": "標題",
 	"presets-registered": "已註冊用戶",
-	"presets-registered-desc": "顯示來自已註冊使用者的編輯。",
+	"presets-registered-desc": "顯示來自已註冊用戶的編輯。",
 	"presets-anons": "匿名用戶",
 	"presets-anons-desc": "顯示來自匿名用戶的編輯的編輯。",
 	"presets-new": "新頁面",
@@ -86,6 +88,8 @@
 	"presets-additional-desc": "顯示少於300名活躍用戶之[$1|維基項目]的編輯。",
 	"presets-custom": "自定義維基項目",
 	"presets-custom-desc": "添加您主要活躍的維基項目或不在小型維基項目列表中的其他維基項目。例子：enwiki（英文維基百科）",
+	"presets-langset": "語言設定",
+	"presets-langset-desc": "設定要取得編輯內容的指定語言。例如：zh",
 	"presets-wikis-wl": "維基項目白名單",
 	"presets-wikis-wl-desc": "不需顯示在佇列中的維基項目白名單。例子：enwiki（英文維基百科）",
 	"presets-users-wl": "用戶白名單",
@@ -243,7 +247,7 @@
 	"tooltip-reason": "原因",
 	"welcome-frame-title": "歡迎",
 	"welcome-frame-button": "搜尋",
-	"welcome-frame-placeholder": "搜尋使用者",
+	"welcome-frame-placeholder": "搜尋用戶",
 	"welcome-frame-rollback": "回退",
 	"welcome-frame-undo": "復原",
 	"welcome-frame-edit": "編輯",

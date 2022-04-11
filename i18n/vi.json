@@ -3,6 +3,7 @@
 		"authors": [
 			"1997kB",
 			"Keo010122",
+			"Minh Nguyen",
 			"Nghiemtrongdai VN",
 			"NguoiDungKhongDinhDanh",
 			"Yosari101"
@@ -184,7 +185,7 @@
 	"error-loading-title": "Đã xảy ra lỗi khi tải!",
 	"error-speedy-title": "Đã xảy ra lỗi khi xóa nhanh!",
 	"gsr-success-title": "Báo cáo GSR thành công",
-	"gsr-success-content": "Đã yêu cầu xoá $1 tại GSR.",
+	"gsr-success-content": "Đã yêu cầu xóa $1 tại GSR.",
 	"gsr-fail-title": "Đã xảy ra lỗi khi báo cáo GSR!",
 	"warn-success-title": "Đã cảnh báo thành công",
 	"warn-success-content": "Đã cảnh báo $1 về sửa đổi tại $2.",

@@ -87,6 +87,8 @@
 	"presets-additional-desc": "Activează modificări de la [$1|wiki-uri] cu mai puțin de 300 de utilizatori activi.",
 	"presets-custom": "Wiki-uri personalizate",
 	"presets-custom-desc": "Adăugă wiki-ul tău casă sau wiki-uri care nu se află în lista wiki-urilor mici. Exemplu: enwiki",
+	"presets-langset": "Setare limbă",
+	"presets-langset-desc": "Setați limbi pentru a obține editări în anumite limbi. Exemplu: en",
 	"presets-wikis-wl": "Lista albă a wiki-urilor",
 	"presets-wikis-wl-desc": "Adaugă wiki-uri a căror editări vor fi omise din coadă. Exemplu: enwiki",
 	"presets-users-wl": "Lista albă a utilizatorilor",

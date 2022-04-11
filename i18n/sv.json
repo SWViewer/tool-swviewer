@@ -123,6 +123,7 @@
 	"error-network": "Nätverksfel",
 	"custom-revert-button": "Återställ",
 	"warn-user-title": "Varna användare",
+	"sysops-more-than-3": "Denna wiki har fler än 3 aktiva systemadministratörer (totalt $1).",
 	"sysops-more-than-10": "Denna wiki har fler än 10 aktiva systemadministratörer.",
 	"edit-source-title": "Redigera källa",
 	"summary-title": "Sammanfattning",
