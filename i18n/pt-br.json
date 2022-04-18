@@ -5,7 +5,8 @@
 			"Eduardo Addad de Oliveira",
 			"Eduardoaddad",
 			"Isabelle Belato",
-			"Tks4Fish"
+			"Tks4Fish",
+			"YuriNikolai"
 		]
 	},
 	"tooltip-edit-preset": "Configurações da fila",
@@ -223,7 +224,7 @@
 	"custom-revert-placeholder": "Forneça uma razão.",
 	"custom-revert-button": "Reverter",
 	"warn-user-title": "Avisar usuário",
-	"warn-user-desc": "Ativar isso irá deixar um aviso na página de discussão do usuário após clicar em resumos comuns (apenas verdes).",
+	"warn-user-desc": "Ativar isso irá deixar um aviso na página de discussão de usuário após clicar em resumos comuns (apenas verdes).",
 	"treat-undo-title": "Usar \"desfazer\"",
 	"treat-undo-desc": "Ative a caixa de seleção se desejar usar desfazer em vez de reversão.",
 	"max-warn-title": "Aviso final",
@@ -231,7 +232,7 @@
 	"common-summaries": "Resumos comuns:",
 	"tag-deletion-title": "Marcar para eliminação",
 	"gsr-add": "Adicionar ao GSR",
-	"sysops-active": "Essa wiki tem $1 administrador(es) ativo(s) ($2 no total).",
+	"sysops-active": "Há atualmente $1 administrador(es) ativo(s) nesta wiki ($2 no total).",
 	"sysops-wait": "Talvez seja melhor aguardar a reação dos administradores locais.",
 	"sysops-not-gs": "Não é uma wiki dos administradores globais.",
 	"sysops-more-than-3": "Essa wiki tem mais que 3 administradores ativos ($1 no total).",
