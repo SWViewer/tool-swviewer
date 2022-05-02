@@ -5,6 +5,7 @@
 			"Hedda",
 			"Jelican9",
 			"Joseph",
+			"Khalvar",
 			"MuratTheTurkish",
 			"SaldırganSincap",
 			"Victor Trevor"
@@ -239,7 +240,7 @@
 	"common-summaries": "Yaygın Özetler:",
 	"tag-deletion-title": "Silinme etiketi",
 	"gsr-add": "GSR olarak ekle",
-	"sysops-active": "Bu wiki'deki aktif sistem yöneticilerinin sayısı: $1 (toplam $2).",
+	"sysops-active": "Bu vikideki aktif sistem yöneticilerinin sayısı: $1 (toplam $2).",
 	"sysops-wait": "Belki de yerel hizmetlinin tepkisini beklemek daha iyidir.",
 	"sysops-not-gs": "Burası küresel bir hizmetlinin küresel yetkilerini kullanması için uygun olan bir viki değildir.",
 	"sysops-more-than-3": "Bu vikide 3'ten fazla aktif hizmetli var (toplam $1).",
