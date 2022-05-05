@@ -8,7 +8,8 @@
 			"RYOUMA1117",
 			"Sai10ukazuki",
 			"Tamaki Wakita",
-			"Tmv"
+			"Tmv",
+			"春春眠眠"
 		]
 	},
 	"tooltip-edit-preset": "キューの設定",
@@ -24,7 +25,7 @@
 	"tooltip-m-notification": "通知",
 	"tooltip-copy-link": "リンクのアドレスをコピー",
 	"tooltip-edit-source": "ソースを編集 [e]",
-	"tooltip-more-options": "より多くのオプション",
+	"tooltip-more-options": "その他のオプション",
 	"tooltip-open-browser": "ブラウザで開く[o]",
 	"tooltip-speedy-del": "タグパネル [d]",
 	"tooltip-custom-rollback": "編集の要約をカスタマイズして巻き戻し [y]",
@@ -93,6 +94,8 @@
 	"presets-additional-desc": "アクティブな利用者が300人未満の[$1|ウィキ]からの編集を有効にする。",
 	"presets-custom": "カスタムウィキ",
 	"presets-custom-desc": "あなたのホームウィキ、または、小規模ウィキのリストにないウィキを追加します。 例：enwiki",
+	"presets-langset": "言語設定",
+	"presets-langset-desc": "特定の言語で編集できるように言語を設定します。 例: en",
 	"presets-wikis-wl": "ウィキのホワイトリスト",
 	"presets-wikis-wl-desc": "ウィキを追加して、キューから編集をスキップします。 例：enwiki",
 	"presets-users-wl": "利用者のホワイトリスト",
@@ -238,7 +241,7 @@
 	"common-summaries": "一般的な要約:",
 	"tag-deletion-title": "削除のためのタグ",
 	"gsr-add": "GSRに追加する",
-	"sysops-active": "このウィキには$1人のアクティブな管理者がいます。(総計は$2人)",
+	"sysops-active": "このウィキのアクティブな管理者は$1人います。(総計は$2人)",
 	"sysops-wait": "おそらく、ローカルの管理者の対応を待ったほうがいいでしょう。",
 	"sysops-not-gs": "グローバル管理者が対処するウィキではありません。",
 	"sysops-more-than-3": "このウィキには3人以上のアクティブな管理者がいます。 (総計は$1人)",
