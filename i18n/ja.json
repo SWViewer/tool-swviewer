@@ -7,6 +7,7 @@
 			"MathXplore",
 			"RYOUMA1117",
 			"Sai10ukazuki",
+			"Shirayuki",
 			"Tamaki Wakita",
 			"Tmv",
 			"春春眠眠"
@@ -95,7 +96,7 @@
 	"presets-custom": "カスタムウィキ",
 	"presets-custom-desc": "あなたのホームウィキ、または、小規模ウィキのリストにないウィキを追加します。 例：enwiki",
 	"presets-langset": "言語設定",
-	"presets-langset-desc": "特定の言語で編集できるように言語を設定します。 例: en",
+	"presets-langset-desc": "特定の言語で編集できるように言語を設定します。例: en",
 	"presets-wikis-wl": "ウィキのホワイトリスト",
 	"presets-wikis-wl-desc": "ウィキを追加して、キューから編集をスキップします。 例：enwiki",
 	"presets-users-wl": "利用者のホワイトリスト",
