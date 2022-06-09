@@ -5,6 +5,7 @@
 			"Eihel",
 			"Gomoko",
 			"Thibaut120094",
+			"Urhixidur",
 			"Verdy p",
 			"Wladek92"
 		]
@@ -210,7 +211,7 @@
 	"autoreport-content": "$1 a été averti plusieurs fois. Voulez-vous le signaler aux administrateurs ?",
 	"report-title": "Signaler",
 	"report-performed-content": "$1 a bien été signalé pour la modification de $2.",
-	"browser-sse": "Désolé, votre navigateur ne supporte pas les événements envoyés par le serveur.",
+	"browser-sse": "Désolé, votre navigateur ne prend pas en charge les événements envoyés par le serveur.",
 	"already-done": "De telles modifications ont déjà été faites.",
 	"error-network": "Erreur réseau",
 	"error-rollback": "Erreur de révocation : $1",
