@@ -241,7 +241,7 @@
 	"common-summaries": "常用摘要：",
 	"tag-deletion-title": "请求删除",
 	"gsr-add": "添加到GSR",
-	"sysops-active": "此维基有$1位活跃的管理员（总共有$2位管理员）。",
+	"sysops-active": "此维基有$1位活跃的管理员（共$2位）。",
 	"sysops-wait": "等候该维基的本地管理员对此作出反应也许更为恰当。",
 	"sysops-not-gs": "该维基并不由全域管理员管理。",
 	"sysops-more-than-3": "该维基有超过3位（总共有$1位）活跃的管理员。",
