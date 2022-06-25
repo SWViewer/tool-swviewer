@@ -66,12 +66,12 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         }
     </script>
 
-    <!-- AngularJS, jQuery, Moment, pwacompat -->
+    <!-- AngularJS, jQuery, Moment -->
     <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-    <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
+    <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
     <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
-
+    <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js"></script>
 
     <script type="text/javascript" src="./js/modules/bakeEl.min.js" defer></script>
     <script type="text/javascript" src="./js/modules/pw.js" defer></script>
@@ -85,11 +85,39 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
     <link rel="stylesheet" href="css/components/header.css">
     <link rel="stylesheet" href="css/components/dialog.css">
     <link rel="stylesheet" href="css/components/notification.css">
-    <link rel="stylesheet" href="css/index.css?v=1.2">
+    <link rel="stylesheet" href="css/index.css?v=1.3">
 
     <link rel="stylesheet" href="css/components/pw-po.css">
     <link rel="stylesheet" href="css/layouts/logs.css">
     <link rel="stylesheet" href="css/layouts/talk.css">
+
+
+<style>
+* {
+    outline: none;
+    box-sizing: border-box;
+}
+ul.dropdown-menu {
+    padding: 0;
+    margin: 10px 0;
+    list-style: none;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+ul.dropdown-menu > li {
+    padding: 3px;
+    margin: 0;
+    cursor: pointer;
+}
+ul.dropdown-menu > li:hover, ul.dropdown-menu > li.active {
+    color: #f3f3f3;
+    background-color: #66666621;
+}
+ul.dropdown-menu > li > a {
+    color: #000000bf;
+}
+</style>
+
 
     <style>
         .ltr-mark:after { content: "\200E"; }
@@ -398,7 +426,7 @@ session_write_close();
         <div id="loadingBar" style="height: 4px; width: 10%; background-color: #efefef; border-radius: 4px; transition: width 200ms ease-in;"></div>
     </h1>
 </div>
-
+                        
 <!-- Application UI -->
 <div id="angularapp" ng-app="swv" ng-controller="Queue">
     <div class="base-container" id="app">
@@ -743,6 +771,7 @@ session_write_close();
         </div>
     </div>
 </div>
+
         <!-- Settings | Popup-overlay -->
         <div id="settingsOverlay" class="po__base">
             <div class="po__header action-header">
@@ -954,21 +983,17 @@ session_write_close();
                     <div class="i__title fs-md custom-lang">[presets-custom]</div>
                     <div class="i__description fs-xs custom-lang">[presets-custom-desc]</div>
                     <div class="i__content fs-sm">
-                        <div id="btn-bl-p-delete" class="i-minus fs-sm" onclick="blpDeleteFunct()">-</div>
-                        <input id="bl-p" class="i-input__secondary secondary-placeholder fs-sm custom-lang" name="bl-p" placeholder="[presets-enter-placeholder]">
-                        <div id="btn-bl-p-add" class="i-plus fs-sm" onclick="blpAddFunct()">+</div>
+                            <input id="bl-p" name="bl-p" class="i-input__secondary secondary-placeholder fs-sm custom-lang" ngtype="text" ng-model="selected" uib-typeahead="WikiForSelect.name as WikiForSelect.domain for WikiForSelect in WikisListForSelect | filter:$viewValue:startsWith | limitTo:8" class="form-control" typeahead-editable="false" typeahead-on-select="selectList('bl', selected); selected = '';" placeholder="[presets-enter-placeholder]">
                     </div>
                     <div class="i__extra">
                         <ul id="blareap" class="i-chip-list fs-sm"></ul>
                     </div>
                 </div>
-                <div id="lang-set" class="i__base" style="display:none;">
+                <div id="lang-set" class="i__base" style="display:none; position:relative;">
                     <div class="i__title fs-md custom-lang">[presets-langset]</div>
                     <div class="i__description fs-xs custom-lang">[presets-langset-desc]</div>
-                    <div class="i__content fs-sm">
-                        <div id="btn-l-p-delete" class="i-minus fs-sm" onclick="lDeleteFunct()">-</div>
-                        <input id="l-p" class="i-input__secondary secondary-placeholder fs-sm custom-lang" name="l-p" placeholder="[presets-enter-placeholder]">
-                        <div id="btn-l-p-add" class="i-plus fs-sm" onclick="lAddFunct()">+</div>
+                    <div class="i__content fs-sm" style="position:absolute; right:0px; width: 200px;">
+                        <input id="l-p" name="l-p" class="i-input__secondary secondary-placeholder fs-sm custom-lang" ngtype="text" ng-model="selectedl" uib-typeahead="LangForSelect.code as LangForSelect.name for LangForSelect in LangsListForSelect | filter:$viewValue:startsWith | limitTo:8" class="form-control" typeahead-editable="false" typeahead-on-select="selectList('l', selectedl); selectedl = '';" placeholder="[presets-enter-placeholder]">
                     </div>
                     <div class="i__extra">
                         <ul id="lareap" class="i-chip-list fs-sm"></ul>
@@ -978,9 +1003,7 @@ session_write_close();
                     <div class="i__title fs-md custom-lang">[presets-wikis-wl]</div>
                     <div class="i__description fs-xs custom-lang">[presets-wikis-wl-desc]</div>
                     <div class="i__content fs-sm">
-                        <div id="btn-wl-p-delete" class="i-minus fs-sm" onclick="wlpDeleteFunct()">-</div>
-                        <input id="wladdp" class="i-input__secondary secondary-placeholder fs-sm custom-lang" name="wladdp" placeholder="[presets-enter-placeholder]">
-                        <div id="btn-wl-p-add" class="i-plus fs-sm" onclick="wlpAddFunct()">+</div>
+                        <input id="wladdp" name="wladdp" class="i-input__secondary secondary-placeholder fs-sm custom-lang" ngtype="text" ng-model="selectedw" uib-typeahead="WikiForSelect.name as WikiForSelect.domain for WikiForSelect in WikisListForSelect | filter:$viewValue:startsWith | limitTo:8" class="form-control" typeahead-editable="false" typeahead-on-select="selectList('wl', selectedw); selectedw = '';" placeholder="[presets-enter-placeholder]">
                     </div>
                     <div class="i__extra">
                         <ul id="wlareap" class="i-chip-list fs-sm"></ul>
@@ -1002,6 +1025,8 @@ session_write_close();
 
             </template>
 
+               
+
             <script src="js/index-noncritical.js" defer></script>
             <script src="js/modules/dialog.js" defer></script>
             <script src="js/modules/presets.js" defer></script>
@@ -1016,6 +1041,8 @@ session_write_close();
                 var vandals = [];
                 var suspects = [];
                 var offlineUsers = [];
+                var listWikiNames = [];
+                var listLangNames = [];
                 var defaultWarnList = [];
                 var defaultDeleteList = [];
                 var countqueue = 0;
@@ -1034,6 +1061,7 @@ session_write_close();
                 var presets = [{ title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", wikilangs: "", blprojects: ""}];
                 var selectedPreset = 0;
                 var themeIndex = undefined;
+                // var langConstruct = new Bloodhound({datumTokenizer: Bloodhound.tokenizers.whitespace, queryTokenizer: Bloodhound.tokenizers.whitespace, local: listLangNames});
                 const THEME_FIX = { '--bc-positive': 'rgb(36, 164, 100)', '--bc-negative': 'rgb(251, 47, 47)', '--ic-accent': 'invert(0.85) sepia(1) saturate(0) hue-rotate(200deg)', '--tc-accent': 'rgba(255, 255, 255, 1)', '--link-color': '#337ab7', '--tc-positive': 'var(--bc-positive)', '--tc-negative': 'var(--bc-negative)', '--fs-xl': '26px', '--fs-lg': '18px', '--fs-md': '16px', '--fs-sm': '14px', '--fs-xs': '11px', '--lh-xl': '1.5', '--lh-lg': '1.5', '--lh-md': '1.5', '--lh-sm': '1.5', '--lh-xs': '1.5', };
                 const BC_LIGHT = { '--bc-secondary': '#ffffff', '--bc-secondary-low': '#f4f4f4', '--bc-secondary-hover': 'rgba(0, 0, 0, .1)', };
                 const TCP_ON_DARK = { '--tc-primary': 'rgba(255, 255, 255, 1)', '--tc-primary-low': 'rgba(255, 255, 255, .8)', };
@@ -1605,7 +1633,7 @@ session_write_close();
                     openPW('logs');
                 }
             </script>
-            <script src="js/swv.js?v=6"></script>
+            <script src="js/swv.js?v=7"></script>
             <script>
 
                 /*#########################

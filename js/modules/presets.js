@@ -176,6 +176,7 @@ const editPreset = (index) => {
         editPTemp.content.getElementById("lang-set").style.display = "grid";
     }
     editBody.append(editPTemp.content.cloneNode(true));
+
     let dialogButtons = [
         { type: 'accent', title: useLang["presets-save"], onClick: () => savePreset(index), remove: false },
         { title: useLang["cancel"], remove: true },
@@ -189,6 +190,10 @@ const editPreset = (index) => {
         custom: { insertElement: editBody },
         buttons: dialogButtons
     });
+    angular.element(document.getElementById('angularapp')).scope().compile("bl-p");
+    angular.element(document.getElementById('angularapp')).scope().compile("l-p");
+    angular.element(document.getElementById('angularapp')).scope().compile("wladdp");
+
     if (index === undefined) preSettings = { title: "", regdays: "5", oresFilter: "0", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", wikilangs: "", blprojects: ""};
     else preSettings = {...presets[index]};
 

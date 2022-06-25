@@ -288,6 +288,16 @@ html, body, .full-screen, #loading {
     background-color: var(--bc-primary-hover);
     border-color: var(--bc-positive);
 }
+#lang-set > .i__content > .dropdown-menu {
+    position: absolute;
+    z-index: 2;
+}
+#l-p {
+    width: inherit;
+}
+.uib-typeahead-match -> .ng-binding {
+    padding: 10px;
+}
 
 /*-------eq__body--------*/
 .queue-base {
@@ -548,6 +558,8 @@ html, body, .full-screen, #loading {
     padding-bottom: calc(var(--floatbar-height) / 2 + var(--side-padding));
     border: none;
     resize: none;
+    background-color: #00000003;
+    background-clip: content-box;
 }
 .editForm__textarea:focus {
     outline: none;
