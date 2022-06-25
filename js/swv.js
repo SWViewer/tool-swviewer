@@ -2,8 +2,9 @@ var i = 0;
 var loadingEdits = 0;
 diffTextRaw = "";
 var isPause = false;
-angular.module("swv", ["ui.directives", "ui.filters"])
-    .controller("Queue", function ($scope, $compile, $timeout) {
+angular.module("swv", ["ui.directives", "ui.filters", "ui.bootstrap"]);
+angular.module("swv2", ["ui.directives", "ui.filters", "ui.bootstrap"]);
+angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) {
 
         const edits_history = [];
         const deleteReasonsArray = ["Nonsense", "Vandalism", "Spam", "Test page", "Empty page", "No useful content", "Out of project scope"];
@@ -542,8 +543,8 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 typeof SEdit.config.warn[description.warn][0]['templates'] === 'undefined' || SEdit.config.warn[description.warn][0]['templates'] === null || SEdit.config.warn[description.warn][0]['templates'] === ""
             ) return createNotify({
                 img: '/img/warning-filled.svg',
-                title: useLang["warn-fail-title"],
-                content: useLang["warn-perform-fail"].replace("$1", SEdit.title),
+                title: 'Warn failed!',
+                content: `Warn for ${SEdit.title} is not being send. Maybe config are not define correctly`,
                 removable: true
             });
 
@@ -962,6 +963,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                     startEsenServices();
                 }
             });
+
             $.ajax({
                 type: 'POST',
                 url: 'lists/activeSysops.txt',
@@ -980,6 +982,35 @@ angular.module("swv", ["ui.directives", "ui.filters"])
 
             $.ajax({
                 type: 'POST',
+                url: 'lists/namesLangs.txt',
+                dataType: 'text',
+                success: result =>{
+                    let listLangNames_raw = result.split("\n");
+                    listLangNames_raw.forEach(function(w) {
+                        let listLangNames_splitted = w.split(",");
+                        listLangNames.push({"code": listLangNames_splitted[0], "name": listLangNames_splitted[1]});
+                    });
+                    startEsenServices();
+                }
+            });
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'lists/names.txt',
+                dataType: 'text',
+                success: result =>{
+                    let listWikiNames_raw = result.split("\n");
+                    listWikiNames_raw.forEach(function(w) {
+                        let listWikiNames_splitted = w.split(",");
+                        listWikiNames.push({"name": listWikiNames_splitted[0], "domain": listWikiNames_splitted[1]});
+                    });
+                    startEsenServices();
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
                 url: 'php/getOfflineUsers.php',
                 dataType: 'text',
                 success: result => {
@@ -990,7 +1021,7 @@ angular.module("swv", ["ui.directives", "ui.filters"])
             });
         }
         var esenServicesCount = 0;
-        const totalEsenServicesCount = 3;
+        const totalEsenServicesCount = 5;
         function startEsenServices() {
             ++esenServicesCount;
             if (esenServicesCount < totalEsenServicesCount) return;
@@ -1230,8 +1261,33 @@ angular.module("swv", ["ui.directives", "ui.filters"])
                 return false;
             }
         };
-    });
 
+    $scope.WikisListForSelect = listWikiNames;
+    $scope.LangsListForSelect = listLangNames;
+    $scope.startsWith = function(WikiForSelect, viewValue) {
+        return String(WikiForSelect).substr(0, viewValue.length).toLowerCase() === viewValue.toLowerCase();
+    }
+
+    $scope.compile = function(el) {
+        el = angular.element(document.getElementById(el));
+        $scope = el.scope();
+        $injector = el.injector();
+        $injector.invoke(function() {
+            $compile(el)($scope);
+        });
+    }
+
+    $scope.selectList = function(t, s) {
+        if (t === "bl")
+            blpAddFunct(s)
+        if (t === "l")
+            lAddFunct(s);
+        if (t === "wl")
+            wlpAddFunct(s);
+    }
+
+
+    });
 
 // => load diff to view
 async function loadDiff(edit, showAll) {
@@ -1278,7 +1334,6 @@ async function loadDiff(edit, showAll) {
     if (loadingEdits !== 0) loadingEdits--;
     if (loadingEdits === 0) disableLoadingDiffUI();
     homeBtn(false);
-
 }
 
 // => load diff description container
@@ -1621,11 +1676,15 @@ function getEditSource(serverUrl, scriptPath, newId) {
     let data = {action: "query", prop: "revisions", revids: newId, rvslots: "*", rvprop: "content"};
     return new Promise((resolve, reject) => {
         getAPI(serverUrl + scriptPath + "/" + "api.php", data, "POST").then(function(res) {
-            let isPropExists = Boolean(res?.query?.pages?.[firstKey(res?.query?.pages ?? false)]?.revisions?.[0]?.slots?.main?.["*"] ?? false);
-            (isPropExists) ? resolve(res.query.pages[firstKey(res?.query?.pages ?? false)].revisions[0].slots.main["*"]) : reject(" (Dev code: 004.0)");
+            let isPropExists = Boolean(res?.query?.pages?.[firstKey(res?.query?.pages ?? false)]?.revisions?.[0]?.slots?.main ?? false);
+            if (isPropExists) {
+                PropExists = res.query.pages[firstKey(res.query.pages)].revisions[0].slots.main;
+	        if (typeof PropExists["*"] === "undefined") isPropExists = false;
+            }
+            (isPropExists) ? resolve(res.query.pages[firstKey(res.query.pages)].revisions[0].slots.main["*"]) : reject(" (Dev code: 004.0)");
         }).catch(function (err) {
             console.log(err);
-            reject(useLang["error-get-source"] + " (Dev code: 004.1)");
+            reject("error-get-source" + " (Dev code: 004.1)");
         });
     });
 }

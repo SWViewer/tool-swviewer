@@ -322,8 +322,8 @@ function removeChip(parent, chipVal) {
     })
 }
 
-function addFilter(listId, inputId, key) {
-    var val = document.getElementById(inputId).value;
+function addFilter(listId, inputId, key, data = null) {
+    var val = (data === null) ? document.getElementById(inputId).value : data;
     if (val !== "" && val !== null && typeof val !== 'undefined') {
         if (val.indexOf(",") == -1) {
             if (key === 'namespaces') { nsChange(val, "add"); return; }
@@ -332,7 +332,8 @@ function addFilter(listId, inputId, key) {
             li.appendChild(createChipCross(listId, inputId, key, val));
             li.appendChild(document.createTextNode(val));
             ul.appendChild(li);
-            document.getElementById(inputId).value = "";
+            if (data === null)
+                document.getElementById(inputId).value = "";
             preSettings[key].push(val);
         } else alert("Parameter is incorrect");
     }
@@ -354,16 +355,16 @@ function removeFilter(listId, inputId, key, chipVal, crossClick) {
 function wluAddFunct() { addFilter('wlareau', 'wladdu', 'wlusers'); };
 function wluDeleteFunct() { removeFilter('wlareau', 'wladdu', 'wlusers'); };
 /*---wikis whitelist---*/
-function wlpAddFunct() { addFilter('wlareap', 'wladdp', 'wlprojects'); };
+function wlpAddFunct(data) { addFilter('wlareap', 'wladdp', 'wlprojects', data); };
 function wlpDeleteFunct() { removeFilter('wlareap', 'wladdp', 'wlprojects'); };
 /*---custom wikis---*/
 if (isGlobal == true || isGlobalModeAccess === true) {
-    function blpAddFunct() { addFilter('blareap', 'bl-p', 'blprojects'); }
+    function blpAddFunct(data) { addFilter('blareap', 'bl-p', 'blprojects', data); }
     function blpDeleteFunct() { removeFilter('blareap', 'bl-p', 'blprojects'); }
 }
 /*---langset wikis---*/
 if (isGlobal == true || isGlobalModeAccess === true) {
-    function lAddFunct() { addFilter('lareap', 'l-p', 'wikilangs'); }
+    function lAddFunct(data) { addFilter('lareap', 'l-p', 'wikilangs', data); }
     function lDeleteFunct() { removeFilter('lareap', 'l-p', 'wikilangs'); }
 }
 /*---namespaces---*/
