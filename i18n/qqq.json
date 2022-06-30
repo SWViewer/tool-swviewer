@@ -11,7 +11,8 @@
 			"MarcoAurelio",
 			"MuratTheTurkish",
 			"Pikne",
-			"Robby"
+			"Robby",
+			"Verdy p"
 		]
 	},
 	"tooltip-edit-preset": "Button to open 'Queue settings'.",
@@ -26,7 +27,7 @@
 	"tooltip-m-queue": "Button to open 'Queue' on mobile device.",
 	"tooltip-m-notification": "Button to open 'Notifications' on mobile device.",
 	"tooltip-copy-link": "Button to 'Copy link address' in more options.",
-	"tooltip-edit-source": "Button to open 'Edit source' in more options.",
+	"tooltip-edit-source": "Button to open 'Edit source' in more options.\n{{Identical|Edit source}}",
 	"tooltip-more-options": "Button to open 'More options' on control bar.",
 	"tooltip-open-browser": "Button to 'Open diff in browser window' on control bar.",
 	"tooltip-speedy-del": "Button to 'Tag panel' on control bar.",
@@ -131,7 +132,7 @@
 	"diff-mo-ca": "'Central auth' text in 'More options' on control bar.",
 	"diff-mo-guc": "'Global contribs' text in 'More options' on control bar.",
 	"diff-mo-vh": "'View history' text in 'More options' on control bar.",
-	"diff-mo-es": "'Edit source' text in 'More options' on control bar.",
+	"diff-mo-es": "'Edit source' text in 'More options' on control bar.\n{{Identical|Edit source}}",
 	"notifications-empty": "'No notifications' text inside empty 'Notifications' panel.",
 	"notifications-img-clear": "'Clear all notifications' text inside 'Notifications' panel.",
 	"notifications-img": "'Notifications' alt text used on 'Notifications' panel image.",
@@ -248,7 +249,7 @@
 	"sysops-not-gs": "Description text below 'Add to GSR' in 'Tag for deletion panel'.",
 	"sysops-more-than-3": "Description text below 'Add to GSR' in 'Tag for deletion panel'. Parameters:\n* $1 - total number of sysop",
 	"sysops-more-than-10": "Description text below 'Add to GSR' in 'Tag for deletion panel'.",
-	"edit-source-title": "'Edit source' title in edit source page.",
+	"edit-source-title": "'Edit source' title in edit source page.\n{{Identical|Edit source}}",
 	"summary-title": "'Summary' text when hovered over summary input area in edit source page.\n{{identical|Summary}}",
 	"summary-placeholder": "Placeholder text in summary input area in edit source page.",
 	"tooltip-edit-form": "'Source code of page' text when hovered over page content in edit source page.",
