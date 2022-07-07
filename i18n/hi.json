@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"1997kB"
+			"1997kB",
+			"Saurmandal"
 		]
 	},
 	"tooltip-edit-preset": "कतार सेटिंग्स",
@@ -110,7 +111,7 @@
 	"statusbar-rc-disconnected": "बदलावों से संपर्क टूटा।",
 	"diff-info-user": "सदस्य:",
 	"diff-info-title": "शीर्षक:",
-	"diff-info-wiki": "विकी:",
+	"diff-info-wiki": "विकि:",
 	"diff-info-comment": "टिप्पणी:",
 	"diff-info-namespace": "नामस्थान:",
 	"diff-mo-fetching": "लोडिंग",
