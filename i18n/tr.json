@@ -197,7 +197,7 @@
 	"edit-fail-title": "Düzenleme başarısız oldu!",
 	"view-latest": "Son düzenlemeyi gör",
 	"request-performed-title": "İşlem gerçekleştirildi!",
-	"request-performed-content": "$2 maddesindeki $1 işlemi başarıyla yapıldı.",
+	"request-performed-content": "$2 maddesinde $1 işlemi başarıyla yapıldı.",
 	"rollback-fail-title": "Geri döndürme başarısız oldu!",
 	"rollback-fail-content": "$1 adlı kullanıcı, $2 sayfasında birden çok düzenleme yaptı. Lütfen, önce sayfa geçmişini kontrol edin.",
 	"load-history": "Geçmişi yükle",
