@@ -241,7 +241,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                     GSR_description.append(createGSRDesc('orange', useLang["sysops-active"].replace("$1", $scope.numberLocale(activeSysops[$scope.selectedEdit.wiki][3])).replace("$2", $scope.numberLocale(activeSysops[$scope.selectedEdit.wiki][2])) + ((userRole == "GS" || userRole == "S") ? "" : (" " + useLang["sysops-wait"]))));
                     document.getElementById('btn-group-addToGSR').classList.remove('disabled');
                 } else {
-                    if (activeSysops[$scope.selectedEdit.wiki][3] == "3+")
+                    if (activeSysops[$scope.selectedEdit.wiki][3] >= 3 && activeSysops[$scope.selectedEdit.wiki][3] <= 10)
                         GSR_description.append(createGSRDesc('var(--bc-negative)', useLang["sysops-more-than-3"].replace("$1", $scope.numberLocale(activeSysops[$scope.selectedEdit.wiki][2]))));
                     else
                         GSR_description.append(createGSRDesc('var(--bc-negative)', useLang["sysops-more-than-10"]));
@@ -966,7 +966,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
 
             $.ajax({
                 type: 'POST',
-                url: 'lists/activeSysops.txt',
+                url: 'lists/active_sysops.json',
                 dataType: 'text',
                 success: result =>{
                     activeSysops = JSON.parse(result);
