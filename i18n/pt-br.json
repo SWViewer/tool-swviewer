@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"1997kB",
+			"Duke of Wikipädia",
 			"Eduardo Addad de Oliveira",
 			"Eduardoaddad",
 			"Isabelle Belato",
@@ -50,6 +51,10 @@
 	"settings-rh-mode-descr": "Mostrar fila no lado direito da tela.",
 	"settings-terminate-stream": "Interromper fila",
 	"settings-terminate-stream-descr": "Interromper o fluxo de mudanças recentes quando o limite da fila é alcançado.",
+	"settings-jumps": "Pular para mudar",
+	"settings-jumps-descr": "Se ativado, o foco do SWViewer saltará diretamente para a mudança ao abrir o diff da fila.",
+	"settings-hotkeys": "Teclas de atalho",
+	"settings-hotkeys-descr": "Habilite [$1|hotkeys] para operar o SWViewer com teclado.",
 	"settings-limit": "Limite da fila",
 	"settings-limit-descr": "Número máximo de edições permitidas na fila.",
 	"settings-limit-placeholder": "Sem limite",
@@ -87,6 +92,8 @@
 	"presets-additional-desc": "Exibir edições de [$1|wikis] com menos de 300 usuários ativos.",
 	"presets-custom": "Wikis customizadas",
 	"presets-custom-desc": "Adicione sua home-wiki ou wikis que não estão na lista de wikis pequenas. Exemplo: enwiki",
+	"presets-langset": "Idiomas",
+	"presets-langset-desc": "Defina idiomas para obter edições em idiomas específicos. Exemplo: en",
 	"presets-wikis-wl": "Lista branca de wikis",
 	"presets-wikis-wl-desc": "Adicione wikis para pular suas edições da fila. Exemplo: enwiki",
 	"presets-users-wl": "Lista branca de usuários",
