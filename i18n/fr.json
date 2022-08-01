@@ -279,7 +279,7 @@
 	"about-frame-app": "$1 est une application pour surveiller en temps réel les modifications récentes d’un wiki.",
 	"about-frame-doc": "Voir la [$1|documentation].",
 	"about-frame-q": "Si vous avez des questions, posez-les sur la [$1|page de discussion] de SWViewer sur Meta-wiki.",
-	"about-frame-traffic": "Attention, gros trafic Internet !",
+	"about-frame-traffic": "Faites attention, gros trafic Internet !",
 	"about-frame-attrib": "Licence / auteur du fichier original",
 	"about-frame-cookies-title": "Témoins",
 	"about-frame-cookies-desc": "Cette appli utilise des témoins (cookies), qui expirent au bout de 31 jours.",
