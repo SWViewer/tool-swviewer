@@ -237,7 +237,7 @@
 	"max-warn-title": "Avertissement final",
 	"max-warn-desc": "Cocher la case pour envoyer le niveau maximal d’avertissement.",
 	"common-summaries": "Résumés courants :",
-	"tag-deletion-title": "Balise pour la suppression",
+	"tag-deletion-title": "Balise pour suppression",
 	"gsr-add": "Ajouter à GSR",
 	"sysops-active": "Le nombre d’administrateurs actifs dans ce wiki wiki est $1 (sur un total de $2).",
 	"sysops-wait": "Il vaut peut-être mieux attendre la réaction de l’administrateur local.",
