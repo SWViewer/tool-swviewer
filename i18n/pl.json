@@ -83,6 +83,7 @@
 	"presets-additional-desc": "Zezwól na pokazywanie edycji z [$1|wiki] z mniej niż 300 aktywnymi użytkownikami.",
 	"presets-custom": "Własne wiki",
 	"presets-custom-desc": "Dodaj swoje własne wiki na listę. Przykład: enwiki, plwiki",
+	"presets-langset": "Języki",
 	"presets-langset-desc": "Ustaw języki, aby uzyskać zmiany w określonych językach. Przykład: en",
 	"presets-wikis-wl": "Wiki na whitelist'cie",
 	"presets-wikis-wl-desc": "Podaj wiki, z których nie chcesz widzieć edycji. Na przykład: enwiki, plwiki",
