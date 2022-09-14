@@ -977,16 +977,6 @@ session_write_close();
                         <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
                 <div id="custom-set" class="i__base" style="display:none; position:relative;">
                     <div class="i__title fs-md custom-lang">[presets-custom]</div>
                     <div class="i__description fs-xs custom-lang">[presets-custom-desc]</div>
