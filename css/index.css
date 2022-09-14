@@ -292,7 +292,11 @@ html, body, .full-screen, #loading {
     position: absolute;
     z-index: 2;
 }
-#l-p {
+#custom-set > .i__content > .dropdown-menu {
+    position: absolute;
+    z-index: 2;
+}
+#l-p, #bl-p {
     width: inherit;
 }
 .uib-typeahead-match -> .ng-binding {

@@ -62,6 +62,7 @@ $globalInfo = json_decode($client->makeOAuthCall($accessToken, "$apiUrl?action=q
 $global = false;
 
 $userRole = "none";
+$checkGR = false;
 forEach ($globalInfo['query']['globaluserinfo']['groups'] as $globalGroup) {
     if ($globalGroup == 'steward' || $globalGroup == 'global-sysop' || $globalGroup == 'global-rollbacker') {
         $global = true;
@@ -69,10 +70,17 @@ forEach ($globalInfo['query']['globaluserinfo']['groups'] as $globalGroup) {
             $userRole = "S";
         if ($globalGroup == 'global-sysop')
             $userRole = "GS";
+        if ($globalGroup == 'global-rollbacker')
+            $checkGR = true;
     }
 }
 $_SESSION['projects'] = "";
-if ($global == true || $ident->username == "Ajbura" || $ident->username == "Exoped")
+if ($global == true && $checkGR == false)
+    $_SESSION['notGR'] = true;
+else
+    $_SESSION['notGR'] = false;
+
+if ($global == true || $ident->username == "Ajbura")
     $_SESSION['mode'] = 'global';
 else {
     $checkLocal = false;
@@ -174,7 +182,7 @@ if (isset($_SESSION['projects']) && $_SESSION['projects'] !== "")
     $projects = $_SESSION['projects'];
 $_SESSION['userRole'] = $userRole;
 
-$cookie_json = json_encode(["userName" => $ident->username, "tokenKey" => $accessToken->key, "tokenSecret" => $accessToken->secret, "talkToken" => $_SESSION['talkToken'], "mode" => $_SESSION['mode'], "accessGlobal" => $accessGlobal, "userRole" => $userRole, "projects" => $projects]);
+$cookie_json = json_encode(["userName" => $ident->username, "tokenKey" => $accessToken->key, "tokenSecret" => $accessToken->secret, "talkToken" => $_SESSION['talkToken'], "mode" => $_SESSION['mode'], "notGR" => $_SESSION['notGR'], "accessGlobal" => $accessGlobal, "userRole" => $userRole, "projects" => $projects]);
 setcookie("SWViewer-auth", $cookie_json, time() + 60 * 60 * 24 * 31, "/", "swviewer.toolforge.org", TRUE, TRUE);
 session_write_close();
 

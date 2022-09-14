@@ -29,12 +29,14 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
         $scope.getSelectedEdit = () => { return {...$scope.selectedEdit} };
         $scope.setSelectedEdit = (edit) => {
             $scope.selectedEdit = {...edit};
-            $scope.selectedEdit.config = getConfig(edit.wiki);
+            let configArray = getConfig(edit.wiki);
+            $scope.selectedEdit.config = configArray[0];
+            $scope.selectedEdit.customRollbackViaUndoOnly = configArray[1];
+
             $scope.selectedEdit.settings = {
                 checkWarnDelete: (defaultDeleteList.indexOf(edit.wiki) !== -1)? true: false,
                 checkWarn: (defaultWarnList.indexOf(edit.wiki) !== -1)? true: false
             };
-
         };
 
         $scope.selectTop = function() {
@@ -60,6 +62,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             loadingEdits++;
             enableLoadingDiffUI();
             loadDiff($scope.selectedEdit);
+
             $scope.sessionActions.diffViewed++;
             if ($scope.edits.indexOf(edit) !== -1) $scope.edits.splice($scope.edits.indexOf(edit), 1);
         };
@@ -302,6 +305,14 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 lastWarn.classList.add('disabled');
                 warnBtn.parentElement.parentElement.classList.add('disabled');
             }
+            if ((notGR === true && notGRWikis.includes($scope.selectedEdit.wiki)) || $scope.selectedEdit.customRollbackViaUndoOnly === true) {
+                document.getElementById("treatUndo").classList.add("i-checkbox__active");
+                document.getElementById("treat-undo-box").classList.add("disabled");
+            }
+            else {
+                document.getElementById("treat-undo-box").classList.remove("disabled");
+                document.getElementById("treatUndo").classList.remove("i-checkbox__active");
+           }
         }
 
         $scope.selectRollbackDescription = function (description) {
@@ -410,7 +421,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             }));
         }
 
-        $scope.doRevert = function (description = {}) {
+        $scope.doRevert = function (description = {}, quick = false) {
             const SEdit = {...$scope.selectedEdit};
             if (SEdit.old == null || isNaN(SEdit.old) === true) return;
             var rollbackSummary = "";
@@ -434,9 +445,11 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                                 const lastUserRevId = await getLastUserRevId(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.user, SEdit.new);
                                 if (lastUserRevId !== SEdit.old) return lastUserRevId;
                             }
-                            var RBMode = document.getElementById("treatUndo").classList.contains("i-checkbox__active")? "undo": "rollback";
+                            var RBMode = document.getElementById("treatUndo").classList.contains("i-checkbox__active") ? "undo": "rollback";
+                            if (quick === true) RBMode = "rollback"; 
+             
                             if (isGlobalModeAccess === true && local_wikis.includes(SEdit.wiki) === false) RBMode = 'undo';
-
+                            if (notGR === true && notGRWikis.includes(SEdit.wiki) === true) RBMode = 'undo';
                             const revertData = {
                                 rbmode: RBMode,
                                 basetimestamp: SEdit.timestamp,
@@ -970,12 +983,6 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 dataType: 'text',
                 success: result =>{
                     activeSysops = JSON.parse(result);
-                    Object.keys(activeSysops).forEach(key => {
-                        if (Number(key + 1)) {
-                            activeSysops[activeSysops[key][0]] = activeSysops[key].slice(1);
-                            delete activeSysops[key];
-                        }
-                    });
                     startEsenServices();
                 }
             });
@@ -1855,7 +1862,10 @@ function getConfig(wiki) {
     else wikiConfig['report'] = wikiConfig['report'][0];
     if (!wikiConfig.hasOwnProperty('protect')) wikiConfig['protect'] = null;
     else wikiConfig['protect'] = wikiConfig['protect'][0];
-    return wikiConfig;
+
+    let customRollbackViaUndoOnly = (config.hasOwnProperty("customRollbackViaUndoOnly")
+        && config["customRollbackViaUndoOnly"][0].includes(wiki)) ? true : false
+    return [wikiConfig, customRollbackViaUndoOnly];
 }
 
 /*

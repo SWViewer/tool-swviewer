@@ -1,13 +1,15 @@
 <?php
 header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
 header('Content-Type: application/json; charset=utf-8');
-session_name('SWViewer');
-session_start();
+require_once 'includes/headerOAuth.php';
 if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) {
     echo json_encode(["result" => "error", "info" => "Invalid request"]);
     session_write_close();
     exit();
 }
+$notGR = "";
+if (isset($_SESSION['notGR']))
+    $notGR = $_SESSION['notGR'];
 $userName = $_SESSION['userName'];
 session_write_close();
 
@@ -29,7 +31,18 @@ if (!isset($_POST["action"])) {
         $q->execute(array(':userName' => $userName));
         $result = $q->fetchAll();
 
-        $response = ["userName" => $userName, "talkToken" => $result[0]['token'], "userRole" => $result[0]['userRole'], "isGlobalAccess" => $result[0]['isGlobalAccess'], "isGlobal" => $result[0]['isGlobal'], "local_wikis" => $result[0]['local_wikis'],   "checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "lang" => $result[0]['lang'], "locale" => $result[0]['locale'], "hotkeys" => $result[0]['hotkeys'], "jumps" => $result[0]['jumps'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
+        $notGRWikis = [];
+        if ($notGR == true) {
+            $apiUrl = "https://meta.wikimedia.org/w/api.php";
+            $params = ['action' => 'query', 'format' => 'json', 'list' => 'wikisets', 'wsfrom' => 'Opted-out of global sysop wikis', 'wsprop' => 'wikisnotincluded',  'wslimit' => 500, 'utf8' => 1];
+            $resultGS = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
+
+            foreach($resultGS->query->wikisets[0]->wikisnotincluded as $w) {
+                array_push($notGRWikis, $w);
+            }
+        }
+
+        $response = ["userName" => $userName, "talkToken" => $result[0]['token'], "notGR" => $notGR, "notGRWikis" => $notGRWikis, "userRole" => $result[0]['userRole'], "isGlobalAccess" => $result[0]['isGlobalAccess'], "isGlobal" => $result[0]['isGlobal'], "local_wikis" => $result[0]['local_wikis'], "checkmode" => $result[0]['checkmode'], "preset" => $result[0]['preset'], "lang" => $result[0]['lang'], "locale" => $result[0]['locale'], "hotkeys" => $result[0]['hotkeys'], "jumps" => $result[0]['jumps'], "sound" => $result[0]['sound'], "countqueue" => $result[0]['countqueue'], "terminateStream" => $result[0]['terminateStream'], "mobile" => $result[0]['mobile'], "direction" => $result[0]['direction'], "rhand" => $result[0]['rhand'], "defaultdelete" => $result[0]['defaultdelete'], "defaultwarn" => $result[0]['defaultwarn'], "theme" => $result[0]['theme']];
         echo json_encode($response);
         $db = null;
         exit();

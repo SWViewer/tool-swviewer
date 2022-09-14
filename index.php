@@ -116,13 +116,10 @@ ul.dropdown-menu > li:hover, ul.dropdown-menu > li.active {
 ul.dropdown-menu > li > a {
     color: #000000bf;
 }
+
+.ltr-mark:after { content: "\200E"; }
+.rtl-mark:after { content: "\200F"; }
 </style>
-
-
-    <style>
-        .ltr-mark:after { content: "\200E"; }
-        .rtl-mark:after { content: "\200F"; }
-    </style>
 
     <script>
         function sandwichLocalisation(baseContent, dirLocal, localMessage, targetEl, patternType, parsedLen, styleEl, uniqId, linkLocalisation, baseAdd = false) {
@@ -189,6 +186,7 @@ if (!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset(
             $_SESSION['tokenSecret'] = $obj->tokenSecret;
             $_SESSION['talkToken'] = $obj->talkToken;
             $_SESSION['userRole'] = $obj->userRole;
+            $_SESSION['notGR'] = (isset($obj->notGR)) ? $obj->notGR : "";
             $_SESSION['mode'] = $obj->mode;
             $_SESSION['accessGlobal'] = $obj->accessGlobal;
             $_SESSION['projects'] = $obj->projects;
@@ -642,7 +640,7 @@ session_write_close();
                             <div id="customRevertBtn" class="secondary-hover custom-lang" ng-click="openCustomRevertPanel();" aria-label="[tooltip-custom-rollback]" i-tooltip="top">
                                 <img class="touch-ic secondary-icon custom-lang" src="./img/custom-rollback-filled.svg" alt="[img-custom-rb]">
                             </div>
-                            <div id="revert" class="secondary-hover custom-lang" ng-click="doRevert();" aria-label="[tooltip-rollback]" i-tooltip="top">
+                            <div id="revert" class="secondary-hover custom-lang" ng-click="doRevert({}, true);" aria-label="[tooltip-rollback]" i-tooltip="top">
                                 <img class="touch-ic secondary-icon custom-lang" src="./img/rollback-filled.svg" alt="[img-rollback]">
                             </div>
                             <div id="back" class="secondary-hover custom-lang" ng-click="Back();" aria-label="[tooltip-last-diff]" i-tooltip="top-left">
@@ -722,7 +720,7 @@ session_write_close();
                         <span id="max" class="i-checkbox" onclick="toggleICheckBox(this);"></span>
                     </div>
                 </div>
-                <div class="i__base">
+                <div class="i__base" id="treat-undo-box">
                     <div class="i__title fs-md custom-lang">[treat-undo-title]</div>
                     <div class="i__description fs-xs custom-lang">[treat-undo-desc]</div>
                     <div class="i__content fs-sm">
@@ -979,10 +977,20 @@ session_write_close();
                         <div id="lt-300-btn" class="t-btn__secondary" onclick="toggleTButton(this); lt300Btn(this);"></div>
                     </div>
                 </div>
-                <div id="custom-set" class="i__base" style="display:none;">
+
+
+
+
+
+
+
+
+
+
+                <div id="custom-set" class="i__base" style="display:none; position:relative;">
                     <div class="i__title fs-md custom-lang">[presets-custom]</div>
                     <div class="i__description fs-xs custom-lang">[presets-custom-desc]</div>
-                    <div class="i__content fs-sm">
+                    <div class="i__content fs-sm" style="position:absolute; right:0px; width: 200px;">
                             <input id="bl-p" name="bl-p" class="i-input__secondary secondary-placeholder fs-sm custom-lang" ngtype="text" ng-model="selected" uib-typeahead="WikiForSelect.name as WikiForSelect.domain for WikiForSelect in WikisListForSelect | filter:$viewValue:startsWith | limitTo:8" class="form-control" typeahead-editable="false" typeahead-on-select="selectList('bl', selected); selected = '';" placeholder="[presets-enter-placeholder]">
                     </div>
                     <div class="i__extra">
@@ -1108,10 +1116,11 @@ session_write_close();
                 settingslist = JSON.parse(settingslist);
 
                 var isGlobal = (settingslist['isGlobal'] !== null && settingslist['isGlobal'] !== "" && settingslist['isGlobal'] !== false && settingslist['isGlobal'] !== "0");
+                var notGR = (settingslist['notGR'] !== null && settingslist['notGR'] !== "" && settingslist['notGR'] !== false && settingslist['notGR'] !== "0");
                 var isGlobalModeAccess = (settingslist['isGlobalAccess'] !== null && settingslist['isGlobalAccess'] !== "" && settingslist['isGlobalAccess'] !== false && settingslist['isGlobalAccess'] !== "0");
-
                 var userRole = (settingslist['userRole'] !== null && settingslist['userRole'] !== "") ? settingslist['userRole'] : "none";
                 var userSelf = settingslist['userName'];
+                var notGRWikis = settingslist['notGRWikis'];
                 // DO NOT GIVE TO ANYONE THIS TOKEN, OTHERWISE THE ATTACKER WILL CAN OPERATE AND SENDS MESSAGES UNDER YOUR NAME!
                 var talktoken = settingslist['talkToken'];
                 var local_wikis = (settingslist['local_wikis'] !== null && settingslist['local_wikis'] !== "") ? settingslist['local_wikis'].split(',') : [];

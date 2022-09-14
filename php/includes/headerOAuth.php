@@ -16,5 +16,6 @@ session_start();
 $config = require_once '/data/project/swviewer/security/config.php';
 $conf = new ClientConfig( $config['url'] );
 $conf->setConsumer( new Consumer( $config['consumer_key'], $config['consumer_secret'] ) );
+$conf->setUserAgent( $config['agent'] );
 $client = new Client( $conf );
 $accessToken = new Token( $_SESSION['tokenKey'], $_SESSION['tokenSecret'] );
