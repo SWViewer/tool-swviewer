@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"1997kB",
+			"Abijeet Patro",
 			"Saurmandal"
 		]
 	},
@@ -122,6 +123,7 @@
 	"diff-mo-ca": "Central auth",
 	"diff-mo-guc": "वैश्विक संपादन",
 	"diff-mo-vh": "इतिहास देखे",
+	"diff-mo-thank": "धन्यवाद",
 	"diff-mo-es": "स्रोत बदलें",
 	"notifications-empty": "कोई सूचना नहीं",
 	"notifications-img-clear": "सभी सूचनाएं हटाए",
@@ -313,6 +315,7 @@
 	"img-notification": "सूचना",
 	"img-settings": "सेटिंग्स",
 	"img-navigation": "नैविगेशन",
+	"img-thank": "धन्यवाद",
 	"img-edit": "सम्पादन",
 	"img-options": "अन्य विकल्प",
 	"img-plus": "जोड़ें",
