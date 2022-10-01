@@ -619,11 +619,17 @@ session_write_close();
                                 <div class="secondary-hover custom-lang" ng-click="copyViewHistory()" aria-label="[tooltip-copy-link]" i-tooltip="top-left"><img class="touch-ic secondary-icon custom-lang" src="./img/copy-filled.svg" alt="[img-copy]"></div>
                                 <a class="secondary-hover fs-md custom-lang" href='{{selectedEdit.server_url + "" + selectedEdit.script_path}}/index.php?title={{selectedEdit.title}}&action=history' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>[diff-mo-vh]</a>
                             </div>
-                            <div >
-                                <div id="editBtn" class="secondary-hover custom-lang" ng-click="openEditSource();" onclick="openPW('editForm'); closeMoreControl();" aria-label="[tooltip-edit-source]" i-tooltip="top-left">
+                            <div ng-click="doThank();">
+                                <div class="secondary-hover custom-lang" aria-label="[tooltip-thank]" i-tooltip="top-left">
+                                    <img class="touch-ic secondary-icon custom-lang" src="./img/thumbs-up-filled.svg" alt="[img-thank]">
+                                </div>
+                                <a class="secondary-hover fs-md custom-lang"><span style="color: var(--tc-secondary);">[diff-mo-thank]</span></a>
+                            </div>
+                            <div ng-click="openEditSource();" onclick="openPW('editForm'); closeMoreControl();">
+                                <div id="editBtn" class="secondary-hover custom-lang" aria-label="[tooltip-edit-source]" i-tooltip="top-left">
                                     <img class="touch-ic secondary-icon custom-lang" src="./img/pencil-filled.svg" alt="[img-edit]">
                                 </div>
-                                <a class="secondary-hover fs-md custom-lang" ng-click="openEditSource();" onclick="openPW('editForm'); closeMoreControl();"><span style="color: var(--tc-secondary);">[diff-mo-es]</span></a>
+                                <a class="secondary-hover fs-md custom-lang"><span style="color: var(--tc-secondary);">[diff-mo-es]</span></a>
                             </div>
                         </div>
                         <!-- Control buttons -->
@@ -640,7 +646,7 @@ session_write_close();
                             <div id="customRevertBtn" class="secondary-hover custom-lang" ng-click="openCustomRevertPanel();" aria-label="[tooltip-custom-rollback]" i-tooltip="top">
                                 <img class="touch-ic secondary-icon custom-lang" src="./img/custom-rollback-filled.svg" alt="[img-custom-rb]">
                             </div>
-                            <div id="revert" class="secondary-hover custom-lang" ng-click="doRevert({}, true);" aria-label="[tooltip-rollback]" i-tooltip="top">
+                            <div id="revert" class="secondary-hover custom-lang" ng-click="doRevert({}, true, true);" aria-label="[tooltip-rollback]" i-tooltip="top">
                                 <img class="touch-ic secondary-icon custom-lang" src="./img/rollback-filled.svg" alt="[img-rollback]">
                             </div>
                             <div id="back" class="secondary-hover custom-lang" ng-click="Back();" aria-label="[tooltip-last-diff]" i-tooltip="top-left">
@@ -1632,7 +1638,7 @@ session_write_close();
                     openPW('logs');
                 }
             </script>
-            <script src="js/swv.js?v=7"></script>
+            <script src="js/swv.js?v=8"></script>
             <script>
 
                 /*#########################

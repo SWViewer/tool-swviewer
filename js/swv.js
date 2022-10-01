@@ -32,7 +32,6 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             let configArray = getConfig(edit.wiki);
             $scope.selectedEdit.config = configArray[0];
             $scope.selectedEdit.customRollbackViaUndoOnly = configArray[1];
-
             $scope.selectedEdit.settings = {
                 checkWarnDelete: (defaultDeleteList.indexOf(edit.wiki) !== -1)? true: false,
                 checkWarn: (defaultWarnList.indexOf(edit.wiki) !== -1)? true: false
@@ -62,7 +61,6 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             loadingEdits++;
             enableLoadingDiffUI();
             loadDiff($scope.selectedEdit);
-
             $scope.sessionActions.diffViewed++;
             if ($scope.edits.indexOf(edit) !== -1) $scope.edits.splice($scope.edits.indexOf(edit), 1);
         };
@@ -77,10 +75,11 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 edits_history.unshift($scope.getSelectedEdit());
                 i = i + 1;
             }
-
-            $scope.setSelectedEdit(edits_history[i]);
-            loadDiff($scope.selectedEdit);
-            i = i + 1;
+            if (edits_history.length-1 >= i && Object.keys(edits_history[i]).length !== 0) {
+                $scope.setSelectedEdit(edits_history[i]);
+                loadDiff($scope.selectedEdit, true);
+                i = i + 1;
+            }
         }
 
         $scope.editColor = function (edit) {
@@ -95,7 +94,6 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                     return {color: "pink", display: "flex", 'align-items': 'center'}
                 } else
                     return {color: "pink"};
-
             }
             if (dirLang === "rtl")
                 return {display: "flex", 'align-items': 'center'}
@@ -134,6 +132,22 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             var diffWindow = window.open(url, "_blank");
             diffWindow.location;
             diffWindow.focus();
+        }
+
+        // ===> Thank send
+        $scope.doThank = async function () {
+            await thank($scope.selectedEdit.server_name, $scope.selectedEdit.new)
+               .then(() => createNotify({
+                   img: '/img/warning-filled.svg',
+                   title: useLang["thank-success-title"],
+                   content: useLang["thank-success-content"].replace("$1", `[[${$scope.selectedEdit.user}||${$scope.selectedEdit.server_url}/wiki/User:${$scope.selectedEdit.user}]]`),
+                   removable: true
+               })).catch(err => createNotify({
+                   img: '/img/warning-filled.svg',
+                   title: useLang["thank-fail-title"],
+                   content: "Error 3.1: " + err,
+                   removable: true
+               }));
         }
 
         // ===> Open to edit source.
@@ -318,13 +332,14 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
         $scope.selectRollbackDescription = function (description) {
             if (!description.hasOwnProperty('summary')) return;
             if (description.summary === null || description.summary === "") return;
+            let warnDisabled = false;
             if (!($scope.selectedEdit.settings.checkWarn === true &&
                 $scope.selectedEdit.config.warn !== null &&
                 typeof description.warn !== "undefined" &&
-                typeof $scope.selectedEdit.config.warn[description.warn] !== "undefined")) description.warn = null;
-
+                typeof $scope.selectedEdit.config.warn[description.warn] !== "undefined"))
+                warnDisabled = true;
             description.withoutSection = description.withoutSection || false;
-            $scope.doRevert(description);
+            $scope.doRevert(description, warnDisabled);
         }
 
 
@@ -362,7 +377,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                                     })).catch(err => createNotify({
                                         img: '/img/warning-filled.svg',
                                         title: useLang["gsr-fail-title"],
-                                        content: "Error 3.1: " + err,
+                                        content: "Error 3.2: " + err,
                                         removable: true
                                     }));
                             }
@@ -388,7 +403,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                                     }).catch(err => createNotify({
                                         img: '/img/warning-filled.svg',
                                         title: useLang["warn-fail-title"],
-                                        content: 'Error: 3.2' + err,
+                                        content: 'Error: 3.3' + err,
                                         removable: true
                                     }));
                             }
@@ -421,7 +436,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             }));
         }
 
-        $scope.doRevert = function (description = {}, quick = false) {
+        $scope.doRevert = function (description = {}, warnDisabled, quick = false) {
             const SEdit = {...$scope.selectedEdit};
             if (SEdit.old == null || isNaN(SEdit.old) === true) return;
             var rollbackSummary = "";
@@ -434,7 +449,6 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
 
             RSInput.value = "";
             closePO();
-
             isLatestRevision(SEdit.server_url, SEdit.script_path, SEdit.title, SEdit.new)
                 .then(edit => {
                     if (!edit.isLatest) return bindLatestRevision(SEdit, edit.revision);
@@ -495,7 +509,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                                     }));
 
                                     $scope.reqSuccessNotify(rollbackData, SEdit, 'rollback', RBMode);
-                                    if (description.warn === null || typeof description.warn === 'undefined') return;
+                                    if (description.warn === null || typeof description.warn === 'undefined' || warnDisabled === true) return;
                                     $scope.doWarn(rollbackData, SEdit, description, isMax);
                                 }).catch(err => createNotify({
                                 img: '/img/warning-filled.svg',
@@ -973,6 +987,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 dataType: 'text',
                 success: result =>{
                     config = JSON.parse(result);
+                    // Object.freeze(config);
                     startEsenServices();
                 }
             });
@@ -1297,7 +1312,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
     });
 
 // => load diff to view
-async function loadDiff(edit, showAll) {
+async function loadDiff(edit, isHistory = false) {
     disableControl(); closeMoreControl();
     closePW();
     loadDiffDesc(edit);
@@ -1313,7 +1328,7 @@ async function loadDiff(edit, showAll) {
         </body>
     </html>`;
     if (document.getElementById('page').srcdoc.trim() !== loadingHtml.trim()) document.getElementById('page').srcdoc = loadingHtml;
-    if (edit.old !== null && (checkMode === 2 || showAll === true)) {
+    if (edit.old !== null && checkMode === 2) {
 
         await getLastUserRevId(edit.server_url, edit.script_path, edit.title, edit.user, edit.new)
             .then(revId => {
@@ -1330,7 +1345,8 @@ async function loadDiff(edit, showAll) {
             document.getElementById('page').srcdoc = diff.html;
         })
         .catch(err => {
-            angular.element(document.getElementById('app')).scope().selectTop();
+            if (isHistory) angular.element(document.getElementById('angularapp')).scope().Back();
+            else angular.element(document.getElementById('app')).scope().selectTop();
             createDialog({
                 parentId: 'angularapp', id: 'diffLoadingErrorDialog',
                 title: useLang["error-loading-title"], removable: true,
@@ -1701,7 +1717,6 @@ function firstKey(json) {
     return (Object.keys(json).hasOwnProperty(0)) ? Object.keys(json)[0] : undefined;
 }
 
-
 // => get first editor of the page.
 function getFirstEditor(serverUrl, scriptPath, wiki, title, user) {
     return new Promise((resolve, reject) => {
@@ -1930,6 +1945,24 @@ function structuredData(str, server) {
         return '<a title="' + $1 + '" href="' + server + $2 + '">' + $3 + '</a>';
     });
     return str;
+}
+
+// => thank send
+async function thank(domainURL, revisionID) {
+    toggleMoreControl();
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/thank.php',
+            type: 'POST',
+            crossDomain: true,
+            dataType: 'text',
+            data: {
+                project: domainURL,
+                rev: revisionID
+            }, success: () => resolve(),
+            error: err => reject(err)
+        })
+    });
 }
 
 function escapeXSS(str) {

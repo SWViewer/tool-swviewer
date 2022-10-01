@@ -513,7 +513,7 @@ html, body, .full-screen, #loading {
 }
 /*-------more control------*/
 .more-control {
-    height: calc(5 * 48px);
+    height: calc(6 * 48px);
     overflow: hidden;
     transition: height 200ms ease-in-out;
 }
