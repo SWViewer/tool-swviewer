@@ -300,7 +300,7 @@ html, body, .full-screen, #loading {
     position: absolute;
     z-index: 2;
 }
-#l-p, #bl-p {
+#l-p, #bl-p, #wladdp {
     width: inherit;
 }
 .uib-typeahead-match -> .ng-binding {
