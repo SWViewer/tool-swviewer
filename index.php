@@ -1003,7 +1003,7 @@ session_write_close();
                         <ul id="lareap" class="i-chip-list fs-sm"></ul>
                     </div>
                 </div>
-                <div id="wl-set" class="i__base" style="display:none; position:relative;>
+                <div id="wl-set" class="i__base" style="display:none; position:relative;">
                     <div class="i__title fs-md custom-lang">[presets-wikis-wl]</div>
                     <div class="i__description fs-xs custom-lang">[presets-wikis-wl-desc]</div>
                     <div class="i__content fs-sm" style="position:absolute; right:0px; width: 200px;">
