@@ -1003,10 +1003,10 @@ session_write_close();
                         <ul id="lareap" class="i-chip-list fs-sm"></ul>
                     </div>
                 </div>
-                <div class="i__base">
+                <div id="wl-set" class="i__base" style="display:none; position:relative;>
                     <div class="i__title fs-md custom-lang">[presets-wikis-wl]</div>
                     <div class="i__description fs-xs custom-lang">[presets-wikis-wl-desc]</div>
-                    <div class="i__content fs-sm">
+                    <div class="i__content fs-sm" style="position:absolute; right:0px; width: 200px;">
                         <input id="wladdp" name="wladdp" class="i-input__secondary secondary-placeholder fs-sm custom-lang" ngtype="text" ng-model="selectedw" uib-typeahead="WikiForSelect.name as WikiForSelect.domain for WikiForSelect in WikisListForSelect | filter:$viewValue:startsWith | limitTo:8" class="form-control" typeahead-editable="false" typeahead-on-select="selectList('wl', selectedw); selectedw = '';" placeholder="[presets-enter-placeholder]">
                     </div>
                     <div class="i__extra">
