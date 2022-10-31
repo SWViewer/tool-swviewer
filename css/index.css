@@ -296,6 +296,10 @@ html, body, .full-screen, #loading {
     position: absolute;
     z-index: 2;
 }
+#wl-set > .i__content > .dropdown-menu {
+    position: absolute;
+    z-index: 2;
+}
 #l-p, #bl-p {
     width: inherit;
 }
