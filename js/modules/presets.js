@@ -174,6 +174,7 @@ const editPreset = (index) => {
         editPTemp.content.getElementById("ad-set").style.display = "grid";
         editPTemp.content.getElementById("custom-set").style.display = "grid";
         editPTemp.content.getElementById("lang-set").style.display = "grid";
+        editPTemp.content.getElementById("wl-set").style.display = "grid";
     }
     editBody.append(editPTemp.content.cloneNode(true));
 
