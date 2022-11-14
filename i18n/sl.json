@@ -88,7 +88,7 @@
 	"presets-additional": "Dodatni vikiji",
 	"presets-additional-desc": "Omogoči urejanje iz [$1|vikijev] z manj kot 300 aktivnimi uporabniki.",
 	"presets-custom": "Vikiji po meri",
-	"presets-custom-desc": "Dodajte svoj domači viki ali vikije, ki niso na majhnem seznamu wikijev. Zgled: enwiki",
+	"presets-custom-desc": "Dodajte svoj domači viki ali vikije, ki niso na kratkem seznamu vikijev. Zgled: enwiki",
 	"presets-langset": "Jezikovni nabor",
 	"presets-langset-desc": "Nastavite jezike, če želite prejemati urejanja v določenih jezikih. Zgled: en",
 	"presets-wikis-wl": "Beli seznam vikijev",
