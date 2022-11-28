@@ -216,7 +216,7 @@
 	"already-done": "Takšne spremembe so že bile opravljene.",
 	"error-network": "Napaka omrežja",
 	"error-rollback": "Napaka vrnitve: $1",
-	"error-rollback-browser": "Napaka vrnitve. Odprite stran v novem zavihku. Koda napake: $1",
+	"error-rollback-browser": "Napaka vrnitve. Odprite stran na novem zavihku. Koda napake: $1",
 	"error-opening": "Napaka pri odpiranju; informacija strežnika o napaki: $1",
 	"error-opening-del": "Napaka pri odpiranju. Videti je, da je bila ta stran izbrisana.",
 	"error-get-source": "Neuspešen HTTP-zahtevek. Ta stran je bila izbrisana ali pa strežnik ne deluje.",
