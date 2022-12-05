@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"1412KaitoKid",
 			"1997kB",
 			"Keo010122",
 			"Minh Nguyen",
@@ -22,6 +23,7 @@
 	"tooltip-m-queue": "Hàng đợi",
 	"tooltip-m-notification": "Thông báo",
 	"tooltip-copy-link": "Sao chép địa chỉ liên kết",
+	"tooltip-thank": "Gửi thông báo cảm ơn",
 	"tooltip-edit-source": "Sửa mã nguồn [e]",
 	"tooltip-more-options": "Thêm tùy chọn",
 	"tooltip-open-browser": "Mở trong cửa sổ trình duyệt [o]",
@@ -127,6 +129,7 @@
 	"diff-mo-ca": "Đăng nhập trung ương",
 	"diff-mo-guc": "Đóng góp toàn cục",
 	"diff-mo-vh": "Xem lịch sử",
+	"diff-mo-thank": "Cảm ơn",
 	"diff-mo-es": "Sửa mã nguồn",
 	"notifications-empty": "Không có thông báo",
 	"notifications-img-clear": "Xóa tất cả thông báo",
@@ -211,6 +214,9 @@
 	"autoreport-content": "$1 đã bị cảnh báo nhiều lần. Bạn có muốn báo cáo tại TNCBQV không?",
 	"report-title": "Báo cáo",
 	"report-performed-content": "$1 đã được báo cáo thành công vì sửa đổi trên $2.",
+	"thank-fail-title": "Cảm ơn thất bại!",
+	"thank-success-title": "Cảm ơn đã thực hiện",
+	"thank-success-content": "$1 đã được cảm ơn thành công.",
 	"browser-sse": "Xin lỗi, trình duyệt của bạn không hỗ trợ Server-Sent Events.",
 	"already-done": "Những thay đổi này đã được thực hiện.",
 	"error-network": "Lỗi kết nối mạng",
@@ -318,6 +324,7 @@
 	"img-notification": "Thông báo",
 	"img-settings": "Cài đặt",
 	"img-navigation": "Xem nhanh",
+	"img-thank": "Cảm ơn",
 	"img-edit": "Sửa đổi",
 	"img-options": "Thêm tùy chọn",
 	"img-plus": "Thêm",
