@@ -8,6 +8,7 @@
 			"Nghiemtrongdai VN",
 			"NguoiDungKhongDinhDanh",
 			"TARGET6tidiem",
+			"Vanhdeeptryy",
 			"Yosari101"
 		]
 	},
@@ -34,7 +35,7 @@
 	"tooltip-publish-changes": "Đăng thay đổi",
 	"settings-confirm-lang": "Để áp dụng các cài đặt ngôn ngữ, bạn cần khởi động lại ứng dụng.",
 	"settings-title": "Cài đặt",
-	"settings-theme": "Giao diện",
+	"settings-theme": "Chủ đề",
 	"settings-theme-descr": "Thay đổi chủ đề giao diện công cụ.",
 	"settings-language": "Ngôn ngữ",
 	"settings-language-descr": "Thay đổi ngôn ngữ giao diện",
@@ -59,7 +60,7 @@
 	"settings-hotkeys-descr": "Bật [$1|phím tắt] để sử dụng SWViewer bằng bàn phím.",
 	"settings-limit": "Giới hạn hàng đợi",
 	"settings-limit-descr": "Số lượng sửa đổi tối đa trong hàng đợi.",
-	"settings-limit-placeholder": "không giới hạn",
+	"settings-limit-placeholder": "Không giới hạn",
 	"settings-control": "Chế độ nhà phát triển",
 	"settings-control-panel": "Bảng điều khiển",
 	"settings-service": "Dịch vụ",
