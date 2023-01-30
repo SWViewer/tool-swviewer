@@ -109,6 +109,8 @@
 	"welcome-frame-edit": "تعديل",
 	"welcome-frame-warn": "تنبيه",
 	"welcome-frame-del": "حذف",
+	"welcome-frame-protect": "حماية",
+	"welcome-frame-report": "إبلاغ",
 	"welcome-frame-reminder": "تذكير",
 	"welcome-frame-tips": "تلميحات",
 	"welcome-frame-tips-pwa": "إذا كنت تستخدم جوجل كروم، يمكنك تنصيب SWViewer تطبيقًا للويب على سطح المكتب أو على الهاتف المحمول. انظر [$1|التعليمات].",
