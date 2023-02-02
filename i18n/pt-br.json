@@ -6,6 +6,7 @@
 			"Eduardo Addad de Oliveira",
 			"Eduardoaddad",
 			"Isabelle Belato",
+			"Mello25",
 			"Tks4Fish",
 			"YuriNikolai"
 		]
@@ -22,6 +23,7 @@
 	"tooltip-m-queue": "Fila",
 	"tooltip-m-notification": "Notificações",
 	"tooltip-copy-link": "Copiar endereço",
+	"tooltip-thank": "Envie uma notificação de agradecimento",
 	"tooltip-edit-source": "Editar código-fonte [e]",
 	"tooltip-more-options": "Mais opções",
 	"tooltip-open-browser": "Abrir no navegador [o]",
@@ -212,6 +214,9 @@
 	"autoreport-content": "$1 foi avisado(a) várias vezes. Você quer reportá-lo(a) aos administradores?",
 	"report-title": "Reportar",
 	"report-performed-content": "$1 foi reportado(a) com sucesso pela edição em $2.",
+	"thank-fail-title": "Obrigado falhou!",
+	"thank-success-title": "Obrigado realizado",
+	"thank-success-content": "$1 foi agradecido com sucesso.",
 	"browser-sse": "Desculpe, seu navegador não suporta eventos enviados pelo servidor.",
 	"already-done": "Essas mudanças já foram feitas.",
 	"error-network": "Erro de rede",
