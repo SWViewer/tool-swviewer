@@ -566,7 +566,7 @@ html, body, .full-screen, #loading {
     padding-bottom: calc(var(--floatbar-height) / 2 + var(--side-padding));
     border: none;
     resize: none;
-    background-color: #00000003;
+    background-color: #49471f0a;
     background-clip: content-box;
 }
 .editForm__textarea:focus {
