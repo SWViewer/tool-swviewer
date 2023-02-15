@@ -5,7 +5,6 @@ var isPause = false;
 angular.module("swv", ["ui.directives", "ui.filters", "ui.bootstrap"]);
 angular.module("swv2", ["ui.directives", "ui.filters", "ui.bootstrap"]);
 angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) {
-
         const edits_history = [];
         const deleteReasonsArray = ["Nonsense", "Vandalism", "Spam", "Test page", "Empty page", "No useful content", "Out of project scope"];
         var countConnectAttemp = 0;
@@ -1307,9 +1306,11 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
         if (t === "wl")
             wlpAddFunct(s);
     }
+});
 
-
-    });
+angular.module("swv").filter('encodeURIComponent', function($window) {
+    return $window.encodeURIComponent;
+});
 
 // => load diff to view
 async function loadDiff(edit, isHistory = false) {
