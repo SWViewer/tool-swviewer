@@ -617,7 +617,7 @@ session_write_close();
                             </div>
                             <div>
                                 <div class="secondary-hover custom-lang" ng-click="copyViewHistory()" aria-label="[tooltip-copy-link]" i-tooltip="top-left"><img class="touch-ic secondary-icon custom-lang" src="./img/copy-filled.svg" alt="[img-copy]"></div>
-                                <a class="secondary-hover fs-md custom-lang" href='{{selectedEdit.server_url + "" + selectedEdit.script_path}}/index.php?title={{selectedEdit.title}}&action=history' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>[diff-mo-vh]</a>
+                                <a class="secondary-hover fs-md custom-lang" href='{{selectedEdit.server_url + "" + selectedEdit.script_path}}/index.php?title={{selectedEdit.title | encodeURIComponent}}&action=history' onclick="toggleMoreControl();" rel='noopener noreferrer' target='_blank'>[diff-mo-vh]</a>
                             </div>
                             <div ng-click="doThank();">
                                 <div class="secondary-hover custom-lang" aria-label="[tooltip-thank]" i-tooltip="top-left">
