@@ -371,7 +371,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                                     .then(() => createNotify({
                                         img: '/img/warning-filled.svg',
                                         title: useLang["gsr-success-title"],
-                                        content: useLang["gsr-success-content"].replace("$1", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
+                                        content: useLang["gsr-success-content"].replace("$1", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${encodeURIComponent(SEdit.title)}&action=history]]`),
                                         removable: true
                                     })).catch(err => createNotify({
                                         img: '/img/warning-filled.svg',
@@ -396,7 +396,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                                         createNotify({
                                             img: '/img/warning-filled.svg',
                                             title: useLang["warn-success-title"],
-                                            content: useLang["warn-success-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
+                                            content: useLang["warn-success-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${encodeURIComponent(SEdit.title)}&action=history]]`),
                                             removable: true
                                         });
                                     }).catch(err => createNotify({
@@ -522,7 +522,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                         createNotify({
                             img: "/img/rollback-filled.svg",
                             title: useLang["rollback-fail-title"],
-                            content: useLang["rollback-fail-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
+                            content: useLang["rollback-fail-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${encodeURIComponent(SEdit.title)}&action=history]]`),
                             removable: true,
                             buttons: [{
                                 title: useLang["load-history"],
@@ -541,7 +541,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 createNotify({
                     img: "/img/rollback-filled.svg",
                     title: useLang["rollback-fail-title"],
-                    content: useLang["rollback-fail-not-latest"].replace("$1", `[[${latestEdit.title}||${latestEdit.server_url}${latestEdit.script_path}/index.php?title=${latestEdit.title}&action=history]]`),
+                    content: useLang["rollback-fail-not-latest"].replace("$1", `[[${latestEdit.title}||${latestEdit.server_url}${latestEdit.script_path}/index.php?title=${encodeURIComponent(latestEdit.title)}&action=history]]`),
                     removable: true,
                     buttons: [{
                         title: useLang["view-latest"],
@@ -603,7 +603,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                         createNotify({
                             img: '/img/warning-filled.svg',
                             title: useLang["warn-performed-title"],
-                            content: useLang["warn-performed-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
+                            content: useLang["warn-performed-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${encodeURIComponent(SEdit.title)}&action=history]]`),
                             removable: true
                         });
                     } else if (warnCount >= maxWarnCount) $scope.doReport(SEdit);
@@ -668,7 +668,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                                         createNotify({
                                             img: '/img/warning-filled.svg',
                                             title: useLang["warn-performed-title"],
-                                            content: useLang["report-performed-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${SEdit.title}&action=history]]`),
+                                            content: useLang["report-performed-content"].replace("$1", `[[${SEdit.user}||${SEdit.server_url}/wiki/Special:Contributions/${SEdit.user}]]`).replace("$2", `[[${SEdit.title}||${SEdit.server_url}${SEdit.script_path}/index.php?title=${encodeURIComponent(SEdit.title)}&action=history]]`),
                                             removable: true
                                         })
                                     }).catch(err => createNotify({
@@ -1071,7 +1071,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             createNotify({
                 img: `/img/${type}-filled.svg`,
                 title: useLang["request-performed-title"],
-                content: useLang["request-performed-content"].replace('$1', extra).replace('$2', `[[${oldEdit.title}||${oldEdit.server_url}${oldEdit.script_path}/index.php?title=${oldEdit.title}&action=history]]`),
+                content: useLang["request-performed-content"].replace('$1', extra).replace('$2', `[[${oldEdit.title}||${oldEdit.server_url}${oldEdit.script_path}/index.php?title=${encodeURIComponent(oldEdit.title)}&action=history]]`),
                 removable: true,
                 buttons: [{
                     title: useLang["view-latest"],
@@ -1111,7 +1111,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 diffWindow.focus();
             }
         };
-        $scope.copyViewHistory = () => copyToClipboard(encodeURI(`${$scope.selectedEdit.server_url}${$scope.selectedEdit.script_path}/index.php?title=${$scope.selectedEdit.title}&action=history`));
+        $scope.copyViewHistory = () => copyToClipboard(encodeURI(`${$scope.selectedEdit.server_url}${$scope.selectedEdit.script_path}/index.php?title=${encodeURIComponent($scope.selectedEdit.title)}&action=history`));
         $scope.copyGlobalContribs = () => copyToClipboard(encodeURI(`https://guc.toolforge.org/?src=hr&by=date&user=${$scope.selectedEdit.user}`));
         $scope.copyCentralAuth = () => copyToClipboard(encodeURI(`https://meta.wikimedia.org/wiki/Special:CentralAuth?target=${$scope.selectedEdit.user}`));
 
