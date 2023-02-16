@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"AA800",
 			"Karim185.3",
 			"محمد أحمد عبد الفتاح"
 		]
@@ -12,9 +13,11 @@
 	"tooltip-logout": "تسجيل الخروج [خ]",
 	"tooltip-notification": "الإشعارات [ش]",
 	"tooltip-settings": "الإعدادات العامة [s]",
+	"tooltip-m-sidebar": "الشريط الجانبي",
 	"tooltip-m-queue": "قائمة الانتظار",
 	"tooltip-m-notification": "الإشعارات",
 	"tooltip-copy-link": "نسخ عنوان الرابط",
+	"tooltip-edit-source": "عَدِّل المصدر [ع]",
 	"tooltip-more-options": "المزيد من الخيارات",
 	"tooltip-open-browser": "فتح في نافذة المتصفح [O]",
 	"tooltip-custom-rollback": "استرجاع مع ملخص التعديل [y]",
@@ -51,6 +54,7 @@
 	"diff-mo-guc": "مساهمات عالميَّة",
 	"diff-mo-vh": "عرض التاريخ",
 	"diff-mo-thank": "شكر",
+	"diff-mo-es": "عَدِّل المصدر",
 	"notifications-empty": "لا توجد إشعارات",
 	"logs-cols-wiki": "ويكي",
 	"logs-cols-date": "تاريخ",
@@ -63,6 +67,7 @@
 	"tooltip-logs-search": "بحث",
 	"logs-img-search": "بحث",
 	"logs-action-rollback": "استرجاع",
+	"logs-action-undo": "رجوع",
 	"logs-action-edit": "تعديل",
 	"logs-action-warn": "تنبيه",
 	"logs-action-delete": "حذف",
@@ -100,6 +105,7 @@
 	"error-edit": "خطأ في التعديل: $1",
 	"warn-user-title": "تنبيه المستخدم",
 	"max-warn-title": "تنبيه نهائي",
+	"tag-deletion-title": "وسم للحذف",
 	"edit-source-title": "عدل المصدر",
 	"summary-title": "ملخص التعديل",
 	"tooltip-reason": "السبب",
