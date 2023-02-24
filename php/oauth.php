@@ -66,8 +66,10 @@ $checkGR = false;
 forEach ($globalInfo['query']['globaluserinfo']['groups'] as $globalGroup) {
     if ($globalGroup == 'steward' || $globalGroup == 'global-sysop' || $globalGroup == 'global-rollbacker') {
         $global = true;
-        if ($globalGroup == 'steward')
+        if ($globalGroup == 'steward') {
             $userRole = "S";
+            $checkGR = true;
+        }
         if ($globalGroup == 'global-sysop')
             $userRole = "GS";
         if ($globalGroup == 'global-rollbacker')
