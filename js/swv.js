@@ -462,7 +462,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                             if (quick === true) RBMode = "rollback"; 
              
                             if (isGlobalModeAccess === true && local_wikis.includes(SEdit.wiki) === false) RBMode = 'undo';
-                            if (notGR === true && notGRWikis.includes(SEdit.wiki) === true) RBMode = 'undo';
+                            if (notGR === true && notGRWikis.includes(SEdit.wiki) === true && local_wikis.includes(SEdit.wiki) === false) RBMode = 'undo';
                             const revertData = {
                                 rbmode: RBMode,
                                 basetimestamp: SEdit.timestamp,
