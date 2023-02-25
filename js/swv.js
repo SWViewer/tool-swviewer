@@ -858,6 +858,8 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             connectTalk.talkSendInside = talkSendInside;
             connectTalk.externalClose = externalClose;
             connectTalk.sendTalk = sendTalk;
+
+            $scope.sendTalkMsg = connectTalk.sendTalk;
         }
 
         $scope.externalClose = function() {
@@ -1047,7 +1049,6 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             ++esenServicesCount;
             if (esenServicesCount < totalEsenServicesCount) return;
             connectTalk();
-            $scope.sendTalkMsg = connectTalk.sendTalk;
             document.getElementById('btn-talk').classList.remove('disabled');
         }
         downloadIMPData();
