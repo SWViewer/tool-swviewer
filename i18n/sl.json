@@ -241,7 +241,7 @@
 	"tag-deletion-title": "Oznaka za izbris",
 	"gsr-add": "Dodaj v GSR",
 	"sysops-active": "Število aktivnih administratorjev v tem vikiju je $1 (skupno $2).",
-	"sysops-wait": "Morda je bolje počakati na reakcijo lokalnega administratorja.",
+	"sysops-wait": "Mogoče je bolje počakati na reakcijo lokalnega administratorja.",
 	"sysops-not-gs": "Ta viki ni v pristojnosti globalnih administratorjev.",
 	"sysops-more-than-3": "Ta viki ima več kot 3 aktivne administratorje (skupno $1 ).",
 	"sysops-more-than-10": "Ta viki ima več kot 10 aktivnih administratorjev.",
