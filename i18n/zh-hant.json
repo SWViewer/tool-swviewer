@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Cookai1205",
 			"Jonathan5566",
 			"Kly",
 			"LNDDYL",
@@ -271,7 +272,7 @@
 	"welcome-frame-reminder-bugs": "如果您發現有程式上的錯誤，請[$1|回報]給我們！",
 	"welcome-frame-reminder-screens": "請同時附上瀏覽器控制台的截圖或資料。",
 	"welcome-frame-tips": "提示",
-	"welcome-frame-tips-pwa": "若您正在使用桌面版或流動版Chrome瀏覽器，您可以將SWViewer作為網絡應用程式安裝在您的裝置上，詳見[$1|安裝指示]。",
+	"welcome-frame-tips-pwa": "若您正在使用桌面版或流動版Chrome瀏覽器，您可以將SWViewer作為網路應用程式安裝在您的裝置上，詳見[$1|安裝指示]。",
 	"welcome-frame-tips-manual": "不清楚如何用 SWViewer 來巡查嗎？請查看[$1|手冊頁面]。",
 	"welcome-frame-links": "外部連結",
 	"welcome-frame-changelog": "您可以在[$1|更新日誌]查看工具的更改內容清單。",
