@@ -106,7 +106,7 @@
 	"po-img-cross": "إغلاق",
 	"dialog-img-close": "إغلاق",
 	"logs-no-more": "لا مزيد من السجلات",
-	"logs-cols-n": "الرقم التسلسلي",
+	"logs-cols-n": "م",
 	"logs-cols-user": "مستخدم",
 	"logs-cols-action": "الإجراء",
 	"logs-cols-wiki": "ويكي",
@@ -278,6 +278,7 @@
 	"img-box": "الشريط الجانبي",
 	"img-save": "حفظ",
 	"cancel": "إلغاء",
+	"alright": "حسنًا",
 	"about": "حول",
 	"delete": "حذف"
 }
