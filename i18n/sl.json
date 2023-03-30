@@ -74,7 +74,7 @@
 	"presets-only-new": "Samo nove strani",
 	"presets-only-new-desc": "Prikaži samo nove popravke ustvarjanja strani.",
 	"presets-edits-limit": "Omejitev urejanj",
-	"presets-edits-limit-desc": "Število urejanj, po katerem bodo urejanja uporabnika preskočena.",
+	"presets-edits-limit-desc": "Število urejanj, po katerem bodo uporabnikova urejanja preskočena.",
 	"presets-edits-limit-placeholder": "Največ urejanj",
 	"presets-days-limit": "Dnevna omejitev",
 	"presets-days-limit-desc": "Starost računa v dnevih, po kateri bodo urejanja uporabnika preskočena.",
