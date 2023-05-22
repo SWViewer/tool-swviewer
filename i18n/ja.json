@@ -309,7 +309,7 @@
 	"about-frame-data-access": "最終アクセス日",
 	"about-frame-data-settings": "ツールの個人設定とそのプリセット名",
 	"about-frame-data-stats": "ツールを通じた利用者の操作の統計 (すなわち、巻き戻し、取り消し、編集、警告、RFDなど)",
-	"about-frame-data-logs": "ツールを介して実行されるウィキ上のアクションログ（要約、差分、日付）",
+	"about-frame-data-logs": "ツールを介して実行されるウィキ上の操作ログ (差分、日付)",
 	"about-frame-data-ref-1": "このデータは、ウィキメディア財団、そのボランティア、ウィキメディアクラウドサービスの利用者が利用する場合があります。",
 	"about-frame-data-ref-2": "このデータは一般に公開されています。",
 	"about-frame-data-ref-3": "このデータは、ツールの最終アクセスから2週間で削除されます。",
