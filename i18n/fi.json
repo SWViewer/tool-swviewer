@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Huusmik",
 			"Joquliina",
 			"MITO",
 			"Nike",
@@ -15,9 +16,13 @@
 	"tooltip-settings": "Yleiset asetukset [s]",
 	"tooltip-m-sidebar": "Sivupalkki",
 	"tooltip-m-notification": "Ilmoitukset",
+	"tooltip-copy-link": "Kopioi linkin osoite",
+	"tooltip-edit-source": "Muokkaa wikitekstiä",
+	"tooltip-publish-changes": "Julkaise muutokset",
 	"settings-title": "Asetukset",
 	"settings-theme": "Teema",
 	"settings-language": "Kieli",
+	"settings-language-descr": "Vaihda käyttöliittymän kieli",
 	"settings-language-region": "Alue",
 	"settings-sound": "Ääni",
 	"settings-revisions-all": "Näytä kaikki",
