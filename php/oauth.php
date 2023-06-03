@@ -21,6 +21,9 @@ if (isset($_GET["action"])) {
         list($authUrl, $token) = $client->initiate();
         $_SESSION['request_key'] = $token->key;
         $_SESSION['request_secret'] = $token->secret;
+        
+        if (isset($_GET["mobile"]))
+            $_SESSION["mobile"] = true;
 
         header("Location: $authUrl");
         exit();
@@ -188,5 +191,8 @@ $cookie_json = json_encode(["userName" => $ident->username, "tokenKey" => $acces
 setcookie("SWViewer-auth", $cookie_json, time() + 60 * 60 * 24 * 31, "/", "swviewer.toolforge.org", TRUE, TRUE);
 session_write_close();
 
-header("Location: https://swviewer.toolforge.org");
+if (isset($_SESSION["mobile"])) && $_SESSION["mobile"] === true)
+    header("Location: auth://callback?access=" . $accessToken->key);
+else
+    header("Location: https://swviewer.toolforge.org");
 ?>
