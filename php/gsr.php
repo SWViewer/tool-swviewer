@@ -14,7 +14,7 @@ $title = $_POST["title"];
 $reason = "";
 if (isset($_POST["reason"]) && $_POST["reason"] !== "none")
     $reason = ": " . $_POST["reason"];
-$text = "\n" . "* Please delete " . "{{plain link|" . $project . "/wiki/" . str_replace(" ", "_", $title) . "|" . $wiki . ":" . str_replace("_", " ", $title) . "}}" . $reason . ". ~~~~";
+$text = "\n" . "* Please delete " . "{{plain link|url=" . $project . "/wiki/" . str_replace("?", "%3F", str_replace(" ", "_", $title)) . "|name=" . $wiki . ":" . str_replace("_", " ", $title) . "}}" . $reason . ". ~~~~";
 $page = "Global sysops/Requests";
 $summary = "Requesting deletion";
 $apiUrl = "https://meta.wikimedia.org/w/api.php";
