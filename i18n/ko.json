@@ -6,6 +6,7 @@
 			"Codenstory",
 			"Ellif",
 			"MemphisA5",
+			"Tmv",
 			"Ykhwong"
 		]
 	},
@@ -40,6 +41,7 @@
 	"settings-sound": "소리",
 	"settings-revisions": "여러 차이",
 	"settings-revisions-all": "모두 보기",
+	"settings-direction": "거꾸로",
 	"settings-hotkeys": "단축키",
 	"settings-limit-placeholder": "제한 없음",
 	"settings-control": "개발자 도구",
@@ -49,8 +51,10 @@
 	"settings-beta-tester": "오픈 베타 버전",
 	"queue-empty-msg": "대기열이 비어 있음",
 	"presets-default-title": "기본값",
+	"presets-enter-placeholder": "Enter",
 	"presets-button-create": "만들기",
 	"presets-title": "제목",
+	"presets-registered": "등록됨",
 	"presets-anons": "익명",
 	"presets-new": "새 문서",
 	"presets-only-new": "새 문서만",
