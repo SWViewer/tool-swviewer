@@ -1,19 +1,22 @@
 <?php
 header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
-header('Content-Type: text/html; charset=utf-8');
+header("Content-type: application/json; charset=utf-8");
 session_name('SWViewer');
 session_start();
-if ((!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) && (!isset($_GET['token_proxy']))) {
-    echo "Invalid request";
+if ((!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) && !isset($_GET['token_proxy']) && !isset($_GET['ext_token'])) {
+    echo json_encode(['status' => 401, 'info' => 'No username or token']);
+    http_response_code(401);
     session_write_close();
     exit(0);
 }
 session_write_close();
-if (isset($_GET['token_proxy'])) {
+if (isset($_GET['token_proxy']) || isset($_GET['ext_token'])) {
     $serverToken = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["serverTokenTalk"];
-    if ($serverToken !== $_GET["token_proxy"]) {
-        echo "Invalid request";
-        exit(0);
+    $externalToken = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["externaltoken"];
+    if ((isset($_GET['token_proxy']) && $serverToken !== $_GET["token_proxy"]) || (isset($_GET['ext_token']) && $externalToken !== $_GET["ext_token"])) {
+       echo json_encode(['status' => 401, 'info' => 'Wrong token']);
+       http_response_code(401);
+       exit();
     }
 }
 
@@ -24,11 +27,8 @@ getUsers("global-ipblock-exempt");
 getUsers("oathauth-tester");
 getCommonsUsers();
 
-$output = "";
-forEach ($usersList as $user) {
-    $output .= $user . ",";
-}
-echo $output;
+$explain = "commons-sysop|commons-filemover|commons-image-reviewer|global-ipblock-exempt|oathauth-tester|apihighlimits-requestor|captcha-exempt|wmf-researcher|wmf-ops-monitoring|sysadmin|recursive-export|vrt-permissions|new-wikis-importer|global-interface-editor|global-flow-create|global-deleter|global-bot|staff|steward|global-sysop|global-rollbacker|abusefilter-helper|founder|ombuds";
+echo json_encode(['meta' => ['count' => count($usersList), 'explain' => $explain], 'users' => $usersList]);
 
 function getUsers($groups)
 {
@@ -63,7 +63,7 @@ function getCommonsUsers()
     $options = array('https' => array('method' => "POST", "User-Agent: SWViewer/1.3 (https://swviewer.toolforge.org; swviewer@tools.wmflabs.org) PHP / getGlobals.php"));
     $context = stream_context_create($options);
 
-    $groups = "sysop|filemover";
+    $groups = "sysop|filemover|image-reviewer";
     $check = true;
     $aufrom = "";
     $cont = "";
