@@ -42,7 +42,7 @@ function getUsers($groups)
     $cont = "";
 
     while ($check === true) {
-        $url = "https://meta.wikimedia.org/w/api.php?action=query&format=json&list=globalallusers&formatversion=2&utf8=1&agugroup=" . $groups . "&agulimit=50" . $agufrom . $cont;
+        $url = "https://meta.wikimedia.org/w/api.php?action=query&format=json&list=globalallusers&formatversion=2&utf8=1&agugroup=" . $groups . "&agulimit=10" . $agufrom . $cont;
         $content = file_get_contents($url, false, $context);
         $json = json_decode($content, true);
         if (!isset($json["continue"]) || !isset($json["continue"]["agufrom"]) || !isset($json["continue"]["continue"]))
