@@ -265,7 +265,7 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
 
                     if (confirm('Rename user from ' + user_old + ' to ' + user_new +'. Are you sure?'))
                       $.ajax({
-                        url: 'control2.php', type: 'POST',
+                        url: 'control.php', type: 'POST',
                         crossDomain: true,
                         data: {
                             action: 'rename',
