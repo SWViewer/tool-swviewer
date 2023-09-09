@@ -39,6 +39,34 @@ if (isset($_POST["action"])) {
         $q->execute();
     }
 
+    if ($_POST["action"] == "rename") {
+        $q = $db->prepare('DELETE FROM logs WHERE user = :new_name');
+        $q->execute(Array(':new_name' => $_POST['username_new']));
+        $q = $db->prepare('DELETE FROM presets WHERE name = :new_name');
+        $q->execute(Array(':new_name' => $_POST['username_new']));
+        $q = $db->prepare('DELETE FROM stats WHERE user = :new_name');
+        $q->execute(Array(':new_name' => $_POST['username_new']));
+        $q = $db->prepare('DELETE FROM talk WHERE name = :new_name');
+        $q->execute(Array(':new_name' => $_POST['username_new']));
+        $q = $db->prepare('DELETE FROM user WHERE name = :new_name');
+        $q->execute(Array(':new_name' => $_POST['username_new']));
+        $q = $db->prepare('DELETE FROM verify WHERE user = :new_name');
+        $q->execute(Array(':new_name' => $_POST['username_new']));
+
+        $q = $db->prepare('UPDATE logs SET user = :new_name WHERE user = :old_name');
+        $q->execute(Array(':old_name' => $_POST['username_old'], ':new_name' => $_POST['username_new']));
+        $q = $db->prepare('UPDATE presets SET name = :new_name WHERE name = :old_name');
+        $q->execute(Array(':old_name' => $_POST['username_old'], ':new_name' => $_POST['username_new']));
+        $q = $db->prepare('UPDATE stats SET user = :new_name WHERE user = :old_name');
+        $q->execute(Array(':old_name' => $_POST['username_old'], ':new_name' => $_POST['username_new']));
+        $q = $db->prepare('UPDATE talk SET name = :new_name WHERE name = :old_name');
+        $q->execute(Array(':old_name' => $_POST['username_old'], ':new_name' => $_POST['username_new']));
+        $q = $db->prepare('UPDATE user SET name = :new_name WHERE name = :old_name');
+        $q->execute(Array(':old_name' => $_POST['username_old'], ':new_name' => $_POST['username_new']));
+        $q = $db->prepare('UPDATE verify SET user = :new_name WHERE user = :old_name');
+        $q->execute(Array(':old_name' => $_POST['username_old'], ':new_name' => $_POST['username_new']));
+    }
+
 
     if ($_POST["action"] == "lock")
         if (isset($_POST["user"])) {
@@ -193,6 +221,24 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                     </div>
                 </div>
             </div>
+            <div>
+                <div>
+                    <div class="i__title fs-lg">Rename user</div>
+                    <div class="i__description fs-sm">
+                        <span>
+                            You can rename user.
+                        </span>
+                    </div>
+            <input id="user_old" class="i-input__secondary secondary-placeholder" type="text"
+                            name="user_old" placeholder="Old username" style="width:100px;">
+            <input id="user_new" class="i-input__secondary secondary-placeholder" type="text"
+                            name="user_new" placeholder="New username" style="width:110px; margin-left: 10px;">
+                    <div class="i__extra" style="padding-top: 8px;">
+                        <button id="rename-btn" class='i-btn__accent accent-hover fs-md'>Rename user</button>
+                    </div>
+                </div>
+            </div>
+
 
             <script>
                 document.getElementById('talk-btn').onclick = function () {
@@ -212,6 +258,26 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
                     $.ajax({url: 'control.php?restart=1', type: 'GET', dataType: 'json'});
                    document.getElementById('restart-btn').textContent = "restarting...";
                 };
+
+                document.getElementById('rename-btn').onclick = function () {
+                    var user_old = document.getElementById('user_old').value;
+                    var user_new = document.getElementById('user_new').value;
+
+                    if (confirm('Rename user from ' + user_old + ' to ' + user_new +'. Are you sure?'))
+                      $.ajax({
+                        url: 'control2.php', type: 'POST',
+                        crossDomain: true,
+                        data: {
+                            action: 'rename',
+                            username_old: user_old,
+                            username_new: user_new
+                        },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                };
+
             </script>
 
             <div>
@@ -308,7 +374,7 @@ $last_date = $content["query"]["pages"][10795717]["revisions"][0]["timestamp"];
             <div>
                 <div class="i__base">
                     <div class="i__title fs-lg">Rebind parameters for user</div>
-                    <div class="i__description fs-sm">Forced parameters ipdate after next open.</div>
+                    <div class="i__description fs-sm">Forced parameters update after next open.</div>
                     <div class="i__content fs-sm">
                         <input id="addrebind" class="i-input__secondary secondary-placeholder fs-sm" type="text"
                             name="addrebind" placeholder="User">
