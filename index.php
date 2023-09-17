@@ -1062,6 +1062,7 @@ session_write_close();
                 var firstClickEdit = false;
                 var preSettings = {};
                 // presets value here is temp until we refill it from database.
+                var special = {"ruwiki": {"botBlocker": {"blockers": []}}};  // For special features
                 var presets = [{ title: "", regdays: "5", editscount: "100", anons: "1", registered: "1", new: "1", onlynew: "0", swmt: "0", users: "0", namespaces: "", wlusers: "", wlprojects: "", wikilangs: "", blprojects: ""}];
                 var selectedPreset = 0;
                 var themeIndex = undefined;
