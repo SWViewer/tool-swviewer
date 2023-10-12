@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Anarkiisto",
 			"Colathewikian",
 			"GuoPC",
 			"Hmgrmb",
@@ -105,7 +106,7 @@
 	"presets-save": "保存",
 	"presets-restore": "还原",
 	"presets-delete-q": "删除$1预设？",
-	"presets-default-q": "我们不推荐您删除默认预设！",
+	"presets-default-q": "我们不建议您删除默认预设！",
 	"presets-create": "创建预设",
 	"presets-invalid-title": "无效标题",
 	"presets-invalid-title-desc": "预设的标题无效。请尝试使用大写和小写英文字母、数字、半角括号、半角方括号、半角花括号、连接符和下划线，即“A-Z, a-z, 0-9, (), [], {}, -, _”。",
