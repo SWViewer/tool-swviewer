@@ -131,6 +131,40 @@ else {
     }
 }
 
+$flaggedRevsWikis = [
+        'alswiki' => ['sysop', 'editor', 'reviewer'], 'arwiki' => ['sysop', 'editor', 'reviewer'], 'bewiki' => ['sysop', 'editor'],
+        'bnwiki' => ['sysop', 'reviewer'], 'bswiki' => ['sysop', 'editor'],
+        'cawikinews' => ['sysop', 'editor', 'reviewer'], 'cewiki' => ['sysop', 'editor', 'reviewer'],
+        'ckbwiki' => ['sysop', 'reviewer'], 'dewiki' => ['sysop', 'editor', 'reviewer'],
+        'dewikiquote' => ['sysop', 'editor', 'reviewer'], 'dewiktionary' => ['sysop', 'editor', 'reviewer'],
+        'elwikinews' => ['sysop', 'editor'], 'enwiki' => ['sysop', 'reviewer'],
+        'enwikibooks' => ['sysop', 'editor'], 'enwikinews' => ['sysop', 'editor'],
+        'eowiki' => ['sysop', 'editor', 'reviewer'], 'eswikinews' => ['sysop', 'editor', 'reviewer'], 
+        'fawiki' => ['sysop', 'patroller', 'eliminator', 'reviewer'], 'fawikinews' => ['sysop', 'editor'],
+        'fiwiki' => ['sysop', 'editor', 'reviewer'], 'frwikinews' => ['sysop', 'facilitator'], 
+        'hewikisource' => ['sysop', 'reviewer', 'editor'], 'hiwiki' => ['sysop', 'reviewer'], 
+        'huwiki' => ['sysop', 'editor'], 'iawiki' => ['sysop', 'editor', 'reviewer'],
+        'idwiki' => ['sysop', 'editor', 'reviewer'], 'iswiktionary' => ['sysop', 'editor', 'reviewer'],
+        'kawiki' => ['sysop', 'editor', 'reviewer'], 'lawikisource' => ['sysop', 'editor', 'reviewer'],
+        'mkwiki' => ['sysop', 'editor', 'reviewer'], 'plwiki' => ['sysop', 'editor', 'reviewer'],
+        'plwikisource' => ['sysop', 'editor', 'reviewer'], 'plwiktionary' => ['sysop', 'editor', 'reviewer'],
+        'ptwiki' => [], 'ptwikibooks' => ['sysop', 'editor', 'reviewer'],
+        'ptwikinews' => ['sysop', 'editor', 'reviewer'], 'ruwiki' => ['editor'],
+        'ruwikinews' => ['sysop', 'editor'], 'ruwikiquote' => ['sysop', 'editor', 'reviewer'],
+        'ruwikisource' => ['sysop', 'editor'], 'ruwiktionary' => ['sysop', 'editor', 'reviewer'],
+        'sqwiki' => ['sysop', 'editor', 'reviewer'], 'tawikinews' => ['sysop', 'editor', 'reviewer'],
+        'trwiki' => ['sysop', 'patroller'], 'trwikiquote' => ['sysop', 'editor'],
+        'ukwiki' => ['sysop', 'editor', 'reviewer'], 'ukwiktionary' => ['sysop', 'editor', 'reviewer'],
+        'vecwiki' => ['sysop', 'editor', 'reviewer'], 'zh_classicalwiki' => ['sysop', 'editor', 'reviewer']];
+$flagged = [];
+forEach ($globalInfo['query']['globaluserinfo']['merged'] as $localGroups)
+        if (array_key_exists('groups', $localGroups))
+            if (array_key_exists($localGroups['wiki'], $flaggedRevsWikis))
+                if (!empty(array_intersect($flaggedRevsWikis[$localGroups['wiki']], $localGroups['groups'])))
+                    array_push($flagged, $localGroups['wiki']);
+$flagged = implode (", ", $flagged);
+
+
 $ts_pw = posix_getpwuid(posix_getuid());
 $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
 $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -153,22 +187,22 @@ if (($q->rowCount() <= 0) || ($q->rowCount() > 0 && ($resToken[0]["token"] == nu
     $salt = parse_ini_file("/data/project/swviewer/security/bottoken.ini")["salt"];
     $_SESSION['talkToken'] = md5(uniqid($ident->username, true) . rand() . md5($salt));
     if ($q->rowCount() <= 0) {
-        $q = $db->prepare('INSERT INTO user (name, token, lang, local_wikis, isGlobalAccess, isGlobal, userRole, rebind) VALUES (:name, :token, :lang, :local_wikis, :isGlobalAccess, :isGlobal, :userRole, 0)');
-        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':lang' => $lang, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
+        $q = $db->prepare('INSERT INTO user (name, token, lang, flaggedRevs, local_wikis, isGlobalAccess, isGlobal, userRole, rebind) VALUES (:name, :token, :lang, :flaggedRevs, :local_wikis, :isGlobalAccess, :isGlobal, :userRole, 0)');
+        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':lang' => $lang, ':flaggedRevs' => $flagged, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
         $q = $db->prepare('INSERT INTO stats (user) VALUES (:user)');
         $q->execute(array(':user' => $ident->username));
     } else {
-        $q = $db->prepare('UPDATE user SET token=:token, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
-        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
+        $q = $db->prepare('UPDATE user SET token=:token, userRole=:userRole, flaggedRevs=:flaggedRevs, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
+        $q->execute(array(':name' => $ident->username, ':token' => $_SESSION['talkToken'], ':userRole' => $userRole, ':flaggedRevs' => $flagged, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
     }
 } else {
     $_SESSION['talkToken'] = $resToken[0]["token"];
     if ($resToken[0]["lang"] === null || $resToken[0]["lang"] === "") {
-        $q = $db->prepare('UPDATE user SET lang=:lang, userRole=:userRole, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
-        $q->execute(array(':name' => $ident->username, ':lang' => $lang, ':userRole' => $userRole, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
+        $q = $db->prepare('UPDATE user SET lang=:lang, userRole=:userRole, flaggedRevs=:flaggedRevs, local_wikis=:local_wikis, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
+        $q->execute(array(':name' => $ident->username, ':lang' => $lang, ':userRole' => $userRole, ':flaggedRevs' => $flagged, ':local_wikis' => $_SESSION['projects'], ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
     } else {
-        $q = $db->prepare('UPDATE user SET local_wikis=:local_wikis, userRole=:userRole, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
-        $q->execute(array(':name' => $ident->username, ':local_wikis' => $_SESSION['projects'], ':userRole' => $userRole, ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
+        $q = $db->prepare('UPDATE user SET flaggedRevs=:flaggedRevs, local_wikis=:local_wikis, userRole=:userRole, isGlobalAccess=:isGlobalAccess, isGlobal=:isGlobal, rebind=0 WHERE name=:name');
+        $q->execute(array(':name' => $ident->username, ':flaggedRevs' => $flagged, ':local_wikis' => $_SESSION['projects'], ':userRole' => $userRole, ':isGlobalAccess' => $accessGlobalSQL, ':isGlobal' => $isGlobal));
    }
 }
 $q = $db->prepare('SELECT name FROM presets WHERE name=:name');
