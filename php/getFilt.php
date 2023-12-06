@@ -16,7 +16,6 @@ if (isset($_GET['token_proxy'])) {
 }
 
 $username = $_GET['username'];
-
 $ts_pw = posix_getpwuid(posix_getuid());
 $ts_mycnf = parse_ini_file("/data/project/swviewer/security/replica.my.cnf");
 $db = new PDO("mysql:host=tools.labsdb;dbname=s53950__SWViewer;charset=utf8", $ts_mycnf['user'], $ts_mycnf['password']);
@@ -28,11 +27,12 @@ if (check($_GET["preset_name"])) {
     if ($q->rowCount() > 0) {
         $result = $q->fetchAll();
         $raw_result = ["blprojects" => $result[0]['blprojects'], "wikilangs" => $result[0]['wikilangs'], "swmt" => $result[0]['swmt'], "onlyanons" => $result[0]['anons'], "users" => $result[0]['users'], "wlusers" => $result[0]['wlusers'], "wlprojects" => $result[0]['wlprojects'], "namespaces" => $result[0]['namespaces'], "registered" => $result[0]['registered'], "new" => $result[0]['new'], "onlynew" => $result[0]['onlynew'], "editcount" => $result[0]['editscount'], "regdays" => $result[0]['regdays'], "oresFilter" => $result[0]['oresFilter']];
-        $q = $db->prepare('SELECT isGlobal, isGlobalAccess, local_wikis FROM user WHERE name = :userName');
+        $q = $db->prepare('SELECT isGlobal, isGlobalAccess, flaggedRevs, local_wikis FROM user WHERE name = :userName');
         $q->execute(array(':userName' => $username));
         $result2 = $q->fetchAll();
         $raw_result["isGlobal"] = $result2[0]['isGlobal'];
         $raw_result["isGlobalModeAccess"] = $result2[0]['isGlobalAccess'];
+        $raw_result["flaggedRevs"] = $result2[0]['flaggedRevs'];
         $raw_result["local_wikis"] = $result2[0]['local_wikis'];
         echo json_encode($raw_result);
     } else
