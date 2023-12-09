@@ -482,6 +482,9 @@ lists/locales.txt
 php/error.txt
 php/wars.php
 test/
+php/m/
+php/error.txt
+php/experimental/
 old&tests/
 .idea/
 stats/ext_libs/
