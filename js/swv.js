@@ -137,6 +137,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                    $scope.selectedEdit.flagged = $scope.selectedEdit.new;
                    document.getElementById("drawerFabPatrol").style.transform = "scale(0)";
                    document.getElementById("patrol").style.display = "none";
+		   $scope.selectTop();
                }).catch(err => createNotify({
                    img: '/img/warning-filled.svg',
                    title: useLang["patrol-fail-title"],
@@ -1108,15 +1109,15 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
         }
 
         var noDiffON = false;
-        $scope.nextDiff = function () {
+        $scope.Diff = function () {
             if ($scope.edits.length > 0) {
                 $scope.select($scope.edits[0]);
             } else if (!noDiffON) {
                 noDiffON = true;
-                document.getElementById('next-diff-title').style.width = '70px';
+                document.getElementById('-diff-title').style.width = '70px';
                 setTimeout(() => {
                     noDiffON = false;
-                    document.getElementById('next-diff-title').style.width = '1px';
+                    document.getElementById('-diff-title').style.width = '1px';
                 }, 1000);
             }
         };
