@@ -122,6 +122,30 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 return {color: "var(--link-color)"};
         };
 
+
+        // ===> Patrolling
+        $scope.patrol = async function () {
+            if (!$scope.selectedEdit.flagged || $scope.selectedEdit.old !== $scope.selectedEdit.flagged) return;
+            await doPatrol($scope.selectedEdit.server_name, $scope.selectedEdit.new)
+               .then(() => {
+                   createNotify({
+                       img: '/img/warning-filled.svg',
+                       title: useLang["patrol-success-title"],
+                       content: useLang["patrol-success-content"].replace("$1", `[[${$scope.selectedEdit.new}||${$scope.selectedEdit.server_url}/wiki/?oldid=${$scope.selectedEdit.new}]]`),
+                       removable: true
+                   });
+                   $scope.selectedEdit.flagged = $scope.selectedEdit.new;
+                   document.getElementById("drawerFabPatrol").style.transform = "scale(0)";
+                   document.getElementById("patrol").style.display = "none";
+               }).catch(err => createNotify({
+                   img: '/img/warning-filled.svg',
+                   title: useLang["patrol-fail-title"],
+                   content: "Error 3.1: " + err,
+                   removable: true
+               }));
+        }
+
+
         // ===> To open edit on wiki.
         $scope.browser = function () {
             if (typeof $scope.selectedEdit.new === null) return;
@@ -925,6 +949,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 "ores": editData.ORES,
                 "is_new": editData.is_new,
                 "isNew": (editData.is_new === true) ? "N" : "",
+                "flagged": editData.flaggedRevs,
                 "byteCount": ((newByte, oldByte) => {
                     let byteCount;
                     if (typeof oldByte === 'undefined') byteCount = newByte;
@@ -1095,6 +1120,13 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 }, 1000);
             }
         };
+
+        $scope.moreOptionsClick = function() {
+            if (document.getElementById("moreControl").classList.contains("more-control__hidden"))
+                if ($scope.selectedEdit.flagged && $scope.selectedEdit.flagged === $scope.selectedEdit.old && $scope.selectedEdit.flagged !== $scope.selectedEdit.new) {
+                    document.getElementById("drawerFabPatrol").style.transform = "scale(1)";
+                }
+        }
 
         $scope.openLink = function (tTYPE) {
             var urldiff; var diffWindow;
@@ -1317,6 +1349,8 @@ angular.module("swv").filter('encodeURIComponent', function($window) {
 async function loadDiff(edit, isHistory = false) {
     disableControl(); closeMoreControl();
     closePW();
+    document.getElementById("drawerFabPatrol").style.transform = "scale(0)";
+    document.getElementById("patrol").style.display = "none";
     loadDiffDesc(edit);
     let loadingHtml = `<html style="height: 100%;">
         <head>
@@ -1358,6 +1392,10 @@ async function loadDiff(edit, isHistory = false) {
         });
     if (loadingEdits !== 0) loadingEdits--;
     if (loadingEdits === 0) disableLoadingDiffUI();
+    if (edit.flagged && edit.flagged === edit.old && edit.flagged !== edit.new) {
+        document.getElementById("drawerFabPatrol").style.transform = "scale(1)";
+        document.getElementById("patrol").style.display = "grid";
+    }
     homeBtn(false);
 }
 
@@ -1955,6 +1993,23 @@ async function thank(domainURL, revisionID) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: 'php/thank.php',
+            type: 'POST',
+            crossDomain: true,
+            dataType: 'text',
+            data: {
+                project: domainURL,
+                rev: revisionID
+            }, success: () => resolve(),
+            error: err => reject(err)
+        })
+    });
+}
+
+// => patrolling
+async function doPatrol(domainURL, revisionID) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'php/patrol.php',
             type: 'POST',
             crossDomain: true,
             dataType: 'text',
