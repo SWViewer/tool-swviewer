@@ -85,7 +85,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
     <link rel="stylesheet" href="css/components/header.css">
     <link rel="stylesheet" href="css/components/dialog.css">
     <link rel="stylesheet" href="css/components/notification.css">
-    <link rel="stylesheet" href="css/index.css?v=1.3">
+    <link rel="stylesheet" href="css/index2.css?v=1.3">
 
     <link rel="stylesheet" href="css/components/pw-po.css">
     <link rel="stylesheet" href="css/layouts/logs.css">
@@ -477,7 +477,7 @@ session_write_close();
                         <div id="editCurrentPreset" class="primary-hover disabled custom-lang" aria-label="[tooltip-edit-preset]" i-tooltip="bottom-right">
                             <img class="touch-ic primary-icon custom-lang" src="./img/filter-bar-filled.svg" alt="[img-edit]">
                         </div>
-                        <div id="moreOptionBtnMobile" class="mobile-only primary-hover disabled custom-lang" onclick="toggleMoreControl();" aria-label="[tooltip-more-options]" i-tooltip="bottom-right">
+                        <div id="moreOptionBtnMobile" class="mobile-only primary-hover disabled custom-lang" onclick="toggleMoreControl();" aria-label="[tooltip-more-options]" i-tooltip="bottom-right" ng-click="moreOptionsClick()">
                             <img class="touch-ic primary-icon custom-lang" src="./img/v-dots-filled.svg" alt="[img-options]">
                         </div>
                     </div>
@@ -577,6 +577,13 @@ session_write_close();
                         </div>
                     </div>
                     <!-- Mobile next diff button -->
+                    <div id="patrol-container">
+                        <div id="drawerFabPatrol" class="drawer-fab-patrol mobile-only" style="transform: scale(0); border: solid gold;">
+                            <div id="drawer-patrol" class="accent-hover custom-lang" ng-click='patrol()' aria-label="[tooltip-patrol]" i-tooltip="top-right">
+                                <img class="touch-ic accent-icon custom-lang" src="./img/check-mark.svg" alt="[img-patrol]">
+                            </div>
+                    </div>
+                    </div>
                     <div id="drawerFab" class="drawer-fab mobile-only">
                         <div id="next-diff" class="accent-hover custom-lang" ng-click='nextDiff()' aria-label="[tooltip-m-next-difference]" i-tooltip="top-right">
                             <img class="touch-ic accent-icon custom-lang" src="./img/swviewer-filled.svg" alt="[img-next]">
@@ -639,6 +646,9 @@ session_write_close();
                             </div>
                             <div id="browser" class="secondary-hover custom-lang" ng-click="browser();" aria-label="[tooltip-open-browser]" i-tooltip="top-right">
                                 <img class="touch-ic secondary-icon custom-lang" src="./img/open-newtab-filled.svg" alt="[img-browser]">
+                            </div>
+                            <div id="patrol" class="secondary-hover custom-lang" ng-click="patrol();" aria-label="[tooltip-patrol]" i-tooltip="top-right" style="display: none">
+                                <img class="touch-ic secondary-icon custom-lang" src="./img/check-mark.svg" alt="[img-patrol]">
                             </div>
                             <div id="tagBtn" class="secondary-hover custom-lang" ng-click="openTagPanel();" onclick="openPW('tagPanel')" aria-label="[tooltip-speedy-del]" i-tooltip="top">
                                 <img class="touch-ic secondary-icon custom-lang" src="./img/tag-filled.svg" alt="[img-edit]">
@@ -1031,7 +1041,7 @@ session_write_close();
 
                
 
-            <script src="js/index-noncritical.js" defer></script>
+            <script src="js/index-noncritical2.js" defer></script>
             <script src="js/modules/dialog.js" defer></script>
             <script src="js/modules/presets.js" defer></script>
             <script src="js/modules/swipe.js" defer></script>
@@ -1541,6 +1551,7 @@ session_write_close();
                     document.getElementById('moreControl').classList.add('more-control__hidden');
                     document.getElementById('moreControlOverlay').classList.remove('more-control__overlay__active');
                     document.getElementById('drawerFab').style.transform = 'scale(1)';
+                    document.getElementById('drawerFabPatrol').style.transform = 'scale(1)';
                 }
                 function toggleMoreControl () {
                     var mc = document.getElementById('moreControl');
@@ -1549,6 +1560,7 @@ session_write_close();
                         mc.classList.remove('more-control__hidden');
                         mcOverlay.classList.add('more-control__overlay__active');
                         document.getElementById('drawerFab').style.transform = 'scale(0)';
+                        document.getElementById('drawerFabPatrol').style.transform = 'scale(0)';
                     } else { closeMoreControl(); }
                 }
 
@@ -1644,7 +1656,7 @@ session_write_close();
                     openPW('logs');
                 }
             </script>
-            <script src="js/swv.js?v=8"></script>
+            <script src="js/swv2.js?v=8"></script>
             <script>
 
                 /*#########################
