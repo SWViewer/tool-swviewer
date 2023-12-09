@@ -215,7 +215,6 @@
   "patrol-success-title": "Revision was marked as accepted",
   "patrol-success-content": "Revision $1 was marked as accepted",
   "patrol-fail-title": "Accepting revision has failed",
-  "patrol-fail-content": "Accepting $1 has failed."
   "tooltip-patrol": "Accept revision",
   "img-patrol": "Accept revision",
   "browser-sse": "Sorry, your browser does not support Server-Sent Events.",
