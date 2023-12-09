@@ -140,7 +140,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                }).catch(err => createNotify({
                    img: '/img/warning-filled.svg',
                    title: useLang["patrol-fail-title"],
-                   content: "Error 3.1: " + err,
+                   content: "Error 3.3: " + err,
                    removable: true
                }));
         }
