@@ -85,7 +85,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
     <link rel="stylesheet" href="css/components/header.css">
     <link rel="stylesheet" href="css/components/dialog.css">
     <link rel="stylesheet" href="css/components/notification.css">
-    <link rel="stylesheet" href="css/index.css?v=1.3">
+    <link rel="stylesheet" href="css/index.css?v=1.4">
 
     <link rel="stylesheet" href="css/components/pw-po.css">
     <link rel="stylesheet" href="css/layouts/logs.css">
@@ -1041,7 +1041,7 @@ session_write_close();
 
                
 
-            <script src="js/index-noncritical.js" defer></script>
+            <script src="js/index-noncritical.js?ver=1.0" defer></script>
             <script src="js/modules/dialog.js" defer></script>
             <script src="js/modules/presets.js" defer></script>
             <script src="js/modules/swipe.js" defer></script>
@@ -1656,7 +1656,7 @@ session_write_close();
                     openPW('logs');
                 }
             </script>
-            <script src="js/swv.js?v=8"></script>
+            <script src="js/swv.js?v=9"></script>
             <script>
 
                 /*#########################
