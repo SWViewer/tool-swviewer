@@ -121,6 +121,7 @@ function homeBtn(mod) {
         document.getElementById('description-container').style.display = "none";
         document.getElementById('moreControlOverlay').style.display = "none";
         document.getElementById('controlsBase').style.display = "none";
+        document.getElementById('patrol-container').style.display = "none";
         document.getElementById('page-welcome').style.display = "block";
         document.getElementById('page').style.display = "none";
         document.getElementById('moreOptionBtnMobile').classList.add('disabled');
@@ -128,6 +129,7 @@ function homeBtn(mod) {
         document.getElementById('description-container').style.display = "grid";
         document.getElementById('moreControlOverlay').style.display = "unset";
         document.getElementById('controlsBase').style.display = "block";
+        document.getElementById('patrol-container').style.display = "block";
         document.getElementById('page-welcome').style.display = "none";
         document.getElementById('page').style.display = "block";
         document.getElementById('moreOptionBtnMobile').classList.remove('disabled');
