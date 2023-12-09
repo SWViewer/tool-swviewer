@@ -14,8 +14,6 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
     header('Location: ' . $redirect);
     exit();
 }
-
-
 ?>
 <html id="parentHTML" class="notranslate" lang="">
 <head>
@@ -407,7 +405,7 @@ if ($_SESSION['mode'] == "global")
     $isGlobal = true;
 else
     if (isset($_SESSION['accessGlobal']))
-        if ($_SESSION['accessGlobal'] === "true")
+        if ($_SESSION['accessGlobal'] == "true")
             $isGlobalModeAccess = true;
 $userRole = $_SESSION['userRole'];
 session_write_close();
@@ -1152,21 +1150,20 @@ session_write_close();
                     themeIndex = parseInt(settingslist['theme']);
 
                 if (settingslist['checkmode'] !== null && (typeof settingslist['checkmode'] !== "undefined") && settingslist['checkmode'] !== "") {
-                    if (settingslist['checkmode'] === "1" || settingslist['checkmode'] === "2" || settingslist['checkmode'] === "0") {
+                    if (settingslist['checkmode'] === 1 || settingslist['checkmode'] === 2 || settingslist['checkmode'] === 0) {
                         checkMode = Number(settingslist['checkmode']);
                         document.getElementById("checkSelector").selectedIndex = checkMode;
                     }
                 }
 
                 if (settingslist['direction'] !== null && (typeof settingslist['direction'] !== "undefined") && settingslist['direction'] !== "") {
-                    if (settingslist['direction'] === "1") {
+                    if (settingslist['direction'] === 1) {
                         document.getElementById("queue").setAttribute("style", "display:flex; flex-direction:column-reverse");
                         toggleTButton(document.getElementById('bottom-up-btn'));
                     }
                 }
-
                 if (settingslist['rhand'] !== null && (typeof settingslist['rhand'] !== "undefined") && settingslist['rhand'] !== "") {
-                    if (settingslist['rhand'] === "1")
+                    if (settingslist['rhand'] === 1)
                         toggleTButton(document.getElementById("RH-mode-btn"));
                 }
 
@@ -1192,7 +1189,7 @@ session_write_close();
                 var locale = localeTmp;
 
                 if (settingslist['terminateStream'] !== null && (typeof settingslist['terminateStream'] !== "undefined") && settingslist['terminateStream'] !== "") {
-                    if (settingslist['terminateStream'] === "1") {
+                    if (settingslist['terminateStream'] === 1) {
                         toggleTButton(document.getElementById("terminate-stream-btn"));
                     }
                 }
@@ -1212,7 +1209,7 @@ session_write_close();
                 }
 
                 if (settingslist['mobile'] !== null && (typeof settingslist['mobile'] !== "undefined") && settingslist['mobile'] !== "") {
-                    if (settingslist['mobile'] === "1" || settingslist['mobile'] === "2" || settingslist['mobile'] === "3" || settingslist['mobile'] === "0")
+                    if (settingslist['mobile'] === 1 || settingslist['mobile'] === 2 || settingslist['mobile'] === 3 || settingslist['mobile'] === 0)
                         resizeDrawer(Number(settingslist['mobile']), true);
                 }
 
