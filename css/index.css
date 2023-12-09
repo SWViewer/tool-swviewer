@@ -506,6 +506,33 @@ html, body, .full-screen, #loading {
     transform: scale(0);
 }
 
+/*--------patrol-mobile------*/
+.drawer-fab-patrol {
+    min-width: 56px;
+    height: 56px;
+    position: fixed;
+    right: var(--side-padding);
+    bottom: calc(2 * var(--side-padding) + var(--floatbar-height) + 60px);
+    z-index: 95;
+    border-radius: calc(56px / 2);
+    box-shadow: var(--floatbar-shadow);
+    background-color: var(--bc-accent);
+    transition: transform 200ms ease-in-out;
+    direction: ltr;
+}
+
+.drawer-fab-patrol > div:first-child {
+    width: 56px;
+    height: 56px;
+    padding: 0 0 6px 0;
+    border-radius: 50% 0 0 50%;
+    cursor: pointer;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /*-------Controls-----*/
 .controls-base {
     bottom: var(--side-padding);
