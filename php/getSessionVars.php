@@ -14,7 +14,7 @@ $talktoken = $_SESSION['talkToken'];
 $isGlobal = ($_SESSION['mode'] === "global") ? true : false;
 $isGlobalModeAccess = false;
 if (isset($_SESSION['accessGlobal']))
-    if ($_SESSION['accessGlobal'] === "true")
+    if ($_SESSION['accessGlobal'] == "true" || )
         $isGlobalModeAccess = true;
 $local_wikis = "";
 if (isset($_SESSION['projects']))
