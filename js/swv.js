@@ -1109,7 +1109,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
         }
 
         var noDiffON = false;
-        $scope.Diff = function () {
+        $scope.nextDiff = function () {
             if ($scope.edits.length > 0) {
                 $scope.select($scope.edits[0]);
             } else if (!noDiffON) {
