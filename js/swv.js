@@ -1114,10 +1114,10 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 $scope.select($scope.edits[0]);
             } else if (!noDiffON) {
                 noDiffON = true;
-                document.getElementById('-diff-title').style.width = '70px';
+                document.getElementById('next-diff-title').style.width = '70px';
                 setTimeout(() => {
                     noDiffON = false;
-                    document.getElementById('-diff-title').style.width = '1px';
+                    document.getElementById('next-diff-title').style.width = '1px';
                 }, 1000);
             }
         };
