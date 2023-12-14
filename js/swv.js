@@ -129,7 +129,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             await doPatrol($scope.selectedEdit.server_name, $scope.selectedEdit.new)
                .then(() => {
                    createNotify({
-                       img: '/img/warning-filled.svg',
+                       img: '/img/check-mark.svg',
                        title: useLang["patrol-success-title"],
                        content: useLang["patrol-success-content"].replace("$1", `[[${$scope.selectedEdit.new}||${$scope.selectedEdit.server_url}/wiki/?oldid=${$scope.selectedEdit.new}]]`),
                        removable: true
@@ -162,7 +162,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
         $scope.doThank = async function () {
             await thank($scope.selectedEdit.server_name, $scope.selectedEdit.new)
                .then(() => createNotify({
-                   img: '/img/warning-filled.svg',
+                   img: '/img/thumbs-up-filled.svg',
                    title: useLang["thank-success-title"],
                    content: useLang["thank-success-content"].replace("$1", `[[${$scope.selectedEdit.user}||${$scope.selectedEdit.server_url}/wiki/User:${$scope.selectedEdit.user}]]`),
                    removable: true
