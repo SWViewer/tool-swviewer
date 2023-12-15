@@ -185,7 +185,7 @@ if (isset($_POST["warn"])) {
     }
 
     if ($_POST["warn"] == "protect") {
-        if ($_POST["withoutsection"] !== "true") {
+        if ($_POST["withoutsection"] != "true") {
             $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
             $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
         } else {
