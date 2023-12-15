@@ -1125,9 +1125,9 @@ session_write_close();
                 var settingslist  = xhr.responseText;
                 settingslist = JSON.parse(settingslist);
 
-                var isGlobal = (settingslist['isGlobal'] !== null && settingslist['isGlobal'] !== "" && settingslist['isGlobal'] !== false && settingslist['isGlobal'] !== "0");
-                var notGR = (settingslist['notGR'] !== null && settingslist['notGR'] !== "" && settingslist['notGR'] !== false && settingslist['notGR'] !== "0");
-                var isGlobalModeAccess = (settingslist['isGlobalAccess'] !== null && settingslist['isGlobalAccess'] !== "" && settingslist['isGlobalAccess'] !== false && settingslist['isGlobalAccess'] !== "0");
+                var isGlobal = (settingslist['isGlobal'] !== null && settingslist['isGlobal'] !== "" && settingslist['isGlobal'] !== false && settingslist['isGlobal'] !== 0);
+                var notGR = (settingslist['notGR'] !== null && settingslist['notGR'] !== "" && settingslist['notGR'] !== false && settingslist['notGR'] !== 0);
+                var isGlobalModeAccess = (settingslist['isGlobalAccess'] !== null && settingslist['isGlobalAccess'] !== "" && settingslist['isGlobalAccess'] !== false && settingslist['isGlobalAccess'] !== 0);
                 var userRole = (settingslist['userRole'] !== null && settingslist['userRole'] !== "") ? settingslist['userRole'] : "none";
                 var userSelf = settingslist['userName'];
                 var notGRWikis = settingslist['notGRWikis'];
