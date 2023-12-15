@@ -42,7 +42,7 @@ if ($mode === "rollback") {
     $params = ['action' => 'query', 'prop' => 'revisions', 'rvstartid' => $id, 'titles' => $page, 'rvprop' => 'ids|user', 'rvlimit' => 1, 'rvexcludeuser' => $user, 'utf8' => '1', 'format' => 'json'];
     $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
     forEach ($res->query->pages as $key => $p) {
-        if ($key !== "-1")
+        if ($key != "-1")
             $res2 = $p;
     }
     if ($res2 !== null) {
@@ -51,7 +51,7 @@ if ($mode === "rollback") {
             echo json_encode($response);
             exit();
         }
-        if ($res2->revisions[0]->revid !== "0")
+        if ($res2->revisions[0]->revid != "0")
             $rev = $res2->revisions[0]->revid;
     }
     if ($rev !== null) {
