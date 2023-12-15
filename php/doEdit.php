@@ -37,7 +37,7 @@ if (isset($_POST["getfirstuser"])) {
     $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
     $res2 = null;
     forEach ($res->query->pages as $key => $p) {
-        if ($key !== "-1")
+        if ($key != "-1")
             $res2 = $p;
     }
     if ($res2 !== null)
@@ -54,11 +54,11 @@ if (isset($_POST["warn"])) {
             $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
             $res2 = null;
             forEach ($res->query->pages as $key => $p) {
-                if ($key !== "-1")
+                if ($key != "-1")
                     $res2 = $p;
             }
             if ($res2 !== null)
-                if ($res2->revisions[0]->size !== "0")
+                if ($res2->revisions[0]->size != "0")
                     $text = "\n\n" . $text;
             $params = ['action' => 'edit', 'title' => $page, 'appendtext' => $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => 1, 'format' => 'json'];
             $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
@@ -115,11 +115,11 @@ if (isset($_POST["warn"])) {
             $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
             $res2 = null;
             forEach ($res->query->pages as $key => $p) {
-                if ($key !== "-1")
+                if ($key != "-1")
                     $res2 = $p;
             }
             if ($res2 !== null)
-                if ($res2->revisions[0]->size !== "0")
+                if ($res2->revisions[0]->size != "0")
                     $text = "\n\n" . $text;
             $params = ['action' => 'edit', 'title' => $page, 'appendtext' => $text, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
             $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
@@ -143,7 +143,7 @@ if (isset($_POST["warn"])) {
     }
 
     if ($_POST["warn"] == "report") {
-        if ($_POST["withoutsection"] !== "true") {
+        if ($_POST["withoutsection"] != "true") {
             if (isset($_POST["top"]) && $_POST["top"] == "true") {
                 $preamb = (isset($_POST["preamb"]) && $_POST["preamb"] == "true") ? "\n\n" : "";
                 $params = ['action' => 'edit', 'title' => $page, 'appendtext' => $preamb . "== " . $sectiontitle . " ==" . "\n" . $text, 'section' => 0, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
@@ -214,7 +214,7 @@ if (isset($_POST["warn"])) {
     }
 
     if ($_POST["warn"] == "SRG") {
-        if ($_POST["withoutsection"] !== "true") {
+        if ($_POST["withoutsection"] != "true") {
             $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
             $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
         } else {
@@ -241,7 +241,7 @@ if (isset($_POST["warn"])) {
     }
 
     if ($_POST["warn"] == "SRM") {
-        if ($_POST["withoutsection"] !== "true") {
+        if ($_POST["withoutsection"] != "true") {
             $params = ['action' => 'edit', 'title' => $page, 'text' => $text, 'section' => 'new', 'sectiontitle' => $sectiontitle, 'recreate' => '1', 'watchlist' => 'nochange', 'summary' => $summary, 'token' => $token, 'utf8' => '1', 'format' => 'json'];
             $res = json_decode($client->makeOAuthCall($accessToken, $apiUrl, true, $params));
         } else {
