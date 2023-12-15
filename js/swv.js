@@ -61,7 +61,8 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
             enableLoadingDiffUI();
             loadDiff($scope.selectedEdit);
             $scope.sessionActions.diffViewed++;
-            if ($scope.edits.indexOf(edit) !== -1) $scope.edits.splice($scope.edits.indexOf(edit), 1);
+            if ($scope.edits.indexOf(edit) !== -1)
+                $scope.edits.splice($scope.edits.indexOf(edit), 1);
         };
 
         // ===> To navigate back into edit_history.
@@ -137,7 +138,9 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                    $scope.selectedEdit.flagged = $scope.selectedEdit.new;
                    document.getElementById("drawerFabPatrol").style.transform = "scale(0)";
                    document.getElementById("patrol").style.display = "none";
-		   $scope.selectTop();
+                   $scope.$apply(function () {
+		       $scope.selectTop();
+                   });
                }).catch(err => createNotify({
                    img: '/img/warning-filled.svg',
                    title: useLang["patrol-fail-title"],
