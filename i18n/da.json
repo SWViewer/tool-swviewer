@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Saederup92"
+			"Saederup92",
+			"Zakawer2"
 		]
 	},
 	"tooltip-talk": "Diskussion [t]",
@@ -21,6 +22,8 @@
 	"presets-anons": "Anonym",
 	"presets-new": "Nye sider",
 	"presets-only-new": "Kun nye sider",
+	"presets-wikis-wl": "Liste over wikier som skal springes over",
+	"presets-users-wl": "Liste over brugere som skal springes over",
 	"presets-save": "Gem",
 	"presets-restore": "Gendan",
 	"presets-invalid-title": "Ugyldig titel",
@@ -60,6 +63,11 @@
 	"settings-sound-none": "Ingen",
 	"settings-sound-all": "Alle lyde",
 	"load-history": "Indlæs historik",
+	"patrol-success-title": "Revision blev markeret som accepteret",
+	"patrol-success-content": "Revision $1 blev markeret som accepteret",
+	"patrol-fail-title": "Det lykkedes ikke at acceptere revision",
+	"tooltip-patrol": "Accepter revision",
+	"img-patrol": "Accepter revision",
 	"error-network": "Netværksfejl",
 	"warn-user-title": "Advar bruger",
 	"edit-source-title": "Rediger kilde",
