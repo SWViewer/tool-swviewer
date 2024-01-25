@@ -118,10 +118,10 @@ $q->execute();
 $result = $q->fetchAll();
 $days_talk = $result[0]["days"];
 
-$q = $db->prepare('SELECT COUNT(*) AS rows FROM talk');
+$q = $db->prepare('SELECT COUNT(*) AS rws FROM talk');
 $q->execute();
 $result = $q->fetchAll();
-$rows_talk = $result[0]["rows"];
+$rows_talk = $result[0]["rws"];
 
 $url = "https://meta.wikimedia.org/w/api.php?action=query&prop=revisions&titles=SWViewer/config.json&rvslots=*&format=json&utf8=1";
 $content = @file_get_contents($url);
