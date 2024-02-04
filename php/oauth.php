@@ -87,7 +87,7 @@ if ($global == true || $ident->username == "Ajbura")
 else {
     $checkLocal = false;
 
-    $patrollerGroup = ["bgwiki", "bnwikibooks", "dawiki", "enwikivoyage", "frwikisource", "frwiktionary", "hewiktionary", "hewiki", "hewikinews", "hewikibooks", "hrwiki", "itwikiversity", "itwikibooks", "itwikivoyage", "itwiktionary", "metawiki", "mkwiki", "nnwiki", "nowiki", "nowikibooks", "trwiki", "zhwikiversity", "zhwikivoyage"];
+    $patrollerGroup = ["bgwiki", "bnwikibooks", "dawiki", "enwikivoyage", "frwikisource", "frwiktionary", "hewiktionary", "hewiki", "hewikinews", "hewikibooks", "hrwiki", "itwikiversity", "itwikibooks", "itwikivoyage", "itwiktionary", "metawiki", "mkwiki", "mrwikisource", "nnwiki", "nowiki", "nowikibooks", "trwiki", "zhwikiversity", "zhwikivoyage"];
     $editorGroup = ["dewiki", "enwikibooks", "enwikinews", "elwikinews", "fawikinews", "huwiki", "kawiki", "plwiki", "plwikisource", "ptwikibooks", "trwikiquote", "zh_classicalwiki"];
     $eliminatorGroup = ["fawiki", "viwiki", "viwikibooks"];
     $botAdminGroup = ["ckbwiki", "frwiktionary", "mlwiki"];
