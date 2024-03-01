@@ -160,6 +160,7 @@ const restoreDefaultPreset = () => {
 // To edit specific preset
 // if used without parameter create new preset
 const editPreset = (index) => {
+
     if (presets[index] !== undefined) {
         var PDialogId = presets[index].title + 'PresetDialog';
         var PTitle = presets[index].title;
@@ -201,13 +202,13 @@ const editPreset = (index) => {
     if (true) {
         if (typeof document.getElementById("small-wikis-btn") !== 'undefined' && document.getElementById("small-wikis-btn") !== null)
             if (typeof preSettings['swmt'] !== 'undefined') {
-                if ((preSettings['swmt'] === '1' || preSettings['swmt'] === '2') && (isGlobal === true || isGlobalModeAccess === true))
+                if ((preSettings['swmt'] == '1' || preSettings['swmt'] == '2') && (isGlobal === true || isGlobalModeAccess === true))
                     toggleTButton(document.getElementById('small-wikis-btn'));
             }
 
         if (typeof document.getElementById("lt-300-btn") !== 'undefined' && document.getElementById("lt-300-btn") !== null)
             if (typeof preSettings['users'] !== 'undefined') {
-                if ((preSettings['users'] === '1' || preSettings['users'] === '2') && (isGlobal === true || isGlobalModeAccess === true))
+                if ((preSettings['users'] == '1' || preSettings['users'] == '2') && (isGlobal === true || isGlobalModeAccess === true))
                     toggleTButton(document.getElementById('lt-300-btn'));
             }
 
@@ -220,7 +221,7 @@ const editPreset = (index) => {
         initIValue(preSettings['oresFilter'], 'ores-filter');
 
         function initTBtn (value, btn) {
-            if (typeof value !== "undefined" && value === "1") toggleTButton(document.getElementById(btn));
+            if (typeof value !== "undefined" && value == "1") toggleTButton(document.getElementById(btn));
         }
         initTBtn(preSettings['registered'], 'registered-btn');
         initTBtn(preSettings['new'], 'new-pages-btn');
@@ -308,7 +309,7 @@ const createPresetHolder = (index) => {
 // initialize the presets
 const initPresets = (req = true) => {
     var PBase = document.getElementById('presetsBase');
-
+ 
     var containers = document.getElementsByClassName("preset-container");
     while(containers[0]) {
         PBase.removeChild(containers[0]);
@@ -323,4 +324,3 @@ const initPresets = (req = true) => {
     }
 }
 initPresets();
-
