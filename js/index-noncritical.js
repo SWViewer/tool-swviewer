@@ -384,7 +384,7 @@ function nsChange(val, action) {
             }
         }
         else {
-           var checkNsVal = findKey(val.toLowerCase(), nsList);
+           var checkNsVal = findKey(val.toLowerCase(), nsNameList);
            if (checkNsVal !== false) {
                if (action == "add")
                    if (preSettings["namespaces"].indexOf(checkNsVal) == -1) {
@@ -404,16 +404,16 @@ function nsChange(val, action) {
         if (action == "add")
             if (preSettings["namespaces"].indexOf(val) == -1) {
                 preSettings["namespaces"].push(val);
-                if (typeof nsList[val] !== "undefined")
-                    checkChange = nsList[val];
+                if (typeof nsNameList[val] !== "undefined")
+                    checkChange = nsNameList[val];
                 else
                     checkChange = "Other (" + val + ")";
             }
         if (action == "delete")
             if (preSettings["namespaces"].indexOf(val) !== -1) {
                 preSettings["namespaces"].splice(preSettings["namespaces"].indexOf(val), 1);
-                if (typeof nsList[val] !== "undefined")
-                    checkChange = nsList[val];
+                if (typeof nsNameList[val] !== "undefined")
+                    checkChange = nsNameList[val];
                 else
                     checkChange = "Other (" + val + ")";
             }
