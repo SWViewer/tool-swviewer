@@ -5,6 +5,7 @@
 			"Bas dehaan",
 			"Bdijkstra",
 			"Danieldegroot2",
+			"HanV",
 			"McDutchie"
 		]
 	},
@@ -93,9 +94,9 @@
 	"presets-custom-desc": "Uw thuiswiki toevoegen, of wiki’s die niet op de lijst met kleine wiki’s staan. Voorbeeld: nlwiki",
 	"presets-langset": "Talenkeuze",
 	"presets-langset-desc": "Talen instellen om bewerkingen in bepaalde talen te krijgen. Voorbeeld: nl",
-	"presets-wikis-wl": "Witte lijst wiki’s",
+	"presets-wikis-wl": "Over te slaan wiki’s",
 	"presets-wikis-wl-desc": "Voeg wiki’s hier toe om hun bewerkingen in de wachtrij over te slaan. Bijvoorbeeld: nlwiki",
-	"presets-users-wl": "Witte lijst gebruikers",
+	"presets-users-wl": "Over te slaan gebruikers",
 	"presets-users-wl-desc": "Voeg gebruikers hier toe om hun bewerkingen in de wachtrij over te slaan. Bijvoorbeeld: PietjePuk",
 	"presets-save": "Opslaan",
 	"presets-restore": "Herstellen",
