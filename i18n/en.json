@@ -288,7 +288,7 @@
   "about-frame-traffic": "Be careful, big internet traffic!",
   "about-frame-attrib" : "license / author of original file",
   "about-frame-cookies-title": "Cookies",
-  "about-frame-cookies-desc": "This app uses cookies, which expires after 31 days.",
+  "about-frame-cookies-desc": "This app uses cookies, which expire after 31 days.",
   "about-frame-licensing": "Licensing",
   "about-frame-translating": "Translation",
   "about-frame-translators-tw": "Translating SWViewer interface to $1 language is done at [$link|Translatewiki.net].",
