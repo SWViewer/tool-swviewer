@@ -27,8 +27,12 @@ getUsers("global-ipblock-exempt");
 getUsers("oathauth-tester");
 getCommonsUsers();
 
-$explain = "commons-sysop|commons-filemover|commons-image-reviewer|global-ipblock-exempt|oathauth-tester|apihighlimits-requestor|captcha-exempt|wmf-researcher|wmf-ops-monitoring|sysadmin|recursive-export|vrt-permissions|new-wikis-importer|global-interface-editor|global-flow-create|global-deleter|global-bot|staff|steward|global-sysop|global-rollbacker|abusefilter-helper|founder|ombuds";
-echo json_encode(['meta' => ['count' => count($usersList), 'explain' => $explain], 'users' => $usersList]);
+if (isset($_GET["user"]) && $_GET["user"] === "Рейму") {
+    echo implode("|", $usersList); // quick option special for MBH; sic, plain text while json content type
+} else {
+    $explain = "commons-sysop|commons-filemover|commons-image-reviewer|global-ipblock-exempt|oathauth-tester|apihighlimits-requestor|captcha-exempt|wmf-researcher|wmf-ops-monitoring|sysadmin|recursive-export|vrt-permissions|new-wikis-importer|global-interface-editor|global-flow-create|global-deleter|global-bot|staff|steward|global-sysop|global-rollbacker|abusefilter-helper|founder|ombuds";
+    echo json_encode(['meta' => ['count' => count($usersList), 'explain' => $explain], 'users' => $usersList]);
+}
 
 function getUsers($groups)
 {
