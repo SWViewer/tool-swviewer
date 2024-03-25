@@ -1,7 +1,7 @@
 <?php
 header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
 if (isset($_GET["user"]) && $_GET["user"] === "Рейму")
-    header("Content-type: text/plain; charset=utf-8");
+    header("Content-type: text/plain; charset=utf-8");   // quick option special for MBH
 else
     header("Content-type: application/json; charset=utf-8");
 session_name('SWViewer');
@@ -31,7 +31,7 @@ getUsers("oathauth-tester");
 getCommonsUsers();
 
 if (isset($_GET["user"]) && $_GET["user"] === "Рейму") {
-    echo implode("|", $usersList); // quick option special for MBH; sic, plain text while json content type
+    echo implode("|", $usersList); // quick option special for MBH
 } else {
     $explain = "commons-sysop|commons-filemover|commons-image-reviewer|global-ipblock-exempt|oathauth-tester|apihighlimits-requestor|captcha-exempt|wmf-researcher|wmf-ops-monitoring|sysadmin|recursive-export|vrt-permissions|new-wikis-importer|global-interface-editor|global-flow-create|global-deleter|global-bot|staff|steward|global-sysop|global-rollbacker|abusefilter-helper|founder|ombuds";
     echo json_encode(['meta' => ['count' => count($usersList), 'explain' => $explain], 'users' => $usersList]);
