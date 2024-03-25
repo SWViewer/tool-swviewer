@@ -1,6 +1,9 @@
 <?php
 header("Cache-Control: no-cache, no-stire, must-revalidate, max-age=0");
-header("Content-type: application/json; charset=utf-8");
+if (isset($_GET["user"]) && $_GET["user"] === "Рейму")
+    header("Content-type: text/plain; charset=utf-8");
+else
+    header("Content-type: application/json; charset=utf-8");
 session_name('SWViewer');
 session_start();
 if ((!isset($_SESSION['tokenKey']) || !isset($_SESSION['tokenSecret']) || !isset($_SESSION['userName'])) && !isset($_GET['token_proxy']) && !isset($_GET['ext_token'])) {
