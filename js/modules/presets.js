@@ -234,7 +234,7 @@ const editPreset = (index) => {
                 preSettings[key].forEach((val) => {
                     if (val === "") return;
                     if (key === 'namespaces') {
-                        if (typeof nsList[val] !== "undefined") val = nsList[val];
+                        if (typeof nsNameList[val] !== "undefined") val = nsNameList[val];
                         else val = "Other (" + val + ")";
                     }
                     var ul = document.getElementById(listId);
