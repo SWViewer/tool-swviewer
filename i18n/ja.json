@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"20041027 tatsu",
+			"Chqaz",
 			"Kocgs",
 			"Kokoko-H",
 			"LaMagiaaa",
@@ -226,7 +227,7 @@
 	"patrol-fail-title": "版の承認に失敗しました",
 	"tooltip-patrol": "版を承認",
 	"img-patrol": "版を承認",
-	"browser-sse": "申し訳ありませんが、お使いのブラウザは Server-Sent Events をサポートしていません。",
+	"browser-sse": "申し訳ありませんが、お使いのブラウザはサーバー送信イベントをサポートしていません。",
 	"already-done": "そのような変更はすでに行われました。",
 	"error-network": "ネットワークエラー",
 	"error-rollback": "巻き戻しエラー:$1",
