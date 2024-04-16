@@ -948,7 +948,7 @@ angular.module("swv").controller("Queue", function ($scope, $compile, $timeout) 
                 "comment": (editData.comment === null) ? "" : editData.comment,
                 "old": editData.old_id,
                 "new": editData.new_id,
-                "isIp": (editData.is_anon === true) ? "ip" : "registered",
+                "isIp": ((editData.hasOwnProperty("is_anon") && editData.is_anon === true) || (editData.performer.hasOwnProperty("user_is_anon") && editData.performer.user_is_anon)) ? "ip" : "registered",
                 "wikidata_title": editData.wikidata_title,
                 "ores": editData.ORES,
                 "is_new": editData.is_new,
