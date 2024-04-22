@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Codename Noreste",
+			"Eulalio",
 			"Fitoschido",
 			"FlyingAce",
 			"Hasley",
@@ -75,8 +76,8 @@
 	"presets-title": "Título",
 	"presets-registered": "Registrados",
 	"presets-registered-desc": "Activar ediciones de usuarios registrados.",
-	"presets-anons": "Anónimos",
-	"presets-anons-desc": "Activar ediciones de usuarios anónimos.",
+	"presets-anons": "No registrados",
+	"presets-anons-desc": "Habilite las ediciones de usuarios no registrados.",
 	"presets-new": "Páginas nuevas.",
 	"presets-new-desc": "Activar ediciones que son creaciones de páginas nuevas.",
 	"presets-only-new": "Sólo páginas nuevas",
