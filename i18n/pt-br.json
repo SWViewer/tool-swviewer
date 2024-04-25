@@ -8,6 +8,7 @@
 			"Isabelle Belato",
 			"Lc97",
 			"Mello25",
+			"Mellogabi03",
 			"Tks4Fish",
 			"YuriNikolai"
 		]
@@ -289,7 +290,7 @@
 	"about-frame-traffic": "Tenha cuidado, alto tráfego de rede!",
 	"about-frame-attrib": "licença / autor do arquivo original",
 	"about-frame-cookies-title": "Cookies",
-	"about-frame-cookies-desc": "Esse aplicativo utiliza cookies, que expiram após 31 dias.",
+	"about-frame-cookies-desc": "Esse aplicativo utiliza cookies\n que expiram após 31 dias.",
 	"about-frame-licensing": "Licenciamento",
 	"about-frame-translating": "Traduções",
 	"about-frame-translators-tw": "A tradução da interface do SWViewer para o idioma $1 é feita na [$link|Translatewiki.net].",
