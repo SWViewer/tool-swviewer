@@ -3,7 +3,8 @@
 		"authors": [
 			"A09090091",
 			"Eleassar",
-			"Upwinxp"
+			"Upwinxp",
+			"Woytecr"
 		]
 	},
 	"tooltip-edit-preset": "Nastavitve čakalne vrste",
@@ -51,7 +52,7 @@
 	"settings-jumps": "Skoči na spremembo",
 	"settings-jumps-descr": "Če je omogočeno, bo ob odprtju primerjave fokus SWViewerja skočil neposredno na spremembo.",
 	"settings-hotkeys": "Bližnjice",
-	"settings-hotkeys-descr": "Omogoči [ $1|bližnjice] za upravljanje SWViewerja s tipkovnico.",
+	"settings-hotkeys-descr": "Omogoči [$1|bližnjice] za upravljanje SWViewerja s tipkovnico.",
 	"settings-limit": "Omejitev čakalne vrste",
 	"settings-limit-descr": "Največje dovoljeno število urejanj za nalaganje v čakalno vrsto.",
 	"settings-limit-placeholder": "Brez omejitve",
@@ -80,7 +81,7 @@
 	"presets-days-limit-desc": "Starost računa v dnevih, po kateri bodo urejanja uporabnika preskočena.",
 	"presets-days-limit-placeholder": "Največ dni",
 	"presets-ns": "Filter imenskega prostora",
-	"presets-ns-desc": "Dodaj [ $1|imenski prostor] za filtriranje urejanj v čakalni vrsti. Zgled: 0 za Glavni",
+	"presets-ns-desc": "Dodaj [$1|imenski prostor] za filtriranje urejanj v čakalni vrsti. Zgled: 0 za Glavni",
 	"presets-ores-filter": "Filter LiftWing in ORES",
 	"presets-ores-filter-desc": "Filtriranje urejanj po oceni LiftWing in ORES.",
 	"presets-sw": "Majhni vikiji",
