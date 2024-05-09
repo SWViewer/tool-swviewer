@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"1917 Ekim Devrimi",
+			"GolyatGeri",
 			"Mirzali"
 		]
 	},
@@ -196,6 +197,7 @@
 	"about-frame-data-desc": "Aplikasyon datayanê ceri arêdano u keno depo :",
 	"about-frame-data-username": "Namey karberi",
 	"about-frame-data-talk": "Mesacê werênayışi",
+	"about-frame-data-access": "Demê resayışê peyêni",
 	"page-title": "Ferq",
 	"welcome-page-title": "Xeyr amey pela",
 	"login-welcome": "Xeyr amey!",
@@ -207,6 +209,7 @@
 	"img-notification": "Peyhesnayış",
 	"img-settings": "Eyari",
 	"img-navigation": "Navigasyon",
+	"img-thank": "Spas bıkerên",
 	"img-edit": "Bıvurne",
 	"img-options": "Zêde weçenegi",
 	"img-plus": "Dekerê",
