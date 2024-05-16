@@ -6,6 +6,7 @@
 			"Codenstory",
 			"Ellif",
 			"MemphisA5",
+			"Suleiman the Magnificent Television",
 			"Tmv",
 			"Ykhwong"
 		]
@@ -22,6 +23,7 @@
 	"tooltip-m-queue": "대기열",
 	"tooltip-m-notification": "알림",
 	"tooltip-copy-link": "링크 주소 복사",
+	"tooltip-thank": "감사의 메시지를 보내세요",
 	"tooltip-edit-source": "원본 편집 [e]",
 	"tooltip-more-options": "옵션 더 보기",
 	"tooltip-open-browser": "브라우저 창으로 열기 [o]",
