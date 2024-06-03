@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Исмаил Садуев",
 			"Умар"
 		]
 	},
@@ -39,6 +40,7 @@
 	"diff-info-wiki": "Вики:",
 	"diff-info-comment": "Коммент:",
 	"diff-info-namespace": "ЦӀерийн меттиг:",
+	"diff-mo-es": "Код нисйан",
 	"notifications-img": "ДӀахаийтарш",
 	"notifications-title": "ДӀахаийтарш",
 	"tooltip-po-close": "ДӀачӀагӀа [esc]",
@@ -60,7 +62,7 @@
 	"logs-img-search": "Лаха",
 	"logs-action-rollback": "Йухайаккха",
 	"logs-action-undo": "Йухадаккхар",
-	"logs-action-edit": "Нисйе",
+	"logs-action-edit": "Нисйар",
 	"logs-action-warn": "ДӀахьедар",
 	"logs-action-delete": "ДӀайаккха",
 	"logs-action-report": "Блоктохар дехар",
@@ -116,7 +118,7 @@
 	"img-logout": "Аравала(йала)",
 	"img-notification": "ДӀахаийтарш",
 	"img-thank": "Баркалла",
-	"img-edit": "Нисйе",
+	"img-edit": "Нисйан",
 	"img-options": "Дукха таронаш",
 	"img-plus": "ТӀетоха",
 	"img-next": "РогӀера дифф",
