@@ -221,7 +221,7 @@
 	"report-performed-content": "$1は、$2での編集について正常に報告されています。",
 	"thank-fail-title": "感謝に失敗しました!",
 	"thank-success-title": "感謝しました",
-	"thank-success-content": "$1は正常に感謝されました。",
+	"thank-success-content": "$1の感謝は正常に送信されました。",
 	"patrol-success-title": "版は承認済みとして印を付けられました",
 	"patrol-success-content": "版 $1 は承認済みとして印を付けられました",
 	"patrol-fail-title": "版の承認に失敗しました",
