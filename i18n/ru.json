@@ -70,7 +70,7 @@
 	"presets-title": "Название",
 	"presets-registered": "Зарегистрированные",
 	"presets-registered-desc": "Включать правки от зарегистрированных участников.",
-	"presets-anons": "Анонимные",
+	"presets-anons": "Незарегистрированные",
 	"presets-anons-desc": "Включать правки от анонимных участников.",
 	"presets-new": "Новые страницы",
 	"presets-new-desc": "Включать создание новых страниц.",
