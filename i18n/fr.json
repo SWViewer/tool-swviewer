@@ -9,7 +9,8 @@
 			"Urhixidur",
 			"Verdy p",
 			"Vikoula5",
-			"Wladek92"
+			"Wladek92",
+			"Zetud"
 		]
 	},
 	"tooltip-edit-preset": "Paramétrages de la file",
@@ -40,7 +41,7 @@
 	"settings-language": "Langue",
 	"settings-language-descr": "Modifier la langue d’interface de l’outil.",
 	"settings-language-region": "Région",
-	"settings-language-region-descr": "Définir la région pour afficher les numéros et les dates au format local.",
+	"settings-language-region-descr": "Définir la région pour afficher les nombres et les dates au format local.",
 	"settings-sound": "Son",
 	"settings-sound-descr": "Modifier le mode son pour les modifications entrantes et les messages dans la discussion.",
 	"settings-revisions": "Diff multiples",
@@ -73,8 +74,8 @@
 	"presets-title": "Titre",
 	"presets-registered": "Inscrit",
 	"presets-registered-desc": "Activer les modifications des utilisateurs inscrits.",
-	"presets-anons": "Anonyme",
-	"presets-anons-desc": "Activer les modifications des utilisateurs anonymes.",
+	"presets-anons": "Non inscrit",
+	"presets-anons-desc": "Activer les modifications des utilisateurs non enregistrés.",
 	"presets-new": "Nouvelles pages",
 	"presets-new-desc": "Activer les modifications qui sont des créations de nouvelles pages.",
 	"presets-only-new": "Seulement les nouvelles pages",
