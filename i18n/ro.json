@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Firilacroco",
 			"Kocgs",
 			"NGC 54",
 			"Paloi Sciurala"
@@ -255,7 +256,7 @@
 	"summary-placeholder": "Descrieți-vă pe scurt schimbările.",
 	"tooltip-edit-form": "Codul sursă al paginii",
 	"tooltip-reason": "Motiv",
-	"welcome-frame-title": "Bun venit",
+	"welcome-frame-title": "Bun-venit",
 	"welcome-frame-button": "Căutare",
 	"welcome-frame-placeholder": "Căutare utilizator",
 	"welcome-frame-rollback": "Revenire",
@@ -312,8 +313,8 @@
 	"about-frame-data-ref-2": "Această dată este disponibilă publicului.",
 	"about-frame-data-ref-3": "Aceste date se șterg în două săptămâni după ultima accesare a uneltei.",
 	"page-title": "Dif",
-	"welcome-page-title": "Pagina de bun venit",
-	"login-welcome": "Bun venit!",
+	"welcome-page-title": "Pagina de bun-venit",
+	"login-welcome": "Bun-venit!",
 	"login-oauth": "Conectare OAuth",
 	"login-rights": "Pentru a utiliza [$1|local] sau [$2|global] această aplicație, este necesar rollback-ul.",
 	"login-disclaimer": "Apăsând butonul „Conectare OAuth”, sunteți de acord cu [$1|Politica noastră de Cookie și Confidențialitate].",
