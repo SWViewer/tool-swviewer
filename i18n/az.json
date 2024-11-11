@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Nemoralis",
-			"Turkmen"
+			"Turkmen",
+			"Əkrəm Cəfər"
 		]
 	},
 	"tooltip-edit-preset": "Növbə parametrləri",
@@ -59,7 +60,7 @@
 	"settings-beta": "Beta",
 	"settings-beta-tester": "Beta versiyanı aç",
 	"queue-empty-msg": "Növbə boşdur",
-	"presets-default-title": "Susmaya görə",
+	"presets-default-title": "Defolt",
 	"presets-enter-placeholder": "Daxil et",
 	"presets-button-create": "Yarat",
 	"presets-title": "Başlıq",
