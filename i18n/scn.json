@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Ajeje Brazorf",
-			"GianAntonucci"
+			"GianAntonucci",
+			"Gmelfi"
 		]
 	},
-	"tooltip-home": "Pàggina mastra [esc]",
+	"tooltip-home": "Pàggina principali [esc]",
 	"tooltip-talk": "Discussioni [t]",
 	"tooltip-logs": "Riggistri [l]",
 	"tooltip-logout": "Nesci [u]",
