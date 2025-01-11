@@ -69,7 +69,7 @@ $typeaction = ($mode === "undo") ? "edit" : "rollback";
 if (!isset($res->$typeaction->title) || isset($res->$typeaction->nochange)) {
     $res = json_decode(json_encode($res), True);
     if (isset($res[$typeaction]["nochange"]))
-        $response = ["code" => "alreadyrolled", "result" => "Edits is already undid."];
+        $response = ["code" => "alreadyrolled", "result" => "Edit is already undone."];
     else
         $response = (!isset($res["error"])) ? ["result" => "Unknow error", "code" => "Unknow error: RB2"] : ["result" => $res["error"]["info"], "code" => $res["error"]["code"]];
     echo json_encode($response);
