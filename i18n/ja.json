@@ -13,6 +13,7 @@
 			"Shirayuki",
 			"Tamaki Wakita",
 			"Tmv",
+			"かしわのはみん",
 			"春春眠眠"
 		]
 	},
@@ -127,7 +128,7 @@
 	"diff-info-comment": "コメント：",
 	"diff-info-namespace": "名前空間：",
 	"diff-mo-fetching": "読み込み中",
-	"diff-mo-rfh": "WM:RFH（管理者・ビューロクラットへの協力依頼）",
+	"diff-mo-rfh": "WM:RFH（管理者 / ビューロクラットへの協力依頼）",
 	"diff-mo-srm": "SRM（Steward requests/Miscellaneous、アクティブな管理者がいないウィキメディアウィキ向け）",
 	"diff-mo-srg": "SRG（Steward requests/Global、グローバルブロック（ブロック解除）、ロック（ロック解除）、利用者名の秘匿を依頼する）",
 	"diff-mo-gsr": "GSR（グローバル管理者依頼、アクティブな管理者がいないWikiでの物議を醸す要求を除く、削除またはブロックの単純な依頼）",
@@ -249,7 +250,7 @@
 	"warn-user-title": "利用者に警告する",
 	"warn-user-desc": "これをオンにすると、共通の要約 (緑色のみ) をクリックした後に、利用者のトークページに警告します。",
 	"treat-undo-title": "取り消しを使う",
-	"treat-undo-desc": "巻き戻しの代わりに、取り消しを使用したい場合、チェックボックスを有効にして下さい。",
+	"treat-undo-desc": "巻き戻しの代わりに、取り消しを使用したい場合、チェックボックスを有効にしてください。",
 	"max-warn-title": "最終警告",
 	"max-warn-desc": "チェックボックスを有効にすると、最大レベルの警告が送信できます。",
 	"common-summaries": "一般的な要約：",
