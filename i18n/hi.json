@@ -3,6 +3,7 @@
 		"authors": [
 			"1997kB",
 			"Abijeet Patro",
+			"Bunnypranav",
 			"CptViraj",
 			"DreamRimmer",
 			"Saurmandal"
@@ -43,7 +44,7 @@
 	"settings-revisions-descr": "एक से अधिक बदलाव को एक साथ देखे या अलर्ट लगाए।",
 	"settings-revisions-onlylast": "केवल आखिरी",
 	"settings-revisions-alert": "अलर्ट करे",
-	"settings-revisions-all": "सभी दिखाएं",
+	"settings-revisions-all": "सभी दिखाएँ",
 	"settings-direction": "नीचे से ऊपर",
 	"settings-direction-descr": "कतार के बदलाव नीचे से ऊपर की दिशा में देखे।",
 	"settings-rh-mode": "कतार की लोकेशन",
