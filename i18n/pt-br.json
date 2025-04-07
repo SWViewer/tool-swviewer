@@ -9,6 +9,7 @@
 			"Lc97",
 			"Mello25",
 			"Mellogabi03",
+			"TheEduGobi",
 			"Tks4Fish",
 			"YuriNikolai"
 		]
@@ -250,7 +251,7 @@
 	"sysops-active": "Há atualmente $1 administrador(es) ativo(s) nesta wiki ($2 no total).",
 	"sysops-wait": "Talvez seja melhor aguardar a reação dos administradores locais.",
 	"sysops-not-gs": "Não é uma wiki dos administradores globais.",
-	"sysops-more-than-3": "Essa wiki tem mais que 3 administradores ativos ($1 no total).",
+	"sysops-more-than-3": "Esta wiki tem mais de 3 administradores ativos ($1 no total).",
 	"sysops-more-than-10": "Este wiki tem mais de 10 administradores ativos.",
 	"edit-source-title": "Editar código-fonte",
 	"summary-title": "Resumo",
