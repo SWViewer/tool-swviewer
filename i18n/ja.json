@@ -215,7 +215,7 @@
 	"warn-performed-content": "$1は$2での編集について、正常に警告されました。",
 	"report-fail-title": "報告に失敗しました！",
 	"report-fail-content": "$1の編集に失敗し警告が出ています。設定が正しくないようです。",
-	"report-already-reported": "その利用者はすでに報告されています。",
+	"report-already-reported": "その利用者は既に報告されています。",
 	"autoreport-title": "自動報告",
 	"autoreport-content": "$1が複数回警告されています。管理者掲示板に報告しますか？",
 	"report-title": "報告",
