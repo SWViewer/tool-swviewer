@@ -81,7 +81,7 @@
 	"presets-edits-limit-desc": "عدد تعديلات المُستخدم التي سيتم بعدها تخطي تعديلاته.",
 	"presets-edits-limit-placeholder": "أقصى عدد من التعديلات",
 	"presets-days-limit": "حد الأيام",
-	"presets-days-limit-desc": "عمر حساب المُستخدم (بالأيَّام) والتي سيتم بعدها تخطي تعديلاته.",
+	"presets-days-limit-desc": "عمر حساب المستخدم (بالأيام) والتي سيجري بعدها تخطي تعديلاته.",
 	"presets-days-limit-placeholder": "أقصى الأيام",
 	"presets-ns": "مرشح النطاق الرئيس",
 	"presets-ns-desc": "أضف [$1|نطاقًا] إلى تعديلات المُرشِّح في قائمة الانتظار. مثال: للنطاق الرئيس",
