@@ -10,7 +10,8 @@
 			"MrJaroslavik",
 			"Patrik L.",
 			"Robins7",
-			"The astrea"
+			"The astrea",
+			"WikipedistaOndra"
 		]
 	},
 	"tooltip-edit-preset": "Nastavení fronty",
@@ -218,6 +219,7 @@
 	"report-performed-content": "$1 byl úspěšně nahlášen kvůli editaci na stránce $2.",
 	"thank-fail-title": "Poděkování se nezdařilo!",
 	"thank-success-title": "Poděkování se zdařilo",
+	"thank-success-content": "Bylo úspěšně poděkováno $1",
 	"patrol-success-title": "Revize byla označena jako přijatá",
 	"patrol-success-content": "Revize $1 byla označena jako přijatá",
 	"patrol-fail-title": "Přijetí revize se nezdařilo",
