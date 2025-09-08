@@ -323,7 +323,7 @@
 	"login-welcome": "Bienvenue !",
 	"login-oauth": "Se connecter avec OAuth",
 	"login-rights": "Pour utiliser cette application, la révocation [$1|locale] ou [$2|globale] est nécessaire.",
-	"login-disclaimer": "En cliquant sur le bouton « Se connecter avec OAuth », vous acceptez notre [$1|Politique des cookies et de confidentialité].",
+	"login-disclaimer": "En cliquant sur le bouton « Se connecter avec OAuth », vous acceptez notre [$1|Politique des témoins et de confidentialité].",
 	"img-message": "Message",
 	"img-logos": "Journaux",
 	"img-logout": "Se déconnecter",

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"GilPe",
 			"Robby",
 			"Volvox"
 		]
@@ -97,7 +98,7 @@
 	"sysops-more-than-3": "Dës Wiki huet méi wéi 3 aktiv Administrateuren (Total $1)",
 	"sysops-more-than-10": "Dës Wiki huet méi wéi 10 aktiv Administrateuren.",
 	"edit-source-title": "Quelltext änneren",
-	"summary-title": "Resumé",
+	"summary-title": "Resümmee",
 	"tooltip-reason": "Grond",
 	"welcome-frame-title": "Wëllkomm",
 	"welcome-frame-button": "Sichen",
