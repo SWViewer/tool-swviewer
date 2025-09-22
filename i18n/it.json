@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Beta16",
+			"Giorgx12",
 			"Kocgs",
 			"Superpes15"
 		]
@@ -212,6 +213,10 @@
 	"thank-fail-title": "Invio del ringraziamento non riuscito!",
 	"thank-success-title": "Ringraziamento inviato",
 	"thank-success-content": "$1 è stato ringraziato.",
+	"patrol-success-title": "La revisione è stata contrassegnata come accettata",
+	"patrol-success-content": "La revisione $1 è stata contrassegnata come accettata",
+	"patrol-fail-title": "La revisione per la revisione è fallita",
+	"tooltip-patrol": "Accetta la revisione",
 	"img-patrol": "Accetta versione",
 	"browser-sse": "Ci dispiace, il tuo browser non supporta i Server-Sent Events.",
 	"already-done": "Queste modifiche sono già state effettuate.",
