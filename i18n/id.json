@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Akmaie Ajam",
+			"Bennylin",
 			"Daud I.F. Argana",
 			"Hidayatsrf",
 			"OrangKalideres",
@@ -87,7 +88,7 @@
 	"presets-days-limit-desc": "Umur akun pengguna dalam beberapa hari setelah suntingan pengguna yang akan dilewati.",
 	"presets-days-limit-placeholder": "Maks hari",
 	"presets-ns": "Filter ruang nama",
-	"presets-ns-desc": "Tambahkan [$1|ruangnama] untuk menyaring suntingan dalam antrean. Contoh: 0 untuk ruangnama utama",
+	"presets-ns-desc": "Tambahkan [$1|ruang nama] untuk menyaring suntingan dalam antrian. Contoh: 0 untuk ruang nama utama",
 	"presets-ores-filter": "Penyaring LiftWing dan ORES",
 	"presets-ores-filter-desc": "Filter suntingan berdasarkan Skor LiftWing dan ORES.",
 	"presets-sw": "Wiki kecil",
