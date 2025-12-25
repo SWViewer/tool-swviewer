@@ -245,7 +245,7 @@
 	"custom-revert-placeholder": "Berikan alasan.",
 	"custom-revert-button": "Batalkan",
 	"warn-user-title": "Peringatkan pengguna",
-	"warn-user-desc": "Mengaktifkan ini akan memberikan peringatan di halaman pembicaraan pengguna setelah mengklik ringkasan umum (hanya yang berwarna hijau).",
+	"warn-user-desc": "Menyalakan ini akan memberikan peringatan di halaman pembicaraan pengguna setelah mengklik ringkasan umum (hanya yang berwarna hijau).",
 	"treat-undo-title": "Gunakan pengembalian manual",
 	"treat-undo-desc": "Nyalakan kotak centang jika Anda ingin menggunakan pengembalian secara manual dan bukan pengembalian.",
 	"max-warn-title": "Peringatan akhir",
