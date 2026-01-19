@@ -83,7 +83,7 @@
 	"presets-registered": "Đã đăng ký",
 	"presets-registered-desc": "Hiện sửa đổi của thành viên đã đăng ký",
 	"presets-anons": "Chưa đăng ký",
-	"presets-anons-desc": "Hiện sửa đổi của thành viên vô danh",
+	"presets-anons-desc": "Hiện sửa đổi của người chưa đăng nhập",
 	"presets-new": "Trang mới",
 	"presets-new-desc": "Hiện sửa đổi tạo ra trang mới",
 	"presets-only-new": "Chỉ trang mới",
