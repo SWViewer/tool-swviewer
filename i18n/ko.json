@@ -8,6 +8,7 @@
 			"MemphisA5",
 			"Suleiman the Magnificent Television",
 			"Tmv",
+			"YeBoy371",
 			"Ykhwong",
 			"기나ㅏㄴ"
 		]
@@ -86,7 +87,7 @@
 	"presets-days-limit-desc": "계정 생성 후 지정한 일수를 넘는 사용자의 편집은 자동으로 건너뜁니다.",
 	"presets-days-limit-placeholder": "최대 일수",
 	"presets-ns": "이름공간 필터",
-	"presets-ns-desc": "큐의 편집을 필터링하기 위해 [$1|네임스페이스]를 추가합니다. 예: 0 = 일반 문서",
+	"presets-ns-desc": "큐의 편집을 필터링하기 위해 [$1|이름공간]을 추가합니다. 예: 0 = 일반 문서",
 	"presets-ores-filter": "LiftWing 및 ORES 필터",
 	"presets-ores-filter-desc": "LiftWing 및 ORES 점수로 편집 내용을 필터링합니다.",
 	"presets-sw": "소규모 위키",
