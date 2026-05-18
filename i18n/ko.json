@@ -222,6 +222,7 @@
 	"sysops-more-than-10": "이 위키는 10명이 넘는 활동 관리자가 있습니다.",
 	"edit-source-title": "원본 편집",
 	"summary-title": "요약",
+	"summary-placeholder": "변경사항을 간략하게 설명하세요.",
 	"tooltip-reason": "이유",
 	"welcome-frame-title": "환영합니다",
 	"welcome-frame-button": "검색",
