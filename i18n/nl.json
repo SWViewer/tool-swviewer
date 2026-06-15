@@ -94,7 +94,7 @@
 	"presets-custom": "Aangepaste wiki’s",
 	"presets-custom-desc": "Uw thuiswiki toevoegen, of wiki’s die niet op de lijst met kleine wiki’s staan. Voorbeeld: nlwiki",
 	"presets-langset": "Talenkeuze",
-	"presets-langset-desc": "Talen instellen om bewerkingen in bepaalde talen te krijgen. Voorbeeld: nl",
+	"presets-langset-desc": "Talen instellen om bewerkingen in specifieke talen te krijgen. Voorbeeld: nl",
 	"presets-wikis-wl": "Te negeren wiki's",
 	"presets-wikis-wl-desc": "Voeg hier wiki’s toe om hun bewerkingen in de wachtrij over te slaan. Bijvoorbeeld: nlwiki",
 	"presets-users-wl": "Te negeren gebruikers",
