@@ -57,7 +57,7 @@
 	"settings-terminate-stream": "스트림 종료",
 	"settings-terminate-stream-descr": "큐 제한에 도달하면 최근바뀜 스트림을 자동으로 종료합니다.",
 	"settings-jumps": "최근 변경으로 이동",
-	"settings-jumps-descr": "이 기능을 활성화하면 큐에서 diff를 열 때 변경된 부분으로 자동으로 이동합니다.",
+	"settings-jumps-descr": "이 기능을 활성화하면 큐에서 차이를 열 때 변경된 부분으로 자동으로 이동합니다.",
 	"settings-hotkeys": "단축키",
 	"settings-hotkeys-descr": "키보드로 SWViewer을 작동하려면 [$1|단축키]를 활성화하세요.",
 	"settings-limit": "큐 제한",
