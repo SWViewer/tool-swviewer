@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Blaséd",
 			"Firilacroco",
 			"Kocgs",
 			"NGC 54",
@@ -263,7 +264,7 @@
 	"welcome-frame-undo": "Anulare",
 	"welcome-frame-edit": "Editare",
 	"welcome-frame-warn": "Avertizare",
-	"welcome-frame-del": "Ștergere",
+	"welcome-frame-del": "Şterge",
 	"welcome-frame-protect": "Protejare",
 	"welcome-frame-report": "Raportare",
 	"welcome-frame-total": "Total",
