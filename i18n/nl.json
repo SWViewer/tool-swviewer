@@ -53,7 +53,7 @@
 	"settings-terminate-stream": "Stroom beëindigen",
 	"settings-terminate-stream-descr": "De stroom recente wijzigingen beëindigen wanneer de wachtrijlimiet bereikt is.",
 	"settings-jumps": "Naar wijziging springen",
-	"settings-jumps-descr": "Indien ingeschakeld springt de focus van SWViewer meteen naar de wijziging bij het weergeven van verschillen vanuit de wachtrij.",
+	"settings-jumps-descr": "Indien ingeschakeld springt de focus van SWViewer direct naar de wijziging bij het weergeven van verschillen vanuit de wachtrij.",
 	"settings-hotkeys": "Sneltoetsen",
 	"settings-hotkeys-descr": "[$1|Sneltoetsen] inschakelen om SWViewer met toetsenbord te bedienen.",
 	"settings-limit": "Wachtrijlimiet",
