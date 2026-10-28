@@ -1,0 +1,135 @@
+
+name: Deploy staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_ref:
+        description: "Branch name or full 40-character commit SHA from this repository"
+        required: true
+        default: "master"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swviewer-staging-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to swviewer-test
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+
+    steps:
+      - name: Validate inputs and configure SSH
+        shell: bash
+        env:
+          TOOLFORGE_SSH_KEY: ${{ secrets.TOOLFORGE_SSH_KEY }}
+          TOOLFORGE_KNOWN_HOSTS: ${{ secrets.TOOLFORGE_KNOWN_HOSTS }}
+          TOOLFORGE_SSH_USER: ${{ vars.TOOLFORGE_SSH_USER }}
+          DEPLOY_REF: ${{ inputs.deploy_ref }}
+        run: |
+          set -euo pipefail
+
+          test -n "$TOOLFORGE_SSH_KEY"
+          test -n "$TOOLFORGE_KNOWN_HOSTS"
+          test -n "$TOOLFORGE_SSH_USER"
+          test -n "$DEPLOY_REF"
+
+          mkdir -p "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+
+          printf '%s\n' "$TOOLFORGE_SSH_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$TOOLFORGE_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+          ssh-keygen -F login.toolforge.org -f "$HOME/.ssh/known_hosts" >/dev/null
+
+          if [[ ! "$TOOLFORGE_SSH_USER" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+            echo "Invalid Toolforge SSH username."
+            exit 1
+          fi
+
+          if [[ "$DEPLOY_REF" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            :
+          elif ! git check-ref-format --branch "$DEPLOY_REF" >/dev/null 2>&1; then
+            echo "Enter a valid branch name or full commit SHA."
+            exit 1
+          fi
+
+          printf '%s' "$DEPLOY_REF" | base64 -w0 > "$RUNNER_TEMP/deploy-ref.b64"
+
+      - name: Deploy selected revision
+        shell: bash
+        env:
+          TOOLFORGE_SSH_USER: ${{ vars.TOOLFORGE_SSH_USER }}
+        run: |
+          set -euo pipefail
+
+          {
+            printf 'DEPLOY_REF_B64=%s\n' "$(cat "$RUNNER_TEMP/deploy-ref.b64")"
+            cat <<'REMOTE'
+          set -euo pipefail
+
+          cd /data/project/swviewer-test/public_html
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Staging checkout has local changes; refusing to deploy."
+            git status --short
+            exit 1
+          fi
+
+          DEPLOY_REF="$(printf '%s' "$DEPLOY_REF_B64" | base64 -d)"
+
+          git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
+
+          if [[ "$DEPLOY_REF" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            if ! git cat-file -e "${DEPLOY_REF}^{commit}" 2>/dev/null; then
+              echo "Commit is not available in the fetched repository history."
+              exit 1
+            fi
+            TARGET="$DEPLOY_REF"
+          else
+            git check-ref-format --branch "$DEPLOY_REF" >/dev/null
+            TARGET="refs/remotes/origin/$DEPLOY_REF"
+
+            if ! git show-ref --verify --quiet "$TARGET"; then
+              echo "Branch not found in origin: $DEPLOY_REF"
+              exit 1
+            fi
+          fi
+
+          git checkout --detach "$TARGET"
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Checkout is not clean after deployment."
+            git status --short
+            exit 1
+          fi
+
+          echo "STAGING_DEPLOYED_COMMIT=$(git rev-parse HEAD)"
+          git log -1 --format='%h %s'
+          REMOTE
+          } | ssh \
+            -i "$HOME/.ssh/id_ed25519" \
+            -o IdentitiesOnly=yes \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "$TOOLFORGE_SSH_USER@login.toolforge.org" \
+            "become swviewer-test 'bash -s'"
+
+      - name: Smoke test staging website
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error \
+            --retry 5 --retry-delay 3 --retry-connrefused \
+            --max-time 30 \
+            --output /dev/null \
+            --write-out 'Staging HTTP status: %{http_code}\n' \
+            https://swviewer-test.toolforge.org/
