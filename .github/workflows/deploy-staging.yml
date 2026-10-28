@@ -121,7 +121,7 @@ jobs:
             -o BatchMode=yes \
             -o StrictHostKeyChecking=yes \
             "$TOOLFORGE_SSH_USER@login.toolforge.org" \
-            "become swviewer-test 'bash -s'"
+            "become swviewer-test bash"
 
       - name: Smoke test staging website
         shell: bash
