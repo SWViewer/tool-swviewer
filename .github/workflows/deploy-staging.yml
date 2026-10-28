@@ -20,7 +20,7 @@ concurrency:
 jobs:
   deploy:
     name: Deploy to swviewer-test
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: staging
