@@ -413,6 +413,14 @@ session_write_close();
 
 <body  class="full-screen" id="mainapp-body">
 
+<?php if (isset($_SERVER['HTTP_HOST']) &&
+          strtolower($_SERVER['HTTP_HOST']) === 'swviewer-test.toolforge.org'): ?>
+    <div style="background:#8b1e1e;color:#fff;text-align:center;
+                padding:10px;font-weight:bold;position:relative;z-index:10000;">
+        STAGING / TEST ENVIRONMENT — Do not perform real edits or change settings.
+    </div>
+<?php endif; ?>
+
 <!-- Loading UI -->
 <div id="loading" class="secodnary-cont" style="padding: 16px; background: #ffffff; display: flex; align-items: center; justify-content: center; align-content: center; flex-wrap: wrap; position: fixed; z-index: 999;">
     <div style="width: 75px; height: 75px;">
